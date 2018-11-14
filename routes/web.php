@@ -1,17 +1,14 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use App\User;
+use App\Http\Resources\User as UserResource;
 
 Auth::routes();
+
+/** Apis */
+Route::get('/user', function() {
+    return new UserResource(User::find(1));
+});
 
 /** Display Dashboard */
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
