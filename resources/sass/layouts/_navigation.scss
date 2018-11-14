@@ -1,0 +1,29 @@
+.navigation-wrapper {
+    display: flex;
+    padding: 2px;
+
+    .navigation {
+        font-size: 1.25rem;
+        li {
+            display: inline-block;
+        }
+        a {
+            display: block;
+            padding: 5px;
+            margin: 0 10px;
+        }
+        .nav-title {
+            font-size: 1.4rem;
+            margin-right: 3rem;
+        }
+    }
+
+    .navigation-left {
+        flex: 3;
+    }
+
+    .navigation-right {
+        flex: 1;
+        text-align: right;
+    }
+}
