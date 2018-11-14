@@ -11,10 +11,19 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+/** Display Dashboard */
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+
+/** Display Homepage */
+Route::get('/', 'PagesController@homepage');
+
+/** Display Albums */
+Route::get('/albums', 'PagesController@albums');
+
+/** Display About page */
+Route::get('/about', 'PagesController@about');
+
+/** Display Contact page */
+Route::get('/contact', 'PagesController@contact');
