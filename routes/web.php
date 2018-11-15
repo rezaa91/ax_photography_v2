@@ -6,7 +6,7 @@ use App\Http\Resources\User as UserResource;
 Auth::routes();
 
 /** Apis */
-Route::get('/user', function() {
+Route::get('/api/user', function() {
     return new UserResource(User::find(1));
 });
 
