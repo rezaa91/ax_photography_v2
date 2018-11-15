@@ -6,10 +6,10 @@ class Navigation extends Component {
         super();
 
         //check if user is in session
-        const user = this.getUser();
+        this.getUser();
 
         this.state = {
-            isLoggedIn: false,
+            isLoggedIn: true,
             user_id: null,
             name: null,
             email: null,
@@ -21,9 +21,17 @@ class Navigation extends Component {
         this.displayLoginOrUser = this.displayLoginOrUser.bind(this);
     }
 
+    componentDidMount() {
+        this.getUser();
+    }
+
+    componentDidUpdate() {
+        this.getUser(); 
+    }
+
     async getUser() {
         //find user in session through api
-        await fetch('/user')
+        await fetch('/api/user')
         .then(response => response.json())
         .then(data => {
             data = data.data;
@@ -39,6 +47,15 @@ class Navigation extends Component {
                 email: data.email,
                 created_at: data.created_at
             })            
+        })
+        .catch(() => {
+            this.setState({
+                isLoggedIn: false,
+                user_id: null,
+                name: null,
+                email: null,
+                created_at: null
+            })
         })
     }
 
@@ -58,13 +75,14 @@ class Navigation extends Component {
 
     render() {
         const {user_id, name, email, created_at} = this.state;
+
         return(
             <div className="navigation-wrapper">
                 <ul className="navigation navigation-left">
                     <li className="nav-title"><a href='/'>AX PHOTOGRAPHY</a></li>
-                    <li><a href='/albums'>Albums</a></li>
-                    <li><a href='/about'>About</a></li>
-                    <li><a href='/contact'>Contact</a></li>
+                    <li><a href='/albums' className = 'main-link'>Albums</a></li>
+                    <li><a href='/about' className = 'main-link'>About</a></li>
+                    <li><a href='/contact' className = 'main-link'>Contact</a></li>
                 </ul>
 
                 <ul className="navigation navigation-right">
@@ -75,4 +93,6 @@ class Navigation extends Component {
     }
 }
 
-ReactDOM.render(<Navigation />, document.getElementById('nav'));
+if (document.getElementById('nav')) {
+    ReactDOM.render(<Navigation />, document.getElementById('nav'));
+}
