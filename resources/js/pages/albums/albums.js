@@ -11,4 +11,6 @@ class Albums extends Component {
     }
 }
 
-ReactDOM.render(<Albums />, document.getElementById('albums'));
+if (document.getElementById('albums')) {
+    ReactDOM.render(<Albums />, document.getElementById('albums'));
+}

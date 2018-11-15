@@ -11,4 +11,6 @@ class Contact extends Component {
     }
 }
 
-ReactDOM.render(<Contact />, document.getElementById('contact'));
+if (document.getElementById('contact')) {
+    ReactDOM.render(<Contact />, document.getElementById('contact'));
+}

@@ -11,4 +11,6 @@ class About extends Component {
     }
 }
 
-ReactDOM.render(<About />, document.getElementById('about'));
+if (document.getElementById('about')) {
+    ReactDOM.render(<About />, document.getElementById('about'));
+}
