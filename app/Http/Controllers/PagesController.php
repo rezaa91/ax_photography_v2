@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 class PagesController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('auth', ['except' => ['homepage', 'albums', 'about', 'contact']]);
+    }
+
     public function homepage()
     {
         return view('pages.homepage');
@@ -24,5 +29,10 @@ class PagesController extends Controller
     public function contact()
     {
         return view('pages.contact');
+    }
+
+    public function upload()
+    {
+        return view('pages.upload');
     }
 }
