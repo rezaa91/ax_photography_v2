@@ -5,6 +5,9 @@ use App\Http\Resources\User as UserResource;
 
 Auth::routes();
 
+/** Logout */
+Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
+
 /** Apis */
 Route::get('/api/user', function() {
     return new UserResource(User::find(1));
@@ -24,3 +27,6 @@ Route::get('/about', 'PagesController@about');
 
 /** Display Contact page */
 Route::get('/contact', 'PagesController@contact');
+
+/** Display Upload page */
+Route::get('/upload', 'PagesController@upload');
