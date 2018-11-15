@@ -1,20 +1,33 @@
 .navigation-wrapper {
+    position: relative;
     display: flex;
     padding: 2px;
+    height: 50px;
+    z-index: 99;
 
     .navigation {
         font-size: 1.25rem;
         li {
             display: inline-block;
         }
-        a {
+        .main-link {
             display: block;
             padding: 5px;
             margin: 0 10px;
+            color: $darkgrey;
+            &:hover {
+                border-bottom: 4px solid $darkgreen;
+            }
         }
         .nav-title {
             font-size: 1.4rem;
             margin-right: 3rem;
+            a {
+                color: $green;
+                &:hover {
+                    color: $darkgreen;
+                }
+            }
         }
     }
 
@@ -25,5 +38,6 @@
     .navigation-right {
         flex: 1;
         text-align: right;
+        margin-right: 10px;
     }
 }
