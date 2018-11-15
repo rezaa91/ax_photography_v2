@@ -9,16 +9,18 @@ class Navigation extends Component {
         this.getUser();
 
         this.state = {
-            isLoggedIn: true,
+            isLoggedIn: false,
             user_id: null,
             name: null,
             email: null,
-            created_at: null
+            created_at: null,
+            isDropdownPresent: false
         }
         
         //bind methods
         this.getUser = this.getUser.bind(this);
         this.displayLoginOrUser = this.displayLoginOrUser.bind(this);
+        this.toggleUserDropdownMenu = this.toggleUserDropdownMenu.bind(this);
     }
 
     componentDidMount() {
@@ -68,14 +70,34 @@ class Navigation extends Component {
             );
         } else {
             return(
-                <li><a href='/dashboard'>{name}</a></li>
+                <li><a href='#' onClick = {(e) => this.toggleUserDropdownMenu(e)}>{name}</a></li>
             );
         }
     }
 
-    render() {
-        const {user_id, name, email, created_at} = this.state;
+    toggleUserDropdownMenu(e) {
+        const {isDropdownPresent} = this.state;
 
+        // prevent duplicates of dropdown menu being shown
+        if (isDropdownPresent) {
+            e.target.nextElementSibling.remove();
+            this.setState({isDropdownPresent: false});
+        } else {
+            const dropDownMenu = `
+                <ul className='user-dropdown-menu'>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/upload">Upload</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            `;
+
+            e.target.insertAdjacentHTML('afterend', dropDownMenu);
+
+            this.setState({isDropdownPresent: true});
+        }
+    }
+
+    render() {
         return(
             <div className="navigation-wrapper">
                 <ul className="navigation navigation-left">
