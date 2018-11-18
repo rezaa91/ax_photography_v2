@@ -13,12 +13,14 @@
 
 // Components
 @import './components/_form';
+@import './components/_card';
 
 // Layouts
 @import './layouts/_navigation';
 
 // Pages
 @import './pages/homepage/_homepage';
+@import './pages/dashboard/_dashboard';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
