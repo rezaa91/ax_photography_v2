@@ -60348,7 +60348,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_card__ = __webpack_require__(62);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_modal__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_components_modal__ = __webpack_require__(86);
 
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -60387,6 +60387,8 @@ var Dashboard = function (_Component) {
 
         _this.getUser = _this.getUser.bind(_this);
         _this.displayWarning = _this.displayWarning.bind(_this);
+        _this.resetWarning = _this.resetWarning.bind(_this);
+        _this.deleteAccount = _this.deleteAccount.bind(_this);
         return _this;
     }
 
@@ -60434,6 +60436,19 @@ var Dashboard = function (_Component) {
             this.setState({ shouldDeleteAccount: true });
         }
     }, {
+        key: 'resetWarning',
+        value: function resetWarning() {
+            this.setState({ shouldDeleteAccount: false });
+        }
+    }, {
+        key: 'deleteAccount',
+        value: function deleteAccount() {
+            this.setState({ shouldDeleteAccount: false }); //hide modal
+
+            //delete acount
+            console.log('account deleted');
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _state$user = this.state.user,
@@ -60450,7 +60465,7 @@ var Dashboard = function (_Component) {
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'div',
                 { className: 'dashboard-wrapper container' },
-                shouldDeleteAccount && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_modal__["a" /* default */], null),
+                shouldDeleteAccount && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__global_components_modal__["a" /* default */], { message: 'Are you sure you want to delete your account?', resetState: this.resetWarning, action: this.deleteAccount }),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
                     { className: 'row justify-content-center' },
@@ -60542,8 +60557,11 @@ var Card = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
                         { className: 'left-side' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/avatar.png' }),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'avatar-wrapper' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/avatar.png' })
+                        ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'span',
                             { className: 'card-label' },
@@ -60605,7 +60623,7 @@ var Card = function (_Component) {
                         { className: 'right-side' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'span',
-                            null,
+                            { className: 'title' },
                             'Notifications'
                         )
                     )
@@ -60856,7 +60874,158 @@ function kindOf(val) {
 
 
 /***/ }),
-/* 64 */
+/* 64 */,
+/* 65 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 66 */,
+/* 67 */,
+/* 68 */,
+/* 69 */,
+/* 70 */,
+/* 71 */,
+/* 72 */,
+/* 73 */,
+/* 74 */,
+/* 75 */,
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__btn__ = __webpack_require__(87);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+var Modal = function (_Component) {
+    _inherits(Modal, _Component);
+
+    function Modal() {
+        _classCallCheck(this, Modal);
+
+        var _this = _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).call(this));
+
+        _this.state = {
+            displayModal: true
+        };
+
+        _this.closeModal = _this.closeModal.bind(_this);
+        _this.action = _this.action.bind(_this);
+        return _this;
+    }
+
+    _createClass(Modal, [{
+        key: 'closeModal',
+        value: function closeModal() {
+            var resetState = this.props.resetState;
+
+            this.setState({ displayModal: false });
+            resetState(); //passed from parent and should reset any state passed when <Modal /> used
+        }
+    }, {
+        key: 'action',
+        value: function action() {
+            var action = this.props.action;
+
+            action(); //this method is passed from parent and should action what happens when user clicks 'yes'
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _props = this.props,
+                message = _props.message,
+                action = _props.action;
+            var displayModal = this.state.displayModal;
+
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                null,
+                displayModal && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'outer-modal-wrapper' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'middle-modal-wrapper' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'modal-wrapper' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'modal-head' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'span',
+                                    { className: 'close-btn', onClick: this.closeModal },
+                                    '\xD7'
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'modal-content' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'p',
+                                    null,
+                                    message
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'modal-buttons' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'btn-wrapper' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'span',
+                                            { onClick: this.action },
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__btn__["a" /* default */], { text: 'Yes', classes: 'btn-default' })
+                                        )
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'btn-wrapper' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'span',
+                                            { onClick: this.closeModal },
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__btn__["a" /* default */], { text: 'No', classes: 'btn-green' })
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Modal;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Modal);
+
+/***/ }),
+/* 87 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -60872,32 +61041,36 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-var Modal = function (_Component) {
-    _inherits(Modal, _Component);
+var Btn = function (_Component) {
+    _inherits(Btn, _Component);
 
-    function Modal() {
-        _classCallCheck(this, Modal);
+    function Btn() {
+        _classCallCheck(this, Btn);
 
-        return _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (Btn.__proto__ || Object.getPrototypeOf(Btn)).apply(this, arguments));
     }
 
-    _createClass(Modal, [{
+    _createClass(Btn, [{
         key: 'render',
         value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'modal-wrapper' });
+            var _props = this.props,
+                text = _props.text,
+                classes = _props.classes;
+
+            var btnClasses = classes + ' btn-component';
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'button',
+                { className: btnClasses },
+                text
+            );
         }
     }]);
 
-    return Modal;
+    return Btn;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
-/* harmony default export */ __webpack_exports__["a"] = (Modal);
-
-/***/ }),
-/* 65 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
+/* harmony default export */ __webpack_exports__["a"] = (Btn);
 
 /***/ })
 /******/ ]);
