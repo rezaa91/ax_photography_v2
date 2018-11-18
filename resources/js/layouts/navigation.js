@@ -10,11 +10,9 @@ class Navigation extends Component {
 
         this.state = {
             isLoggedIn: false,
-            user_id: null,
-            name: null,
-            email: null,
-            created_at: null,
-            isDropdownPresent: false
+            user: null,
+            isDropdownPresent: false,
+            rotateArrowClass: null
         }
         
         //bind methods
@@ -44,55 +42,57 @@ class Navigation extends Component {
 
             this.setState({
                 isLoggedIn: true,
-                user_id: data.id,
-                name: data.name,
-                email: data.email,
-                created_at: data.created_at
+                user: {
+                    id: data.id,
+                    name: data.name,
+                    email: data.email,
+                    created_at: data.created_at
+                }
             })            
         })
         .catch(() => {
             this.setState({
                 isLoggedIn: false,
-                user_id: null,
-                name: null,
-                email: null,
-                created_at: null
+                user: null
             })
         })
     }
 
     displayLoginOrUser() {
-        const {isLoggedIn, name} = this.state;
+        const {isLoggedIn, user, rotateArrowClass, isDropdownPresent} = this.state;
 
         if (!isLoggedIn) {
             return(
                 <li><a href='/login'>Login</a></li>
             );
         } else {
-            return(
-                <li><a href='#' onClick = {(e) => this.toggleUserDropdownMenu(e)}>{name}</a></li>
-            );
-        }
-    }
-
-    toggleUserDropdownMenu(e) {
-        const {isDropdownPresent} = this.state;
-
-        // prevent duplicates of dropdown menu being shown
-        if (isDropdownPresent) {
-            e.target.nextElementSibling.remove();
-            this.setState({isDropdownPresent: false});
-        } else {
-            const dropDownMenu = `
+            const arrowClasses = `${rotateArrowClass} fas fa-arrow-circle-down rotate-arrow`;
+            const usernameClass = isDropdownPresent ? 'user-clicked' : '';
+            const dropdownMenu = isDropdownPresent && 
                 <ul className='user-dropdown-menu'>
                     <li><a href="/dashboard">Dashboard</a></li>
                     <li><a href="/upload">Upload</a></li>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
-            `;
 
-            e.target.insertAdjacentHTML('afterend', dropDownMenu);
+            return(
+                <li className = {usernameClass}>
+                    <i id="arrow" className={arrowClasses}></i>
+                    <a href='#' onClick = {this.toggleUserDropdownMenu}>{user.name}</a>
+                    {dropdownMenu}
+                </li>
+            );
+        }
+    }
 
+    toggleUserDropdownMenu() {
+        const {isDropdownPresent} = this.state;
+
+        // prevent duplicates of dropdown menu being shown
+        if (isDropdownPresent) {
+            this.setState({isDropdownPresent: false, rotateArrowClass: 'rotate-down'});
+        } else {
+            this.setState({rotateArrowClass: 'rotate-up'})
             this.setState({isDropdownPresent: true});
         }
     }
