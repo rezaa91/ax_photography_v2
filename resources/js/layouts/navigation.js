@@ -21,10 +21,6 @@ class Navigation extends Component {
         this.toggleUserDropdownMenu = this.toggleUserDropdownMenu.bind(this);
     }
 
-    componentDidMount() {
-        this.getUser();
-    }
-
     componentDidUpdate() {
         this.getUser(); 
     }
