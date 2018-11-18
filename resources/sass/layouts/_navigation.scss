@@ -39,5 +39,46 @@
         flex: 1;
         text-align: right;
         margin-right: 10px;
+        a {
+            &:hover {
+                font-weight: 600;
+            }
+        }
+    }
+
+    .user-dropdown-menu {
+        text-align: center;
+        li {
+            display: block;
+        }
+        a {
+            color: $white;
+            display: block;
+            background-color: $green;
+            padding: 3px 12px;
+            &:hover {
+                background-color: $darkgreen;
+            }
+        }
+    }
+
+    .user-clicked {
+        border-left: 2px solid $darkgrey;
+        border-right: 2px solid $darkgrey;
+        border-bottom: 2px solid $darkgrey;
+    }
+    
+    .rotate-arrow {
+        font-size: 1.2rem;
+        color: $grey;
+        margin-right: 2px;
+    }
+    .rotate-up {
+        transform: rotate(180deg);
+        transition: transform 0.5s;
+    }
+    .rotate-down {
+        transform: none;
+        transition: transform 0.5s;
     }
 }
