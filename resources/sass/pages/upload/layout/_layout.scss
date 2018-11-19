@@ -1,0 +1,14 @@
+.upload-wrapper {
+    width: 40%;
+    margin: 20px auto 0;
+    border: 1px solid $darkgrey;
+    padding: 10px;
+
+    .title {
+        text-align: center;
+        margin-bottom: 10px;
+        h1 {
+            font-size: $font-header;
+        }
+    }
+}
