@@ -13,6 +13,9 @@ Route::get('/api/user', function() {
     return new UserResource(User::find(1));
 });
 
+/** Photos Resource */
+Route::resource('/photos', 'PhotosController');
+
 /** Display Dashboard */
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
