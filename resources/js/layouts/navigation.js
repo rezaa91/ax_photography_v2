@@ -21,10 +21,6 @@ class Navigation extends Component {
         this.toggleUserDropdownMenu = this.toggleUserDropdownMenu.bind(this);
     }
 
-    componentDidUpdate() {
-        this.getUser(); 
-    }
-
     async getUser() {
         //find user in session through api
         await fetch('/api/user')
