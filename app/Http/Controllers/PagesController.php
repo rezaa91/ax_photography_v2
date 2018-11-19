@@ -11,14 +11,11 @@ class PagesController extends Controller
         $this->middleware('auth', ['except' => ['homepage', 'albums', 'about', 'contact']]);
     }
 
+    // Global pages
+    
     public function homepage()
     {
         return view('pages.homepage');
-    }
-
-    public function albums()
-    {
-        return view('pages.albums');
     }
 
     public function about()
@@ -31,8 +28,16 @@ class PagesController extends Controller
         return view('pages.contact');
     }
 
+
+    // Photo Pages
+
     public function upload()
     {
-        return view('pages.upload');
+        return view('pages.photos.upload');
+    }
+
+    public function albums()
+    {
+        return view('pages.photos.albums');
     }
 }
