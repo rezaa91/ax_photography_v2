@@ -20,6 +20,9 @@
     <!-- React Component -->
     <nav id="nav"></nav>
 
+    <!-- error messages -->
+    @include('messages.messages')
+
     <div id="root">
         @yield('content')
     </div>
