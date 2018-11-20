@@ -21,6 +21,9 @@ class Navigation extends Component {
         this.toggleUserDropdownMenu = this.toggleUserDropdownMenu.bind(this);
     }
 
+    /**
+     * Get logged in user through API call
+     */
     async getUser() {
         //find user in session through api
         await fetch('/api/user')
@@ -36,6 +39,7 @@ class Navigation extends Component {
                 isLoggedIn: true,
                 user: {
                     id: data.id,
+                    username: data.username,
                     name: data.name,
                     email: data.email,
                     created_at: data.created_at
@@ -50,6 +54,10 @@ class Navigation extends Component {
         })
     }
 
+    /**
+     * If user is logged in then display username with dropdown menu for user links
+     * Otherwise display login link
+     */
     displayLoginOrUser() {
         const {isLoggedIn, user, rotateArrowClass, isDropdownPresent} = this.state;
 
@@ -62,7 +70,7 @@ class Navigation extends Component {
             const usernameClass = isDropdownPresent ? 'user-clicked' : '';
             const dropdownMenu = isDropdownPresent && 
                 <ul className='user-dropdown-menu'>
-                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/user">User Profile</a></li>
                     <li><a href="/upload">Upload</a></li>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
@@ -70,13 +78,16 @@ class Navigation extends Component {
             return(
                 <li className = {usernameClass}>
                     <i id="arrow" className={arrowClasses}></i>
-                    <a href='#' onClick = {this.toggleUserDropdownMenu}>{user.name}</a>
+                    <a href='#' onClick = {this.toggleUserDropdownMenu}>{user.username}</a>
                     {dropdownMenu}
                 </li>
             );
         }
     }
 
+    /**
+     * Toggle the user dropdown menu
+     */
     toggleUserDropdownMenu() {
         const {isDropdownPresent} = this.state;
 
