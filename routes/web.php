@@ -13,11 +13,11 @@ Route::get('/api/user', function() {
     return new UserResource(User::find(1));
 });
 
+/** Profile Resource */
+Route::resource('/user', 'DashboardController');
+
 /** Photos Resource */
 Route::resource('/photos', 'PhotosController');
-
-/** Display Dashboard */
-Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
 /** Display Homepage */
 Route::get('/', 'PagesController@homepage');
