@@ -10,6 +10,8 @@ class Dashboard extends Component {
 
         this.state = {
             user: {
+                user_id: null,
+                username: null,
                 name: null,
                 email: null,
                 created_at: null
@@ -30,6 +32,8 @@ class Dashboard extends Component {
             user = user.data;
             this.setState({
                 user: {
+                    user_id: user.id,
+                    username: user.username,
                     name: user.name,
                     email: user.email,
                     created_at: user.created_at
@@ -54,12 +58,7 @@ class Dashboard extends Component {
     }
 
     render() {
-        const {name, email, created_at} = this.state.user;
-        const {shouldDeleteAccount} = this.state;
-        let user;
-        if (name && email && created_at) {
-            user = [name, email, created_at.date];
-        }
+        const {user, shouldDeleteAccount} = this.state;
 
         return(
             <div className='dashboard-wrapper container'>
