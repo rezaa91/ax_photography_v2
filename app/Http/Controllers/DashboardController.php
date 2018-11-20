@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 
 class DashboardController extends Controller
 {
@@ -17,12 +18,64 @@ class DashboardController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show the application user dashboard.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         return view('pages.profile.dashboard');
+    }
+
+    /**
+     * Edit user profile
+     * 
+     * @param integer $id
+     */
+    public function edit(int $id) 
+    {
+        $user = User::find($id);
+        if (auth()->user()->id !== $id) {
+            return redirect('/')->with('failure', 'Unauthorised access');
+        }
+
+        return view('pages.profile.edit')->with('user', $user);
+    }
+
+    /**
+     * Update the user edited data
+     *
+     * @param Request $request
+     */
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'username' => 'required',
+            'email' => 'required'
+        ]);
+
+        $user = User::find($id);
+        $user->username = $request->input('username');
+        $user->email = $request->input('email');
+        $user->save();
+
+        return redirect('/user')->with('success', 'Profile updated');
+    }
+
+    /**
+     * Delete the users profile
+     * 
+     * @param Request $request
+     * @param integer $id
+     */
+    public function delete(Request $request, int $id)
+    {
+        if (auth()->user()->id !== $id) {
+            return redirect('/')->with('failure', 'Unauthorised access');
+        }
+        $user = User::find($id);
+        $user->delete();
+        
+        return redirect('/')->with('success', 'Your account has been deleted.');
     }
 }
