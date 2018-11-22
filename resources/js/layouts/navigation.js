@@ -27,11 +27,13 @@ class Navigation extends Component {
     async getUser() {
         //find user in session through api
         await fetch('/api/user')
-        .then(response => response.json())
+        .then(response => {
+            return response.status === 200 && response.json();
+        })
         .then(data => {
             data = data.data;
             
-            if (data.length === 0) {
+            if (!data) {
                 return;
             }
 
@@ -46,7 +48,8 @@ class Navigation extends Component {
                 }
             })            
         })
-        .catch(() => {
+        .catch((error) => {
+            console.log(error);
             this.setState({
                 isLoggedIn: false,
                 user: null
@@ -60,7 +63,7 @@ class Navigation extends Component {
      */
     displayLoginOrUser() {
         const {isLoggedIn, user, rotateArrowClass, isDropdownPresent} = this.state;
-
+        
         if (!isLoggedIn) {
             return(
                 <li><a href='/login'>Login</a></li>
@@ -70,7 +73,7 @@ class Navigation extends Component {
             const usernameClass = isDropdownPresent ? 'user-clicked' : '';
             const dropdownMenu = isDropdownPresent && 
                 <ul className='user-dropdown-menu'>
-                    <li><a href="/user">User Profile</a></li>
+                    <li><a href="/user">Dashboard</a></li>
                     <li><a href="/upload">Upload</a></li>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
