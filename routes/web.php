@@ -10,7 +10,7 @@ Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 /** Apis */
 Route::get('/api/user', function() {
-    return new UserResource(User::find(1));
+    return new UserResource(User::find(auth()->user()->id));
 });
 
 /** Profile Resource */
