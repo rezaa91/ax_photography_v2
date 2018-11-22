@@ -68,7 +68,7 @@ class DashboardController extends Controller
      * @param Request $request
      * @param integer $id
      */
-    public function delete(Request $request, int $id)
+    public function destroy(Request $request, int $id)
     {
         if (auth()->user()->id !== $id) {
             return redirect('/')->with('failure', 'Unauthorised access');
