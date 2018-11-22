@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Card from './components/card';
 import Modal from '../../global_components/modal';
+import $ from 'jquery';
 
 class Dashboard extends Component {
     constructor() {
@@ -40,6 +41,7 @@ class Dashboard extends Component {
                 }
             })
         })
+        .catch(error => console.log(error));
     }
 
     displayWarning() {
@@ -50,11 +52,20 @@ class Dashboard extends Component {
         this.setState({shouldDeleteAccount: false});
     }
 
-    deleteAccount() {
+    async deleteAccount() {
+        const {user_id} = this.state.user;
         this.setState({shouldDeleteAccount: false}); //hide modal
-        
-        //delete acount
-        console.log('account deleted');
+
+        await fetch(`/user/${user_id}`, {
+            method: 'delete',
+            headers: {
+                'Content-Type': 'text/plain',
+                'Access-Control-Allow-Origin': '*',
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+        .then(response => console.log(response))
+        .catch(error => console.log(error));
     }
 
     render() {
