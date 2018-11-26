@@ -51,7 +51,8 @@ class AlbumsController extends PhotosController
      */
     public function index()
     {
-        return view('pages.photos.photos');
+        $albums = Albums::all();
+        return view('pages.photos.albums')->with('albums', $albums);
     }
     
     /**
@@ -117,7 +118,7 @@ class AlbumsController extends PhotosController
      */
     public function show($id)
     {
-    
+        
     }
     
     /**

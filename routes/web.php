@@ -10,26 +10,25 @@ Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 /** Apis */
 Route::get('/api/user', function() {
+    if (!(auth()->user())) {
+        return;
+    }
     return new UserResource(User::find(auth()->user()->id));
 });
 
 /** Profile Resource */
 Route::resource('/user', 'DashboardController');
 
-/** Photos Resource */
-Route::resource('/photos', 'PhotosController');
+/** Photos/Albums Resource */
+Route::resource('/photos', 'Photos\AlbumsController');
+Route::get('/upload', 'Photos\AlbumsController@create');
+Route::get('/albums', 'Photos\AlbumsController@index');
 
 /** Display Homepage */
 Route::get('/', 'PagesController@homepage');
-
-/** Display Albums */
-Route::get('/albums', 'PagesController@albums');
 
 /** Display About page */
 Route::get('/about', 'PagesController@about');
 
 /** Display Contact page */
 Route::get('/contact', 'PagesController@contact');
-
-/** Display Upload page */
-Route::get('/upload', 'PagesController@upload');
