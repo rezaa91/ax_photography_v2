@@ -13952,7 +13952,7 @@ module.exports = checkPropTypes;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(16);
-module.exports = __webpack_require__(64);
+module.exports = __webpack_require__(65);
 
 
 /***/ }),
@@ -13977,6 +13977,7 @@ __webpack_require__(56);
 __webpack_require__(57);
 __webpack_require__(58);
 __webpack_require__(59);
+__webpack_require__(64);
 
 /***/ }),
 /* 17 */
@@ -36297,7 +36298,6 @@ var Navigation = function (_Component) {
                                         }
                                     });
                                 }).catch(function (error) {
-                                    console.log(error);
                                     _this2.setState({
                                         isLoggedIn: false,
                                         user: null
@@ -60314,7 +60314,7 @@ var Contact = function (_Component) {
                             { className: 'social-media-wrapper' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'span',
-                                { classname: 'icon' },
+                                { className: 'icon' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'a',
                                     { href: '#' },
@@ -60323,7 +60323,7 @@ var Contact = function (_Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'span',
-                                { classname: 'icon' },
+                                { className: 'icon' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'a',
                                     { href: '#' },
@@ -60332,7 +60332,7 @@ var Contact = function (_Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'span',
-                                { classname: 'icon' },
+                                { className: 'icon' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'a',
                                     { href: '#' },
@@ -60341,7 +60341,7 @@ var Contact = function (_Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'span',
-                                { classname: 'icon' },
+                                { className: 'icon' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'a',
                                     { href: '#' },
@@ -61126,6 +61126,38 @@ var Btn = function (_Component) {
 
 /***/ }),
 /* 64 */
+/***/ (function(module, exports) {
+
+var albumTypeRadioBtns = document.forms[0].elements.album_type;
+var selectAlbumSection = document.querySelector('#select_album');
+var createAlbumSection = document.querySelector('#create_album');
+
+/**
+ * Show/hide album sections of uploads dependant on which radio button is selected: 'existing', or 'new'
+ */
+albumTypeRadioBtns.forEach(function (btn) {
+    btn.addEventListener('change', function (e) {
+        var target = e.target;
+        var btnValue = e.target.value.toLowerCase();
+
+        if (target.checked) {
+            switch (btnValue) {
+                case 'existing':
+                    selectAlbumSection.hasAttribute('class', 'hide') && selectAlbumSection.classList.remove('hide');
+                    createAlbumSection.hasAttribute('class', 'hide') && createAlbumSection.classList.add('hide');
+                    break;
+
+                case 'new':
+                    selectAlbumSection.hasAttribute('class', 'hide') && selectAlbumSection.classList.add('hide');
+                    createAlbumSection.hasAttribute('class', 'hide') && createAlbumSection.classList.remove('hide');
+                    break;
+            }
+        }
+    });
+});
+
+/***/ }),
+/* 65 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

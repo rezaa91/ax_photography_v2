@@ -49,7 +49,6 @@ class Navigation extends Component {
             })            
         })
         .catch((error) => {
-            console.log(error);
             this.setState({
                 isLoggedIn: false,
                 user: null
