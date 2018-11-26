@@ -18,4 +18,16 @@ form {
     textarea {
         flex: 2;
     }
+
+    select {
+        flex: 2;
+    }
+
+    .selection {
+        display: flex;
+        flex: 2;
+        .option {
+            flex: 1;
+        }
+    }
 }
