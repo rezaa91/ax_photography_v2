@@ -27,17 +27,4 @@ class PagesController extends Controller
     {
         return view('pages.contact');
     }
-
-
-    // Photo Pages
-
-    public function upload()
-    {
-        return view('pages.photos.upload');
-    }
-
-    public function albums()
-    {
-        return view('pages.photos.albums');
-    }
 }
