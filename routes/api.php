@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Albums;
+use App\Http\Resources\Albums as AlbumsResource;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +17,10 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    return $request->user(User::find(auth()));
+});
+
+
+Route::get('albums', function() {
+    return new AlbumsResource(Albums::all());
 });

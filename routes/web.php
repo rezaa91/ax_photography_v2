@@ -5,16 +5,13 @@ use App\Http\Resources\User as UserResource;
 
 Auth::routes();
 
-/** Logout */
-Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
-
-/** Apis */
+/** User API */
 Route::get('/api/user', function() {
-    if (!(auth()->user())) {
-        return;
-    }
     return new UserResource(User::find(auth()->user()->id));
 });
+
+/** Logout */
+Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 /** Profile Resource */
 Route::resource('/user', 'DashboardController');
