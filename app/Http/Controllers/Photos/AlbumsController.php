@@ -45,7 +45,7 @@ class AlbumsController extends PhotosController
     }
         
     /**
-     * Display a Albums
+     * Display Albums
      *
      * @return \Illuminate\Http\Response
      */
