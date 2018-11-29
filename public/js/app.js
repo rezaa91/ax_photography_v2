@@ -61128,15 +61128,39 @@ var Btn = function (_Component) {
 /* 64 */
 /***/ (function(module, exports) {
 
-var albumTypeRadioBtns = document.forms[0].elements.album_type;
-var selectAlbumSection = document.querySelector('#select_album');
-var createAlbumSection = document.querySelector('#create_album');
+if (document.querySelector('.upload-wrapper')) {
+    var init = function init() {
+        appendEventToRadioBtns();
+    };
 
-/**
- * Show/hide album sections of uploads dependant on which radio button is selected: 'existing', or 'new'
- */
-albumTypeRadioBtns.forEach(function (btn) {
-    btn.addEventListener('change', function (e) {
+    /**
+     * DOM Elements
+     */
+
+
+    /**
+     * add a change event on radio buttons in the album type form section
+     */
+    var appendEventToRadioBtns = function appendEventToRadioBtns() {
+        var albumTypeRadioBtns = DOMElements.albumTypeRadioBtns;
+
+
+        albumTypeRadioBtns.forEach(function (btn) {
+            btn.addEventListener('change', function (e) {
+                return toggleAlbumType(e);
+            });
+        });
+    };
+
+    /**
+     * Toggle the album type form element depending on whether user chooses an existing or new album
+     */
+
+
+    var toggleAlbumType = function toggleAlbumType(e) {
+        var selectAlbumSection = DOMElements.selectAlbumSection,
+            createAlbumSection = DOMElements.createAlbumSection;
+
         var target = e.target;
         var btnValue = e.target.value.toLowerCase();
 
@@ -61153,8 +61177,19 @@ albumTypeRadioBtns.forEach(function (btn) {
                     break;
             }
         }
-    });
-});
+    };
+
+    /**
+     * Run the initialisation function declared at the top of this script
+     */
+
+
+    var DOMElements = {
+        albumTypeRadioBtns: document.forms[0].elements.album_type,
+        selectAlbumSection: document.querySelector('#select_album'),
+        createAlbumSection: document.querySelector('#create_album')
+    };init();
+}
 
 /***/ }),
 /* 65 */
