@@ -9,18 +9,20 @@ class AlbumContainer extends Component {
         }
 
         return(
-            <div className='albumContainer'>
+            <a href={`/albums/${album.album_id}`}className='albumContainer'>
                 <div className='image-wrapper' style={divStyle}></div>
                 <div className='album-details'>
-                    <div><span>{album.album_name}</span></div>
-                    <div><span>Created at: {Validate.validateDate(album.created_at)}</span></div>
+                    <div><span className='title'>{album.album_name}</span></div>
+                    <div>
+                        <span className='timestamp'>Created at: {Validate.validateDate(album.created_at)}</span>
 
-                    {/* Only display updated at if it does not share the same date as created at */}
-                    {album.updated_at !== album.created_at && 
-                        <div><span>Updated at: {Validate.validateDate(album.updated_at)}</span></div>
-                    }
+                        {/* Only display updated at if it does not share the same date as created at */}
+                        {album.updated_at !== album.created_at && 
+                            <span className='timestamp'>Updated at: {Validate.validateDate(album.updated_at)}</span>
+                        }     
+                    </div>
                 </div>
-            </div>
+            </a>
         );
     }
 }
