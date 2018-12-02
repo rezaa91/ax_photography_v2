@@ -7,6 +7,10 @@ Auth::routes();
 
 /** User API */
 Route::get('/api/user', function() {
+    if (!auth()->user()) {
+        return;
+    }
+    
     return new UserResource(User::find(auth()->user()->id));
 });
 
