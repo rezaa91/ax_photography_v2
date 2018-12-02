@@ -26,6 +26,8 @@ SET time_zone = "+00:00";
 -- Table structure for table `albums`
 --
 
+USE ax_photography;
+
 CREATE TABLE `albums` (
   `album_id` int(10) UNSIGNED NOT NULL,
   `album_name` text COLLATE utf8mb4_unicode_ci NOT NULL,
