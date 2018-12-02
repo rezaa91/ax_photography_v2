@@ -13952,7 +13952,7 @@ module.exports = checkPropTypes;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(16);
-module.exports = __webpack_require__(65);
+module.exports = __webpack_require__(67);
 
 
 /***/ }),
@@ -13974,10 +13974,11 @@ __webpack_require__(53);
 /** Require pages */
 __webpack_require__(54);
 __webpack_require__(56);
-__webpack_require__(57);
-__webpack_require__(58);
 __webpack_require__(59);
-__webpack_require__(64);
+__webpack_require__(60);
+__webpack_require__(61);
+__webpack_require__(66);
+__webpack_require__(88);
 
 /***/ }),
 /* 17 */
@@ -60090,7 +60091,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_albumContainer__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_albumContainer__ = __webpack_require__(57);
 
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -60206,6 +60207,124 @@ if (document.getElementById('albums')) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__classes_Validate__ = __webpack_require__(58);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+var AlbumContainer = function (_Component) {
+    _inherits(AlbumContainer, _Component);
+
+    function AlbumContainer() {
+        _classCallCheck(this, AlbumContainer);
+
+        return _possibleConstructorReturn(this, (AlbumContainer.__proto__ || Object.getPrototypeOf(AlbumContainer)).apply(this, arguments));
+    }
+
+    _createClass(AlbumContainer, [{
+        key: 'render',
+        value: function render() {
+            var album = this.props.album;
+
+            var divStyle = {
+                backgroundImage: 'url(/images/avatar.png)'
+            };
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'a',
+                { href: '/albums/' + album.album_id, className: 'albumContainer' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'image-wrapper', style: divStyle }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'album-details' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'span',
+                            { className: 'title' },
+                            album.album_name
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'span',
+                            { className: 'timestamp' },
+                            'Created at: ',
+                            __WEBPACK_IMPORTED_MODULE_1__classes_Validate__["a" /* default */].validateDate(album.created_at)
+                        ),
+                        album.updated_at !== album.created_at && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'span',
+                            { className: 'timestamp' },
+                            'Updated at: ',
+                            __WEBPACK_IMPORTED_MODULE_1__classes_Validate__["a" /* default */].validateDate(album.updated_at)
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return AlbumContainer;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (AlbumContainer);
+
+/***/ }),
+/* 58 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var Validate = {
+
+  /**
+   * @param {string} string
+   * 
+   * @return validated string
+   */
+  validateString: function validateString(string) {},
+
+  /**
+   * @param {string} email
+   *  
+   * @return validated email
+   */
+  validateEmail: function validateEmail(email) {},
+
+  /**
+   * @param {object} date
+   * 
+   * @return validated date
+   */
+  validateDate: function validateDate(date) {
+    var newDate = new Date(date);
+    var year = newDate.getFullYear();
+    var month = newDate.getMonth();
+    var day = newDate.getDate();
+
+    return day + "-" + month + "-" + year;
+  }
+
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Validate);
+
+/***/ }),
+/* 59 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
@@ -60300,7 +60419,7 @@ if (document.getElementById('about')) {
 }
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -60442,7 +60561,7 @@ if (document.getElementById('contact')) {
 }
 
 /***/ }),
-/* 59 */
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -60453,8 +60572,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_card__ = __webpack_require__(60);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_components_modal__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_card__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_components_modal__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_jquery__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_jquery__);
 
@@ -60625,13 +60744,13 @@ if (document.getElementById('dashboard')) {
 }
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_dateformat__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_dateformat__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_dateformat___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_dateformat__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -60796,7 +60915,7 @@ var Card = function (_Component) {
 /* harmony default export */ __webpack_exports__["a"] = (Card);
 
 /***/ }),
-/* 61 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -61032,13 +61151,13 @@ function kindOf(val) {
 
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__btn__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__btn__ = __webpack_require__(65);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -61156,7 +61275,7 @@ var Modal = function (_Component) {
 /* harmony default export */ __webpack_exports__["a"] = (Modal);
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61204,7 +61323,7 @@ var Btn = function (_Component) {
 /* harmony default export */ __webpack_exports__["a"] = (Btn);
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports) {
 
 if (document.querySelector('.upload-wrapper')) {
@@ -61271,14 +61390,12 @@ if (document.querySelector('.upload-wrapper')) {
 }
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 66 */,
-/* 67 */,
 /* 68 */,
 /* 69 */,
 /* 70 */,
@@ -61297,14 +61414,24 @@ if (document.querySelector('.upload-wrapper')) {
 /* 83 */,
 /* 84 */,
 /* 85 */,
-/* 86 */
+/* 86 */,
+/* 87 */,
+/* 88 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__classes_Validate__ = __webpack_require__(87);
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
+
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -61315,108 +61442,85 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-var AlbumContainer = function (_Component) {
-    _inherits(AlbumContainer, _Component);
+var IndividualAlbum = function (_Component) {
+    _inherits(IndividualAlbum, _Component);
 
-    function AlbumContainer() {
-        _classCallCheck(this, AlbumContainer);
+    function IndividualAlbum() {
+        _classCallCheck(this, IndividualAlbum);
 
-        return _possibleConstructorReturn(this, (AlbumContainer.__proto__ || Object.getPrototypeOf(AlbumContainer)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (IndividualAlbum.__proto__ || Object.getPrototypeOf(IndividualAlbum)).call(this));
+
+        _this.getAlbum();
+
+        _this.state = {
+            albumData: null
+        };
+
+        _this.getAlbum = _this.getAlbum.bind(_this);
+        return _this;
     }
 
-    _createClass(AlbumContainer, [{
+    /**
+     * Get individual album data
+     */
+
+
+    _createClass(IndividualAlbum, [{
+        key: 'getAlbum',
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+                var _this2 = this;
+
+                var url, id;
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                url = window.location.href;
+
+                                // find the id from the url by getting the last digit in the url (note that the url must finish with this digit)
+
+                                id = url.match(/\d$/)[0];
+                                _context.next = 4;
+                                return fetch('/api/albums/' + id).then(function (response) {
+                                    return response.status === 200 && response.json();
+                                }).then(function (data) {
+                                    var albumData = data[0];
+                                    _this2.setState({ albumData: albumData });
+                                }).catch(function (error) {
+                                    // redirect user back to albums page if album does not exist (e.g. user puts a different id in url)
+                                    if (error) {
+                                        window.location.replace('/albums');
+                                    }
+                                });
+
+                            case 4:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function getAlbum() {
+                return _ref.apply(this, arguments);
+            }
+
+            return getAlbum;
+        }()
+    }, {
         key: 'render',
         value: function render() {
-            var album = this.props.album;
-
-            var divStyle = {
-                backgroundImage: 'url(/images/avatar.png)'
-            };
-
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'albumContainer' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'image-wrapper', style: divStyle }),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'album-details' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        null,
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'span',
-                            null,
-                            album.album_name
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        null,
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'span',
-                            null,
-                            'Created at: ',
-                            __WEBPACK_IMPORTED_MODULE_1__classes_Validate__["a" /* default */].validateDate(album.created_at)
-                        )
-                    ),
-                    album.updated_at !== album.created_at && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        null,
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'span',
-                            null,
-                            'Updated at: ',
-                            __WEBPACK_IMPORTED_MODULE_1__classes_Validate__["a" /* default */].validateDate(album.updated_at)
-                        )
-                    )
-                )
-            );
+            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: 'individualAlbum' });
         }
     }]);
 
-    return AlbumContainer;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+    return IndividualAlbum;
+}(__WEBPACK_IMPORTED_MODULE_1_react__["Component"]);
 
-/* harmony default export */ __webpack_exports__["a"] = (AlbumContainer);
-
-/***/ }),
-/* 87 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var Validate = {
-
-  /**
-   * @param {string} string
-   * 
-   * @return validated string
-   */
-  validateString: function validateString(string) {},
-
-  /**
-   * @param {string} email
-   *  
-   * @return validated email
-   */
-  validateEmail: function validateEmail(email) {},
-
-  /**
-   * @param {object} date
-   * 
-   * @return validated date
-   */
-  validateDate: function validateDate(date) {
-    var newDate = new Date(date);
-    var year = newDate.getFullYear();
-    var month = newDate.getMonth();
-    var day = newDate.getDate();
-
-    return day + "-" + month + "-" + year;
-  }
-
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (Validate);
+if (document.getElementById('individualAlbum')) {
+    __WEBPACK_IMPORTED_MODULE_2_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(IndividualAlbum, null), document.getElementById('individualAlbum'));
+}
 
 /***/ })
 /******/ ]);
