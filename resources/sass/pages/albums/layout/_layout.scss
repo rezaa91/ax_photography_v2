@@ -3,18 +3,53 @@
     max-width: 100%;
     border-top: 2px solid $grey;
     border-bottom: 2px solid $grey;
+    padding: 20px 10px;
 
     .albumContainer {
         margin: 0 10px;
         border: 1px solid $black;
         flex: 1;
+        overflow: hidden;
+        transition: box-shadow 0.3s;
+        cursor: pointer;
 
-        .image-wrapper {
-            height: 200px;
+        &:hover {
+            box-shadow: 0px 0px 5px 3px $grey;
+            .image-wrapper {
+                transform: scale(1.2);
+            }
         }
 
-        .albumDetails {
-            border-top: 1px solid $darkgreen;
+        .image-wrapper {
+            transition: transform 0.3s;
+            height: 250px;
+            width: 100%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        .album-details {
+            position: relative;
+            z-index: 1;
+            padding: 10px;
+            background-color: $darkgreen;
+
+            .title {
+                display: block;
+                color: $white;
+                font-weight: 900;
+                font-size: $font-sub-header;
+                width: 100%;
+                text-align: center;
+            }
+
+            .timestamp {
+                color: $grey;
+                font-size: $font-small;
+            }
         }
     }
 }

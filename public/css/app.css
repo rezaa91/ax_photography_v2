@@ -5879,6 +5879,7 @@ form .selection .option {
   max-width: 100%;
   border-top: 2px solid #999999;
   border-bottom: 2px solid #999999;
+  padding: 20px 10px;
 }
 
 .albums-wrapper .albumContainer {
@@ -5887,14 +5888,57 @@ form .selection .option {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
+  overflow: hidden;
+  -webkit-transition: -webkit-box-shadow 0.3s;
+  transition: -webkit-box-shadow 0.3s;
+  transition: box-shadow 0.3s;
+  transition: box-shadow 0.3s, -webkit-box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.albums-wrapper .albumContainer:hover {
+  -webkit-box-shadow: 0px 0px 5px 3px #999999;
+          box-shadow: 0px 0px 5px 3px #999999;
+}
+
+.albums-wrapper .albumContainer:hover .image-wrapper {
+  -webkit-transform: scale(1.2);
+          transform: scale(1.2);
 }
 
 .albums-wrapper .albumContainer .image-wrapper {
-  height: 200px;
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: -webkit-transform 0.3s;
+  transition: transform 0.3s;
+  transition: transform 0.3s, -webkit-transform 0.3s;
+  height: 250px;
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin: auto;
+  overflow: hidden;
 }
 
-.albums-wrapper .albumContainer .albumDetails {
-  border-top: 1px solid #044730;
+.albums-wrapper .albumContainer .album-details {
+  position: relative;
+  z-index: 1;
+  padding: 10px;
+  background-color: #044730;
+}
+
+.albums-wrapper .albumContainer .album-details .title {
+  display: block;
+  color: #f4f4f4;
+  font-weight: 900;
+  font-size: 1.4rem;
+  width: 100%;
+  text-align: center;
+}
+
+.albums-wrapper .albumContainer .album-details .timestamp {
+  color: #999999;
+  font-size: 0.8rem;
 }
 
 /*!
