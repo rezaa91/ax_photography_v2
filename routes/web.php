@@ -24,6 +24,7 @@ Route::resource('/user', 'DashboardController');
 Route::resource('/photos', 'Photos\AlbumsController');
 Route::get('/upload', 'Photos\AlbumsController@create');
 Route::get('/albums', 'Photos\AlbumsController@index');
+Route::get('/albums/{id}', 'Photos\AlbumsController@show');
 
 /** Display Homepage */
 Route::get('/', 'PagesController@homepage');

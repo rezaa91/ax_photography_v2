@@ -20,7 +20,20 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user(User::find(auth()));
 });
 
-
+/**
+ * API resource showing all album data
+ */
 Route::get('albums', function() {
     return new AlbumsResource(Albums::all());
+});
+
+/**
+ * API resource showing individual album data
+ */
+Route::get('albums/{id}', function($id) {
+    // return if album does not exist
+    if ($id > Albums::count()) {
+        return redirect('/');
+    }
+    return DB::table('albums')->where('album_id', $id)->get();
 });
