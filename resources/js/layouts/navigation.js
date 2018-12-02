@@ -27,9 +27,7 @@ class Navigation extends Component {
     async getUser() {
         //find user in session through api
         await fetch('/api/user')
-        .then(response => {
-            return response.status === 200 && response.json();
-        })
+        .then(response => response.status === 200 && response.json())
         .then(data => {
             data = data.data;
             
