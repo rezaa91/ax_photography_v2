@@ -1,0 +1,19 @@
+.image {
+    flex: 1 0 17%;
+    margin: 2.5px;
+    background-color: white;
+    overflow: hidden;
+
+    img {
+        cursor: pointer;
+        max-width: 100%;
+        height: auto;
+        max-height: 350px;
+        object-fit:contain;
+        transition: transform 0.3s;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+}

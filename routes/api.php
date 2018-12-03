@@ -28,12 +28,12 @@ Route::get('albums', function() {
 });
 
 /**
- * API resource showing individual album data
+ * API resource showing individual album data with photos associated to each album
  */
 Route::get('albums/{id}', function($id) {
     // return if album does not exist
     if ($id > Albums::count()) {
         return redirect('/');
     }
-    return DB::table('albums')->where('album_id', $id)->get();
+    return DB::table('photos')->where('album_id', $id)->get();
 });
