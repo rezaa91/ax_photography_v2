@@ -17,7 +17,7 @@ class PhotosController extends FileController
     {
         $photo = new Photos();
         $photo->title = $request->input('title');
-        $photo->description = $request->input('description') || '';
+        $photo->description = $request->input('description');
         $photo->album_id = $album['id'];
         $photo->filepath = $this->getFilenameToStore();
         $photo->created_at = Now();
