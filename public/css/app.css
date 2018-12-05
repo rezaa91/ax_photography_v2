@@ -5585,6 +5585,97 @@ form .selection .option {
           transform: scale(1.1);
 }
 
+.imageModal-wrapper {
+  position: absolute;
+  top: 5vh;
+  left: 5%;
+  height: 90vh;
+  z-index: 99;
+  -webkit-box-shadow: 0 0 5px 3px #999999;
+          box-shadow: 0 0 5px 3px #999999;
+  width: 90%;
+  background-color: #999999;
+}
+
+.imageModal-wrapper .imageModal-content .imageModal-header {
+  position: relative;
+  background-color: #044730;
+  color: #f4f4f4;
+  text-align: right;
+  padding: 2px 5px;
+  z-index: 2;
+}
+
+.imageModal-wrapper .imageModal-content .imageModal-header a {
+  cursor: pointer;
+  font-size: 1.7rem;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+}
+
+.imageModal-wrapper .imageModal-content .imageModal-header a:hover {
+  color: #999999;
+}
+
+.imageModal-wrapper .imageModal-content .image-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+}
+
+.imageModal-wrapper .imageModal-content .image-wrapper img {
+  position: relative;
+  z-index: 1;
+  max-width: 100%;
+}
+
+.imageModal-wrapper .imageModal-content .imageModal-footer {
+  position: absolute;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+  padding: 5px 10px;
+  width: 100%;
+  z-index: 2;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.imageModal-wrapper .imageModal-content .imageModal-footer span {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.imageModal-wrapper .imageModal-content .imageModal-footer span:last-child {
+  text-align: right;
+}
+
+.imageModal-wrapper .imageModal-content .imageModal-footer i {
+  font-size: 1.4rem;
+  color: #f4f4f4;
+  cursor: pointer;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+}
+
+.imageModal-wrapper .imageModal-content .imageModal-footer i:hover {
+  color: #05704c;
+}
+
+.imageModal-wrapper .imageModal-content .imageModal-footer:hover {
+  background-color: #111111;
+}
+
 .navigation-wrapper {
   position: relative;
   display: -webkit-box;

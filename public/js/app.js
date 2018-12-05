@@ -13952,7 +13952,7 @@ module.exports = checkPropTypes;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(16);
-module.exports = __webpack_require__(68);
+module.exports = __webpack_require__(69);
 
 
 /***/ }),
@@ -61401,6 +61401,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_imageModal__ = __webpack_require__(68);
 
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -61416,6 +61417,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+
 var IndividualAlbum = function (_Component) {
     _inherits(IndividualAlbum, _Component);
 
@@ -61427,12 +61429,14 @@ var IndividualAlbum = function (_Component) {
         _this.getAlbum();
 
         _this.state = {
-            albumData: null
+            albumData: null,
+            enlargedImage: null
         };
 
         _this.getAlbum = _this.getAlbum.bind(_this);
         _this.displayImages = _this.displayImages.bind(_this);
         _this.enlargeImage = _this.enlargeImage.bind(_this);
+        _this.closeEnlargedImage = _this.closeEnlargedImage.bind(_this);
         return _this;
     }
 
@@ -61502,11 +61506,13 @@ var IndividualAlbum = function (_Component) {
             }
 
             return albumData.map(function (image) {
+                var imageId = image.id;
+
                 return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
-                    { className: 'image', key: image.id },
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { onClick: function onClick(e) {
-                            return _this3.enlargeImage(e);
+                    { className: 'image', key: imageId },
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { onClick: function onClick() {
+                            return _this3.enlargeImage(imageId);
                         }, src: '/storage/uploads/' + image.filepath })
                 );
             });
@@ -61514,20 +61520,37 @@ var IndividualAlbum = function (_Component) {
 
         /**
          * Enlarge image when clicked
+         * 
+         * @param {integer} imageId 
          */
 
     }, {
         key: 'enlargeImage',
-        value: function enlargeImage(e) {
-            console.log('enlarge image');
+        value: function enlargeImage(imageId) {
+            var enlargedImage = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_imageModal__["a" /* default */], { imageId: imageId, closeModal: this.closeEnlargedImage });
+            this.setState({ enlargedImage: enlargedImage });
+        }
+
+        /**
+         * Close the enlarged image
+         */
+
+    }, {
+        key: 'closeEnlargedImage',
+        value: function closeEnlargedImage() {
+            this.setState({ enlargedImage: null });
         }
     }, {
         key: 'render',
         value: function render() {
+            var enlargedImage = this.state.enlargedImage;
+
+
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'div',
                 { className: 'individualAlbum' },
-                this.displayImages()
+                this.displayImages(),
+                enlargedImage
             );
         }
     }]);
@@ -61541,9 +61564,230 @@ if (document.getElementById('individualAlbum')) {
 
 /***/ }),
 /* 68 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modalSettings__ = __webpack_require__(90);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+ // modal specific javascript
+
+var ImageModal = function (_Component) {
+    _inherits(ImageModal, _Component);
+
+    function ImageModal(props) {
+        _classCallCheck(this, ImageModal);
+
+        var _this = _possibleConstructorReturn(this, (ImageModal.__proto__ || Object.getPrototypeOf(ImageModal)).call(this, props));
+
+        _this.getImageData();
+
+        _this.state = {
+            imageDetails: {
+                album_id: null,
+                created_at: null,
+                filepath: null,
+                id: null,
+                title: null,
+                updated_at: null
+            }
+        };
+
+        _this.getImageData = _this.getImageData.bind(_this);
+        return _this;
+    }
+
+    _createClass(ImageModal, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            Object(__WEBPACK_IMPORTED_MODULE_1__modalSettings__["a" /* default */])();
+        }
+
+        /**
+         * fetch the individual photo data via an API
+         */
+
+    }, {
+        key: 'getImageData',
+        value: function getImageData() {
+            var _this2 = this;
+
+            var imageId = this.props.imageId;
+
+
+            fetch('/api/photos/' + imageId).then(function (response) {
+                return response.status === 200 && response.json();
+            }).then(function (data) {
+                var imageDetails = data.data;
+                _this2.setState({ imageDetails: imageDetails });
+            }).catch(function (error) {
+                return console.log(error);
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var closeModal = this.props.closeModal;
+            var imageDetails = this.state.imageDetails;
+
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'imageModal-wrapper' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'imageModal-content' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'imageModal-header' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'a',
+                            { onClick: closeModal },
+                            '\xD7'
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'image-wrapper' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'imageModal-img', src: '/storage/uploads/' + imageDetails.filepath })
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'imageModal-footer' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'span',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-cog' })
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'span',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-thumbs-up' })
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return ImageModal;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (ImageModal);
+
+/***/ }),
+/* 69 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 70 */,
+/* 71 */,
+/* 72 */,
+/* 73 */,
+/* 74 */,
+/* 75 */,
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = imageModalInit;
+/**
+ * Initialisation function which is the only function on the page which is invoked
+ */
+function imageModalInit() {
+    setImageHeight();
+    setImageWrapperHeight();
+}
+
+/**
+ * get DOM Elements
+ */
+function getDOMElements() {
+    return {
+        modal: document.querySelector('.imageModal-wrapper'),
+        modalHeader: document.querySelector('.imageModal-header'),
+        modalImageWrapper: document.querySelector('.image-wrapper'),
+        modalImage: document.querySelector('.imageModal-img'),
+        modalFooter: document.querySelector('.imageModal-footer')
+    };
+}
+
+/**
+ * Get the height of each individual aspect of the image modal, i.e. header, content, footer
+ */
+function getModalHeightProperties() {
+    var _getDOMElements = getDOMElements(),
+        modal = _getDOMElements.modal,
+        modalHeader = _getDOMElements.modalHeader,
+        modalImageWrapper = _getDOMElements.modalImageWrapper,
+        modalFooter = _getDOMElements.modalFooter,
+        modalImage = _getDOMElements.modalImage;
+
+    // get the height of each modal section
+
+
+    return {
+        modalHeight: modal.clientHeight,
+        modalHeaderHeight: modalHeader.clientHeight,
+        modalImageWrapperHeight: modalImageWrapper.clientHeight,
+        modalFooterHeight: modalFooter.clientHeight,
+        modalImageHeight: modalImage.clientHeight
+    };
+}
+
+/**
+ * Set the height property of the image wrapper
+ */
+function setImageWrapperHeight() {
+    var _getDOMElements2 = getDOMElements(),
+        modalImageWrapper = _getDOMElements2.modalImageWrapper;
+
+    var _getModalHeightProper = getModalHeightProperties(),
+        modalHeight = _getModalHeightProper.modalHeight,
+        modalHeaderHeight = _getModalHeightProper.modalHeaderHeight,
+        modalFooterHeight = _getModalHeightProper.modalFooterHeight;
+
+    modalImageWrapper.style.height = modalHeight - (modalHeaderHeight + modalFooterHeight) + 'px';
+}
+
+/**
+ * Set the height property of the image to the height of the image wrapper
+ */
+function setImageHeight() {
+    var _getDOMElements3 = getDOMElements(),
+        modalImage = _getDOMElements3.modalImage;
+
+    var _getModalHeightProper2 = getModalHeightProperties(),
+        modalHeight = _getModalHeightProper2.modalHeight,
+        modalHeaderHeight = _getModalHeightProper2.modalHeaderHeight;
+
+    modalImage.style.maxHeight = modalHeight - modalHeaderHeight + 'px';
+}
 
 /***/ })
 /******/ ]);
