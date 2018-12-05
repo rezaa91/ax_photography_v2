@@ -3,7 +3,9 @@
 use Illuminate\Http\Request;
 use App\User;
 use App\Albums;
+use App\Photos;
 use App\Http\Resources\Albums as AlbumsResource;
+use App\Http\Resources\Photos as PhotosResource;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,4 +38,11 @@ Route::get('albums/{id}', function($id) {
         return redirect('/');
     }
     return DB::table('photos')->where('album_id', $id)->get();
+});
+
+/**
+ * API showing individual photos
+ */
+Route::get('photos/{id}', function($id) {
+    return new PhotosResource(Photos::find($id));
 });
