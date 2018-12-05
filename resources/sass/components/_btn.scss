@@ -1,0 +1,36 @@
+.btn-component {
+    display: inline-block;
+    width: 140px;
+    text-align: center;
+    padding: 4px;
+    cursor: pointer;
+    font-weight: 900;
+    border: 1px solid $black;
+}
+
+.btn-green {
+    background-color: $darkgreen;
+    color: $white;
+    transition: background-color 0.2s;
+    &:hover {
+        background-color: $green;
+    }
+}
+
+.btn-default {
+    background-color: $white;
+    color: $darkgreen;
+    transition: background-color 0.2s;
+    &:hover {
+        background-color: white;
+    }
+}
+
+.btn-dark {
+    background-color: $darkgrey;
+    color: $green;
+    transition: background-color 0.2s;
+    &:hover {
+        $background-color: $black;
+    }
+}

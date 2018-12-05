@@ -1,0 +1,35 @@
+@import '../../about/layout/_layout';
+
+.contact-wrapper{
+    @extend .about-wrapper ;
+
+    .contact-header {
+        @extend .about-header ;
+    }
+
+    .contact-body {
+        @extend .about-body ;
+    }
+
+    .contact-footer {
+        background-color: $darkgreen;
+        border-top: 1px solid $grey;
+        width: 50%;
+        
+        .social-media-wrapper {
+            display: flex;
+            text-align: center;
+
+            span {
+                flex: 1;
+                color: $white;
+                font-size: 1.8rem;
+                a {
+                    &:hover {
+                        opacity: 0.8;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -2,13 +2,40 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
+// Font awesome
+@import '~@fortawesome/fontawesome-free/scss/brands';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+
 // Variables
 @import 'variables';
+
+// Components
+@import './components/_form';
+@import './components/_card';
+@import './components/_modal';
+@import './components/_btn';
+@import './components/_image';
+@import './components/_imageModal';
+
+// Layouts
+@import './layouts/_navigation';
+
+// Pages
+@import './pages/homepage/_homepage';
+@import './pages/dashboard/_dashboard';
+@import './pages/upload/_upload';
+@import './pages/about/_about';
+@import './pages/contact/_contact';
+@import './pages/albums/_albums';
+@import './pages/individualAlbum/_individualAlbum';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-}
+// Normalise
+@import '_normalise';
+
+// Global Classes
+@import '_global_classes';

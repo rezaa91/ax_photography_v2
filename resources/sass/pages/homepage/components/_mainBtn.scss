@@ -1,0 +1,9 @@
+.mainBtn {
+    border: 1px solid $darkgrey;
+    padding: 5px;
+    color: $white;
+    background-color: $green;
+    &:hover {
+        color: $white;
+    }
+}

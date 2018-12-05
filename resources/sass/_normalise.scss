@@ -1,0 +1,62 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    color: $black;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-size: 1rem;
+    width: 100%;
+}
+
+li {
+    list-style: none;
+}
+
+button {
+    border: 0;
+    background-color: inherit;
+}
+
+a {
+    color: $black;
+}
+
+a:hover {
+    color: $black;
+    text-decoration: none;
+}
+
+input {
+    padding: 3px;
+}
+
+input[type="submit"] {
+    cursor: pointer;
+    background-color: $green;
+    color: $white;
+    transition: background-color 0.2s;
+    border-color: $darkgreen;
+    &:hover {
+        background-color: $darkgreen;
+    }
+    &:active {
+        background-color: $green;
+    }
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: $darkgreen;
+    box-shadow: 0 0 7px $green;
+}
+
+textarea {
+    padding: 3px;
+    resize: none;
+}
