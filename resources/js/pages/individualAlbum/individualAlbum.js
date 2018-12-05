@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import ImageModal from './components/imageModal';
 
 class IndividualAlbum extends Component {
     constructor() {
@@ -8,12 +9,14 @@ class IndividualAlbum extends Component {
         this.getAlbum();
 
         this.state = {
-            albumData: null
+            albumData: null,
+            enlargedImage: null
         }
 
         this.getAlbum = this.getAlbum.bind(this);
         this.displayImages = this.displayImages.bind(this);
         this.enlargeImage = this.enlargeImage.bind(this);
+        this.closeEnlargedImage = this.closeEnlargedImage.bind(this);
     }
 
     /**
@@ -50,23 +53,38 @@ class IndividualAlbum extends Component {
         }
         
         return albumData.map(image => {
-            return  <div className='image' key={image.id}>
-                    <img onClick={(e) => this.enlargeImage(e)} src={`/storage/uploads/${image.filepath}`} />
+            const imageId = image.id;
+
+            return  <div className='image' key={imageId}>
+                        <img onClick={() => this.enlargeImage(imageId)} src={`/storage/uploads/${image.filepath}`} />
                     </div>
         })
     }
 
     /**
      * Enlarge image when clicked
+     * 
+     * @param {integer} imageId 
      */
-    enlargeImage(e) {
-        console.log('enlarge image');
+    enlargeImage(imageId) {
+        const enlargedImage = <ImageModal imageId = {imageId} closeModal = {this.closeEnlargedImage} />
+        this.setState({enlargedImage});
+    }
+
+    /**
+     * Close the enlarged image
+     */
+    closeEnlargedImage() {
+        this.setState({enlargedImage: null});
     }
 
     render() {
+        const {enlargedImage} = this.state;
+
         return(
             <div className='individualAlbum'>
                 {this.displayImages()}
+                {enlargedImage}
             </div>
         );
     }
