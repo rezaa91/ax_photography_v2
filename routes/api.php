@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Albums;
+use App\Photos;
+use App\Http\Resources\Albums as AlbumsResource;
+use App\Http\Resources\Photos as PhotosResource;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +19,30 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    return $request->user(User::find(auth()));
+});
+
+/**
+ * API resource showing all album data
+ */
+Route::get('albums', function() {
+    return new AlbumsResource(Albums::all());
+});
+
+/**
+ * API resource showing individual album data with photos associated to each album
+ */
+Route::get('albums/{id}', function($id) {
+    // return if album does not exist
+    if ($id > Albums::count()) {
+        return redirect('/');
+    }
+    return DB::table('photos')->where('album_id', $id)->get();
+});
+
+/**
+ * API showing individual photos
+ */
+Route::get('photos/{id}', function($id) {
+    return new PhotosResource(Photos::find($id));
 });

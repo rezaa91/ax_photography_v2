@@ -1,16 +1,20 @@
 
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes React and other helpers. It's a great starting point while
- * building robust, powerful web applications using React + Laravel.
- */
-
+/** Require dependencies and helpers */
 require('./bootstrap');
 
-/**
- * Next, we will create a fresh React component instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+/** Require layouts */
+require('./layouts/navigation');
 
-require('./components/Example');
+/** Require Auth pages */
+require('./pages/auth/login');
+require('./pages/auth/register');
+require('./pages/auth/forgot_password');
+
+/** Require pages */
+require('./pages/homepage/homepage');
+require('./pages/albums/albums');
+require('./pages/about/about');
+require('./pages/contact/contact');
+require('./pages/dashboard/dashboard');
+require('./pages/uploads/uploads');
+require('./pages/individualAlbum/individualAlbum');

@@ -1,0 +1,33 @@
+form {
+    width: 100%;
+    padding: 10px;
+
+    .form-section {
+        display: flex;
+        margin: 15px auto;
+    }
+
+    label {
+        flex: 1;
+    }
+
+    input {
+        flex: 2;
+    }
+
+    textarea {
+        flex: 2;
+    }
+
+    select {
+        flex: 2;
+    }
+
+    .selection {
+        display: flex;
+        flex: 2;
+        .option {
+            flex: 1;
+        }
+    }
+}

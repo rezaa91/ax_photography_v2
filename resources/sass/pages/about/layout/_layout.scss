@@ -1,0 +1,36 @@
+.about-wrapper {
+    border-bottom: 2px solid $grey;
+    padding: 20px 40px;
+    background-color: $white;
+
+    .about-header {
+        h1 {
+            color: $lightgreen;
+        }
+        h3 {
+            color: $darkgreen;
+        }
+    }
+
+    .about-body {
+        display: flex;
+
+        .body-1 {
+            flex: 1;
+        }
+        .body-2 {
+            flex: 1;
+        }
+
+        p {
+            color: $darkgrey;
+        }
+    }
+
+    .about-footer {
+        width: 50%;
+        text-align: right;
+        color: $grey;
+        font-size: 1.2rem;
+    }
+}
