@@ -110,7 +110,7 @@ class AlbumsController extends PhotosController
         $album->cover_photo_id = 1;
         $album->save();
 
-        $this->setAlbumId($album->id);
+        $this->setAlbumId($album->album_id);
     }
 
     /**
@@ -120,7 +120,7 @@ class AlbumsController extends PhotosController
      */
     private function updateAlbumTimestamp(int $albumId)
     {
-        $album = Albums::where('album_id', $albumId)->first();
+        $album = Albums::find($albumId);
         $album->updated_at = Carbon::now();
         
         if ($album->save()) {

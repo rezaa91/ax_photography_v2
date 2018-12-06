@@ -13952,7 +13952,7 @@ module.exports = checkPropTypes;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(16);
-module.exports = __webpack_require__(69);
+module.exports = __webpack_require__(70);
 
 
 /***/ }),
@@ -61329,6 +61329,8 @@ var Btn = function (_Component) {
 if (document.querySelector('.upload-wrapper')) {
     var init = function init() {
         appendEventToRadioBtns();
+        radioDefaultValue();
+        setupEventListeners();
     };
 
     /**
@@ -61348,6 +61350,17 @@ if (document.querySelector('.upload-wrapper')) {
                 return toggleAlbumType(e);
             });
         });
+    };
+
+    /**
+     * Set album radio value to existing on page load 
+     */
+
+
+    var radioDefaultValue = function radioDefaultValue() {
+        var form = DOMElements.form;
+
+        form.album_type.value = 'existing';
     };
 
     /**
@@ -61378,11 +61391,55 @@ if (document.querySelector('.upload-wrapper')) {
     };
 
     /**
+     * set the existing album select box value back to default
+     */
+
+
+    var setExistingAlbumValueToDefault = function setExistingAlbumValueToDefault() {
+        var form = DOMElements.form;
+
+        var selectedExistingAlbum = form['album'];
+
+        if (selectedExistingAlbum.value !== 'default') {
+            selectedExistingAlbum.value = 'default';
+        }
+    };
+
+    /**
+     * Remove value from create album field when user changes existing album option
+     */
+
+
+    var removeCreateAlbumValue = function removeCreateAlbumValue() {
+        var form = DOMElements.form;
+
+        var createAlbumInput = form['create_album'];
+        createAlbumInput.value = '';
+    };
+
+    /**
+     * Set up event listeners
+     */
+
+
+    var setupEventListeners = function setupEventListeners() {
+        var form = DOMElements.form;
+
+        var createAlbumInput = form['create_album'];
+        var selectedExistingAlbum = form['album'];
+
+        // Set the select box value of current albums to default if user begins to typing in to new album field
+        createAlbumInput.addEventListener('input', setExistingAlbumValueToDefault);
+        selectedExistingAlbum.addEventListener('change', removeCreateAlbumValue);
+    };
+
+    /**
      * Run the initialisation function declared at the top of this script
      */
 
 
     var DOMElements = {
+        form: document.querySelector('#form'),
         albumTypeRadioBtns: document.forms[0].elements.album_type,
         selectAlbumSection: document.querySelector('#select_album'),
         createAlbumSection: document.querySelector('#create_album')
@@ -61569,7 +61626,7 @@ if (document.getElementById('individualAlbum')) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modalSettings__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modalSettings__ = __webpack_require__(69);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -61686,32 +61743,6 @@ var ImageModal = function (_Component) {
 
 /***/ }),
 /* 69 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 70 */,
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */,
-/* 78 */,
-/* 79 */,
-/* 80 */,
-/* 81 */,
-/* 82 */,
-/* 83 */,
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61788,6 +61819,12 @@ function setImageHeight() {
 
     modalImage.style.maxHeight = modalHeight - modalHeaderHeight + 'px';
 }
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
