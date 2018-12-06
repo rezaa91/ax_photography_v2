@@ -8,7 +8,7 @@
         <h1>Upload Images</h1>
     </div>
 
-    {!! Form::open(['action' => 'Photos\AlbumsController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+    {!! Form::open(['action' => 'Photos\AlbumsController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data', 'id' => 'form']) !!}
 
     <div class='form-section'>
         {{ Form::label('title *') }}
