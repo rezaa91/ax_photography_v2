@@ -13,7 +13,7 @@ class AlbumContainer extends Component {
                 <div className='image-wrapper' style={divStyle}></div>
                 <div className='album-details'>
                     <div><span className='title'>{album.album_name}</span></div>
-                    <div>
+                    <div className='timestamp-wrapper'>
                         <span className='timestamp'>Created at: {Validate.validateDate(album.created_at)}</span>
 
                         {/* Only display updated at if it does not share the same date as created at */}
