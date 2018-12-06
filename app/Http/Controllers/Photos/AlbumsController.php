@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Photos;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Albums;
+use Carbon\Carbon;
 
 class AlbumsController extends PhotosController
 {
@@ -67,7 +68,7 @@ class AlbumsController extends PhotosController
     }
     
     /**
-     * Store a newly created image in storage.
+     * Store a newly created image in storage and database.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return redirect back to uploads page with session message
@@ -88,6 +89,7 @@ class AlbumsController extends PhotosController
         // If existing album selected, set the album id
         if ($request->input('album') !== 'default') {
             $this->setAlbumId($request->input('album'));
+            $this->updateAlbumTimestamp($request->input('album'));
         }
 
         // store image in database
@@ -109,6 +111,23 @@ class AlbumsController extends PhotosController
         $album->save();
 
         $this->setAlbumId($album->id);
+    }
+
+    /**
+     * Upate the updated_at field in album
+     *
+     * @param integer $albumId
+     */
+    private function updateAlbumTimestamp(int $albumId)
+    {
+        $album = Albums::where('album_id', $albumId)->first();
+        $album->updated_at = Carbon::now();
+        
+        if ($album->save()) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
     /**
