@@ -1,14 +1,15 @@
 .albums-wrapper {
     display: flex;
+    flex-wrap: wrap;
     max-width: 100%;
     border-top: 2px solid $grey;
     border-bottom: 2px solid $grey;
     padding: 20px 10px;
 
     .albumContainer {
-        margin: 0 10px;
+        margin: 10px;
         border: 1px solid $black;
-        flex: 1;
+        flex: 1 0 20%;
         overflow: hidden;
         transition: box-shadow 0.3s;
         cursor: pointer;
@@ -46,9 +47,16 @@
                 text-align: center;
             }
 
-            .timestamp {
-                color: $grey;
-                font-size: $font-small;
+            .timestamp-wrapper {
+                display: flex;
+                .timestamp {
+                    flex: 1;
+                    color: $grey;
+                    font-size: $font-small;
+                }
+                .timestamp:nth-child(2) {
+                    text-align: right;
+                }
             }
         }
     }
