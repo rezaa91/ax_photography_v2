@@ -5617,6 +5617,22 @@ form .selection .option {
   color: #999999;
 }
 
+.imageModal-wrapper .imageModal-content .image-information {
+  position: absolute;
+  width: 100%;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.6);
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+  padding: 5px 10px;
+  text-align: center;
+}
+
+.imageModal-wrapper .imageModal-content .image-information p {
+  font-size: 1.4rem;
+  color: #999999;
+}
+
 .imageModal-wrapper .imageModal-content .image-wrapper {
   display: -webkit-box;
   display: -ms-flexbox;

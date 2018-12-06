@@ -29,6 +29,21 @@
             }
         }
 
+        .image-information {
+            position: absolute;
+            width: 100%;
+            z-index: 2;
+            background-color: rgba(0, 0, 0, 0.6);
+            transition: background-color 0.3s;
+            padding: 5px 10px;
+            text-align: center;
+
+            p {
+                font-size: $font-sub-header;
+                color: $grey;
+            }
+        }
+
         .image-wrapper {
             display: flex;
             justify-content: center;
