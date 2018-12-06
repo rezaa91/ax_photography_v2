@@ -60257,7 +60257,7 @@ var AlbumContainer = function (_Component) {
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
-                        null,
+                        { className: 'timestamp-wrapper' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'span',
                             { className: 'timestamp' },
@@ -61655,6 +61655,7 @@ var ImageModal = function (_Component) {
                 filepath: null,
                 id: null,
                 title: null,
+                description: null,
                 updated_at: null
             }
         };
@@ -61666,6 +61667,7 @@ var ImageModal = function (_Component) {
     _createClass(ImageModal, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
+            // Run the imageModalInit function imported at the top of this file
             Object(__WEBPACK_IMPORTED_MODULE_1__modalSettings__["a" /* default */])();
         }
 
@@ -61710,6 +61712,20 @@ var ImageModal = function (_Component) {
                             'a',
                             { onClick: closeModal },
                             '\xD7'
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'image-information' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'h2',
+                            null,
+                            imageDetails.title && imageDetails.title.toUpperCase()
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'p',
+                            null,
+                            imageDetails.description
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(

@@ -14,6 +14,7 @@ class ImageModal extends Component {
                 filepath: null,
                 id: null,
                 title: null,
+                description: null,
                 updated_at: null
             }
         }
@@ -22,6 +23,7 @@ class ImageModal extends Component {
     }
 
     componentDidMount() {
+        // Run the imageModalInit function imported at the top of this file
         imageModalInit();
     }
 
@@ -50,6 +52,11 @@ class ImageModal extends Component {
                 <div className='imageModal-content'>        
                     <div className='imageModal-header'>
                         <a onClick = {closeModal}>&times;</a>
+                    </div>
+
+                    <div className='image-information'>
+                        <h2>{imageDetails.title && imageDetails.title.toUpperCase()}</h2>
+                        <p>{imageDetails.description}</p>
                     </div>
 
                     <div className='image-wrapper'>
