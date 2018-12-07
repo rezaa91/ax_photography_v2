@@ -34,7 +34,7 @@ Route::get('albums', function() {
  */
 Route::get('albums/{id}', function($id) {
     // return if album does not exist
-    if ($id > Albums::count()) {
+    if (!Albums::find($id)) {
         return redirect('/');
     }
     return DB::table('photos')->where('album_id', $id)->get();
