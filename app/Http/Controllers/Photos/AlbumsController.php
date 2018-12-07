@@ -93,7 +93,11 @@ class AlbumsController extends PhotosController
         }
 
         // store image in database
-        $this->storeImageInDatabase($request, $this->album);        
+        $photoId = $this->storeImageInDatabase($request, $this->album);
+        
+        if ($request->input('create_album')) {
+            $this->setDefaultAlbumCoverPhoto($photoId);
+        }
 
         return redirect('/upload')->with('success', 'Image uploaded');
     }
@@ -107,10 +111,21 @@ class AlbumsController extends PhotosController
     {
         $album = new Albums();
         $album->album_name = $albumName;
-        $album->cover_photo_id = 1;
         $album->save();
 
         $this->setAlbumId($album->album_id);
+    }
+
+    /**
+     * Set default album cover to newly uploaded photo
+     * 
+     * @param int $photoId of newly uploaded image
+     */
+    private function setDefaultAlbumCoverPhoto($photoId)
+    {
+        $album = Albums::find($this->getAlbum()['id']);
+        $album->cover_photo_id = $photoId;
+        $album->save();
     }
 
     /**
