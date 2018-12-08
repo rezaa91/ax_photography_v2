@@ -26,6 +26,7 @@ class PhotosController extends FileController
         // Upload file to storage once inserted in to database
         if ($photo->save()) {
             $this->uploadFile();
+            return $photo->id;
         }
     }
 }   

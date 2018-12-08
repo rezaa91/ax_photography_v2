@@ -2,12 +2,15 @@ if (document.querySelector('.upload-wrapper')) {
 
     function init() {
         appendEventToRadioBtns();
+        radioDefaultValue();
+        setupEventListeners();
     }
 
     /**
      * DOM Elements
      */
     const DOMElements = {
+        form: document.querySelector('#form'),
         albumTypeRadioBtns: document.forms[0].elements.album_type,
         selectAlbumSection: document.querySelector('#select_album'),
         createAlbumSection: document.querySelector('#create_album')
@@ -22,6 +25,14 @@ if (document.querySelector('.upload-wrapper')) {
         albumTypeRadioBtns.forEach(btn => {
             btn.addEventListener('change', (e) => toggleAlbumType(e));
         })
+    }
+
+    /**
+     * Set album radio value to existing on page load 
+     */
+    function radioDefaultValue() {
+        const {form} = DOMElements;
+        form.album_type.value = 'existing';
     }
 
     /**
@@ -45,6 +56,40 @@ if (document.querySelector('.upload-wrapper')) {
                     break;
             }
         }
+    }
+
+    /**
+     * set the existing album select box value back to default
+     */
+    function setExistingAlbumValueToDefault() {
+        const {form} = DOMElements;
+        const selectedExistingAlbum = form['album'];
+        
+        if (selectedExistingAlbum.value !== 'default') {
+            selectedExistingAlbum.value = 'default';
+        }
+    }
+
+    /**
+     * Remove value from create album field when user changes existing album option
+     */
+    function removeCreateAlbumValue() {
+        const {form} = DOMElements;
+        const createAlbumInput = form['create_album'];
+        createAlbumInput.value = '';
+    }
+
+    /**
+     * Set up event listeners
+     */
+    function setupEventListeners() {
+        const {form} = DOMElements;
+        const createAlbumInput = form['create_album'];
+        const selectedExistingAlbum = form['album'];
+
+        // Set the select box value of current albums to default if user begins to typing in to new album field
+        createAlbumInput.addEventListener('input', setExistingAlbumValueToDefault);
+        selectedExistingAlbum.addEventListener('change', removeCreateAlbumValue);
     }
 
     /**

@@ -13952,7 +13952,7 @@ module.exports = checkPropTypes;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(16);
-module.exports = __webpack_require__(69);
+module.exports = __webpack_require__(70);
 
 
 /***/ }),
@@ -60207,10 +60207,16 @@ if (document.getElementById('albums')) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__classes_Validate__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__classes_Validate__ = __webpack_require__(58);
+
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -60224,51 +60230,101 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var AlbumContainer = function (_Component) {
     _inherits(AlbumContainer, _Component);
 
-    function AlbumContainer() {
+    function AlbumContainer(props) {
         _classCallCheck(this, AlbumContainer);
 
-        return _possibleConstructorReturn(this, (AlbumContainer.__proto__ || Object.getPrototypeOf(AlbumContainer)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (AlbumContainer.__proto__ || Object.getPrototypeOf(AlbumContainer)).call(this, props));
+
+        _this.getCoverPhoto();
+
+        _this.state = {
+            cover_photo: null
+        };
+
+        _this.getCoverPhoto = _this.getCoverPhoto.bind(_this);
+        return _this;
     }
 
+    /**
+     * Get the cover photo filepath and set it in the state
+     */
+
+
     _createClass(AlbumContainer, [{
+        key: 'getCoverPhoto',
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+                var _this2 = this;
+
+                var cover_photo_id;
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                cover_photo_id = this.props.album.cover_photo_id;
+                                _context.next = 3;
+                                return fetch('/api/photos/' + cover_photo_id).then(function (response) {
+                                    return response.status === 200 && response.json();
+                                }).then(function (data) {
+                                    _this2.setState({ cover_photo: data.data.filepath });
+                                }).catch(function (error) {
+                                    return console.log(error);
+                                });
+
+                            case 3:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function getCoverPhoto() {
+                return _ref.apply(this, arguments);
+            }
+
+            return getCoverPhoto;
+        }()
+    }, {
         key: 'render',
         value: function render() {
             var album = this.props.album;
+            var cover_photo = this.state.cover_photo;
 
-            var divStyle = {
-                backgroundImage: 'url(/images/avatar.png)'
-            };
+            // get the cover photo file path in order to set it in the render method
 
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            var divStyle = cover_photo && { backgroundImage: 'url(storage/uploads/' + cover_photo + ')' };
+
+            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'a',
                 { href: '/albums/' + album.album_id, className: 'albumContainer' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'image-wrapper', style: divStyle }),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: 'image-wrapper', style: divStyle }),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
                     { className: 'album-details' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
                         null,
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'span',
                             { className: 'title' },
                             album.album_name
                         )
                     ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
-                        null,
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        { className: 'timestamp-wrapper' },
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'span',
                             { className: 'timestamp' },
                             'Created at: ',
-                            __WEBPACK_IMPORTED_MODULE_1__classes_Validate__["a" /* default */].validateDate(album.created_at)
+                            __WEBPACK_IMPORTED_MODULE_2__classes_Validate__["a" /* default */].validateDate(album.created_at)
                         ),
-                        album.updated_at !== album.created_at && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        album.updated_at !== album.created_at && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'span',
                             { className: 'timestamp' },
                             'Updated at: ',
-                            __WEBPACK_IMPORTED_MODULE_1__classes_Validate__["a" /* default */].validateDate(album.updated_at)
+                            __WEBPACK_IMPORTED_MODULE_2__classes_Validate__["a" /* default */].validateDate(album.updated_at)
                         )
                     )
                 )
@@ -60277,7 +60333,7 @@ var AlbumContainer = function (_Component) {
     }]);
 
     return AlbumContainer;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+}(__WEBPACK_IMPORTED_MODULE_1_react__["Component"]);
 
 /* harmony default export */ __webpack_exports__["a"] = (AlbumContainer);
 
@@ -61329,6 +61385,8 @@ var Btn = function (_Component) {
 if (document.querySelector('.upload-wrapper')) {
     var init = function init() {
         appendEventToRadioBtns();
+        radioDefaultValue();
+        setupEventListeners();
     };
 
     /**
@@ -61348,6 +61406,17 @@ if (document.querySelector('.upload-wrapper')) {
                 return toggleAlbumType(e);
             });
         });
+    };
+
+    /**
+     * Set album radio value to existing on page load 
+     */
+
+
+    var radioDefaultValue = function radioDefaultValue() {
+        var form = DOMElements.form;
+
+        form.album_type.value = 'existing';
     };
 
     /**
@@ -61378,11 +61447,55 @@ if (document.querySelector('.upload-wrapper')) {
     };
 
     /**
+     * set the existing album select box value back to default
+     */
+
+
+    var setExistingAlbumValueToDefault = function setExistingAlbumValueToDefault() {
+        var form = DOMElements.form;
+
+        var selectedExistingAlbum = form['album'];
+
+        if (selectedExistingAlbum.value !== 'default') {
+            selectedExistingAlbum.value = 'default';
+        }
+    };
+
+    /**
+     * Remove value from create album field when user changes existing album option
+     */
+
+
+    var removeCreateAlbumValue = function removeCreateAlbumValue() {
+        var form = DOMElements.form;
+
+        var createAlbumInput = form['create_album'];
+        createAlbumInput.value = '';
+    };
+
+    /**
+     * Set up event listeners
+     */
+
+
+    var setupEventListeners = function setupEventListeners() {
+        var form = DOMElements.form;
+
+        var createAlbumInput = form['create_album'];
+        var selectedExistingAlbum = form['album'];
+
+        // Set the select box value of current albums to default if user begins to typing in to new album field
+        createAlbumInput.addEventListener('input', setExistingAlbumValueToDefault);
+        selectedExistingAlbum.addEventListener('change', removeCreateAlbumValue);
+    };
+
+    /**
      * Run the initialisation function declared at the top of this script
      */
 
 
     var DOMElements = {
+        form: document.querySelector('#form'),
         albumTypeRadioBtns: document.forms[0].elements.album_type,
         selectAlbumSection: document.querySelector('#select_album'),
         createAlbumSection: document.querySelector('#create_album')
@@ -61569,7 +61682,7 @@ if (document.getElementById('individualAlbum')) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modalSettings__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modalSettings__ = __webpack_require__(69);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -61598,6 +61711,7 @@ var ImageModal = function (_Component) {
                 filepath: null,
                 id: null,
                 title: null,
+                description: null,
                 updated_at: null
             }
         };
@@ -61609,6 +61723,7 @@ var ImageModal = function (_Component) {
     _createClass(ImageModal, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
+            // Run the imageModalInit function imported at the top of this file
             Object(__WEBPACK_IMPORTED_MODULE_1__modalSettings__["a" /* default */])();
         }
 
@@ -61657,6 +61772,20 @@ var ImageModal = function (_Component) {
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
+                        { className: 'image-information' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'h2',
+                            null,
+                            imageDetails.title && imageDetails.title.toUpperCase()
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'p',
+                            null,
+                            imageDetails.description
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
                         { className: 'image-wrapper' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'imageModal-img', src: '/storage/uploads/' + imageDetails.filepath })
                     ),
@@ -61686,32 +61815,6 @@ var ImageModal = function (_Component) {
 
 /***/ }),
 /* 69 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 70 */,
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */,
-/* 78 */,
-/* 79 */,
-/* 80 */,
-/* 81 */,
-/* 82 */,
-/* 83 */,
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61788,6 +61891,12 @@ function setImageHeight() {
 
     modalImage.style.maxHeight = modalHeight - modalHeaderHeight + 'px';
 }
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

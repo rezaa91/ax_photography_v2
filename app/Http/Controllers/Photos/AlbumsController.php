@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Photos;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Albums;
+use Carbon\Carbon;
 
 class AlbumsController extends PhotosController
 {
@@ -67,7 +68,7 @@ class AlbumsController extends PhotosController
     }
     
     /**
-     * Store a newly created image in storage.
+     * Store a newly created image in storage and database.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return redirect back to uploads page with session message
@@ -88,10 +89,15 @@ class AlbumsController extends PhotosController
         // If existing album selected, set the album id
         if ($request->input('album') !== 'default') {
             $this->setAlbumId($request->input('album'));
+            $this->updateAlbumTimestamp($request->input('album'));
         }
 
         // store image in database
-        $this->storeImageInDatabase($request, $this->album);        
+        $photoId = $this->storeImageInDatabase($request, $this->album);
+        
+        if ($request->input('create_album')) {
+            $this->setDefaultAlbumCoverPhoto($photoId);
+        }
 
         return redirect('/upload')->with('success', 'Image uploaded');
     }
@@ -105,10 +111,38 @@ class AlbumsController extends PhotosController
     {
         $album = new Albums();
         $album->album_name = $albumName;
-        $album->cover_photo_id = 1;
         $album->save();
 
-        $this->setAlbumId($album->id);
+        $this->setAlbumId($album->album_id);
+    }
+
+    /**
+     * Set default album cover to newly uploaded photo
+     * 
+     * @param int $photoId of newly uploaded image
+     */
+    private function setDefaultAlbumCoverPhoto($photoId)
+    {
+        $album = Albums::find($this->getAlbum()['id']);
+        $album->cover_photo_id = $photoId;
+        $album->save();
+    }
+
+    /**
+     * Upate the updated_at field in album
+     *
+     * @param integer $albumId
+     */
+    private function updateAlbumTimestamp(int $albumId)
+    {
+        $album = Albums::find($albumId);
+        $album->updated_at = Carbon::now();
+        
+        if ($album->save()) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
     /**
