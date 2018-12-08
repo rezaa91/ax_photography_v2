@@ -13952,7 +13952,7 @@ module.exports = checkPropTypes;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(16);
-module.exports = __webpack_require__(70);
+module.exports = __webpack_require__(71);
 
 
 /***/ }),
@@ -61683,6 +61683,7 @@ if (document.getElementById('individualAlbum')) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modalSettings__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__classes_User__ = __webpack_require__(70);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -61693,6 +61694,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
  // modal specific javascript
+
+
+// get the logged in user details
+var loggedInUser = new __WEBPACK_IMPORTED_MODULE_2__classes_User__["a" /* default */]();
 
 var ImageModal = function (_Component) {
     _inherits(ImageModal, _Component);
@@ -61717,6 +61722,7 @@ var ImageModal = function (_Component) {
         };
 
         _this.getImageData = _this.getImageData.bind(_this);
+        _this.likePhoto = _this.likePhoto.bind(_this);
         return _this;
     }
 
@@ -61748,12 +61754,58 @@ var ImageModal = function (_Component) {
                 return console.log(error);
             });
         }
+
+        /**
+         * Store photo like in database
+         */
+
+    }, {
+        key: 'likePhoto',
+        value: function likePhoto() {
+            var imageId = this.props.imageId;
+
+            var user_id = loggedInUser.getUserId();
+
+            // if user is not logged in, return
+            if (!user_id) {
+                // TODO - inform user to log in
+                return;
+            }
+
+            var token = document.querySelector('meta[name="csrf-token"]').content;
+
+            // Post like/un-like to database
+            fetch('/api/reaction', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token
+                },
+                body: JSON.stringify({
+                    'user_id': user_id,
+                    'photo_id': imageId
+                })
+            }).then(function (response) {
+                return console.log(response);
+            }).catch(function (error) {
+                return console.log(error);
+            });
+
+            // get updated image data in order to immediately refresh the view and update the state
+            this.getImageData();
+        }
     }, {
         key: 'render',
         value: function render() {
             var closeModal = this.props.closeModal;
             var imageDetails = this.state.imageDetails;
 
+            var style = null;
+            if (imageDetails && imageDetails.user_liked) {
+                style = { color: 'green' };
+            }
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
@@ -61787,7 +61839,7 @@ var ImageModal = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
                         { className: 'image-wrapper' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'imageModal-img', src: '/storage/uploads/' + imageDetails.filepath })
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'imageModal-img', src: imageDetails.filepath && '/storage/uploads/' + imageDetails.filepath })
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
@@ -61800,7 +61852,12 @@ var ImageModal = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'span',
                             null,
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-thumbs-up' })
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'span',
+                                { className: 'like-counter' },
+                                imageDetails.total_likes
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-thumbs-up', onClick: this.likePhoto, style: style })
                         )
                     )
                 )
@@ -61894,6 +61951,78 @@ function setImageHeight() {
 
 /***/ }),
 /* 70 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var User = function () {
+    function User() {
+        var _this = this;
+
+        _classCallCheck(this, User);
+
+        // get the current user
+        fetch('/api/user').then(function (response) {
+            return response.status === 200 && response.json();
+        }).then(function (data) {
+            var user = data.data;
+
+            _this.user_id = user.id;
+            _this.name = user.name;
+            _this.email = user.email;
+            _this.username = user.username;
+            _this.created_at = user.created_at;
+            _this.updated_at = user.updated_at;
+        }).catch(function (error) {
+            return console.log('error finding user');
+        });
+    }
+
+    //Getters bellow
+
+
+    _createClass(User, [{
+        key: 'getUserId',
+        value: function getUserId() {
+            return this.user_id;
+        }
+    }, {
+        key: 'getName',
+        value: function getName() {
+            return this.name;
+        }
+    }, {
+        key: 'getEmail',
+        value: function getEmail() {
+            return this.email;
+        }
+    }, {
+        key: 'getUsername',
+        value: function getUsername() {
+            return this.username;
+        }
+    }, {
+        key: 'getCreatedAt',
+        value: function getCreatedAt() {
+            return this.created_at;
+        }
+    }, {
+        key: 'getUpdatedAt',
+        value: function getUpdatedAt() {
+            return this.updated_at;
+        }
+    }]);
+
+    return User;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (User);
+
+/***/ }),
+/* 71 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
