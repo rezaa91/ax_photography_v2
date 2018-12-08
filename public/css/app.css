@@ -5666,6 +5666,12 @@ form .selection .option {
   display: flex;
 }
 
+.imageModal-wrapper .imageModal-content .imageModal-footer .like-counter {
+  color: #f4f4f4;
+  padding: 0 3px;
+  margin-right: 5px;
+}
+
 .imageModal-wrapper .imageModal-content .imageModal-footer span {
   -webkit-box-flex: 1;
       -ms-flex: 1;
