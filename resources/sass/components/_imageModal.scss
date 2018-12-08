@@ -67,6 +67,12 @@
             z-index: 2;
             display: flex;
 
+            .like-counter {
+                color: $white;
+                padding: 0 3px;
+                margin-right: 5px;
+            }
+
             span {
                 flex: 1;
             };

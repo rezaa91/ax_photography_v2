@@ -53,6 +53,13 @@ class ImageModal extends Component {
     likePhoto() {
         const {imageId} = this.props;
         const user_id = loggedInUser.getUserId();
+
+        // if user is not logged in, return
+        if (!user_id) {
+            // TODO - inform user to log in
+            return;
+        }
+
         const token = document.querySelector('meta[name="csrf-token"]').content;
 
         // Post like/un-like to database
@@ -71,11 +78,18 @@ class ImageModal extends Component {
         })
         .then(response => console.log(response))
         .catch(error => console.log(error));
+
+        // get updated image data in order to immediately refresh the view and update the state
+        this.getImageData();
     }
     
     render() {
         const {closeModal} = this.props;
         const {imageDetails} = this.state;
+        let style = null;
+        if (imageDetails && imageDetails.user_liked) {
+            style = {color: 'green'};
+        }
 
         return(
             <div className='imageModal-wrapper'>
@@ -91,12 +105,14 @@ class ImageModal extends Component {
                     </div>
 
                     <div className='image-wrapper'>
-                        <img className='imageModal-img' src={`/storage/uploads/${imageDetails.filepath}`} />
+                        <img className='imageModal-img' src={imageDetails.filepath && `/storage/uploads/${imageDetails.filepath}`} />
                     </div>
 
                     <div className='imageModal-footer'>
                         <span><i className = "fas fa-cog"></i></span>
-                        <span><i className = "fas fa-thumbs-up" onClick={this.likePhoto}></i></span>
+                            <span><span className='like-counter'>{imageDetails.total_likes}</span>
+                            <i className = "fas fa-thumbs-up" onClick={this.likePhoto} style={style}></i>
+                        </span>
                     </div>
                 </div>
 
