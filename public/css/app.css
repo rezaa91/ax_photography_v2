@@ -5417,21 +5417,39 @@ form .selection .option {
   display: flex;
 }
 
-.card-wrapper .card-body .avatar-wrapper {
-  width: 80%;
-  margin: 0 auto 10px;
-}
-
-.card-wrapper .card-body .avatar-wrapper img {
-  -o-object-fit: contain;
-     object-fit: contain;
-}
-
 .card-wrapper .card-body .left-side {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
   border-right: 1px solid #353535;
+}
+
+.card-wrapper .card-body .left-side .avatar-wrapper {
+  width: 80%;
+  margin: 0 auto 10px;
+  position: relative;
+}
+
+.card-wrapper .card-body .left-side .avatar-wrapper img {
+  width: 100%;
+  height: auto;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.card-wrapper .card-body .left-side .avatar-wrapper .change-image-form {
+  position: absolute;
+  top: 0;
+  right: 10px;
+}
+
+.card-wrapper .card-body .left-side .avatar-wrapper .change-image-form .change-image-link {
+  cursor: pointer;
+  color: #044730;
+}
+
+.card-wrapper .card-body .left-side .avatar-wrapper .change-image-form .change-image-link:hover {
+  text-decoration: underline;
 }
 
 .card-wrapper .card-body .right-side {

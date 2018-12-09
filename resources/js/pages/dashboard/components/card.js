@@ -6,10 +6,19 @@ class Card extends Component {
         super(props);
 
         this.state = {
-            user: this.props.user
+            changeImageLink: false
         }
+
+        this.displayChangeImage = this.displayChangeImage.bind(this);
+        this.hideChangeImage = this.hideChangeImage.bind(this);
+        this.changeImage = this.changeImage.bind(this);
+        this.submitForm = this.submitForm.bind(this);
     }
     
+    /**
+     * Format the 'member since' date
+     * @param {Object} dateObj 
+     */
     formatDate(dateObj) {
         if (dateObj === null) {
             return;
@@ -19,15 +28,70 @@ class Card extends Component {
         return dateFormat(date, 'dS mmmm, yyyy');
     }
 
-    render() {
-        const {user, displayWarning} = this.props;
+    /**
+     * Display the link 'change image' when image hovered over
+     */
+    displayChangeImage() {
+        this.setState({changeImageLink: true});
+    }
 
-        let username, name, email, created_at;
+    /**
+     * Hide the 'change image' link on image mouseout
+     */
+    hideChangeImage() {
+        this.setState({changeImageLink: false});
+    }
+
+    /**
+     * Open file dialog box
+     */
+    changeImage() {
+        const form = document.forms[0];
+        const fileUpload = form.elements[0];
+        fileUpload.click();
+    }
+
+    /**
+     * Submit form if file selected for upload
+     */
+    async submitForm(e) {
+        const {user} = this.props;
+
+        // if user not signed in, return
+        if (!user.user_id) {
+            return;
+        }
+
+        const data = new FormData();
+        data.append('file', e.target.files[0]);
+
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+
+        await fetch(`/api/user/${user.user_id}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': token
+            },
+            body: data
+        })
+        .then(response => console.log(response))
+        .catch(error => console.log(error))
+
+        // refresh state in order to get the new avatar
+        this.props.refresh();
+    }
+
+    render() {
+        const {changeImageLink} = this.state;
+        const {displayWarning, user} = this.props;
+
+        let username, name, email, created_at, avatar_filepath;
         if (user.user_id) {
             username = user.username,
             name = user.name;
             email = user.email;
             created_at = this.formatDate(user.created_at.date);
+            avatar_filepath = user.avatar_filepath;
         }
         
         return(
@@ -37,8 +101,23 @@ class Card extends Component {
                 </div>
                 <div className='card-body'>
                     <div className='left-side'>
-                        <div className='avatar-wrapper'>
-                            <img src="/images/avatar.png" />
+                        <div 
+                        className='avatar-wrapper' 
+                        onMouseOver={this.displayChangeImage} 
+                        onMouseLeave={this.hideChangeImage}
+                        onClick={this.changeImage}
+                        >
+                            {avatar_filepath ? <img src={`/storage/avatars/${avatar_filepath}`} /> : <img src="/images/avatar.png" />}
+
+                            {changeImageLink && 
+                                <div className='change-image-form'>
+                                    <span className='change-image-link'>Change Image</span>
+                                    <form style={{display: 'none'}}>
+                                        <input type="file" name="file" onChange={this.submitForm} />
+                                        <input type="submit" value="Save" />
+                                    </form>
+                                </div>
+                            }
                         </div>
 
                         <span className='card-label'>Username: </span><span className='card-content'>{username}</span><br />

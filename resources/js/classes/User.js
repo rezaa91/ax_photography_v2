@@ -13,6 +13,7 @@ class User {
             this.username = user.username;
             this.created_at = user.created_at;
             this.updated_at = user.updated_at;
+            this.avatar_filepath = user.avatar_filepath;
         })
         .catch(error => console.log('error finding user'));
    }
@@ -40,6 +41,10 @@ class User {
 
    getUpdatedAt() {
        return this.updated_at;
+   }
+
+   getAvatarFilepath() {
+       return this.avatar_filepath;
    }
 }
 

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Card from './components/card';
 import Modal from '../../global_components/modal';
-import $ from 'jquery';
 
 class Dashboard extends Component {
     constructor() {
@@ -15,7 +14,8 @@ class Dashboard extends Component {
                 username: null,
                 name: null,
                 email: null,
-                created_at: null
+                created_at: null,
+                avatar_filepath: null
             },
             shouldDeleteAccount: false
         }
@@ -37,7 +37,8 @@ class Dashboard extends Component {
                     username: user.username,
                     name: user.name,
                     email: user.email,
-                    created_at: user.created_at
+                    created_at: user.created_at,
+                    avatar_filepath: user.avatar_filepath
                 }
             })
         })
@@ -45,6 +46,7 @@ class Dashboard extends Component {
     }
 
     displayWarning() {
+        // TODO - make user confirm deletion of account by retyping password
         this.setState({shouldDeleteAccount: true});
     }
 
@@ -52,16 +54,17 @@ class Dashboard extends Component {
         this.setState({shouldDeleteAccount: false});
     }
 
-    async deleteAccount() {
+    deleteAccount() {
         const {user_id} = this.state.user;
         this.setState({shouldDeleteAccount: false}); //hide modal
+        const token = document.querySelector('meta[name="csrf-token"]').content;
 
-        await fetch(`/user/${user_id}`, {
+        fetch(`/user/${user_id}`, {
             method: 'delete',
             headers: {
                 'Content-Type': 'text/plain',
                 'Access-Control-Allow-Origin': '*',
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                'X-CSRF-TOKEN': token
             }
         })
         .then(response => console.log(response))
@@ -74,10 +77,20 @@ class Dashboard extends Component {
         return(
             <div className='dashboard-wrapper container'>
                 {shouldDeleteAccount &&
-                <Modal message="Are you sure you want to delete your account?" resetState={this.resetWarning} action={this.deleteAccount} />
+                <Modal 
+                message="Are you sure you want to delete your account?" 
+                resetState={this.resetWarning} 
+                action={this.deleteAccount} />
                 }
+
                 <div className='row justify-content-center'>
-                    <Card user = {user} displayWarning={this.displayWarning}/>
+                {user.user_id &&
+                    <Card 
+                    user = {user} 
+                    displayWarning={this.displayWarning}
+                    refresh={this.getUser}
+                    />
+                }
                 </div>
             </div>
         );

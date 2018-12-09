@@ -14,18 +14,35 @@
         padding: 10px;
         display: flex;
 
-        .avatar-wrapper {
-            width: 80%;
-            margin: 0 auto 10px;
-            
-            img {
-                object-fit: contain;
-            }
-        }
-
         .left-side {
             flex: 1;
             border-right: 1px solid $darkgrey;
+        
+            .avatar-wrapper {
+                width: 80%;
+                margin: 0 auto 10px;
+                position: relative;
+
+                img {
+                    width: 100%;
+                    height: auto;
+                    object-fit: contain;
+                }
+
+                .change-image-form {
+                    position: absolute;
+                    top: 0;
+                    right: 10px;
+
+                    .change-image-link {
+                        cursor: pointer;
+                        color: $darkgreen;
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
         }
 
         .right-side {
