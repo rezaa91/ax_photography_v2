@@ -10,8 +10,8 @@ class PhotosController extends FileController
 {
     /**
      * Store image in database
-     *
-     * @return void
+     * 
+     * @return integer - photo id of newly inserted record
      */
     public function storeImageInDatabase(Request $request, $album)
     {
