@@ -60630,8 +60630,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_card__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_components_modal__ = __webpack_require__(64);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_jquery__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_jquery__);
 
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -60643,7 +60641,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 
 
 
@@ -60666,7 +60663,8 @@ var Dashboard = function (_Component) {
                 username: null,
                 name: null,
                 email: null,
-                created_at: null
+                created_at: null,
+                avatar_filepath: null
             },
             shouldDeleteAccount: false
         };
@@ -60699,7 +60697,8 @@ var Dashboard = function (_Component) {
                                             username: user.username,
                                             name: user.name,
                                             email: user.email,
-                                            created_at: user.created_at
+                                            created_at: user.created_at,
+                                            avatar_filepath: user.avatar_filepath
                                         }
                                     });
                                 }).catch(function (error) {
@@ -60723,6 +60722,7 @@ var Dashboard = function (_Component) {
     }, {
         key: 'displayWarning',
         value: function displayWarning() {
+            // TODO - make user confirm deletion of account by retyping password
             this.setState({ shouldDeleteAccount: true });
         }
     }, {
@@ -60732,45 +60732,25 @@ var Dashboard = function (_Component) {
         }
     }, {
         key: 'deleteAccount',
-        value: function () {
-            var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
-                var user_id;
-                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
-                    while (1) {
-                        switch (_context2.prev = _context2.next) {
-                            case 0:
-                                user_id = this.state.user.user_id;
+        value: function deleteAccount() {
+            var user_id = this.state.user.user_id;
 
-                                this.setState({ shouldDeleteAccount: false }); //hide modal
+            this.setState({ shouldDeleteAccount: false }); //hide modal
+            var token = document.querySelector('meta[name="csrf-token"]').content;
 
-                                _context2.next = 4;
-                                return fetch('/user/' + user_id, {
-                                    method: 'delete',
-                                    headers: {
-                                        'Content-Type': 'text/plain',
-                                        'Access-Control-Allow-Origin': '*',
-                                        'X-CSRF-TOKEN': __WEBPACK_IMPORTED_MODULE_5_jquery___default()('meta[name="csrf-token"]').attr('content')
-                                    }
-                                }).then(function (response) {
-                                    return console.log(response);
-                                }).catch(function (error) {
-                                    return console.log(error);
-                                });
-
-                            case 4:
-                            case 'end':
-                                return _context2.stop();
-                        }
-                    }
-                }, _callee2, this);
-            }));
-
-            function deleteAccount() {
-                return _ref2.apply(this, arguments);
-            }
-
-            return deleteAccount;
-        }()
+            fetch('/user/' + user_id, {
+                method: 'delete',
+                headers: {
+                    'Content-Type': 'text/plain',
+                    'Access-Control-Allow-Origin': '*',
+                    'X-CSRF-TOKEN': token
+                }
+            }).then(function (response) {
+                return console.log(response);
+            }).catch(function (error) {
+                return console.log(error);
+            });
+        }
     }, {
         key: 'render',
         value: function render() {
@@ -60782,11 +60762,18 @@ var Dashboard = function (_Component) {
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'div',
                 { className: 'dashboard-wrapper container' },
-                shouldDeleteAccount && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__global_components_modal__["a" /* default */], { message: 'Are you sure you want to delete your account?', resetState: this.resetWarning, action: this.deleteAccount }),
+                shouldDeleteAccount && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__global_components_modal__["a" /* default */], {
+                    message: 'Are you sure you want to delete your account?',
+                    resetState: this.resetWarning,
+                    action: this.deleteAccount }),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
                     { className: 'row justify-content-center' },
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_card__["a" /* default */], { user: user, displayWarning: this.displayWarning })
+                    user.user_id && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_card__["a" /* default */], {
+                        user: user,
+                        displayWarning: this.displayWarning,
+                        refresh: this.getUser
+                    })
                 )
             );
         }
@@ -60804,11 +60791,17 @@ if (document.getElementById('dashboard')) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_dateformat__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_dateformat___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_dateformat__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_dateformat__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_dateformat___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_dateformat__);
+
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -60828,10 +60821,21 @@ var Card = function (_Component) {
         var _this = _possibleConstructorReturn(this, (Card.__proto__ || Object.getPrototypeOf(Card)).call(this, props));
 
         _this.state = {
-            user: _this.props.user
+            changeImageLink: false
         };
+
+        _this.displayChangeImage = _this.displayChangeImage.bind(_this);
+        _this.hideChangeImage = _this.hideChangeImage.bind(_this);
+        _this.changeImage = _this.changeImage.bind(_this);
+        _this.submitForm = _this.submitForm.bind(_this);
         return _this;
     }
+
+    /**
+     * Format the 'member since' date
+     * @param {Object} dateObj 
+     */
+
 
     _createClass(Card, [{
         key: 'formatDate',
@@ -60841,109 +60845,227 @@ var Card = function (_Component) {
             }
 
             var date = new Date(dateObj);
-            return __WEBPACK_IMPORTED_MODULE_1_dateformat___default()(date, 'dS mmmm, yyyy');
+            return __WEBPACK_IMPORTED_MODULE_2_dateformat___default()(date, 'dS mmmm, yyyy');
         }
+
+        /**
+         * Display the link 'change image' when image hovered over
+         */
+
+    }, {
+        key: 'displayChangeImage',
+        value: function displayChangeImage() {
+            this.setState({ changeImageLink: true });
+        }
+
+        /**
+         * Hide the 'change image' link on image mouseout
+         */
+
+    }, {
+        key: 'hideChangeImage',
+        value: function hideChangeImage() {
+            this.setState({ changeImageLink: false });
+        }
+
+        /**
+         * Open file dialog box
+         */
+
+    }, {
+        key: 'changeImage',
+        value: function changeImage() {
+            var form = document.forms[0];
+            var fileUpload = form.elements[0];
+            fileUpload.click();
+        }
+
+        /**
+         * Submit form if file selected for upload
+         */
+
+    }, {
+        key: 'submitForm',
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(e) {
+                var user, data, token;
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                user = this.props.user;
+
+                                // if user not signed in, return
+
+                                if (user.user_id) {
+                                    _context.next = 3;
+                                    break;
+                                }
+
+                                return _context.abrupt('return');
+
+                            case 3:
+                                data = new FormData();
+
+                                data.append('file', e.target.files[0]);
+
+                                token = document.querySelector('meta[name="csrf-token"]').content;
+                                _context.next = 8;
+                                return fetch('/api/user/' + user.user_id, {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': token
+                                    },
+                                    body: data
+                                }).then(function (response) {
+                                    return console.log(response);
+                                }).catch(function (error) {
+                                    return console.log(error);
+                                });
+
+                            case 8:
+
+                                // refresh state in order to get the new avatar
+                                this.props.refresh();
+
+                            case 9:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function submitForm(_x) {
+                return _ref.apply(this, arguments);
+            }
+
+            return submitForm;
+        }()
     }, {
         key: 'render',
         value: function render() {
+            var changeImageLink = this.state.changeImageLink;
             var _props = this.props,
-                user = _props.user,
-                displayWarning = _props.displayWarning;
+                displayWarning = _props.displayWarning,
+                user = _props.user;
 
 
             var username = void 0,
                 name = void 0,
                 email = void 0,
-                created_at = void 0;
+                created_at = void 0,
+                avatar_filepath = void 0;
             if (user.user_id) {
                 username = user.username, name = user.name;
                 email = user.email;
                 created_at = this.formatDate(user.created_at.date);
+                avatar_filepath = user.avatar_filepath;
             }
 
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'div',
                 { className: 'card-wrapper' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
                     { className: 'card-head' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'span',
                         null,
                         'Dashboard'
                     )
                 ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
                     { className: 'card-body' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
                         { className: 'left-side' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'div',
-                            { className: 'avatar-wrapper' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/avatar.png' })
+                            {
+                                className: 'avatar-wrapper',
+                                onMouseOver: this.displayChangeImage,
+                                onMouseLeave: this.hideChangeImage,
+                                onClick: this.changeImage
+                            },
+                            avatar_filepath ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: '/storage/avatars/' + avatar_filepath }) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: '/images/avatar.png' }),
+                            changeImageLink && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'div',
+                                { className: 'change-image-form' },
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'span',
+                                    { className: 'change-image-link' },
+                                    'Change Image'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'form',
+                                    { style: { display: 'none' } },
+                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { type: 'file', name: 'file', onChange: this.submitForm }),
+                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { type: 'submit', value: 'Save' })
+                                )
+                            )
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'span',
                             { className: 'card-label' },
                             'Username: '
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'span',
                             { className: 'card-content' },
                             username
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'span',
                             { className: 'card-label' },
                             'Name: '
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'span',
                             { className: 'card-content' },
                             name
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'span',
                             { className: 'card-label' },
                             'Email: '
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'span',
                             { className: 'card-content' },
                             email
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'span',
                             { className: 'card-label' },
                             'Member Since: '
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'span',
                             { className: 'card-content' },
                             created_at
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'div',
                             { className: 'account-actions' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'span',
                                 null,
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                     'a',
                                     { href: '/user/' + user.user_id + '/edit', className: 'edit' },
                                     'Edit Profile'
                                 )
                             ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'span',
                                 null,
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                     'a',
                                     { href: '#', className: 'delete', onClick: displayWarning },
                                     'Delete Account'
@@ -60951,10 +61073,10 @@ var Card = function (_Component) {
                             )
                         )
                     ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
                         { className: 'right-side' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'span',
                             { className: 'title' },
                             'Notifications'
@@ -60966,7 +61088,7 @@ var Card = function (_Component) {
     }]);
 
     return Card;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+}(__WEBPACK_IMPORTED_MODULE_1_react__["Component"]);
 
 /* harmony default export */ __webpack_exports__["a"] = (Card);
 
@@ -61976,6 +62098,7 @@ var User = function () {
             _this.username = user.username;
             _this.created_at = user.created_at;
             _this.updated_at = user.updated_at;
+            _this.avatar_filepath = user.avatar_filepath;
         }).catch(function (error) {
             return console.log('error finding user');
         });
@@ -62013,6 +62136,11 @@ var User = function () {
         key: 'getUpdatedAt',
         value: function getUpdatedAt() {
             return this.updated_at;
+        }
+    }, {
+        key: 'getAvatarFilepath',
+        value: function getAvatarFilepath() {
+            return this.avatar_filepath;
         }
     }]);
 

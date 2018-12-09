@@ -51,3 +51,8 @@ Route::get('photos/{id}', function($id) {
  * Toggle like/dislike image
  */
 Route::post('/reaction', 'Api\ImageSettingsController@toggleLikeImage');
+
+/**
+ * Upload profile avatar image
+ */
+Route::post('/user/{id}', 'Photos\UserAvatar@storeAvatarFilepath');
