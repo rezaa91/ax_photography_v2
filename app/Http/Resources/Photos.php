@@ -25,9 +25,7 @@ class Photos extends JsonResource
             'user_id' => $this->user_id,
             'album_id' => $this->album_id,
             'total_likes' => DB::table('photos_users_likes')->where('photo_id', $this->id)->count(),
-
-            // TODO - BUG - $this->user_id is the id of the user who uploaded the image, not the currently logged in user
-            'user_liked' => DB::table('photos_users_likes')->where(['photo_id' => $this->id, 'user_id' => $this->user_id])->count()
+            'users_which_like' => DB::table('photos_users_likes')->where('photo_id', $this->id)->pluck('user_id')
         ];
     }
 }

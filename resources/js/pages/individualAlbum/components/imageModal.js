@@ -9,9 +9,8 @@ class ImageModal extends Component {
     constructor(props) {
         super(props);
 
-        this.getImageData();
-
         this.state = {
+            user_id: loggedInUser.getUserId(),
             imageDetails: {
                 album_id: null,
                 created_at: null,
@@ -19,12 +18,17 @@ class ImageModal extends Component {
                 id: null,
                 title: null,
                 description: null,
-                updated_at: null
-            }
+                updated_at: null,
+                users_which_like: null
+            },
+            hasUserLiked: false
         }
+
+        this.getImageData();
 
         this.getImageData = this.getImageData.bind(this);
         this.likePhoto = this.likePhoto.bind(this);
+        this.doesUserLikePhoto = this.doesUserLikePhoto.bind(this);
     }
 
     componentDidMount() {
@@ -33,18 +37,36 @@ class ImageModal extends Component {
     }
 
     /**
+     * Check whether the user likes the photo
+     */
+    doesUserLikePhoto() {
+        const {users_which_like} = this.state.imageDetails;
+        const {user_id} = this.state;
+
+        if (!users_which_like || !user_id) {
+            return;
+        }
+
+        const doesUserLike = users_which_like.find(like => user_id === like);
+        this.setState({hasUserLiked: doesUserLike});
+    }
+
+    /**
      * fetch the individual photo data via an API
      */
-    getImageData() {
+    async getImageData() {
         const {imageId} = this.props;
 
-        fetch(`/api/photos/${imageId}`)
+        await fetch(`/api/photos/${imageId}`)
         .then(response => response.status === 200 && response.json())
         .then(data => {
             const imageDetails = data.data;
             this.setState({imageDetails});
         })
         .catch(error => console.log(error));
+
+        // After collecting the data, check whether the current user has liked the photo
+        this.doesUserLikePhoto();
     }
 
     /**
@@ -52,7 +74,7 @@ class ImageModal extends Component {
      */
     likePhoto() {
         const {imageId} = this.props;
-        const user_id = loggedInUser.getUserId();
+        const {user_id} = this.state;
 
         // if user is not logged in, return
         if (!user_id) {
@@ -85,9 +107,10 @@ class ImageModal extends Component {
     
     render() {
         const {closeModal} = this.props;
-        const {imageDetails} = this.state;
+        const {imageDetails, hasUserLiked} = this.state;
+
         let style = null;
-        if (imageDetails && imageDetails.user_liked) {
+        if (hasUserLiked) {
             style = {color: 'green'};
         }
 
