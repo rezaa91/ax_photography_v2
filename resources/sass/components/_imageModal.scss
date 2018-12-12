@@ -96,4 +96,32 @@
             }
         }
     }
+
+    .image-settings-wrapper {
+        position: relative;
+
+        .image-settings {
+            position: absolute;
+            bottom: 0;
+            background-color: $white;
+            box-shadow: 0 0 1px 1px $grey;
+        }
+
+        .settings-link {
+            border-bottom: 1px solid $black;
+            display: block;
+            padding: 5px 10px;
+            color: $black;
+            transition: 
+                color 0.3s, 
+                background-color 0.3s;
+
+            &:hover {
+                color: $lightgreen;
+                background-color: $black;
+                cursor: pointer;
+                font-weight: 900;
+            }
+        }
+    }
 }

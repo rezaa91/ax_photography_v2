@@ -9,10 +9,6 @@ use Carbon\Carbon;
 
 class AlbumsController extends PhotosController
 {
-    /**
-     *@inheritDoc
-     */
-    protected $directoryToStore = 'uploads';
 
     /**
      * Album data

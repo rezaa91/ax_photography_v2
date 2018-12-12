@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import imageModalInit from '../modalSettings'; // modal specific javascript
 import User from '../../../classes/User';
+import Settings from './settings';
+import Modal from '../../../global_components/modal';
 
 // get the logged in user details
 const loggedInUser = new User();
@@ -9,30 +11,35 @@ class ImageModal extends Component {
     constructor(props) {
         super(props);
 
+       this.getImageData();
+
         this.state = {
             user_id: loggedInUser.getUserId(),
             imageDetails: {
                 album_id: null,
                 created_at: null,
                 filepath: null,
-                id: null,
+                photo_id: null,
                 title: null,
                 description: null,
                 updated_at: null,
-                users_which_like: null
+                users_which_like: null,
+                displayModal: false
             },
-            hasUserLiked: false
+            hasUserLiked: false,
+            displaySettings: false
         }
-
-        this.getImageData();
 
         this.getImageData = this.getImageData.bind(this);
         this.likePhoto = this.likePhoto.bind(this);
         this.doesUserLikePhoto = this.doesUserLikePhoto.bind(this);
+        this.toggleDisplaySettings = this.toggleDisplaySettings.bind(this);
+        this.toggleDisplayModal = this.toggleDisplayModal.bind(this);
+        this.actionDelete = this.actionDelete.bind(this);
     }
 
     componentDidMount() {
-        // Run the imageModalInit function imported at the top of this file
+        // function imported at the top of this file
         imageModalInit();
     }
 
@@ -67,6 +74,8 @@ class ImageModal extends Component {
 
         // After collecting the data, check whether the current user has liked the photo
         this.doesUserLikePhoto();
+
+        console.log(this.state);
     }
 
     /**
@@ -104,10 +113,45 @@ class ImageModal extends Component {
         // get updated image data in order to immediately refresh the view and update the state
         this.getImageData();
     }
+
+    toggleDisplaySettings() {
+        const {displaySettings} = this.state;
+        this.setState({displaySettings: !displaySettings});
+    }
+
+    /**
+     * Display the modal confirming whether the user wishes to delete the photo
+     */
+    toggleDisplayModal() {
+        const {displayModal} = this.state;
+        this.setState({displayModal: !displayModal});
+    }
+
+    /**
+     * Delete the photo from the DB via REST API
+     */
+    async actionDelete() {
+        const {imageId} = this.props;
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+
+        await fetch(`/api/delete_photo/${imageId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'token': token
+            }
+        })
+        .then(res => console.log(res))
+        .catch(err => console.log(err));
+
+        // reset state
+        this.toggleDisplayModal();
+    }
     
     render() {
         const {closeModal} = this.props;
-        const {imageDetails, hasUserLiked} = this.state;
+        const {user_id, imageDetails, hasUserLiked, displaySettings, displayModal} = this.state;
 
         let style = null;
         if (hasUserLiked) {
@@ -115,30 +159,53 @@ class ImageModal extends Component {
         }
 
         return(
-            <div className='imageModal-wrapper'>
+            <div>
+                {
+                    displayModal &&
 
-                <div className='imageModal-content'>        
-                    <div className='imageModal-header'>
-                        <a onClick = {closeModal}>&times;</a>
+                    <Modal 
+                    message='Are you sure you want to delete this photo?' 
+                    action={this.actionDelete} 
+                    resetState={this.toggleDisplayModal}
+                    />
+                }
+
+
+                <div className='imageModal-wrapper'>
+
+                    <div className='imageModal-content'>        
+                        <div className='imageModal-header'>
+                            <a onClick = {closeModal}>&times;</a>
+                        </div>
+
+                        <div className='image-information'>
+                            <h2>{imageDetails.title && imageDetails.title.toUpperCase()}</h2>
+                            <p>{imageDetails.description}</p>
+                        </div>
+
+                        <div className='image-wrapper'>
+                            <img className='imageModal-img' src={imageDetails.filepath && `/storage/uploads/${imageDetails.filepath}`} />
+                        </div>
+
+                        <div className='imageModal-footer'>
+                            <span>
+                                <span onClick={this.toggleDisplaySettings}><i className = "fas fa-cog"></i></span>
+                                {
+                                    displaySettings &&
+                                    <Settings 
+                                    imageDetails={imageDetails} 
+                                    user_id={user_id} 
+                                    toggleDisplayModal={this.toggleDisplayModal} /> 
+                                }
+                            </span>
+                            <span>
+                                <span className='like-counter'>{imageDetails.total_likes}</span>
+                                <i className = "fas fa-thumbs-up" onClick={this.likePhoto} style={style}></i>
+                            </span>
+                        </div>
                     </div>
 
-                    <div className='image-information'>
-                        <h2>{imageDetails.title && imageDetails.title.toUpperCase()}</h2>
-                        <p>{imageDetails.description}</p>
-                    </div>
-
-                    <div className='image-wrapper'>
-                        <img className='imageModal-img' src={imageDetails.filepath && `/storage/uploads/${imageDetails.filepath}`} />
-                    </div>
-
-                    <div className='imageModal-footer'>
-                        <span><i className = "fas fa-cog"></i></span>
-                            <span><span className='like-counter'>{imageDetails.total_likes}</span>
-                            <i className = "fas fa-thumbs-up" onClick={this.likePhoto} style={style}></i>
-                        </span>
-                    </div>
                 </div>
-
             </div>
         );
     }

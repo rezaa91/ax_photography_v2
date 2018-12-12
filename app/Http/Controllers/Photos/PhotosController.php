@@ -8,12 +8,20 @@ use App\Photos;
 
 class PhotosController extends FileController 
 {
+
+    /**
+     * @inheritDoc
+     */
+    protected $directoryToStore = 'uploads';
+
     /**
      * Store image in database
+     * @param Request $request
+     * @param Array $album
      * 
      * @return integer - photo id of newly inserted record
      */
-    public function storeImageInDatabase(Request $request, $album)
+    public function storeImageInDatabase(Request $request, Array $album)
     {
         $photo = new Photos();
         $photo->title = $request->input('title');
@@ -27,6 +35,20 @@ class PhotosController extends FileController
         if ($photo->save()) {
             $this->uploadFile();
             return $photo->id;
+        }
+    }
+
+    /**
+     * Delete image from DB
+     * Route = {/api/delete_photo/{id}}
+     * @param int $photoId
+     */
+    public function deleteImage(int $photoId) {
+        $photo = Photos::find($photoId);
+        
+        // If deleted successfully from DB, delete file
+        if ($photo->delete()) {
+            $this->deleteFile($photo->filepath);
         }
     }
 }   

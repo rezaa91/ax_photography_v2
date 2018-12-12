@@ -53,6 +53,11 @@ Route::get('photos/{id}', function($id) {
 Route::post('/reaction', 'Api\ImageSettingsController@toggleLikeImage');
 
 /**
+ * Delete image
+ */
+Route::delete('/delete_photo/{id}', 'Photos\PhotosController@deleteImage');
+
+/**
  * Upload profile avatar image
  */
 Route::post('/user/{id}', 'Photos\UserAvatar@storeAvatarFilepath');

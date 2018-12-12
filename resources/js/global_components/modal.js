@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import Btn from './btn';
 
+
+
+/**
+ * This class takes 3 props: 
+ * 'message' which is the message to display in the modal
+ * 'resetState' which resets the state in order to close the modal and is fired when user clicks 'no'
+ * 'action' which is the action to the user clicking 'yes'
+ */
 class Modal extends Component {
     constructor() {
         super();
@@ -25,7 +33,7 @@ class Modal extends Component {
     }
 
     render() {
-        const {message, action} = this.props;
+        const {message} = this.props;
         const {displayModal} = this.state;
 
         return(
