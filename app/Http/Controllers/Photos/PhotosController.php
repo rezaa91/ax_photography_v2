@@ -51,4 +51,16 @@ class PhotosController extends FileController
             $this->deleteFile($photo->filepath);
         }
     }
+
+    /**
+     * Return the album id from the photoId passed as an arg
+     *
+     * @param int $photoId
+     * @return int $albumId
+     */
+    protected function getAlbumIdFromPhotoId($photoId)
+    {
+        $photo = Photos::find($photoId);
+        return $photo->album_id;
+    }
 }   

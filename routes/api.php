@@ -58,6 +58,11 @@ Route::post('/reaction', 'Api\ImageSettingsController@toggleLikeImage');
 Route::delete('/delete_photo/{id}', 'Photos\PhotosController@deleteImage');
 
 /**
+ * Update album cover photo
+ */
+Route::post('/update_cover_photo/{photoId}', 'Photos\AlbumsController@updateCoverImage');
+
+/**
  * Upload profile avatar image
  */
 Route::post('/user/{id}', 'Photos\UserAvatar@storeAvatarFilepath');

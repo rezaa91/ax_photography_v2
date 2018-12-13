@@ -21,8 +21,26 @@ class Settings extends Component {
         this.setState({displaySettings: false});
     }
 
+    /**
+     * Set the album cover to the currently selected photo
+     */
     setAlbumCover() {
+        const {id} = this.props.imageDetails;
+        const token = document.querySelector('meta[name="csrf-token"]').content;
 
+        fetch(`/api/update_cover_photo/${id}`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'token': token
+            }
+        })
+        .then(res => res.status === 200 && console.log('success'))
+        .catch(err => console.log('could not update album cover: ' + err));
+
+        // hide settings
+        this.hideSettings();
     }
 
     setHomepageCover() {
