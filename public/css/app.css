@@ -5651,6 +5651,29 @@ form .selection .option {
   color: #999999;
 }
 
+.imageModal-wrapper .imageModal-content .image-information .image-input {
+  width: 100%;
+}
+
+.imageModal-wrapper .imageModal-content .image-information .image-input input,
+.imageModal-wrapper .imageModal-content .image-information .image-input textarea {
+  text-align: center;
+  margin: auto;
+}
+
+.imageModal-wrapper .imageModal-content .image-information .image-input input {
+  display: block;
+  width: 40%;
+  margin-bottom: 2px;
+  font-size: 1.7rem;
+}
+
+.imageModal-wrapper .imageModal-content .image-information .image-input textarea {
+  display: block;
+  width: 70%;
+  font-size: 1.4rem;
+}
+
 .imageModal-wrapper .imageModal-content .image-wrapper {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -16687,6 +16710,13 @@ textarea:focus {
 textarea {
   padding: 3px;
   resize: none;
+}
+
+input,
+textarea {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #a0dbc7;
+  border: 0;
 }
 
 .hide {

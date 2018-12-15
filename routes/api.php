@@ -53,6 +53,11 @@ Route::get('photos/{id}', function($id) {
 Route::post('/reaction', 'Api\ImageSettingsController@toggleLikeImage');
 
 /**
+ * Update image title and description
+ */
+Route::post('/update_photo/{id}', 'Photos\PhotosController@updateImage');
+
+/**
  * Delete image
  */
 Route::delete('/delete_photo/{id}', 'Photos\PhotosController@deleteImage');

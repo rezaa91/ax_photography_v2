@@ -23,6 +23,12 @@ class PhotosController extends FileController
      */
     public function storeImageInDatabase(Request $request, Array $album)
     {
+
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'nullable'
+        ]);
+
         $photo = new Photos();
         $photo->title = $request->input('title');
         $photo->description = $request->input('description');
@@ -39,11 +45,32 @@ class PhotosController extends FileController
     }
 
     /**
+     * Update image details
+     * @param integer $photo_id
+     * @param Request $request
+     * 
+     * @return boolean
+     */
+    public function updateImage(int $photo_id, Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'nullable'
+        ]);
+
+        $photo = Photos::find($photo_id);
+        $photo->title = $request->input('title');
+        $photo->description = $request->input('description');
+        $photo->save();
+    }
+
+    /**
      * Delete image from DB
      * Route = {/api/delete_photo/{id}}
      * @param int $photoId
      */
-    public function deleteImage(int $photoId) {
+    public function deleteImage(int $photoId)
+    {
         $photo = Photos::find($photoId);
         
         // If deleted successfully from DB, delete file

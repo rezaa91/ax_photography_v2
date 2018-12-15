@@ -19,7 +19,7 @@ class ImageModal extends Component {
                 album_id: null,
                 created_at: null,
                 filepath: null,
-                photo_id: null,
+                id: null,
                 title: null,
                 description: null,
                 updated_at: null,
@@ -27,7 +27,8 @@ class ImageModal extends Component {
                 displayModal: false
             },
             hasUserLiked: false,
-            displaySettings: false
+            displaySettings: false,
+            editPhoto: false
         }
 
         this.getImageData = this.getImageData.bind(this);
@@ -36,6 +37,11 @@ class ImageModal extends Component {
         this.toggleDisplaySettings = this.toggleDisplaySettings.bind(this);
         this.toggleDisplayModal = this.toggleDisplayModal.bind(this);
         this.actionDelete = this.actionDelete.bind(this);
+        this.toggleEditPhoto = this.toggleEditPhoto.bind(this);
+        this.stopEditPhoto = this.stopEditPhoto.bind(this);
+        this.changeInput = this.changeInput.bind(this);
+        this.saveOnEnter = this.saveOnEnter.bind(this);
+        this.updateImageDetails = this.updateImageDetails.bind(this);
     }
 
     componentDidMount() {
@@ -148,10 +154,97 @@ class ImageModal extends Component {
         // reset state
         this.toggleDisplayModal();
     }
+
+    toggleEditPhoto() {
+        const {editPhoto} = this.state;
+        this.setState({editPhoto: !editPhoto});
+    }
+
+    /**
+     * Set editPhoto state value to false when user clicks outside of text input boxes
+     * Save any changes
+     * @param {event} e 
+     */
+    stopEditPhoto(e) {
+        const {editPhoto} = this.state;
+
+        if (!editPhoto) {
+            return;
+        }
+
+        if (e.target.nodeName === "INPUT" || e.target.nodeName === 'TEXTAREA') {
+            return;
+        }
+
+        editPhoto && this.setState({editPhoto: false});
+
+        // update image details in database via API call
+        this.updateImageDetails();
+    }
+
+    changeInput(e) {
+        const {title, description} = this.state.imageDetails;
+        const {imageDetails} = this.state;
+        let titleValue = title;
+        let descriptionValue = description;
+        const elementChanging = e.target.nodeName;
+        const value = e.target.value;
+
+        switch (elementChanging) {
+            case 'INPUT':
+                titleValue = value;
+                break;
+
+            case 'TEXTAREA':
+                descriptionValue = value;
+                break;
+        }
+
+        this.setState({
+            imageDetails: {
+                ...imageDetails,
+                title: titleValue,
+                description: descriptionValue
+            }
+        })
+    }
+
+    saveOnEnter(e) {
+        const enterKeyCharCode = 13;
+
+        if (e.charCode !== enterKeyCharCode) {
+            return;
+        }
+
+        this.updateImageDetails();
+        this.toggleEditPhoto();
+    }
+
+    /**
+     * Update image details via API
+     */
+    updateImageDetails() {
+        const {title, description} = this.state.imageDetails;
+        const {imageId} = this.props;
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+
+        fetch(`/api/update_photo/${imageId}`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'token': token
+            },
+            body: JSON.stringify({
+                title: title,
+                description: description
+            })
+        })
+    }
     
     render() {
         const {closeModal} = this.props;
-        const {user_id, imageDetails, hasUserLiked, displaySettings, displayModal} = this.state;
+        const {user_id, imageDetails, hasUserLiked, displaySettings, displayModal, editPhoto} = this.state;
 
         let style = null;
         if (hasUserLiked) {
@@ -171,7 +264,10 @@ class ImageModal extends Component {
                 }
 
 
-                <div className='imageModal-wrapper'>
+                <div 
+                className='imageModal-wrapper' 
+                onClick={(e) => {this.stopEditPhoto(e)}} 
+                >
 
                     <div className='imageModal-content'>        
                         <div className='imageModal-header'>
@@ -179,8 +275,31 @@ class ImageModal extends Component {
                         </div>
 
                         <div className='image-information'>
-                            <h2>{imageDetails.title && imageDetails.title.toUpperCase()}</h2>
-                            <p>{imageDetails.description}</p>
+                            { editPhoto ?
+                                <div className='image-input'>
+                                    <input 
+                                    type="text"
+                                    placeholder="Title..."
+                                    value={imageDetails.title.toUpperCase()}
+                                    onChange={(e) => {this.changeInput(e)}}
+                                    onKeyPress={(e) => {this.saveOnEnter(e)}}
+                                    />
+                                    <textarea 
+                                    placeholder="Description..." 
+                                    value={imageDetails.description ? imageDetails.description : ''}
+                                    onChange={(e) => {this.changeInput(e)}}
+                                    onKeyPress={(e) => {this.saveOnEnter(e)}}
+                                    >
+                                    </textarea>
+                                </div>
+
+                                :
+                                
+                                <div>
+                                    <h2 onDoubleClick={this.toggleEditPhoto}>{imageDetails.title && imageDetails.title.toUpperCase()}</h2>
+                                    <p onDoubleClick={this.toggleEditPhoto}>{imageDetails.description}</p>
+                                </div>
+                            }
                         </div>
 
                         <div className='image-wrapper'>
@@ -195,7 +314,9 @@ class ImageModal extends Component {
                                     <Settings 
                                     imageDetails={imageDetails} 
                                     user_id={user_id} 
-                                    toggleDisplayModal={this.toggleDisplayModal} /> 
+                                    toggleDisplayModal={this.toggleDisplayModal} 
+                                    toggleEditPhoto={this.toggleEditPhoto}
+                                    /> 
                                 }
                             </span>
                             <span>

@@ -61817,6 +61817,8 @@ if (document.getElementById('individualAlbum')) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__global_components_modal__ = __webpack_require__(15);
 
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -61852,7 +61854,7 @@ var ImageModal = function (_Component) {
                 album_id: null,
                 created_at: null,
                 filepath: null,
-                photo_id: null,
+                id: null,
                 title: null,
                 description: null,
                 updated_at: null,
@@ -61860,7 +61862,8 @@ var ImageModal = function (_Component) {
                 displayModal: false
             },
             hasUserLiked: false,
-            displaySettings: false
+            displaySettings: false,
+            editPhoto: false
         };
 
         _this.getImageData = _this.getImageData.bind(_this);
@@ -61869,6 +61872,11 @@ var ImageModal = function (_Component) {
         _this.toggleDisplaySettings = _this.toggleDisplaySettings.bind(_this);
         _this.toggleDisplayModal = _this.toggleDisplayModal.bind(_this);
         _this.actionDelete = _this.actionDelete.bind(_this);
+        _this.toggleEditPhoto = _this.toggleEditPhoto.bind(_this);
+        _this.stopEditPhoto = _this.stopEditPhoto.bind(_this);
+        _this.changeInput = _this.changeInput.bind(_this);
+        _this.saveOnEnter = _this.saveOnEnter.bind(_this);
+        _this.updateImageDetails = _this.updateImageDetails.bind(_this);
         return _this;
     }
 
@@ -62058,15 +62066,121 @@ var ImageModal = function (_Component) {
             return actionDelete;
         }()
     }, {
+        key: 'toggleEditPhoto',
+        value: function toggleEditPhoto() {
+            var editPhoto = this.state.editPhoto;
+
+            this.setState({ editPhoto: !editPhoto });
+        }
+
+        /**
+         * Set editPhoto state value to false when user clicks outside of text input boxes
+         * Save any changes
+         * @param {event} e 
+         */
+
+    }, {
+        key: 'stopEditPhoto',
+        value: function stopEditPhoto(e) {
+            var editPhoto = this.state.editPhoto;
+
+
+            if (!editPhoto) {
+                return;
+            }
+
+            if (e.target.nodeName === "INPUT" || e.target.nodeName === 'TEXTAREA') {
+                return;
+            }
+
+            editPhoto && this.setState({ editPhoto: false });
+
+            // update image details in database via API call
+            this.updateImageDetails();
+        }
+    }, {
+        key: 'changeInput',
+        value: function changeInput(e) {
+            var _state$imageDetails = this.state.imageDetails,
+                title = _state$imageDetails.title,
+                description = _state$imageDetails.description;
+            var imageDetails = this.state.imageDetails;
+
+            var titleValue = title;
+            var descriptionValue = description;
+            var elementChanging = e.target.nodeName;
+            var value = e.target.value;
+
+            switch (elementChanging) {
+                case 'INPUT':
+                    titleValue = value;
+                    break;
+
+                case 'TEXTAREA':
+                    descriptionValue = value;
+                    break;
+            }
+
+            this.setState({
+                imageDetails: _extends({}, imageDetails, {
+                    title: titleValue,
+                    description: descriptionValue
+                })
+            });
+        }
+    }, {
+        key: 'saveOnEnter',
+        value: function saveOnEnter(e) {
+            var enterKeyCharCode = 13;
+
+            if (e.charCode !== enterKeyCharCode) {
+                return;
+            }
+
+            this.updateImageDetails();
+            this.toggleEditPhoto();
+        }
+
+        /**
+         * Update image details via API
+         */
+
+    }, {
+        key: 'updateImageDetails',
+        value: function updateImageDetails() {
+            var _state$imageDetails2 = this.state.imageDetails,
+                title = _state$imageDetails2.title,
+                description = _state$imageDetails2.description;
+            var imageId = this.props.imageId;
+
+            var token = document.querySelector('meta[name="csrf-token"]').content;
+
+            fetch('/api/update_photo/' + imageId, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'token': token
+                },
+                body: JSON.stringify({
+                    title: title,
+                    description: description
+                })
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var _this3 = this;
+
             var closeModal = this.props.closeModal;
             var _state = this.state,
                 user_id = _state.user_id,
                 imageDetails = _state.imageDetails,
                 hasUserLiked = _state.hasUserLiked,
                 displaySettings = _state.displaySettings,
-                displayModal = _state.displayModal;
+                displayModal = _state.displayModal,
+                editPhoto = _state.editPhoto;
 
 
             var style = null;
@@ -62084,7 +62198,12 @@ var ImageModal = function (_Component) {
                 }),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
-                    { className: 'imageModal-wrapper' },
+                    {
+                        className: 'imageModal-wrapper',
+                        onClick: function onClick(e) {
+                            _this3.stopEditPhoto(e);
+                        }
+                    },
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
                         { className: 'imageModal-content' },
@@ -62100,15 +62219,43 @@ var ImageModal = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'div',
                             { className: 'image-information' },
-                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                'h2',
+                            editPhoto ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'div',
+                                { className: 'image-input' },
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', {
+                                    type: 'text',
+                                    placeholder: 'Title...',
+                                    value: imageDetails.title.toUpperCase(),
+                                    onChange: function onChange(e) {
+                                        _this3.changeInput(e);
+                                    },
+                                    onKeyPress: function onKeyPress(e) {
+                                        _this3.saveOnEnter(e);
+                                    }
+                                }),
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('textarea', {
+                                    placeholder: 'Description...',
+                                    value: imageDetails.description ? imageDetails.description : '',
+                                    onChange: function onChange(e) {
+                                        _this3.changeInput(e);
+                                    },
+                                    onKeyPress: function onKeyPress(e) {
+                                        _this3.saveOnEnter(e);
+                                    }
+                                })
+                            ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'div',
                                 null,
-                                imageDetails.title && imageDetails.title.toUpperCase()
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                'p',
-                                null,
-                                imageDetails.description
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'h2',
+                                    { onDoubleClick: this.toggleEditPhoto },
+                                    imageDetails.title && imageDetails.title.toUpperCase()
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'p',
+                                    { onDoubleClick: this.toggleEditPhoto },
+                                    imageDetails.description
+                                )
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -62130,7 +62277,9 @@ var ImageModal = function (_Component) {
                                 displaySettings && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__settings__["a" /* default */], {
                                     imageDetails: imageDetails,
                                     user_id: user_id,
-                                    toggleDisplayModal: this.toggleDisplayModal })
+                                    toggleDisplayModal: this.toggleDisplayModal,
+                                    toggleEditPhoto: this.toggleEditPhoto
+                                })
                             ),
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'span',
@@ -62346,7 +62495,6 @@ var Settings = function (_Component) {
         _this.hideSettings = _this.hideSettings.bind(_this);
         _this.setAlbumCover = _this.setAlbumCover.bind(_this);
         _this.setHomepageCover = _this.setHomepageCover.bind(_this);
-        _this.editPhoto = _this.editPhoto.bind(_this);
         return _this;
     }
 
@@ -62380,22 +62528,18 @@ var Settings = function (_Component) {
                 return console.log('could not update album cover: ' + err);
             });
 
-            // hide settings
             this.hideSettings();
         }
     }, {
         key: 'setHomepageCover',
         value: function setHomepageCover() {}
     }, {
-        key: 'editPhoto',
-        value: function editPhoto() {
-            this.setState({ editPhoto: true });
-        }
-    }, {
         key: 'render',
         value: function render() {
             var displaySettings = this.state.displaySettings;
-            var toggleDisplayModal = this.props.toggleDisplayModal;
+            var _props = this.props,
+                toggleDisplayModal = _props.toggleDisplayModal,
+                toggleEditPhoto = _props.toggleEditPhoto;
 
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -62419,7 +62563,7 @@ var Settings = function (_Component) {
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'li',
-                            { className: 'settings-link', onClick: this.editPhoto },
+                            { className: 'settings-link', onClick: toggleEditPhoto },
                             'Edit photo'
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
