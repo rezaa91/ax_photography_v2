@@ -60125,15 +60125,45 @@ var Homepage = function (_Component) {
     function Homepage() {
         _classCallCheck(this, Homepage);
 
-        return _possibleConstructorReturn(this, (Homepage.__proto__ || Object.getPrototypeOf(Homepage)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (Homepage.__proto__ || Object.getPrototypeOf(Homepage)).call(this));
+
+        _this.getBackgroundImage();
+
+        _this.state = {
+            filepath: null
+        };
+
+        _this.getBackgroundImage = _this.getBackgroundImage.bind(_this);
+        return _this;
     }
 
     _createClass(Homepage, [{
+        key: 'getBackgroundImage',
+        value: function getBackgroundImage() {
+            var _this2 = this;
+
+            fetch('/api/background_image').then(function (res) {
+                return res.json();
+            }).then(function (data) {
+                var filepath = data.data.filepath;
+
+                _this2.setState({ filepath: filepath });
+            }).catch(function (error) {
+                return console.log(error);
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var filepath = this.state.filepath;
+
+            var style = filepath && {
+                'backgroundImage': 'url(storage/uploads/' + filepath + ')'
+            };
+
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
-                { className: 'homepage-wrapper' },
+                { className: 'homepage-wrapper', style: style },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     null,
@@ -62483,14 +62513,16 @@ var Settings = function (_Component) {
     _inherits(Settings, _Component);
 
     function Settings() {
+        var _this$state;
+
         _classCallCheck(this, Settings);
 
         var _this = _possibleConstructorReturn(this, (Settings.__proto__ || Object.getPrototypeOf(Settings)).call(this));
 
-        _this.state = _defineProperty({
+        _this.state = (_this$state = {
             displaySettings: true,
             editPhoto: false
-        }, 'displaySettings', true);
+        }, _defineProperty(_this$state, 'displaySettings', true), _defineProperty(_this$state, 'token', document.querySelector('meta[name="csrf-token"]').content), _this$state);
 
         _this.hideSettings = _this.hideSettings.bind(_this);
         _this.setAlbumCover = _this.setAlbumCover.bind(_this);
@@ -62512,8 +62544,8 @@ var Settings = function (_Component) {
         key: 'setAlbumCover',
         value: function setAlbumCover() {
             var id = this.props.imageDetails.id;
+            var token = this.state.token;
 
-            var token = document.querySelector('meta[name="csrf-token"]').content;
 
             fetch('/api/update_cover_photo/' + id, {
                 method: 'POST',
@@ -62532,7 +62564,24 @@ var Settings = function (_Component) {
         }
     }, {
         key: 'setHomepageCover',
-        value: function setHomepageCover() {}
+        value: function setHomepageCover() {
+            var id = this.props.imageDetails.id;
+            var token = this.state.token;
+
+
+            fetch('/api/background_image/' + id, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token
+                }
+            }).then(function (res) {
+                return console.log(res);
+            }).catch(function (error) {
+                return console.log(error);
+            });
+        }
     }, {
         key: 'render',
         value: function render() {

@@ -4,10 +4,11 @@ class Settings extends Component {
     constructor() {
         super();
 
-        this.state={
+        this.state = {
             displaySettings: true,
             editPhoto: false,
-            displaySettings: true
+            displaySettings: true,
+            token: document.querySelector('meta[name="csrf-token"]').content
         }
 
         this.hideSettings = this.hideSettings.bind(this);
@@ -25,7 +26,7 @@ class Settings extends Component {
      */
     setAlbumCover() {
         const {id} = this.props.imageDetails;
-        const token = document.querySelector('meta[name="csrf-token"]').content;
+        const {token} = this.state;
 
         fetch(`/api/update_cover_photo/${id}`, {
             method: 'POST',
@@ -42,7 +43,19 @@ class Settings extends Component {
     }
 
     setHomepageCover() {
+        const {id} = this.props.imageDetails;
+        const {token} = this.state;
 
+        fetch(`/api/background_image/${id}`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token
+            }
+        })
+        .then(res => console.log(res))
+        .catch(error => console.log(error));
     }
 
     render() {

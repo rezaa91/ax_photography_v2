@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBackgroundImageTable extends Migration
+class CreateHomepageBackgroundsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class CreateBackgroundImageTable extends Migration
      */
     public function up()
     {
-        Schema::create('background_image', function (Blueprint $table) {
-        $table->integer('photo_id');
+        Schema::create('homepage_backgrounds', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('photo_id');
         });
     }
 
@@ -25,6 +26,6 @@ class CreateBackgroundImageTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('background_image');
+        Schema::dropIfExists('homepage_backgrounds');
     }
 }

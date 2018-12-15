@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Albums;
 use App\Photos;
+use App\HomepageBackground;
 use App\Http\Resources\Albums as AlbumsResource;
 use App\Http\Resources\Photos as PhotosResource;
 
@@ -37,6 +38,7 @@ Route::get('albums/{id}', function($id) {
     if (!Albums::find($id)) {
         return redirect('/');
     }
+
     return DB::table('photos')->where('album_id', $id)->get();
 });
 
@@ -46,6 +48,25 @@ Route::get('albums/{id}', function($id) {
 Route::get('photos/{id}', function($id) {
     return new PhotosResource(Photos::find($id));
 });
+
+/**
+ * Get homepage background image information
+ */
+Route::get('/background_image', function() {
+    $photo = HomepageBackground::find(1); // only one row
+    $photoId = $photo->photo_id;
+
+    if (!Photos::find($photoId)) {
+        return;
+    }
+
+    return new PhotosResource(Photos::find($photoId));
+});
+
+/**
+ * Update homepage background image
+ */
+Route::post('/background_image/{id}', 'Photos\HomepageBackgroundController@updateBackgroundImage');
 
 /**
  * Toggle like/dislike image
