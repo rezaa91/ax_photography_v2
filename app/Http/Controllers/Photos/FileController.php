@@ -46,8 +46,13 @@ class FileController extends Controller
      *
      * @param object $file
      */
-   public function __construct(object $file)
+   public function __construct($file = null)
    {
+
+        if (!isset($file)) {
+            return;
+        }
+
         $this->file = $file;
         $filenameWithExt = $file->getClientOriginalName();
         $this->filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
@@ -66,6 +71,17 @@ class FileController extends Controller
    protected function uploadFile()
    {
         $this->file->storeAs("public/$this->directoryToStore", $this->filenameToStore);
+   }
+
+   /**
+    * Delete file from storage folder
+    * @param string $filepath
+    */
+   protected function deleteFile(string $filepath)
+   {
+        if (file_exists("storage/$this->directoryToStore/$filepath")) {
+            unlink("storage/$this->directoryToStore/$filepath");
+        }
    }
 
 }

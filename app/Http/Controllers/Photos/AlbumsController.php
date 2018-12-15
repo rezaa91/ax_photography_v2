@@ -4,15 +4,12 @@ namespace App\Http\Controllers\Photos;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Photos;
 use App\Albums;
 use Carbon\Carbon;
 
 class AlbumsController extends PhotosController
 {
-    /**
-     *@inheritDoc
-     */
-    protected $directoryToStore = 'uploads';
 
     /**
      * Album data
@@ -147,6 +144,17 @@ class AlbumsController extends PhotosController
         } else {
             return false;
         }
+    }
+
+    /**
+     * @param int $photoId
+     */
+    public function updateCoverImage(int $photoId)
+    {
+        $albumId = $this->getAlbumIdFromPhotoId($photoId);
+        $album = Albums::find($albumId);
+        $album->cover_photo_id = $photoId;
+        $album->save();
     }
     
     /**
