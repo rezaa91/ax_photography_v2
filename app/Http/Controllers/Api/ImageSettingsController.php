@@ -33,4 +33,5 @@ class ImageSettingsController extends Controller
         ->where('user_id', $data['user_id'])
         ->count();
     }
+    
 }

@@ -42,6 +42,28 @@
                 font-size: $font-sub-header;
                 color: $grey;
             }
+
+            .image-input {
+                width: 100%;
+
+                input, textarea {
+                    text-align: center;
+                    margin: auto;
+                }
+
+                input {
+                    display: block;
+                    width: 40%;
+                    margin-bottom: 2px;
+                    font-size: $font-header;
+                }
+    
+                textarea {
+                    display: block;
+                    width: 70%;
+                    font-size: $font-sub-header;
+                }
+            }
         }
 
         .image-wrapper {
@@ -93,6 +115,34 @@
             
             &:hover {
                 background-color: $black;
+            }
+        }
+    }
+
+    .image-settings-wrapper {
+        position: relative;
+
+        .image-settings {
+            position: absolute;
+            bottom: 0;
+            background-color: $white;
+            box-shadow: 0 0 1px 1px $grey;
+        }
+
+        .settings-link {
+            border-bottom: 1px solid $black;
+            display: block;
+            padding: 5px 10px;
+            color: $black;
+            transition: 
+                color 0.3s, 
+                background-color 0.3s;
+
+            &:hover {
+                color: $lightgreen;
+                background-color: $black;
+                cursor: pointer;
+                font-weight: 900;
             }
         }
     }
