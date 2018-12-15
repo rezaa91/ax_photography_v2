@@ -60,3 +60,9 @@ textarea {
     padding: 3px;
     resize: none;
 }
+
+input, textarea {
+    background-color: rgba(0, 0, 0, 0.4);
+    color: $lightgreen;
+    border: 0;
+}

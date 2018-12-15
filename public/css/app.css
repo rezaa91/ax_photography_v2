@@ -5481,7 +5481,7 @@ form .selection .option {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.6);
 }
 
@@ -5651,6 +5651,29 @@ form .selection .option {
   color: #999999;
 }
 
+.imageModal-wrapper .imageModal-content .image-information .image-input {
+  width: 100%;
+}
+
+.imageModal-wrapper .imageModal-content .image-information .image-input input,
+.imageModal-wrapper .imageModal-content .image-information .image-input textarea {
+  text-align: center;
+  margin: auto;
+}
+
+.imageModal-wrapper .imageModal-content .image-information .image-input input {
+  display: block;
+  width: 40%;
+  margin-bottom: 2px;
+  font-size: 1.7rem;
+}
+
+.imageModal-wrapper .imageModal-content .image-information .image-input textarea {
+  display: block;
+  width: 70%;
+  font-size: 1.4rem;
+}
+
 .imageModal-wrapper .imageModal-content .image-wrapper {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -5714,6 +5737,34 @@ form .selection .option {
 
 .imageModal-wrapper .imageModal-content .imageModal-footer:hover {
   background-color: #111111;
+}
+
+.imageModal-wrapper .image-settings-wrapper {
+  position: relative;
+}
+
+.imageModal-wrapper .image-settings-wrapper .image-settings {
+  position: absolute;
+  bottom: 0;
+  background-color: #f4f4f4;
+  -webkit-box-shadow: 0 0 1px 1px #999999;
+          box-shadow: 0 0 1px 1px #999999;
+}
+
+.imageModal-wrapper .image-settings-wrapper .settings-link {
+  border-bottom: 1px solid #111111;
+  display: block;
+  padding: 5px 10px;
+  color: #111111;
+  -webkit-transition: color 0.3s,  background-color 0.3s;
+  transition: color 0.3s,  background-color 0.3s;
+}
+
+.imageModal-wrapper .image-settings-wrapper .settings-link:hover {
+  color: #a0dbc7;
+  background-color: #111111;
+  cursor: pointer;
+  font-weight: 900;
 }
 
 .navigation-wrapper {
@@ -5837,6 +5888,9 @@ form .selection .option {
 }
 
 .homepage-wrapper {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
   position: absolute;
   width: 100%;
   height: 100vh;
@@ -16659,6 +16713,13 @@ textarea:focus {
 textarea {
   padding: 3px;
   resize: none;
+}
+
+input,
+textarea {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #a0dbc7;
+  border: 0;
 }
 
 .hide {
