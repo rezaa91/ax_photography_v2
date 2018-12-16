@@ -61700,13 +61700,16 @@ var IndividualAlbum = function (_Component) {
 
         _this.state = {
             albumData: null,
-            enlargedImage: null
+            enlargedImage: null,
+            previousImageId: null,
+            nextImageId: null
         };
 
         _this.getAlbum = _this.getAlbum.bind(_this);
         _this.displayImages = _this.displayImages.bind(_this);
         _this.enlargeImage = _this.enlargeImage.bind(_this);
         _this.closeEnlargedImage = _this.closeEnlargedImage.bind(_this);
+        _this.nextAndPreviousImageIds = _this.nextAndPreviousImageIds.bind(_this);
         return _this;
     }
 
@@ -61740,7 +61743,7 @@ var IndividualAlbum = function (_Component) {
                                 }).catch(function (error) {
                                     // redirect user back to albums page if album does not exist (e.g. user puts a different id in url)
                                     if (error) {
-                                        //window.location.replace('/albums');
+                                        // TODO - window.location.replace('/albums');
                                     }
                                 });
 
@@ -61760,6 +61763,31 @@ var IndividualAlbum = function (_Component) {
         }()
 
         /**
+         * Set the previous and next image ids in the state
+         * These values are used to traverse images
+         * @param int imageId 
+         */
+
+    }, {
+        key: 'nextAndPreviousImageIds',
+        value: function nextAndPreviousImageIds(imageId) {
+            var albumData = this.state.albumData;
+
+
+            if (!albumData) {
+                return;
+            }
+
+            var currentImageKey = albumData.findIndex(function (image) {
+                return image.id === imageId;
+            });
+            var previousImageId = albumData[currentImageKey - 1] && albumData[currentImageKey - 1].id;
+            var nextImageId = albumData[currentImageKey + 1] && albumData[currentImageKey + 1].id;
+
+            this.setState({ previousImageId: previousImageId, nextImageId: nextImageId });
+        }
+
+        /**
          * Render images on the page once the api call has returned
          */
 
@@ -61776,13 +61804,11 @@ var IndividualAlbum = function (_Component) {
             }
 
             return albumData.map(function (image) {
-                var imageId = image.id;
-
                 return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
-                    { className: 'image', key: imageId },
+                    { className: 'image', key: image.id },
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { onClick: function onClick() {
-                            return _this3.enlargeImage(imageId);
+                            return _this3.enlargeImage(image.id);
                         }, src: '/storage/uploads/' + image.filepath })
                 );
             });
@@ -61796,10 +61822,45 @@ var IndividualAlbum = function (_Component) {
 
     }, {
         key: 'enlargeImage',
-        value: function enlargeImage(imageId) {
-            var enlargedImage = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_imageModal__["a" /* default */], { imageId: imageId, closeModal: this.closeEnlargedImage });
-            this.setState({ enlargedImage: enlargedImage });
-        }
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(imageId) {
+                var _state, nextImageId, previousImageId, enlargedImage;
+
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                _context2.next = 2;
+                                return this.nextAndPreviousImageIds(imageId);
+
+                            case 2:
+                                _state = this.state, nextImageId = _state.nextImageId, previousImageId = _state.previousImageId;
+                                enlargedImage = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_imageModal__["a" /* default */], {
+                                    imageId: imageId,
+                                    closeModal: this.closeEnlargedImage,
+                                    previousImageId: previousImageId,
+                                    nextImageId: nextImageId,
+                                    changeImage: this.enlargeImage,
+                                    refreshAlbum: this.getAlbum
+                                });
+
+
+                                this.setState({ enlargedImage: enlargedImage });
+
+                            case 5:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function enlargeImage(_x) {
+                return _ref2.apply(this, arguments);
+            }
+
+            return enlargeImage;
+        }()
 
         /**
          * Close the enlarged image
@@ -61876,7 +61937,7 @@ var ImageModal = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (ImageModal.__proto__ || Object.getPrototypeOf(ImageModal)).call(this, props));
 
-        _this.getImageData();
+        _this.getImageData(_this.props.imageId);
 
         _this.state = {
             user_id: loggedInUser.getUserId(),
@@ -61893,7 +61954,8 @@ var ImageModal = function (_Component) {
             },
             hasUserLiked: false,
             displaySettings: false,
-            editPhoto: false
+            editPhoto: false,
+            photoZoomed: false
         };
 
         _this.getImageData = _this.getImageData.bind(_this);
@@ -61907,6 +61969,9 @@ var ImageModal = function (_Component) {
         _this.changeInput = _this.changeInput.bind(_this);
         _this.saveOnEnter = _this.saveOnEnter.bind(_this);
         _this.updateImageDetails = _this.updateImageDetails.bind(_this);
+        _this.setDirection = _this.setDirection.bind(_this);
+        _this.navigate = _this.navigate.bind(_this);
+        _this.toggleZoom = _this.toggleZoom.bind(_this);
         return _this;
     }
 
@@ -61915,6 +61980,15 @@ var ImageModal = function (_Component) {
         value: function componentDidMount() {
             // function imported at the top of this file
             Object(__WEBPACK_IMPORTED_MODULE_2__modalSettings__["a" /* default */])();
+
+            // set up event listeners for photo traversing using arrow keys
+            document.addEventListener('keydown', this.setDirection);
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            // remove event listeners
+            document.removeEventListener('keydown', this.setDirection);
         }
 
         /**
@@ -61945,16 +62019,14 @@ var ImageModal = function (_Component) {
     }, {
         key: 'getImageData',
         value: function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(imageId) {
                 var _this2 = this;
 
-                var imageId;
                 return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                imageId = this.props.imageId;
-                                _context.next = 3;
+                                _context.next = 2;
                                 return fetch('/api/photos/' + imageId).then(function (response) {
                                     return response.status === 200 && response.json();
                                 }).then(function (data) {
@@ -61964,14 +62036,14 @@ var ImageModal = function (_Component) {
                                     return console.log(error);
                                 });
 
-                            case 3:
+                            case 2:
 
                                 // After collecting the data, check whether the current user has liked the photo
                                 this.doesUserLikePhoto();
 
                                 console.log(this.state);
 
-                            case 5:
+                            case 4:
                             case 'end':
                                 return _context.stop();
                         }
@@ -61979,7 +62051,7 @@ var ImageModal = function (_Component) {
                 }, _callee, this);
             }));
 
-            function getImageData() {
+            function getImageData(_x) {
                 return _ref.apply(this, arguments);
             }
 
@@ -62025,7 +62097,7 @@ var ImageModal = function (_Component) {
             });
 
             // get updated image data in order to immediately refresh the view and update the state
-            this.getImageData();
+            this.getImageData(imageId);
         }
     }, {
         key: 'toggleDisplaySettings',
@@ -62055,12 +62127,13 @@ var ImageModal = function (_Component) {
         key: 'actionDelete',
         value: function () {
             var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
-                var imageId, token;
+                var _props, imageId, closeModal, refreshAlbum, token;
+
                 return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
                     while (1) {
                         switch (_context2.prev = _context2.next) {
                             case 0:
-                                imageId = this.props.imageId;
+                                _props = this.props, imageId = _props.imageId, closeModal = _props.closeModal, refreshAlbum = _props.refreshAlbum;
                                 token = document.querySelector('meta[name="csrf-token"]').content;
                                 _context2.next = 4;
                                 return fetch('/api/delete_photo/' + imageId, {
@@ -62080,8 +62153,10 @@ var ImageModal = function (_Component) {
 
                                 // reset state
                                 this.toggleDisplayModal();
+                                closeModal();
+                                refreshAlbum();
 
-                            case 5:
+                            case 7:
                             case 'end':
                                 return _context2.stop();
                         }
@@ -62199,23 +62274,80 @@ var ImageModal = function (_Component) {
             });
         }
     }, {
+        key: 'setDirection',
+        value: function setDirection(e) {
+            var leftArrowCode = 37;
+            var rightArrowCode = 39;
+
+            if (e.keyCode === leftArrowCode) {
+                this.navigate('left');
+            } else if (e.keyCode === rightArrowCode) {
+                this.navigate('right');
+            } else {
+                return;
+            }
+        }
+
+        /**
+         * Navigate between images in album
+         * @param {string} direction 
+         */
+
+    }, {
+        key: 'navigate',
+        value: function navigate(direction) {
+            var _props2 = this.props,
+                previousImageId = _props2.previousImageId,
+                nextImageId = _props2.nextImageId,
+                changeImage = _props2.changeImage,
+                closeModal = _props2.closeModal;
+
+
+            if (direction === 'left' && previousImageId) {
+                closeModal();
+                changeImage(previousImageId);
+            } else if (direction === 'right' && nextImageId) {
+                closeModal();
+                changeImage(nextImageId);
+            }
+        }
+
+        // toggle zoom on image click
+
+    }, {
+        key: 'toggleZoom',
+        value: function toggleZoom() {
+            var photoZoomed = this.state.photoZoomed;
+
+            this.setState({ photoZoomed: !photoZoomed });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _this3 = this;
 
-            var closeModal = this.props.closeModal;
+            var _props3 = this.props,
+                closeModal = _props3.closeModal,
+                previousImageId = _props3.previousImageId,
+                nextImageId = _props3.nextImageId;
             var _state = this.state,
                 user_id = _state.user_id,
                 imageDetails = _state.imageDetails,
                 hasUserLiked = _state.hasUserLiked,
                 displaySettings = _state.displaySettings,
                 displayModal = _state.displayModal,
-                editPhoto = _state.editPhoto;
+                editPhoto = _state.editPhoto,
+                photoZoomed = _state.photoZoomed;
 
 
-            var style = null;
+            var thumbsUpStyle = null,
+                imageStyle = null;
             if (hasUserLiked) {
-                style = { color: 'green' };
+                thumbsUpStyle = { color: 'green' };
+            }
+
+            if (photoZoomed) {
+                imageStyle = { transform: 'scale(1.5)', cursor: 'zoom-out' };
             }
 
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -62259,7 +62391,7 @@ var ImageModal = function (_Component) {
                                     onChange: function onChange(e) {
                                         _this3.changeInput(e);
                                     },
-                                    onKeyPress: function onKeyPress(e) {
+                                    onKeyDown: function onKeyDown(e) {
                                         _this3.saveOnEnter(e);
                                     }
                                 }),
@@ -62269,7 +62401,7 @@ var ImageModal = function (_Component) {
                                     onChange: function onChange(e) {
                                         _this3.changeInput(e);
                                     },
-                                    onKeyPress: function onKeyPress(e) {
+                                    onKeyDown: function onKeyDown(e) {
                                         _this3.saveOnEnter(e);
                                     }
                                 })
@@ -62291,7 +62423,32 @@ var ImageModal = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'div',
                             { className: 'image-wrapper' },
-                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { className: 'imageModal-img', src: imageDetails.filepath && '/storage/uploads/' + imageDetails.filepath })
+                            previousImageId && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'div',
+                                {
+                                    className: 'arrow left-arrow',
+                                    onClick: function onClick() {
+                                        return _this3.navigate('left');
+                                    }
+                                },
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-chevron-left' })
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', {
+                                className: 'imageModal-img',
+                                src: imageDetails.filepath && '/storage/uploads/' + imageDetails.filepath,
+                                onClick: this.toggleZoom,
+                                style: imageStyle
+                            }),
+                            nextImageId && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'div',
+                                {
+                                    className: 'arrow right-arrow',
+                                    onClick: function onClick() {
+                                        return _this3.navigate('right');
+                                    }
+                                },
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-chevron-right' })
+                            )
                         ),
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'div',
@@ -62319,7 +62476,7 @@ var ImageModal = function (_Component) {
                                     { className: 'like-counter' },
                                     imageDetails.total_likes
                                 ),
-                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-thumbs-up', onClick: this.likePhoto, style: style })
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-thumbs-up', onClick: this.likePhoto, style: thumbsUpStyle })
                             )
                         )
                     )
