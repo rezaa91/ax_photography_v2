@@ -1,11 +1,11 @@
 .imageModal-wrapper {
     position: absolute;
-    top: 5vh;
-    left: 5%;
-    height: 90vh;
+    top: 1.25vh;
+    left: 1.25%;
+    height: 97.5vh;
     z-index: 99;
     box-shadow: 0 0 5px 3px $grey;
-    width: 90%;
+    width: 97.5%;
     background-color: $grey;
 
     .imageModal-content {
@@ -71,11 +71,41 @@
             justify-content: center;
             align-items: center;
             width: 100%;
+            overflow: hidden;
 
             img {
                 position: relative;
                 z-index: 1;
-                max-width: 100%;
+                height: auto;
+                max-width: 90%;
+                cursor: zoom-in;
+            }
+
+            .arrow {
+                position: absolute;
+                height: 100%;
+                width: 5%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: $font-header;
+                opacity: 0.5;
+                cursor: pointer;
+
+                &:hover {
+                    i {
+                        color: $green;
+                    }
+                }
+            }
+
+            .right-arrow {
+                right: 0;
+                text-align: right;
+            }
+
+            .left-arrow {
+                left: 0;
             }
         }
 
