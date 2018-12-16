@@ -5605,13 +5605,13 @@ form .selection .option {
 
 .imageModal-wrapper {
   position: absolute;
-  top: 5vh;
-  left: 5%;
-  height: 90vh;
+  top: 1.25vh;
+  left: 1.25%;
+  height: 97.5vh;
   z-index: 99;
   -webkit-box-shadow: 0 0 5px 3px #999999;
           box-shadow: 0 0 5px 3px #999999;
-  width: 90%;
+  width: 97.5%;
   background-color: #999999;
 }
 
@@ -5685,12 +5685,47 @@ form .selection .option {
       -ms-flex-align: center;
           align-items: center;
   width: 100%;
+  overflow: hidden;
 }
 
 .imageModal-wrapper .imageModal-content .image-wrapper img {
   position: relative;
   z-index: 1;
-  max-width: 100%;
+  height: auto;
+  max-width: 90%;
+  cursor: -webkit-zoom-in;
+  cursor: zoom-in;
+}
+
+.imageModal-wrapper .imageModal-content .image-wrapper .arrow {
+  position: absolute;
+  height: 100%;
+  width: 5%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 1.7rem;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.imageModal-wrapper .imageModal-content .image-wrapper .arrow:hover i {
+  color: #05704c;
+}
+
+.imageModal-wrapper .imageModal-content .image-wrapper .right-arrow {
+  right: 0;
+  text-align: right;
+}
+
+.imageModal-wrapper .imageModal-content .image-wrapper .left-arrow {
+  left: 0;
 }
 
 .imageModal-wrapper .imageModal-content .imageModal-footer {

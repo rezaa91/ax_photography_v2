@@ -10,13 +10,16 @@ class IndividualAlbum extends Component {
 
         this.state = {
             albumData: null,
-            enlargedImage: null
+            enlargedImage: null,
+            previousImageId: null,
+            nextImageId: null
         }
 
         this.getAlbum = this.getAlbum.bind(this);
         this.displayImages = this.displayImages.bind(this);
         this.enlargeImage = this.enlargeImage.bind(this);
         this.closeEnlargedImage = this.closeEnlargedImage.bind(this);
+        this.nextAndPreviousImageIds = this.nextAndPreviousImageIds.bind(this);
     }
 
     /**
@@ -37,9 +40,28 @@ class IndividualAlbum extends Component {
         .catch(error => {
             // redirect user back to albums page if album does not exist (e.g. user puts a different id in url)
             if (error) {
-                //window.location.replace('/albums');
+                // TODO - window.location.replace('/albums');
             }
         });
+    }
+
+    /**
+     * Set the previous and next image ids in the state
+     * These values are used to traverse images
+     * @param int imageId 
+     */
+    nextAndPreviousImageIds(imageId) {
+        const {albumData} = this.state;
+
+        if (!albumData) {
+            return;
+        }
+
+        const currentImageKey = albumData.findIndex(image => image.id === imageId);
+        const previousImageId = albumData[currentImageKey - 1] && albumData[currentImageKey - 1].id;
+        const nextImageId = albumData[currentImageKey + 1] && albumData[currentImageKey + 1].id;
+        
+        this.setState({previousImageId, nextImageId});
     }
 
     /**
@@ -52,13 +74,11 @@ class IndividualAlbum extends Component {
             return;
         }
         
-        return albumData.map(image => {
-            const imageId = image.id;
-
-            return  <div className='image' key={imageId}>
-                        <img onClick={() => this.enlargeImage(imageId)} src={`/storage/uploads/${image.filepath}`} />
-                    </div>
-        })
+        return albumData.map((image) => (
+            <div className='image' key={image.id}>
+                <img onClick={() => this.enlargeImage(image.id)} src={`/storage/uploads/${image.filepath}`} />
+            </div>
+        ))
     }
 
     /**
@@ -66,8 +86,19 @@ class IndividualAlbum extends Component {
      * 
      * @param {integer} imageId 
      */
-    enlargeImage(imageId) {
-        const enlargedImage = <ImageModal imageId = {imageId} closeModal = {this.closeEnlargedImage} />
+    async enlargeImage(imageId) {
+        await this.nextAndPreviousImageIds(imageId);
+        const {nextImageId, previousImageId} = this.state;
+
+        const enlargedImage = <ImageModal 
+            imageId = {imageId} 
+            closeModal = {this.closeEnlargedImage} 
+            previousImageId={previousImageId} 
+            nextImageId={nextImageId} 
+            changeImage={this.enlargeImage}
+            refreshAlbum={this.getAlbum}
+            />
+            
         this.setState({enlargedImage});
     }
 

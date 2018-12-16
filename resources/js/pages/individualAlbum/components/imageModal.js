@@ -11,7 +11,7 @@ class ImageModal extends Component {
     constructor(props) {
         super(props);
 
-       this.getImageData();
+       this.getImageData(this.props.imageId);
 
         this.state = {
             user_id: loggedInUser.getUserId(),
@@ -28,7 +28,8 @@ class ImageModal extends Component {
             },
             hasUserLiked: false,
             displaySettings: false,
-            editPhoto: false
+            editPhoto: false,
+            photoZoomed: false
         }
 
         this.getImageData = this.getImageData.bind(this);
@@ -42,11 +43,22 @@ class ImageModal extends Component {
         this.changeInput = this.changeInput.bind(this);
         this.saveOnEnter = this.saveOnEnter.bind(this);
         this.updateImageDetails = this.updateImageDetails.bind(this);
+        this.setDirection = this.setDirection.bind(this);
+        this.navigate = this.navigate.bind(this);
+        this.toggleZoom = this.toggleZoom.bind(this);
     }
 
     componentDidMount() {
         // function imported at the top of this file
         imageModalInit();
+
+        // set up event listeners for photo traversing using arrow keys
+        document.addEventListener('keydown', this.setDirection);
+    }
+
+    componentWillUnmount() {
+        // remove event listeners
+        document.removeEventListener('keydown', this.setDirection);
     }
 
     /**
@@ -67,9 +79,7 @@ class ImageModal extends Component {
     /**
      * fetch the individual photo data via an API
      */
-    async getImageData() {
-        const {imageId} = this.props;
-
+    async getImageData(imageId) {
         await fetch(`/api/photos/${imageId}`)
         .then(response => response.status === 200 && response.json())
         .then(data => {
@@ -117,7 +127,7 @@ class ImageModal extends Component {
         .catch(error => console.log(error));
 
         // get updated image data in order to immediately refresh the view and update the state
-        this.getImageData();
+        this.getImageData(imageId);
     }
 
     toggleDisplaySettings() {
@@ -137,7 +147,7 @@ class ImageModal extends Component {
      * Delete the photo from the DB via REST API
      */
     async actionDelete() {
-        const {imageId} = this.props;
+        const {imageId, closeModal, refreshAlbum} = this.props;
         const token = document.querySelector('meta[name="csrf-token"]').content;
 
         await fetch(`/api/delete_photo/${imageId}`, {
@@ -153,6 +163,8 @@ class ImageModal extends Component {
 
         // reset state
         this.toggleDisplayModal();
+        closeModal();
+        refreshAlbum();
     }
 
     toggleEditPhoto() {
@@ -241,15 +253,56 @@ class ImageModal extends Component {
             })
         })
     }
+
+    setDirection(e) {
+        const leftArrowCode = 37;
+        const rightArrowCode = 39;
+
+        if (e.keyCode === leftArrowCode) {
+            this.navigate('left');
+        } else if (e.keyCode === rightArrowCode) {
+            this.navigate('right');
+        } else {
+            return;
+        }
+    }
+
+    /**
+     * Navigate between images in album
+     * @param {string} direction 
+     */
+    navigate(direction) {
+        const {previousImageId, nextImageId, changeImage, closeModal} = this.props;
+
+        if (direction === 'left' && previousImageId) {
+            closeModal();
+            changeImage(previousImageId);
+        } else if (direction === 'right' && nextImageId) {
+            closeModal();        
+            changeImage(nextImageId);
+        }
+    }
+
+    // toggle zoom on image click
+    toggleZoom() {
+        const {photoZoomed} = this.state;
+        this.setState({photoZoomed: !photoZoomed});
+    }
     
     render() {
-        const {closeModal} = this.props;
-        const {user_id, imageDetails, hasUserLiked, displaySettings, displayModal, editPhoto} = this.state;
+        const {closeModal, previousImageId, nextImageId} = this.props;
+        const {user_id, imageDetails, hasUserLiked, displaySettings, displayModal, editPhoto, photoZoomed} = this.state;
 
-        let style = null;
+        let thumbsUpStyle = null, imageStyle = null;
         if (hasUserLiked) {
-            style = {color: 'green'};
+            thumbsUpStyle = {color: 'green'};
         }
+
+        if (photoZoomed) {
+            imageStyle = {transform: 'scale(1.5)', cursor:'zoom-out'};
+        }
+
+        
 
         return(
             <div>
@@ -266,7 +319,7 @@ class ImageModal extends Component {
 
                 <div 
                 className='imageModal-wrapper' 
-                onClick={(e) => {this.stopEditPhoto(e)}} 
+                onClick={(e) => {this.stopEditPhoto(e)}}
                 >
 
                     <div className='imageModal-content'>        
@@ -282,13 +335,13 @@ class ImageModal extends Component {
                                     placeholder="Title..."
                                     value={imageDetails.title.toUpperCase()}
                                     onChange={(e) => {this.changeInput(e)}}
-                                    onKeyPress={(e) => {this.saveOnEnter(e)}}
+                                    onKeyDown={(e) => {this.saveOnEnter(e)}}
                                     />
                                     <textarea 
                                     placeholder="Description..." 
                                     value={imageDetails.description ? imageDetails.description : ''}
                                     onChange={(e) => {this.changeInput(e)}}
-                                    onKeyPress={(e) => {this.saveOnEnter(e)}}
+                                    onKeyDown={(e) => {this.saveOnEnter(e)}}
                                     >
                                     </textarea>
                                 </div>
@@ -303,7 +356,30 @@ class ImageModal extends Component {
                         </div>
 
                         <div className='image-wrapper'>
-                            <img className='imageModal-img' src={imageDetails.filepath && `/storage/uploads/${imageDetails.filepath}`} />
+                            {previousImageId && 
+                                <div 
+                                className="arrow left-arrow"
+                                onClick={() => this.navigate('left')}
+                                >
+                                    <i className="fas fa-chevron-left"></i>
+                                </div>
+                            }
+
+                            <img 
+                            className='imageModal-img' 
+                            src={imageDetails.filepath && `/storage/uploads/${imageDetails.filepath}`} 
+                            onClick={this.toggleZoom}
+                            style={imageStyle}
+                            />
+                            
+                            {nextImageId &&
+                                <div 
+                                className="arrow right-arrow"
+                                onClick={() => this.navigate('right')}
+                                >
+                                    <i className="fas fa-chevron-right"></i>
+                                </div>
+                            }
                         </div>
 
                         <div className='imageModal-footer'>
@@ -321,7 +397,7 @@ class ImageModal extends Component {
                             </span>
                             <span>
                                 <span className='like-counter'>{imageDetails.total_likes}</span>
-                                <i className = "fas fa-thumbs-up" onClick={this.likePhoto} style={style}></i>
+                                <i className = "fas fa-thumbs-up" onClick={this.likePhoto} style={thumbsUpStyle}></i>
                             </span>
                         </div>
                     </div>
