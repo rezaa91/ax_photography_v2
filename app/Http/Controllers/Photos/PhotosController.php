@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Photos;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use App\Photos;
 use App\Albums;
 use App\Http\Controllers\Photos\HomepageBackgroundController as HomepageBackground;
@@ -84,6 +85,7 @@ class PhotosController extends FileController
         // If deleted successfully from DB, delete file
         if ($photo->delete()) {
             $this->deleteFile($photo->filepath);
+            $this->removeImageLikes($photoId);
         }
     }
 
@@ -118,6 +120,16 @@ class PhotosController extends FileController
         }
 
         return true;
+    }
+
+    /**
+     * Remove all the user likes from the image associated to the imageId passed in as arg
+     *
+     * @param integer $photoId
+     */
+    public function removeImageLikes(int $photoId)
+    {
+        DB::table('photos_users_likes')->where('photo_id', $photoId)->delete();
     }
 
     /**
