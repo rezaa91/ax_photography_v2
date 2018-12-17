@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Photos;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Photos;
+use App\Albums;
+use App\Http\Controllers\Photos\HomepageBackgroundController as HomepageBackground;
 
 class PhotosController extends FileController 
 {
@@ -72,11 +74,50 @@ class PhotosController extends FileController
     public function deleteImage(int $photoId)
     {
         $photo = Photos::find($photoId);
+        $albumId = $photo->album_id;
+
+        // Do not allow user to delete photo if it is currently the homepage or album cover
+        if ($this->isAlbumCover($albumId, $photoId) || $this->isHomepageBackground($photoId)) {
+            return;
+        }
         
         // If deleted successfully from DB, delete file
         if ($photo->delete()) {
             $this->deleteFile($photo->filepath);
         }
+    }
+
+    /**
+     * Check if photo found through $photoId is the current album cover image
+     *
+     * @param int $photoId
+     * @return boolean
+     */
+    private function isAlbumCover(int $albumId, int $photoId)
+    {
+        $album = Albums::find($albumId);
+        
+        if ($album->cover_photo_id !== $photoId) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if photo found through $photoId is the current homepage background image
+     *
+     * @param int $photoId
+     * @return boolean
+     */
+    private function isHomepageBackground(int $photoId)
+    {
+        $currentBackgroundImage = new HomepageBackground();
+        if ($currentBackgroundImage->getBackgroundImage()->photo_id !== $photoId) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

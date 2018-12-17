@@ -9,6 +9,27 @@ use App\HomepageBackground as Image;
 class HomepageBackgroundController extends PhotosController
 {
 
+    private $backgroundImage = null;
+
+    public function __construct()
+    {
+        if (Image::count() !== 1) {
+            return;
+        }
+
+        $this->backgroundImage = Image::first();
+    }
+
+    /**
+     * Get backgroundImage property
+     *
+     * @return Array $backgroundImage
+     */
+    public function getBackgroundImage()
+    {
+        return $this->backgroundImage;
+    }
+
     /**
      * Update background image {/api/background_image/{id}}
      *

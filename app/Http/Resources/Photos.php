@@ -25,7 +25,9 @@ class Photos extends JsonResource
             'user_id' => $this->user_id,
             'album_id' => $this->album_id,
             'total_likes' => DB::table('photos_users_likes')->where('photo_id', $this->id)->count(),
-            'users_which_like' => DB::table('photos_users_likes')->where('photo_id', $this->id)->pluck('user_id')
+            'users_which_like' => DB::table('photos_users_likes')->where('photo_id', $this->id)->pluck('user_id'),
+            'album_cover_photo' => DB::table('albums')->where('cover_photo_id', $this->id)->count() === 1 ? true : false,
+            'homepage_background' => DB::table('homepage_backgrounds')->where('photo_id', $this->id)->count() === 1 ? true : false
         ];
     }
 }
