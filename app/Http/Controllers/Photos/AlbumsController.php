@@ -82,6 +82,11 @@ class AlbumsController extends PhotosController
             'description' => 'nullable'
         ]);
 
+        // If no album type selected, return and inform user
+        if (!$request->input('create_album') && $request->input('album') === 'default') {
+            return redirect('/upload')->with('failure', 'Please select an album to store the image in.');
+        }
+
         // If new album created, store in database
         if ($request->input('create_album')) {
             $this->createAlbum($request->input('create_album'));
