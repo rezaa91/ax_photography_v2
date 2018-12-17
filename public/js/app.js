@@ -14004,6 +14004,7 @@ var Modal = function (_Component) {
             var action = this.props.action;
 
             action(); //this method is passed from parent and should action what happens when user clicks 'yes'
+            this.closeModal();
         }
     }, {
         key: 'render',
@@ -61906,6 +61907,7 @@ if (document.getElementById('individualAlbum')) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__classes_User__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__settings__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__global_components_modal__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__global_components_alert__ = __webpack_require__(93);
 
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -61922,6 +61924,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
  // modal specific javascript
+
 
 
 
@@ -61949,8 +61952,12 @@ var ImageModal = function (_Component) {
                 title: null,
                 description: null,
                 updated_at: null,
+                album_cover_photo: null,
+                homepage_background: null,
                 users_which_like: null,
-                displayModal: false
+                displayModal: false,
+                displayAlert: false,
+                alertMsg: ''
             },
             hasUserLiked: false,
             displaySettings: false,
@@ -61972,6 +61979,7 @@ var ImageModal = function (_Component) {
         _this.setDirection = _this.setDirection.bind(_this);
         _this.navigate = _this.navigate.bind(_this);
         _this.toggleZoom = _this.toggleZoom.bind(_this);
+        _this.hideAlert = _this.hideAlert.bind(_this);
         return _this;
     }
 
@@ -62127,17 +62135,41 @@ var ImageModal = function (_Component) {
         key: 'actionDelete',
         value: function () {
             var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
-                var _props, imageId, closeModal, refreshAlbum, token;
+                var _state$imageDetails, album_cover_photo, homepage_background, _props, imageId, closeModal, refreshAlbum, token, alertMsg;
 
                 return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
                     while (1) {
                         switch (_context2.prev = _context2.next) {
                             case 0:
+                                _state$imageDetails = this.state.imageDetails, album_cover_photo = _state$imageDetails.album_cover_photo, homepage_background = _state$imageDetails.homepage_background;
                                 _props = this.props, imageId = _props.imageId, closeModal = _props.closeModal, refreshAlbum = _props.refreshAlbum;
                                 token = document.querySelector('meta[name="csrf-token"]').content;
-                                _context2.next = 4;
+                                alertMsg = null;
+
+                                if (!album_cover_photo) {
+                                    _context2.next = 8;
+                                    break;
+                                }
+
+                                alertMsg = 'You cannot delete this photo as it is the album cover';
+                                this.setState({ displayAlert: true, alertMsg: alertMsg });
+                                return _context2.abrupt('return');
+
+                            case 8:
+                                if (!homepage_background) {
+                                    _context2.next = 12;
+                                    break;
+                                }
+
+                                alertMsg = 'You cannot delete this photo as it is the homepage background image';
+                                this.setState({ displayAlert: true, alertMsg: alertMsg });
+                                return _context2.abrupt('return');
+
+                            case 12:
+                                _context2.next = 14;
                                 return fetch('/api/delete_photo/' + imageId, {
                                     method: 'DELETE',
+                                    redirect: 'follow',
                                     headers: {
                                         'Content-Type': 'application/json',
                                         'Accept': 'application/json',
@@ -62149,14 +62181,14 @@ var ImageModal = function (_Component) {
                                     return console.log(err);
                                 });
 
-                            case 4:
+                            case 14:
 
                                 // reset state
                                 this.toggleDisplayModal();
                                 closeModal();
                                 refreshAlbum();
 
-                            case 7:
+                            case 17:
                             case 'end':
                                 return _context2.stop();
                         }
@@ -62206,9 +62238,9 @@ var ImageModal = function (_Component) {
     }, {
         key: 'changeInput',
         value: function changeInput(e) {
-            var _state$imageDetails = this.state.imageDetails,
-                title = _state$imageDetails.title,
-                description = _state$imageDetails.description;
+            var _state$imageDetails2 = this.state.imageDetails,
+                title = _state$imageDetails2.title,
+                description = _state$imageDetails2.description;
             var imageDetails = this.state.imageDetails;
 
             var titleValue = title;
@@ -62253,9 +62285,9 @@ var ImageModal = function (_Component) {
     }, {
         key: 'updateImageDetails',
         value: function updateImageDetails() {
-            var _state$imageDetails2 = this.state.imageDetails,
-                title = _state$imageDetails2.title,
-                description = _state$imageDetails2.description;
+            var _state$imageDetails3 = this.state.imageDetails,
+                title = _state$imageDetails3.title,
+                description = _state$imageDetails3.description;
             var imageId = this.props.imageId;
 
             var token = document.querySelector('meta[name="csrf-token"]').content;
@@ -62322,6 +62354,11 @@ var ImageModal = function (_Component) {
             this.setState({ photoZoomed: !photoZoomed });
         }
     }, {
+        key: 'hideAlert',
+        value: function hideAlert() {
+            this.setState({ displayAlert: false });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _this3 = this;
@@ -62337,7 +62374,9 @@ var ImageModal = function (_Component) {
                 displaySettings = _state.displaySettings,
                 displayModal = _state.displayModal,
                 editPhoto = _state.editPhoto,
-                photoZoomed = _state.photoZoomed;
+                photoZoomed = _state.photoZoomed,
+                displayAlert = _state.displayAlert,
+                alertMsg = _state.alertMsg;
 
 
             var thumbsUpStyle = null,
@@ -62357,6 +62396,10 @@ var ImageModal = function (_Component) {
                     message: 'Are you sure you want to delete this photo?',
                     action: this.actionDelete,
                     resetState: this.toggleDisplayModal
+                }),
+                displayAlert && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__global_components_alert__["a" /* default */], {
+                    message: alertMsg,
+                    resetState: this.hideAlert
                 }),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
@@ -62793,6 +62836,122 @@ var Settings = function (_Component) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 73 */,
+/* 74 */,
+/* 75 */,
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+/**
+ * This class takes 2 props:
+ * message - the message to display in the alert
+ * resetState - to reset any state, this is fired when the alert is closed
+ */
+
+var Alert = function (_Component) {
+    _inherits(Alert, _Component);
+
+    function Alert() {
+        _classCallCheck(this, Alert);
+
+        var _this = _possibleConstructorReturn(this, (Alert.__proto__ || Object.getPrototypeOf(Alert)).call(this));
+
+        _this.state = {
+            displayAlert: true
+        };
+
+        _this.closeAlert = _this.closeAlert.bind(_this);
+        return _this;
+    }
+
+    _createClass(Alert, [{
+        key: "closeAlert",
+        value: function closeAlert() {
+            var resetState = this.props.resetState;
+
+            this.setState({ displayAlert: false });
+            resetState();
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var displayAlert = this.state.displayAlert;
+            var message = this.props.message;
+
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "div",
+                null,
+                displayAlert && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "outer-modal-wrapper" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "div",
+                        { className: "middle-modal-wrapper" },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "div",
+                            { className: "modal-wrapper" },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "modal-head" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "span",
+                                    { className: "close-btn", onClick: this.closeAlert },
+                                    "\xD7"
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "modal-content" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "p",
+                                    null,
+                                    message
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Alert;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Alert);
 
 /***/ })
 /******/ ]);

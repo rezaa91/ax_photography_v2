@@ -3,6 +3,7 @@ import imageModalInit from '../modalSettings'; // modal specific javascript
 import User from '../../../classes/User';
 import Settings from './settings';
 import Modal from '../../../global_components/modal';
+import Alert from '../../../global_components/alert';
 
 // get the logged in user details
 const loggedInUser = new User();
@@ -23,8 +24,12 @@ class ImageModal extends Component {
                 title: null,
                 description: null,
                 updated_at: null,
+                album_cover_photo: null,
+                homepage_background: null,
                 users_which_like: null,
-                displayModal: false
+                displayModal: false,
+                displayAlert: false,
+                alertMsg: ''
             },
             hasUserLiked: false,
             displaySettings: false,
@@ -46,6 +51,7 @@ class ImageModal extends Component {
         this.setDirection = this.setDirection.bind(this);
         this.navigate = this.navigate.bind(this);
         this.toggleZoom = this.toggleZoom.bind(this);
+        this.hideAlert = this.hideAlert.bind(this);
     }
 
     componentDidMount() {
@@ -147,11 +153,26 @@ class ImageModal extends Component {
      * Delete the photo from the DB via REST API
      */
     async actionDelete() {
+        const {album_cover_photo, homepage_background} = this.state.imageDetails;
         const {imageId, closeModal, refreshAlbum} = this.props;
         const token = document.querySelector('meta[name="csrf-token"]').content;
+        let alertMsg = null;
+
+        if (album_cover_photo) {
+            alertMsg = 'You cannot delete this photo as it is the album cover';
+            this.setState({displayAlert: true, alertMsg});
+            return;
+        }
+
+        if (homepage_background) {
+            alertMsg = 'You cannot delete this photo as it is the homepage background image';
+            this.setState({displayAlert: true, alertMsg});
+            return;
+        }
 
         await fetch(`/api/delete_photo/${imageId}`, {
             method: 'DELETE',
+            redirect: 'follow',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
@@ -288,10 +309,14 @@ class ImageModal extends Component {
         const {photoZoomed} = this.state;
         this.setState({photoZoomed: !photoZoomed});
     }
+
+    hideAlert() {
+        this.setState({displayAlert: false});
+    }
     
     render() {
         const {closeModal, previousImageId, nextImageId} = this.props;
-        const {user_id, imageDetails, hasUserLiked, displaySettings, displayModal, editPhoto, photoZoomed} = this.state;
+        const {user_id, imageDetails, hasUserLiked, displaySettings, displayModal, editPhoto, photoZoomed, displayAlert, alertMsg} = this.state;
 
         let thumbsUpStyle = null, imageStyle = null;
         if (hasUserLiked) {
@@ -313,6 +338,15 @@ class ImageModal extends Component {
                     message='Are you sure you want to delete this photo?' 
                     action={this.actionDelete} 
                     resetState={this.toggleDisplayModal}
+                    />
+                }
+
+                {
+                    displayAlert &&
+
+                    <Alert 
+                    message={alertMsg}
+                    resetState={this.hideAlert}
                     />
                 }
 

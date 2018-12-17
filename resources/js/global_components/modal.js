@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Btn from './btn';
 
-
-
 /**
  * This class takes 3 props: 
  * 'message' which is the message to display in the modal
@@ -30,6 +28,7 @@ class Modal extends Component {
     action() {
         const {action} = this.props;
         action(); //this method is passed from parent and should action what happens when user clicks 'yes'
+        this.closeModal();
     }
 
     render() {
