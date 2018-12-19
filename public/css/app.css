@@ -6204,13 +6204,63 @@ form .selection .option {
 }
 
 .individualAlbum {
+  width: 90%;
+  margin: 20px auto;
+}
+
+.individualAlbum .album-information {
+  min-height: 60px;
+}
+
+.individualAlbum .album-information .inline {
+  display: inline-block;
+}
+
+.individualAlbum .album-information h1 {
+  color: #999999;
+}
+
+.individualAlbum .album-information h1,
+.individualAlbum .album-information input {
+  font-size: 1.7rem;
+  padding: 0 10px;
+}
+
+.individualAlbum .menu {
+  position: relative;
+  display: inline-block;
+}
+
+.individualAlbum .menu:hover .album-dropdown {
+  display: block;
+}
+
+.individualAlbum .icon {
+  cursor: pointer;
+  padding: 0 2px;
+  margin: 0 3px;
+}
+
+.individualAlbum .icon i {
+  color: #05704c;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+}
+
+.individualAlbum .icon i:hover {
+  color: #044730;
+}
+
+.individualAlbum .delete i {
+  color: #9e0401;
+}
+
+.individualAlbum .images {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  width: 90%;
-  margin: 20px auto;
 }
 
 /*!
