@@ -7,6 +7,7 @@ use App\Photos;
 use App\HomepageBackground;
 use App\Http\Resources\Albums as AlbumsResource;
 use App\Http\Resources\Photos as PhotosResource;
+use App\Http\Resources\InidividualAlbum as IndividualAlbumResource;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,14 +33,15 @@ Route::get('albums', function() {
 
 /**
  * API resource showing individual album data with photos associated to each album
+ * @param int $albumId
  */
-Route::get('albums/{id}', function($id) {
+Route::get('albums/{id}', function(int $albumId) {
     // return if album does not exist
-    if (!Albums::find($id)) {
-        return redirect('/');
+    if (!Albums::find($albumId)) {
+        return redirect('/albums');
     }
 
-    return DB::table('photos')->where('album_id', $id)->get();
+    return new IndividualAlbumResource(Albums::find($albumId));
 });
 
 /**
@@ -87,6 +89,16 @@ Route::delete('/delete_photo/{id}', 'Photos\PhotosController@deleteImage');
  * Update album cover photo
  */
 Route::post('/update_cover_photo/{photoId}', 'Photos\AlbumsController@updateCoverImage');
+
+/**
+ * Update album title
+ */
+Route::post('/update_album/{albumId}', 'Photos\AlbumsController@updateAlbumTitle');
+
+/**
+ * Delete album along with its contents
+ */
+Route::delete('/delete_album/{albumId}', 'Photos\AlbumsController@deleteAlbum');
 
 /**
  * Upload profile avatar image
