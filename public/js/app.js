@@ -61723,6 +61723,7 @@ var IndividualAlbum = function (_Component) {
         _this.toggleDeleteAlbum = _this.toggleDeleteAlbum.bind(_this);
         _this.actionDeleteAlbum = _this.actionDeleteAlbum.bind(_this);
         _this.updateAlbum = _this.updateAlbum.bind(_this);
+        _this.updateAlbumOnEnter = _this.updateAlbumOnEnter.bind(_this);
         return _this;
     }
 
@@ -61899,6 +61900,17 @@ var IndividualAlbum = function (_Component) {
             this.setState({ albumTitle: value });
         }
     }, {
+        key: 'updateAlbumOnEnter',
+        value: function updateAlbumOnEnter(e) {
+            var returnKey = 13;
+
+            if (e.charCode !== returnKey) {
+                return;
+            }
+
+            this.updateAlbum();
+        }
+    }, {
         key: 'saveAlbumTitle',
         value: function saveAlbumTitle() {
             this.toggleAlbumEdit();
@@ -61995,7 +62007,8 @@ var IndividualAlbum = function (_Component) {
                         name: 'editAlbum',
                         value: albumTitle,
                         onChange: this.updateAlbumTitle,
-                        onBlur: this.updateAlbum
+                        onBlur: this.updateAlbum,
+                        onKeyPress: this.updateAlbumOnEnter
                     }),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'span',

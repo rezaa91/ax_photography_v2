@@ -31,6 +31,7 @@ class IndividualAlbum extends Component {
         this.toggleDeleteAlbum = this.toggleDeleteAlbum.bind(this);
         this.actionDeleteAlbum = this.actionDeleteAlbum.bind(this);
         this.updateAlbum = this.updateAlbum.bind(this);
+        this.updateAlbumOnEnter = this.updateAlbumOnEnter.bind(this);
     }
 
     componentDidUpdate() {
@@ -133,6 +134,16 @@ class IndividualAlbum extends Component {
         this.setState({albumTitle: value});
     }
 
+    updateAlbumOnEnter(e) {
+        const returnKey = 13;
+
+        if (e.charCode !== returnKey) {
+            return;
+        }
+
+        this.updateAlbum();
+    }
+
     saveAlbumTitle() {
         this.toggleAlbumEdit();
     }
@@ -205,6 +216,7 @@ class IndividualAlbum extends Component {
                 value={albumTitle} 
                 onChange={this.updateAlbumTitle}
                 onBlur={this.updateAlbum}
+                onKeyPress={this.updateAlbumOnEnter}
             />
             <span className='icon' onClick={this.saveAlbumTitle}><i className="fas fa-check"></i></span>
             </div>
