@@ -84,7 +84,7 @@ if (false) {
 "use strict";
 
 
-var bind = __webpack_require__(8);
+var bind = __webpack_require__(9);
 var isBuffer = __webpack_require__(24);
 
 /*global toString:true*/
@@ -463,10 +463,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(9);
+    adapter = __webpack_require__(10);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(9);
+    adapter = __webpack_require__(10);
   }
   return adapter;
 }
@@ -545,6 +545,136 @@ module.exports = defaults;
 
 /***/ }),
 /* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__btn__ = __webpack_require__(65);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+/**
+ * This class takes 3 props: 
+ * 'message' which is the message to display in the modal
+ * 'resetState' which resets the state in order to close the modal and is fired when user clicks 'no'
+ * 'action' which is the action to the user clicking 'yes'
+ */
+
+var Modal = function (_Component) {
+    _inherits(Modal, _Component);
+
+    function Modal() {
+        _classCallCheck(this, Modal);
+
+        var _this = _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).call(this));
+
+        _this.state = {
+            displayModal: true
+        };
+
+        _this.closeModal = _this.closeModal.bind(_this);
+        _this.action = _this.action.bind(_this);
+        return _this;
+    }
+
+    _createClass(Modal, [{
+        key: 'closeModal',
+        value: function closeModal() {
+            var resetState = this.props.resetState;
+
+            this.setState({ displayModal: false });
+            resetState(); //passed from parent and should reset any state passed when <Modal /> used
+        }
+    }, {
+        key: 'action',
+        value: function action() {
+            var action = this.props.action;
+
+            action(); //this method is passed from parent and should action what happens when user clicks 'yes'
+            this.closeModal();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var message = this.props.message;
+            var displayModal = this.state.displayModal;
+
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                null,
+                displayModal && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'outer-modal-wrapper' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'middle-modal-wrapper' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'modal-wrapper' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'modal-head' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'span',
+                                    { className: 'close-btn', onClick: this.closeModal },
+                                    '\xD7'
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'modal-content' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'p',
+                                    null,
+                                    message
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'modal-buttons' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'btn-wrapper' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'span',
+                                            { onClick: this.action },
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__btn__["a" /* default */], { text: 'Yes', classes: 'btn-default' })
+                                        )
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'btn-wrapper' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'span',
+                                            { onClick: this.closeModal },
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__btn__["a" /* default */], { text: 'No', classes: 'btn-green' })
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Modal;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Modal);
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports) {
 
 var g;
@@ -571,7 +701,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3111,10 +3241,10 @@ Popper.Defaults = Defaults;
 /* harmony default export */ __webpack_exports__["default"] = (Popper);
 //# sourceMappingURL=popper.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -13485,7 +13615,7 @@ return jQuery;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13503,7 +13633,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13514,7 +13644,7 @@ var settle = __webpack_require__(28);
 var buildURL = __webpack_require__(30);
 var parseHeaders = __webpack_require__(31);
 var isURLSameOrigin = __webpack_require__(32);
-var createError = __webpack_require__(10);
+var createError = __webpack_require__(11);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(33);
 
 module.exports = function xhrAdapter(config) {
@@ -13690,7 +13820,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13715,7 +13845,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13727,7 +13857,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13753,7 +13883,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13850,7 +13980,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13948,136 +14078,6 @@ module.exports = checkPropTypes;
 
 
 /***/ }),
-/* 15 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__btn__ = __webpack_require__(65);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-/**
- * This class takes 3 props: 
- * 'message' which is the message to display in the modal
- * 'resetState' which resets the state in order to close the modal and is fired when user clicks 'no'
- * 'action' which is the action to the user clicking 'yes'
- */
-
-var Modal = function (_Component) {
-    _inherits(Modal, _Component);
-
-    function Modal() {
-        _classCallCheck(this, Modal);
-
-        var _this = _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).call(this));
-
-        _this.state = {
-            displayModal: true
-        };
-
-        _this.closeModal = _this.closeModal.bind(_this);
-        _this.action = _this.action.bind(_this);
-        return _this;
-    }
-
-    _createClass(Modal, [{
-        key: 'closeModal',
-        value: function closeModal() {
-            var resetState = this.props.resetState;
-
-            this.setState({ displayModal: false });
-            resetState(); //passed from parent and should reset any state passed when <Modal /> used
-        }
-    }, {
-        key: 'action',
-        value: function action() {
-            var action = this.props.action;
-
-            action(); //this method is passed from parent and should action what happens when user clicks 'yes'
-            this.closeModal();
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var message = this.props.message;
-            var displayModal = this.state.displayModal;
-
-
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                null,
-                displayModal && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'outer-modal-wrapper' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'middle-modal-wrapper' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'modal-wrapper' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'modal-head' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'span',
-                                    { className: 'close-btn', onClick: this.closeModal },
-                                    '\xD7'
-                                )
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'modal-content' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'p',
-                                    null,
-                                    message
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'div',
-                                    { className: 'modal-buttons' },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'div',
-                                        { className: 'btn-wrapper' },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            'span',
-                                            { onClick: this.action },
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__btn__["a" /* default */], { text: 'Yes', classes: 'btn-default' })
-                                        )
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'div',
-                                        { className: 'btn-wrapper' },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            'span',
-                                            { onClick: this.closeModal },
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__btn__["a" /* default */], { text: 'No', classes: 'btn-green' })
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-
-    return Modal;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["a"] = (Modal);
-
-/***/ }),
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -14124,8 +14124,8 @@ window._ = __webpack_require__(19);
  */
 
 try {
-  window.Popper = __webpack_require__(6).default;
-  window.$ = window.jQuery = __webpack_require__(7);
+  window.Popper = __webpack_require__(7).default;
+  window.$ = window.jQuery = __webpack_require__(8);
 
   __webpack_require__(21);
 } catch (e) {}
@@ -31284,7 +31284,7 @@ if (token) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(20)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(20)(module)))
 
 /***/ }),
 /* 20 */
@@ -31324,7 +31324,7 @@ module.exports = function(module) {
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
 (function (global, factory) {
-   true ? factory(exports, __webpack_require__(7), __webpack_require__(6)) :
+   true ? factory(exports, __webpack_require__(8), __webpack_require__(7)) :
   typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'popper.js'], factory) :
   (factory((global.bootstrap = {}),global.jQuery,global.Popper));
 }(this, (function (exports,$,Popper) { 'use strict';
@@ -35278,7 +35278,7 @@ module.exports = __webpack_require__(23);
 
 
 var utils = __webpack_require__(1);
-var bind = __webpack_require__(8);
+var bind = __webpack_require__(9);
 var Axios = __webpack_require__(25);
 var defaults = __webpack_require__(4);
 
@@ -35313,9 +35313,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(12);
+axios.Cancel = __webpack_require__(13);
 axios.CancelToken = __webpack_require__(40);
-axios.isCancel = __webpack_require__(11);
+axios.isCancel = __webpack_require__(12);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -35658,7 +35658,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(10);
+var createError = __webpack_require__(11);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -36091,7 +36091,7 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(1);
 var transformData = __webpack_require__(37);
-var isCancel = __webpack_require__(11);
+var isCancel = __webpack_require__(12);
 var defaults = __webpack_require__(4);
 var isAbsoluteURL = __webpack_require__(38);
 var combineURLs = __webpack_require__(39);
@@ -36251,7 +36251,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(12);
+var Cancel = __webpack_require__(13);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -37400,8 +37400,8 @@ if (true) {
   (function() {
 'use strict';
 
-var _assign = __webpack_require__(13);
-var checkPropTypes = __webpack_require__(14);
+var _assign = __webpack_require__(14);
+var checkPropTypes = __webpack_require__(15);
 
 // TODO: this is special because it gets imported during build.
 
@@ -39267,8 +39267,8 @@ if (true) {
 'use strict';
 
 var React = __webpack_require__(0);
-var _assign = __webpack_require__(13);
-var checkPropTypes = __webpack_require__(14);
+var _assign = __webpack_require__(14);
+var checkPropTypes = __webpack_require__(15);
 var scheduler = __webpack_require__(48);
 var tracing = __webpack_require__(50);
 
@@ -60789,7 +60789,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_card__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_components_modal__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_components_modal__ = __webpack_require__(5);
 
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -61673,6 +61673,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_imageModal__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_components_modal__ = __webpack_require__(5);
 
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -61689,6 +61690,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+
 var IndividualAlbum = function (_Component) {
     _inherits(IndividualAlbum, _Component);
 
@@ -61700,10 +61702,14 @@ var IndividualAlbum = function (_Component) {
         _this.getAlbum();
 
         _this.state = {
-            albumData: null,
+            albumId: null,
+            albumTitle: '',
+            albumImages: null,
+            editAlbumTitle: false,
             enlargedImage: null,
             previousImageId: null,
-            nextImageId: null
+            nextImageId: null,
+            deleteAlbum: false
         };
 
         _this.getAlbum = _this.getAlbum.bind(_this);
@@ -61711,15 +61717,29 @@ var IndividualAlbum = function (_Component) {
         _this.enlargeImage = _this.enlargeImage.bind(_this);
         _this.closeEnlargedImage = _this.closeEnlargedImage.bind(_this);
         _this.nextAndPreviousImageIds = _this.nextAndPreviousImageIds.bind(_this);
+        _this.toggleAlbumEdit = _this.toggleAlbumEdit.bind(_this);
+        _this.saveAlbumTitle = _this.saveAlbumTitle.bind(_this);
+        _this.updateAlbumTitle = _this.updateAlbumTitle.bind(_this);
+        _this.toggleDeleteAlbum = _this.toggleDeleteAlbum.bind(_this);
+        _this.actionDeleteAlbum = _this.actionDeleteAlbum.bind(_this);
+        _this.updateAlbum = _this.updateAlbum.bind(_this);
         return _this;
     }
 
-    /**
-     * Get individual album data
-     */
-
-
     _createClass(IndividualAlbum, [{
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate() {
+            // focus on edit title input field when in DOM
+            if (document.querySelector('input[name="editAlbum"]')) {
+                document.querySelector('input[name="editAlbum"]').focus();
+            }
+        }
+
+        /**
+         * Get individual album data
+         */
+
+    }, {
         key: 'getAlbum',
         value: function () {
             var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
@@ -61734,13 +61754,16 @@ var IndividualAlbum = function (_Component) {
 
                                 // find the id from the url by getting the last digit in the url (note that the url must finish with this digit)
 
-                                id = url.match(/\d$/)[0];
+                                id = url.match(/\d+$/)[0];
                                 _context.next = 4;
                                 return fetch('/api/albums/' + id).then(function (response) {
                                     return response.status === 200 && response.json();
                                 }).then(function (data) {
-                                    var albumData = data;
-                                    _this2.setState({ albumData: albumData });
+                                    var albumImages = data.data.images;
+                                    var albumTitle = data.data.title;
+                                    var albumId = data.data.albumId;
+
+                                    _this2.setState({ albumImages: albumImages, albumTitle: albumTitle, albumId: albumId });
                                 }).catch(function (error) {
                                     // redirect user back to albums page if album does not exist (e.g. user puts a different id in url)
                                     if (error) {
@@ -61772,18 +61795,18 @@ var IndividualAlbum = function (_Component) {
     }, {
         key: 'nextAndPreviousImageIds',
         value: function nextAndPreviousImageIds(imageId) {
-            var albumData = this.state.albumData;
+            var albumImages = this.state.albumImages;
 
 
-            if (!albumData) {
+            if (!albumImages) {
                 return;
             }
 
-            var currentImageKey = albumData.findIndex(function (image) {
+            var currentImageKey = albumImages.findIndex(function (image) {
                 return image.id === imageId;
             });
-            var previousImageId = albumData[currentImageKey - 1] && albumData[currentImageKey - 1].id;
-            var nextImageId = albumData[currentImageKey + 1] && albumData[currentImageKey + 1].id;
+            var previousImageId = albumImages[currentImageKey - 1] && albumImages[currentImageKey - 1].id;
+            var nextImageId = albumImages[currentImageKey + 1] && albumImages[currentImageKey + 1].id;
 
             this.setState({ previousImageId: previousImageId, nextImageId: nextImageId });
         }
@@ -61797,14 +61820,14 @@ var IndividualAlbum = function (_Component) {
         value: function displayImages() {
             var _this3 = this;
 
-            var albumData = this.state.albumData;
+            var albumImages = this.state.albumImages;
 
 
-            if (!albumData) {
+            if (!albumImages) {
                 return;
             }
 
-            return albumData.map(function (image) {
+            return albumImages.map(function (image) {
                 return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
                     { className: 'image', key: image.id },
@@ -61862,6 +61885,51 @@ var IndividualAlbum = function (_Component) {
 
             return enlargeImage;
         }()
+    }, {
+        key: 'toggleAlbumEdit',
+        value: function toggleAlbumEdit() {
+            var editAlbumTitle = this.state.editAlbumTitle;
+
+            this.setState({ editAlbumTitle: !editAlbumTitle });
+        }
+    }, {
+        key: 'updateAlbumTitle',
+        value: function updateAlbumTitle(e) {
+            var value = e.target.value;
+            this.setState({ albumTitle: value });
+        }
+    }, {
+        key: 'saveAlbumTitle',
+        value: function saveAlbumTitle() {
+            this.toggleAlbumEdit();
+        }
+    }, {
+        key: 'toggleDeleteAlbum',
+        value: function toggleDeleteAlbum() {
+            var deleteAlbum = this.state.deleteAlbum;
+
+            this.setState({ deleteAlbum: !deleteAlbum });
+        }
+    }, {
+        key: 'actionDeleteAlbum',
+        value: function actionDeleteAlbum() {
+            var albumId = this.state.albumId;
+
+            this.setState({ deleteAlbum: false });
+            var token = document.querySelector('meta[name="csrf-token"]').content;
+
+            fetch('/api/delete_album/' + albumId, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': token
+                },
+                redirect: 'follow'
+            }).then(function (response) {
+                return response.status === 200 && window.location.replace("/albums");
+            }).catch(function (error) {
+                return console.log(error);
+            });
+        }
 
         /**
          * Close the enlarged image
@@ -61873,15 +61941,108 @@ var IndividualAlbum = function (_Component) {
             this.setState({ enlargedImage: null });
         }
     }, {
+        key: 'updateAlbum',
+        value: function updateAlbum() {
+            var _state2 = this.state,
+                albumTitle = _state2.albumTitle,
+                editAlbumTitle = _state2.editAlbumTitle,
+                albumId = _state2.albumId;
+
+
+            if (!editAlbumTitle) {
+                return;
+            }
+
+            this.setState({ editAlbumTitle: false });
+
+            var token = document.querySelector('meta[name="csrf-token"]').content;
+
+            fetch('/api/update_album/' + albumId, {
+                method: 'POST',
+                headers: {
+                    'Content': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': token
+                },
+                body: JSON.stringify({
+                    'album_name': albumTitle
+                }),
+                redirect: 'follow'
+            }).then(function (response) {
+                return console.log(response);
+            }).catch(function (error) {
+                return console.log(error);
+            });
+
+            this.getAlbum();
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var enlargedImage = this.state.enlargedImage;
+            var _state3 = this.state,
+                albumTitle = _state3.albumTitle,
+                enlargedImage = _state3.enlargedImage,
+                editAlbumTitle = _state3.editAlbumTitle,
+                deleteAlbum = _state3.deleteAlbum;
 
+            var albumTitleState = void 0;
+
+            if (editAlbumTitle) {
+                albumTitleState = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'div',
+                    { className: 'inline' },
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', {
+                        name: 'editAlbum',
+                        value: albumTitle,
+                        onChange: this.updateAlbumTitle,
+                        onBlur: this.updateAlbum
+                    }),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'span',
+                        { className: 'icon', onClick: this.saveAlbumTitle },
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-check' })
+                    )
+                );
+            } else {
+                albumTitleState = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'div',
+                    { className: 'inline' },
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'h1',
+                        { className: 'inline', onDoubleClick: this.toggleAlbumEdit },
+                        albumTitle
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'span',
+                        { className: 'icon', onClick: this.toggleAlbumEdit },
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-pencil-alt' })
+                    )
+                );
+            }
 
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'div',
                 { className: 'individualAlbum' },
-                this.displayImages(),
+                deleteAlbum && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__global_components_modal__["a" /* default */], {
+                    message: 'Are you sure you want to delete this album?',
+                    resetState: this.toggleDeleteAlbum,
+                    action: this.actionDeleteAlbum
+                }),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'div',
+                    { className: 'album-information' },
+                    albumTitleState,
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'span',
+                        { className: 'icon delete', onClick: this.toggleDeleteAlbum },
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-trash-alt' })
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'div',
+                    { className: 'images' },
+                    this.displayImages()
+                ),
                 enlargedImage
             );
         }
@@ -61906,7 +62067,7 @@ if (document.getElementById('individualAlbum')) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modalSettings__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__classes_User__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__settings__ = __webpack_require__(71);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__global_components_modal__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__global_components_modal__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__global_components_alert__ = __webpack_require__(72);
 
 

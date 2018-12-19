@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Photos;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Validator;
 use App\Photos;
 use App\Albums;
 use Carbon\Carbon;
@@ -164,46 +165,60 @@ class AlbumsController extends PhotosController
     
     /**
      * Display the specified resource.
+     * @param int $albumId
      *
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($albumId)
     {
+        if (!Albums::find($albumId)) {
+            return redirect('/albums');
+        }
+        
         return view('pages.photos.singleAlbum');
     }
-    
+
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * /api/update_album/{albumId}
+     * @param Request $request
+     * @param int $albumId
      */
-    public function edit($id)
+    public function updateAlbumTitle(Request $request, int $albumId)
     {
-        //
+        $albumData = $request->json()->all();
+        $validator = Validator::make($albumData, [
+            'album_name' => 'required'
+        ]);
+        
+        if ($validator->fails()) {
+            return;
+        }
+
+        $album = Albums::find($albumId);
+        $album->album_name = $albumData['album_name'];
+        $album->save();
+        return 'true';
     }
-    
+
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param integer $albumId
      */
-    public function update(Request $request, $id)
+    public function deleteAlbum(int $albumId)
     {
-        //
-    }
-    
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $photosInAlbum = Photos::where('album_id', $albumId)->get();
+
+        // Do not allow admin to delete album if one of the photos is the homepage background
+        foreach ($photosInAlbum as $photo) {
+            if ($this->isHomepageBackground($photo->id)) {
+                return;
+            }
+        }
+
+        foreach ($photosInAlbum as $photo) {
+            $this->deleteImage($photo->id, true);
+        }
+
+        Albums::find($albumId)->delete();
     }
 
 }

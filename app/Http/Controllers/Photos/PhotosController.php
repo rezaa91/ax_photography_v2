@@ -71,14 +71,20 @@ class PhotosController extends FileController
      * Delete image from DB
      * Route = {/api/delete_photo/{id}}
      * @param int $photoId
+     * @param bool $deletingAlbum - if set to true, the photo will be deleted regardless of whether it is the album cover
      */
-    public function deleteImage(int $photoId)
+    public function deleteImage(int $photoId, bool $deletingAlbum = false)
     {
         $photo = Photos::find($photoId);
         $albumId = $photo->album_id;
 
-        // Do not allow user to delete photo if it is currently the homepage or album cover
-        if ($this->isAlbumCover($albumId, $photoId) || $this->isHomepageBackground($photoId)) {
+        // Do not allow user to delete photo if it is currently the homepage
+        if ($this->isHomepageBackground($photoId)) {
+            return;
+        }
+
+        // Do not allow user to delete photo if it is the album cover, unless deleting the full album
+        if ($this->isAlbumCover($albumId, $photoId) && !$deletingAlbum) {
             return;
         }
         
@@ -112,7 +118,7 @@ class PhotosController extends FileController
      * @param int $photoId
      * @return boolean
      */
-    private function isHomepageBackground(int $photoId)
+    protected function isHomepageBackground(int $photoId)
     {
         $currentBackgroundImage = new HomepageBackground();
         if ($currentBackgroundImage->getBackgroundImage()->photo_id !== $photoId) {
