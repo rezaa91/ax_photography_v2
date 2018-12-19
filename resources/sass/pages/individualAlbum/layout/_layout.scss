@@ -1,6 +1,56 @@
 .individualAlbum {
-    display: flex;
-    flex-wrap: wrap;
     width: 90%;
     margin: 20px auto;
+
+    .album-information {
+        min-height: 60px; 
+
+        .inline {
+            display: inline-block;
+        }
+        h1 {
+            color: $grey;
+        }
+        h1,input {
+            font-size: $font-header;
+            padding: 0 10px;
+        }
+    }
+
+    .menu {
+        position: relative;
+        display: inline-block;
+
+        &:hover {
+            .album-dropdown {
+                display: block;
+            }
+        }
+    }
+
+    .icon {
+        cursor: pointer;
+        padding: 0 2px;
+        margin: 0 3px;
+
+        i {
+            color: $green;
+            transition: color 0.3s;
+            
+            &:hover {
+                color: $darkgreen;
+            }
+        }
+    }
+
+    .delete {
+        i {
+            color: $red;
+        }
+    }
+
+    .images {
+        display: flex;
+        flex-wrap: wrap;
+    }
 }
