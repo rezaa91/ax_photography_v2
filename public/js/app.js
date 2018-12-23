@@ -36391,6 +36391,7 @@ var Navigation = function (_Component) {
         };_this.getUser = _this.getUser.bind(_this);
         _this.displayLoginOrUser = _this.displayLoginOrUser.bind(_this);
         _this.toggleUserDropdownMenu = _this.toggleUserDropdownMenu.bind(_this);
+        _this.hideUserDropdownMenu = _this.hideUserDropdownMenu.bind(_this);
         return _this;
     }
 
@@ -36576,11 +36577,16 @@ var Navigation = function (_Component) {
             }
         }
     }, {
+        key: 'hideUserDropdownMenu',
+        value: function hideUserDropdownMenu() {
+            this.setState({ isDropdownPresent: false });
+        }
+    }, {
         key: 'render',
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'div',
-                { className: 'navigation-wrapper', onMouseLeave: this.toggleUserDropdownMenu },
+                { className: 'navigation-wrapper', onMouseLeave: this.hideUserDropdownMenu },
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'ul',
                     { className: 'navigation navigation-left' },

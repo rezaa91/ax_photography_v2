@@ -19,6 +19,7 @@ class Navigation extends Component {
         this.getUser = this.getUser.bind(this);
         this.displayLoginOrUser = this.displayLoginOrUser.bind(this);
         this.toggleUserDropdownMenu = this.toggleUserDropdownMenu.bind(this);
+        this.hideUserDropdownMenu = this.hideUserDropdownMenu.bind(this);
     }
 
     /**
@@ -113,9 +114,13 @@ class Navigation extends Component {
         }
     }
 
+    hideUserDropdownMenu() {
+        this.setState({isDropdownPresent: false});
+    }
+
     render() {
         return(
-            <div className="navigation-wrapper" onMouseLeave={this.toggleUserDropdownMenu}>
+            <div className="navigation-wrapper" onMouseLeave={this.hideUserDropdownMenu}>
                 <ul className="navigation navigation-left">
                     <li className="nav-title"><a href='/'>AX PHOTOGRAPHY</a></li>
                     <li><a href='/albums' className = 'main-link'>Albums</a></li>
