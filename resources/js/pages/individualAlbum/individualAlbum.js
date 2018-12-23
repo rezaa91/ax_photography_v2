@@ -8,8 +8,10 @@ class IndividualAlbum extends Component {
         super();
 
         this.getAlbum();
+        this.getUser();
 
         this.state = {
+            user: null,
             albumId: null,
             albumTitle: '',
             albumImages: null,
@@ -21,6 +23,7 @@ class IndividualAlbum extends Component {
         }
 
         this.getAlbum = this.getAlbum.bind(this);
+        this.getUser = this.getUser.bind(this);
         this.displayImages = this.displayImages.bind(this);
         this.enlargeImage = this.enlargeImage.bind(this);
         this.closeEnlargedImage = this.closeEnlargedImage.bind(this);
@@ -31,6 +34,7 @@ class IndividualAlbum extends Component {
         this.toggleDeleteAlbum = this.toggleDeleteAlbum.bind(this);
         this.actionDeleteAlbum = this.actionDeleteAlbum.bind(this);
         this.updateAlbum = this.updateAlbum.bind(this);
+        this.updateAlbumOnEnter = this.updateAlbumOnEnter.bind(this);
     }
 
     componentDidUpdate() {
@@ -64,6 +68,39 @@ class IndividualAlbum extends Component {
                 // TODO - window.location.replace('/albums');
             }
         });
+    }
+
+    /**
+     * Get logged in user through API call
+     */
+    async getUser() {
+        //find user in session through api
+        await fetch('/api/user')
+        .then(response => response.status === 200 && response.json())
+        .then(data => {
+            data = data.data;
+            
+            if (!data) {
+                return;
+            }
+
+            this.setState({
+                user: {
+                    id: data.id,
+                    username: data.username,
+                    name: data.name,
+                    email: data.email,
+                    created_at: data.created_at,
+                    isAdmin: data.isAdmin
+                }
+            })            
+        })
+        .catch((error) => {
+            this.setState({
+                isLoggedIn: false,
+                user: null
+            })
+        })
     }
 
     /**
@@ -109,7 +146,7 @@ class IndividualAlbum extends Component {
      */
     async enlargeImage(imageId) {
         await this.nextAndPreviousImageIds(imageId);
-        const {nextImageId, previousImageId} = this.state;
+        const {user, nextImageId, previousImageId} = this.state;
 
         const enlargedImage = <ImageModal 
             imageId = {imageId} 
@@ -118,13 +155,19 @@ class IndividualAlbum extends Component {
             nextImageId={nextImageId} 
             changeImage={this.enlargeImage}
             refreshAlbum={this.getAlbum}
+            user = {user}
             />
             
         this.setState({enlargedImage});
     }
 
     toggleAlbumEdit() {
-        const {editAlbumTitle} = this.state;
+        const {user, editAlbumTitle} = this.state;
+
+        if (!user.isAdmin) {
+            return;
+        }
+
         this.setState({editAlbumTitle: !editAlbumTitle});
     }
 
@@ -133,17 +176,43 @@ class IndividualAlbum extends Component {
         this.setState({albumTitle: value});
     }
 
+    updateAlbumOnEnter(e) {
+        const returnKey = 13;
+
+        if (e.charCode !== returnKey) {
+            return;
+        }
+
+        this.updateAlbum();
+    }
+
     saveAlbumTitle() {
+        const {user} = this.state;
+
+        if (!user.isAdmin) {
+            return;
+        }
+
         this.toggleAlbumEdit();
     }
 
     toggleDeleteAlbum() {
-        const {deleteAlbum} = this.state;
+        const {user, deleteAlbum} = this.state;
+
+        if (!user.isAdmin) {
+            return;
+        }
+
         this.setState({deleteAlbum: !deleteAlbum});
     }
 
     actionDeleteAlbum() {
-        const {albumId} = this.state;
+        const {user, albumId} = this.state;
+
+        if (!user.isAdmin) {
+            return;
+        }
+
         this.setState({deleteAlbum: false});
         const token = document.querySelector('meta[name="csrf-token"]').content;
 
@@ -166,7 +235,11 @@ class IndividualAlbum extends Component {
     }
 
     updateAlbum() {
-        const {albumTitle, editAlbumTitle, albumId} = this.state;
+        const {user, albumTitle, editAlbumTitle, albumId} = this.state;
+
+        if (!user.isAdmin) {
+            return;
+        }
 
         if (!editAlbumTitle) {
             return;
@@ -195,7 +268,7 @@ class IndividualAlbum extends Component {
     }
 
     render() {
-        const {albumTitle, enlargedImage, editAlbumTitle, deleteAlbum} = this.state;
+        const {user, albumTitle, enlargedImage, editAlbumTitle, deleteAlbum} = this.state;
         let albumTitleState;
 
         if (editAlbumTitle) {
@@ -205,13 +278,18 @@ class IndividualAlbum extends Component {
                 value={albumTitle} 
                 onChange={this.updateAlbumTitle}
                 onBlur={this.updateAlbum}
+                onKeyPress={this.updateAlbumOnEnter}
             />
             <span className='icon' onClick={this.saveAlbumTitle}><i className="fas fa-check"></i></span>
             </div>
         } else {
             albumTitleState = <div className="inline">
                 <h1 className="inline" onDoubleClick={this.toggleAlbumEdit}>{albumTitle}</h1>
-                <span className="icon" onClick={this.toggleAlbumEdit}><i className="fas fa-pencil-alt"></i></span>
+                
+                {
+                    !!user && !!user.isAdmin &&
+                    <span className="icon" onClick={this.toggleAlbumEdit}><i className="fas fa-pencil-alt"></i></span>
+                }
                 </div>
         }
 
@@ -228,7 +306,11 @@ class IndividualAlbum extends Component {
 
                 <div className="album-information">
                     {albumTitleState}
-                    <span className="icon delete" onClick={this.toggleDeleteAlbum}><i className="fas fa-trash-alt"></i></span>
+
+                    {
+                        !!user && !!user.isAdmin &&                    
+                        <span className="icon delete" onClick={this.toggleDeleteAlbum}><i className="fas fa-trash-alt"></i></span>
+                    }
                 </div>
                 <div className="images">
                     {this.displayImages()}

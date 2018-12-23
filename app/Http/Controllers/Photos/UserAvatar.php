@@ -18,7 +18,7 @@ class UserAvatar extends FileController
      * @inheritDoc
      */
     public function __construct(Request $request)
-    {
+    {        
         if ($request->file) {
             Parent::__construct($request->file);
         }

@@ -14,6 +14,7 @@ class User {
             this.created_at = user.created_at;
             this.updated_at = user.updated_at;
             this.avatar_filepath = user.avatar_filepath;
+            this.isAdmin = user.isAdmin;
         })
         .catch(error => console.log('error finding user'));
    }
@@ -45,6 +46,10 @@ class User {
 
    getAvatarFilepath() {
        return this.avatar_filepath;
+   }
+
+   isUserAdmin() {
+       return this.isAdmin;
    }
 }
 
