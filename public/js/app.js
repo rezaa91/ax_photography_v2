@@ -14087,8 +14087,9 @@ module.exports = __webpack_require__(73);
 
 /***/ }),
 /* 17 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
 
 /** Require dependencies and helpers */
 __webpack_require__(18);
@@ -36425,7 +36426,8 @@ var Navigation = function (_Component) {
                                             username: data.username,
                                             name: data.name,
                                             email: data.email,
-                                            created_at: data.created_at
+                                            created_at: data.created_at,
+                                            isAdmin: data.isAdmin
                                         }
                                     });
                                 }).catch(function (error) {
@@ -36478,37 +36480,68 @@ var Navigation = function (_Component) {
             } else {
                 var arrowClasses = rotateArrowClass + ' fas fa-arrow-circle-down rotate-arrow';
                 var usernameClass = isDropdownPresent ? 'user-clicked' : '';
-                var dropdownMenu = isDropdownPresent && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    'ul',
-                    { className: 'user-dropdown-menu' },
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'li',
-                        null,
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            'a',
-                            { href: '/user' },
-                            'Dashboard'
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'li',
-                        null,
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            'a',
-                            { href: '/upload' },
-                            'Upload'
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'li',
-                        null,
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            'a',
-                            { href: '/logout' },
-                            'Logout'
-                        )
-                    )
-                );
+
+                var dropdownMenu = void 0;
+
+                // display different dropdown menus dependent on whether user is an administrator or not
+                if (isDropdownPresent) {
+                    if (user.isAdmin) {
+                        dropdownMenu = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'ul',
+                            { className: 'user-dropdown-menu' },
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'li',
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'a',
+                                    { href: '/user' },
+                                    'Dashboard'
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'li',
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'a',
+                                    { href: '/upload' },
+                                    'Upload'
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'li',
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'a',
+                                    { href: '/logout' },
+                                    'Logout'
+                                )
+                            )
+                        );
+                    } else {
+                        dropdownMenu = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'ul',
+                            { className: 'user-dropdown-menu' },
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'li',
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'a',
+                                    { href: '/user' },
+                                    'Dashboard'
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'li',
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'a',
+                                    { href: '/logout' },
+                                    'Logout'
+                                )
+                            )
+                        );
+                    }
+                }
 
                 return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'li',
@@ -36547,7 +36580,7 @@ var Navigation = function (_Component) {
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'div',
-                { className: 'navigation-wrapper' },
+                { className: 'navigation-wrapper', onMouseLeave: this.toggleUserDropdownMenu },
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'ul',
                     { className: 'navigation navigation-left' },
@@ -62814,6 +62847,7 @@ var User = function () {
             _this.created_at = user.created_at;
             _this.updated_at = user.updated_at;
             _this.avatar_filepath = user.avatar_filepath;
+            _this.isAdmin = user.isAdmin;
         }).catch(function (error) {
             return console.log('error finding user');
         });
@@ -62856,6 +62890,11 @@ var User = function () {
         key: 'getAvatarFilepath',
         value: function getAvatarFilepath() {
             return this.avatar_filepath;
+        }
+    }, {
+        key: 'isUserAdmin',
+        value: function isUserAdmin() {
+            return this.isAdmin;
         }
     }]);
 

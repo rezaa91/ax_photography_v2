@@ -42,7 +42,8 @@ class Navigation extends Component {
                     username: data.username,
                     name: data.name,
                     email: data.email,
-                    created_at: data.created_at
+                    created_at: data.created_at,
+                    isAdmin: data.isAdmin
                 }
             })            
         })
@@ -68,12 +69,24 @@ class Navigation extends Component {
         } else {
             const arrowClasses = `${rotateArrowClass} fas fa-arrow-circle-down rotate-arrow`;
             const usernameClass = isDropdownPresent ? 'user-clicked' : '';
-            const dropdownMenu = isDropdownPresent && 
-                <ul className='user-dropdown-menu'>
-                    <li><a href="/user">Dashboard</a></li>
-                    <li><a href="/upload">Upload</a></li>
-                    <li><a href="/logout">Logout</a></li>
-                </ul>
+            
+            let dropdownMenu;
+            
+            // display different dropdown menus dependent on whether user is an administrator or not
+            if (isDropdownPresent) {
+                if (user.isAdmin) {
+                    dropdownMenu = <ul className='user-dropdown-menu'>
+                        <li><a href="/user">Dashboard</a></li>
+                        <li><a href="/upload">Upload</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                } else {
+                    dropdownMenu = <ul className='user-dropdown-menu'>
+                        <li><a href="/user">Dashboard</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                }
+            }                
 
             return(
                 <li className = {usernameClass}>
@@ -102,7 +115,7 @@ class Navigation extends Component {
 
     render() {
         return(
-            <div className="navigation-wrapper">
+            <div className="navigation-wrapper" onMouseLeave={this.toggleUserDropdownMenu}>
                 <ul className="navigation navigation-left">
                     <li className="nav-title"><a href='/'>AX PHOTOGRAPHY</a></li>
                     <li><a href='/albums' className = 'main-link'>Albums</a></li>

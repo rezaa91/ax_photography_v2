@@ -22,7 +22,7 @@ Route::resource('/user', 'DashboardController');
 
 /** Photos/Albums Resource */
 Route::resource('/photos', 'Photos\AlbumsController');
-Route::get('/upload', 'Photos\AlbumsController@create');
+Route::get('/upload', 'Photos\AlbumsController@create')->middleware('isAdmin');
 Route::get('/albums', 'Photos\AlbumsController@index');
 Route::get('/albums/{id}', 'Photos\AlbumsController@show');
 

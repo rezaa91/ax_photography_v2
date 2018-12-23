@@ -327,8 +327,6 @@ class ImageModal extends Component {
             imageStyle = {transform: 'scale(1.5)', cursor:'zoom-out'};
         }
 
-        
-
         return(
             <div>
                 {
