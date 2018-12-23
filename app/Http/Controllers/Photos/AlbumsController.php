@@ -136,7 +136,7 @@ class AlbumsController extends PhotosController
     }
 
     /**
-     * Upate the updated_at field in album
+     * Update the updated_at field in album
      *
      * @param integer $albumId
      */
