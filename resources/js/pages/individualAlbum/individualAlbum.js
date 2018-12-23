@@ -164,7 +164,7 @@ class IndividualAlbum extends Component {
     toggleAlbumEdit() {
         const {user, editAlbumTitle} = this.state;
 
-        if (!user.isAdmin) {
+        if (!user || !user.isAdmin) {
             return;
         }
 

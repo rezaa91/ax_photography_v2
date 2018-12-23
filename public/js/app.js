@@ -14082,14 +14082,13 @@ module.exports = checkPropTypes;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(17);
-module.exports = __webpack_require__(73);
+module.exports = __webpack_require__(72);
 
 
 /***/ }),
 /* 17 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
 
 /** Require dependencies and helpers */
 __webpack_require__(18);
@@ -61993,7 +61992,7 @@ var IndividualAlbum = function (_Component) {
                 editAlbumTitle = _state2.editAlbumTitle;
 
 
-            if (!user.isAdmin) {
+            if (!user || !user.isAdmin) {
                 return;
             }
 
@@ -62211,9 +62210,9 @@ if (document.getElementById('individualAlbum')) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modalSettings__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__settings__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__settings__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_components_modal__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__global_components_alert__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__global_components_alert__ = __webpack_require__(71);
 
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -62312,7 +62311,7 @@ var ImageModal = function (_Component) {
             var user = this.state.user;
 
 
-            if (!users_which_like || !user.id) {
+            if (!users_which_like || !user) {
                 return;
             }
 
@@ -62380,7 +62379,7 @@ var ImageModal = function (_Component) {
 
             // if user is not logged in, return
 
-            if (!user.id) {
+            if (!user) {
                 // TODO - inform user to log in
                 return;
             }
@@ -62417,7 +62416,7 @@ var ImageModal = function (_Component) {
                 displaySettings = _state.displaySettings;
 
 
-            if (!user.isAdmin) {
+            if (!user || !user.isAdmin) {
                 return;
             }
 
@@ -62452,7 +62451,7 @@ var ImageModal = function (_Component) {
                             case 0:
                                 user = this.state.user;
 
-                                if (user.isAdmin) {
+                                if (!(!user || !user.isAdmin)) {
                                     _context2.next = 3;
                                     break;
                                 }
@@ -62529,7 +62528,7 @@ var ImageModal = function (_Component) {
                 editPhoto = _state2.editPhoto;
 
 
-            if (!user.isAdmin) {
+            if (!user || !user.isAdmin) {
                 return;
             }
 
@@ -62614,7 +62613,7 @@ var ImageModal = function (_Component) {
             var user = this.state.user;
 
 
-            if (!user.isAdmin) {
+            if (!user || !user.isAdmin) {
                 return;
             }
 
@@ -62832,7 +62831,7 @@ var ImageModal = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'span',
                                 null,
-                                !!user.isAdmin && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                !!user && user.isAdmin && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                     'span',
                                     { onClick: this.toggleDisplaySettings },
                                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-cog' })
@@ -62946,8 +62945,7 @@ function setImageHeight() {
 }
 
 /***/ }),
-/* 70 */,
-/* 71 */
+/* 70 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63088,7 +63086,7 @@ var Settings = function (_Component) {
 /* harmony default export */ __webpack_exports__["a"] = (Settings);
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63184,7 +63182,7 @@ var Alert = function (_Component) {
 /* harmony default export */ __webpack_exports__["a"] = (Alert);
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

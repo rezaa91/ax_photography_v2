@@ -70,7 +70,7 @@ class ImageModal extends Component {
         const {users_which_like} = this.state.imageDetails;
         const {user} = this.state;
 
-        if (!users_which_like || !user.id) {
+        if (!users_which_like || !user) {
             return;
         }
 
@@ -104,7 +104,7 @@ class ImageModal extends Component {
         const {user} = this.state;
 
         // if user is not logged in, return
-        if (!user.id) {
+        if (!user) {
             // TODO - inform user to log in
             return;
         }
@@ -135,7 +135,7 @@ class ImageModal extends Component {
     toggleDisplaySettings() {
         const {user, displaySettings} = this.state;
 
-        if (!user.isAdmin) {
+        if (!user || !user.isAdmin) {
             return;
         }
 
@@ -156,7 +156,7 @@ class ImageModal extends Component {
     async actionDelete() {
         const {user} = this.state;
 
-        if (!user.isAdmin) {
+        if (!user || !user.isAdmin) {
             return;
         }
 
@@ -198,7 +198,7 @@ class ImageModal extends Component {
     toggleEditPhoto() {
         const {user, editPhoto} = this.state;
 
-        if (!user.isAdmin) {
+        if (!user || !user.isAdmin) {
             return;
         }
 
@@ -271,7 +271,7 @@ class ImageModal extends Component {
     updateImageDetails() {
         const {user} = this.state;
 
-        if (!user.isAdmin) {
+        if (!user || !user.isAdmin) {
             return;
         }
 
@@ -435,7 +435,7 @@ class ImageModal extends Component {
                         <div className='imageModal-footer'>
                             <span>
                                 {
-                                    !!user.isAdmin &&
+                                    !!user && user.isAdmin &&
                                     <span onClick={this.toggleDisplaySettings}><i className = "fas fa-cog"></i></span>
                                 }
 
