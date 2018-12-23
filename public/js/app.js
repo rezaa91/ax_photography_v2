@@ -60921,7 +60921,6 @@ var Dashboard = function (_Component) {
     }, {
         key: 'displayWarning',
         value: function displayWarning() {
-            // TODO - make user confirm deletion of account by retyping password
             this.setState({ shouldDeleteAccount: true });
         }
     }, {
@@ -60943,7 +60942,8 @@ var Dashboard = function (_Component) {
                     'Content-Type': 'text/plain',
                     'Access-Control-Allow-Origin': '*',
                     'X-CSRF-TOKEN': token
-                }
+                },
+                redirect: 'follow'
             }).then(function (response) {
                 return console.log(response);
             }).catch(function (error) {
@@ -61739,8 +61739,10 @@ var IndividualAlbum = function (_Component) {
         var _this = _possibleConstructorReturn(this, (IndividualAlbum.__proto__ || Object.getPrototypeOf(IndividualAlbum)).call(this));
 
         _this.getAlbum();
+        _this.getUser();
 
         _this.state = {
+            user: null,
             albumId: null,
             albumTitle: '',
             albumImages: null,
@@ -61752,6 +61754,7 @@ var IndividualAlbum = function (_Component) {
         };
 
         _this.getAlbum = _this.getAlbum.bind(_this);
+        _this.getUser = _this.getUser.bind(_this);
         _this.displayImages = _this.displayImages.bind(_this);
         _this.enlargeImage = _this.enlargeImage.bind(_this);
         _this.closeEnlargedImage = _this.closeEnlargedImage.bind(_this);
@@ -61827,6 +61830,62 @@ var IndividualAlbum = function (_Component) {
         }()
 
         /**
+         * Get logged in user through API call
+         */
+
+    }, {
+        key: 'getUser',
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
+                var _this3 = this;
+
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                _context2.next = 2;
+                                return fetch('/api/user').then(function (response) {
+                                    return response.status === 200 && response.json();
+                                }).then(function (data) {
+                                    data = data.data;
+
+                                    if (!data) {
+                                        return;
+                                    }
+
+                                    _this3.setState({
+                                        user: {
+                                            id: data.id,
+                                            username: data.username,
+                                            name: data.name,
+                                            email: data.email,
+                                            created_at: data.created_at,
+                                            isAdmin: data.isAdmin
+                                        }
+                                    });
+                                }).catch(function (error) {
+                                    _this3.setState({
+                                        isLoggedIn: false,
+                                        user: null
+                                    });
+                                });
+
+                            case 2:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function getUser() {
+                return _ref2.apply(this, arguments);
+            }
+
+            return getUser;
+        }()
+
+        /**
          * Set the previous and next image ids in the state
          * These values are used to traverse images
          * @param int imageId 
@@ -61858,7 +61917,7 @@ var IndividualAlbum = function (_Component) {
     }, {
         key: 'displayImages',
         value: function displayImages() {
-            var _this3 = this;
+            var _this4 = this;
 
             var albumImages = this.state.albumImages;
 
@@ -61872,7 +61931,7 @@ var IndividualAlbum = function (_Component) {
                     'div',
                     { className: 'image', key: image.id },
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { onClick: function onClick() {
-                            return _this3.enlargeImage(image.id);
+                            return _this4.enlargeImage(image.id);
                         }, src: '/storage/uploads/' + image.filepath })
                 );
             });
@@ -61887,25 +61946,26 @@ var IndividualAlbum = function (_Component) {
     }, {
         key: 'enlargeImage',
         value: function () {
-            var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(imageId) {
-                var _state, nextImageId, previousImageId, enlargedImage;
+            var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3(imageId) {
+                var _state, user, nextImageId, previousImageId, enlargedImage;
 
-                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
                     while (1) {
-                        switch (_context2.prev = _context2.next) {
+                        switch (_context3.prev = _context3.next) {
                             case 0:
-                                _context2.next = 2;
+                                _context3.next = 2;
                                 return this.nextAndPreviousImageIds(imageId);
 
                             case 2:
-                                _state = this.state, nextImageId = _state.nextImageId, previousImageId = _state.previousImageId;
+                                _state = this.state, user = _state.user, nextImageId = _state.nextImageId, previousImageId = _state.previousImageId;
                                 enlargedImage = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_imageModal__["a" /* default */], {
                                     imageId: imageId,
                                     closeModal: this.closeEnlargedImage,
                                     previousImageId: previousImageId,
                                     nextImageId: nextImageId,
                                     changeImage: this.enlargeImage,
-                                    refreshAlbum: this.getAlbum
+                                    refreshAlbum: this.getAlbum,
+                                    user: user
                                 });
 
 
@@ -61913,14 +61973,14 @@ var IndividualAlbum = function (_Component) {
 
                             case 5:
                             case 'end':
-                                return _context2.stop();
+                                return _context3.stop();
                         }
                     }
-                }, _callee2, this);
+                }, _callee3, this);
             }));
 
             function enlargeImage(_x) {
-                return _ref2.apply(this, arguments);
+                return _ref3.apply(this, arguments);
             }
 
             return enlargeImage;
@@ -61928,7 +61988,14 @@ var IndividualAlbum = function (_Component) {
     }, {
         key: 'toggleAlbumEdit',
         value: function toggleAlbumEdit() {
-            var editAlbumTitle = this.state.editAlbumTitle;
+            var _state2 = this.state,
+                user = _state2.user,
+                editAlbumTitle = _state2.editAlbumTitle;
+
+
+            if (!user.isAdmin) {
+                return;
+            }
 
             this.setState({ editAlbumTitle: !editAlbumTitle });
         }
@@ -61952,19 +62019,40 @@ var IndividualAlbum = function (_Component) {
     }, {
         key: 'saveAlbumTitle',
         value: function saveAlbumTitle() {
+            var user = this.state.user;
+
+
+            if (!user.isAdmin) {
+                return;
+            }
+
             this.toggleAlbumEdit();
         }
     }, {
         key: 'toggleDeleteAlbum',
         value: function toggleDeleteAlbum() {
-            var deleteAlbum = this.state.deleteAlbum;
+            var _state3 = this.state,
+                user = _state3.user,
+                deleteAlbum = _state3.deleteAlbum;
+
+
+            if (!user.isAdmin) {
+                return;
+            }
 
             this.setState({ deleteAlbum: !deleteAlbum });
         }
     }, {
         key: 'actionDeleteAlbum',
         value: function actionDeleteAlbum() {
-            var albumId = this.state.albumId;
+            var _state4 = this.state,
+                user = _state4.user,
+                albumId = _state4.albumId;
+
+
+            if (!user.isAdmin) {
+                return;
+            }
 
             this.setState({ deleteAlbum: false });
             var token = document.querySelector('meta[name="csrf-token"]').content;
@@ -61994,11 +62082,16 @@ var IndividualAlbum = function (_Component) {
     }, {
         key: 'updateAlbum',
         value: function updateAlbum() {
-            var _state2 = this.state,
-                albumTitle = _state2.albumTitle,
-                editAlbumTitle = _state2.editAlbumTitle,
-                albumId = _state2.albumId;
+            var _state5 = this.state,
+                user = _state5.user,
+                albumTitle = _state5.albumTitle,
+                editAlbumTitle = _state5.editAlbumTitle,
+                albumId = _state5.albumId;
 
+
+            if (!user.isAdmin) {
+                return;
+            }
 
             if (!editAlbumTitle) {
                 return;
@@ -62030,11 +62123,12 @@ var IndividualAlbum = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _state3 = this.state,
-                albumTitle = _state3.albumTitle,
-                enlargedImage = _state3.enlargedImage,
-                editAlbumTitle = _state3.editAlbumTitle,
-                deleteAlbum = _state3.deleteAlbum;
+            var _state6 = this.state,
+                user = _state6.user,
+                albumTitle = _state6.albumTitle,
+                enlargedImage = _state6.enlargedImage,
+                editAlbumTitle = _state6.editAlbumTitle,
+                deleteAlbum = _state6.deleteAlbum;
 
             var albumTitleState = void 0;
 
@@ -62064,7 +62158,7 @@ var IndividualAlbum = function (_Component) {
                         { className: 'inline', onDoubleClick: this.toggleAlbumEdit },
                         albumTitle
                     ),
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    !!user && !!user.isAdmin && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'span',
                         { className: 'icon', onClick: this.toggleAlbumEdit },
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-pencil-alt' })
@@ -62084,7 +62178,7 @@ var IndividualAlbum = function (_Component) {
                     'div',
                     { className: 'album-information' },
                     albumTitleState,
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    !!user && !!user.isAdmin && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'span',
                         { className: 'icon delete', onClick: this.toggleDeleteAlbum },
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-trash-alt' })
@@ -62117,10 +62211,9 @@ if (document.getElementById('individualAlbum')) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modalSettings__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__classes_User__ = __webpack_require__(70);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__settings__ = __webpack_require__(71);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__global_components_modal__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__global_components_alert__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__settings__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_components_modal__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__global_components_alert__ = __webpack_require__(72);
 
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -62141,10 +62234,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-
-// get the logged in user details
-var loggedInUser = new __WEBPACK_IMPORTED_MODULE_3__classes_User__["a" /* default */]();
-
 var ImageModal = function (_Component) {
     _inherits(ImageModal, _Component);
 
@@ -62156,7 +62245,7 @@ var ImageModal = function (_Component) {
         _this.getImageData(_this.props.imageId);
 
         _this.state = {
-            user_id: loggedInUser.getUserId(),
+            user: _this.props.user,
             imageDetails: {
                 album_id: null,
                 created_at: null,
@@ -62220,15 +62309,15 @@ var ImageModal = function (_Component) {
         key: 'doesUserLikePhoto',
         value: function doesUserLikePhoto() {
             var users_which_like = this.state.imageDetails.users_which_like;
-            var user_id = this.state.user_id;
+            var user = this.state.user;
 
 
-            if (!users_which_like || !user_id) {
+            if (!users_which_like || !user.id) {
                 return;
             }
 
             var doesUserLike = users_which_like.find(function (like) {
-                return user_id === like;
+                return user.id === like;
             });
             this.setState({ hasUserLiked: doesUserLike });
         }
@@ -62287,11 +62376,11 @@ var ImageModal = function (_Component) {
         key: 'likePhoto',
         value: function likePhoto() {
             var imageId = this.props.imageId;
-            var user_id = this.state.user_id;
+            var user = this.state.user;
 
             // if user is not logged in, return
 
-            if (!user_id) {
+            if (!user.id) {
                 // TODO - inform user to log in
                 return;
             }
@@ -62308,7 +62397,7 @@ var ImageModal = function (_Component) {
                     'X-CSRF-TOKEN': token
                 },
                 body: JSON.stringify({
-                    'user_id': user_id,
+                    'user_id': user.id,
                     'photo_id': imageId
                 })
             }).then(function (response) {
@@ -62323,7 +62412,14 @@ var ImageModal = function (_Component) {
     }, {
         key: 'toggleDisplaySettings',
         value: function toggleDisplaySettings() {
-            var displaySettings = this.state.displaySettings;
+            var _state = this.state,
+                user = _state.user,
+                displaySettings = _state.displaySettings;
+
+
+            if (!user.isAdmin) {
+                return;
+            }
 
             this.setState({ displaySettings: !displaySettings });
         }
@@ -62348,19 +62444,29 @@ var ImageModal = function (_Component) {
         key: 'actionDelete',
         value: function () {
             var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
-                var _state$imageDetails, album_cover_photo, homepage_background, _props, imageId, closeModal, refreshAlbum, token, alertMsg;
+                var user, _state$imageDetails, album_cover_photo, homepage_background, _props, imageId, closeModal, refreshAlbum, token, alertMsg;
 
                 return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
                     while (1) {
                         switch (_context2.prev = _context2.next) {
                             case 0:
+                                user = this.state.user;
+
+                                if (user.isAdmin) {
+                                    _context2.next = 3;
+                                    break;
+                                }
+
+                                return _context2.abrupt('return');
+
+                            case 3:
                                 _state$imageDetails = this.state.imageDetails, album_cover_photo = _state$imageDetails.album_cover_photo, homepage_background = _state$imageDetails.homepage_background;
                                 _props = this.props, imageId = _props.imageId, closeModal = _props.closeModal, refreshAlbum = _props.refreshAlbum;
                                 token = document.querySelector('meta[name="csrf-token"]').content;
                                 alertMsg = null;
 
                                 if (!album_cover_photo) {
-                                    _context2.next = 8;
+                                    _context2.next = 11;
                                     break;
                                 }
 
@@ -62368,9 +62474,9 @@ var ImageModal = function (_Component) {
                                 this.setState({ displayAlert: true, alertMsg: alertMsg });
                                 return _context2.abrupt('return');
 
-                            case 8:
+                            case 11:
                                 if (!homepage_background) {
-                                    _context2.next = 12;
+                                    _context2.next = 15;
                                     break;
                                 }
 
@@ -62378,8 +62484,8 @@ var ImageModal = function (_Component) {
                                 this.setState({ displayAlert: true, alertMsg: alertMsg });
                                 return _context2.abrupt('return');
 
-                            case 12:
-                                _context2.next = 14;
+                            case 15:
+                                _context2.next = 17;
                                 return fetch('/api/delete_photo/' + imageId, {
                                     method: 'DELETE',
                                     redirect: 'follow',
@@ -62394,14 +62500,14 @@ var ImageModal = function (_Component) {
                                     return console.log(err);
                                 });
 
-                            case 14:
+                            case 17:
 
                                 // reset state
                                 this.toggleDisplayModal();
                                 closeModal();
                                 refreshAlbum();
 
-                            case 17:
+                            case 20:
                             case 'end':
                                 return _context2.stop();
                         }
@@ -62418,7 +62524,14 @@ var ImageModal = function (_Component) {
     }, {
         key: 'toggleEditPhoto',
         value: function toggleEditPhoto() {
-            var editPhoto = this.state.editPhoto;
+            var _state2 = this.state,
+                user = _state2.user,
+                editPhoto = _state2.editPhoto;
+
+
+            if (!user.isAdmin) {
+                return;
+            }
 
             this.setState({ editPhoto: !editPhoto });
         }
@@ -62498,6 +62611,13 @@ var ImageModal = function (_Component) {
     }, {
         key: 'updateImageDetails',
         value: function updateImageDetails() {
+            var user = this.state.user;
+
+
+            if (!user.isAdmin) {
+                return;
+            }
+
             var _state$imageDetails3 = this.state.imageDetails,
                 title = _state$imageDetails3.title,
                 description = _state$imageDetails3.description;
@@ -62580,16 +62700,16 @@ var ImageModal = function (_Component) {
                 closeModal = _props3.closeModal,
                 previousImageId = _props3.previousImageId,
                 nextImageId = _props3.nextImageId;
-            var _state = this.state,
-                user_id = _state.user_id,
-                imageDetails = _state.imageDetails,
-                hasUserLiked = _state.hasUserLiked,
-                displaySettings = _state.displaySettings,
-                displayModal = _state.displayModal,
-                editPhoto = _state.editPhoto,
-                photoZoomed = _state.photoZoomed,
-                displayAlert = _state.displayAlert,
-                alertMsg = _state.alertMsg;
+            var _state3 = this.state,
+                user = _state3.user,
+                imageDetails = _state3.imageDetails,
+                hasUserLiked = _state3.hasUserLiked,
+                displaySettings = _state3.displaySettings,
+                displayModal = _state3.displayModal,
+                editPhoto = _state3.editPhoto,
+                photoZoomed = _state3.photoZoomed,
+                displayAlert = _state3.displayAlert,
+                alertMsg = _state3.alertMsg;
 
 
             var thumbsUpStyle = null,
@@ -62605,12 +62725,12 @@ var ImageModal = function (_Component) {
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'div',
                 null,
-                displayModal && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__global_components_modal__["a" /* default */], {
+                displayModal && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__global_components_modal__["a" /* default */], {
                     message: 'Are you sure you want to delete this photo?',
                     action: this.actionDelete,
                     resetState: this.toggleDisplayModal
                 }),
-                displayAlert && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__global_components_alert__["a" /* default */], {
+                displayAlert && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__global_components_alert__["a" /* default */], {
                     message: alertMsg,
                     resetState: this.hideAlert
                 }),
@@ -62712,14 +62832,14 @@ var ImageModal = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'span',
                                 null,
-                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                !!user.isAdmin && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                     'span',
                                     { onClick: this.toggleDisplaySettings },
                                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-cog' })
                                 ),
-                                displaySettings && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__settings__["a" /* default */], {
+                                displaySettings && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__settings__["a" /* default */], {
                                     imageDetails: imageDetails,
-                                    user_id: user_id,
+                                    user_id: user.id,
                                     toggleDisplayModal: this.toggleDisplayModal,
                                     toggleEditPhoto: this.toggleEditPhoto
                                 })
@@ -62826,90 +62946,7 @@ function setImageHeight() {
 }
 
 /***/ }),
-/* 70 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var User = function () {
-    function User() {
-        var _this = this;
-
-        _classCallCheck(this, User);
-
-        // get the current user
-        fetch('/api/user').then(function (response) {
-            return response.status === 200 && response.json();
-        }).then(function (data) {
-            var user = data.data;
-
-            _this.user_id = user.id;
-            _this.name = user.name;
-            _this.email = user.email;
-            _this.username = user.username;
-            _this.created_at = user.created_at;
-            _this.updated_at = user.updated_at;
-            _this.avatar_filepath = user.avatar_filepath;
-            _this.isAdmin = user.isAdmin;
-        }).catch(function (error) {
-            return console.log('error finding user');
-        });
-    }
-
-    //Getters bellow
-
-
-    _createClass(User, [{
-        key: 'getUserId',
-        value: function getUserId() {
-            return this.user_id;
-        }
-    }, {
-        key: 'getName',
-        value: function getName() {
-            return this.name;
-        }
-    }, {
-        key: 'getEmail',
-        value: function getEmail() {
-            return this.email;
-        }
-    }, {
-        key: 'getUsername',
-        value: function getUsername() {
-            return this.username;
-        }
-    }, {
-        key: 'getCreatedAt',
-        value: function getCreatedAt() {
-            return this.created_at;
-        }
-    }, {
-        key: 'getUpdatedAt',
-        value: function getUpdatedAt() {
-            return this.updated_at;
-        }
-    }, {
-        key: 'getAvatarFilepath',
-        value: function getAvatarFilepath() {
-            return this.avatar_filepath;
-        }
-    }, {
-        key: 'isUserAdmin',
-        value: function isUserAdmin() {
-            return this.isAdmin;
-        }
-    }]);
-
-    return User;
-}();
-
-/* harmony default export */ __webpack_exports__["a"] = (User);
-
-/***/ }),
+/* 70 */,
 /* 71 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 

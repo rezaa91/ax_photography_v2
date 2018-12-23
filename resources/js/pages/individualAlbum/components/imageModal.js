@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import imageModalInit from '../modalSettings'; // modal specific javascript
-import User from '../../../classes/User';
 import Settings from './settings';
 import Modal from '../../../global_components/modal';
 import Alert from '../../../global_components/alert';
-
-// get the logged in user details
-const loggedInUser = new User();
 
 class ImageModal extends Component {
     constructor(props) {
@@ -15,7 +11,7 @@ class ImageModal extends Component {
        this.getImageData(this.props.imageId);
 
         this.state = {
-            user_id: loggedInUser.getUserId(),
+            user: this.props.user,
             imageDetails: {
                 album_id: null,
                 created_at: null,
@@ -72,13 +68,13 @@ class ImageModal extends Component {
      */
     doesUserLikePhoto() {
         const {users_which_like} = this.state.imageDetails;
-        const {user_id} = this.state;
+        const {user} = this.state;
 
-        if (!users_which_like || !user_id) {
+        if (!users_which_like || !user.id) {
             return;
         }
 
-        const doesUserLike = users_which_like.find(like => user_id === like);
+        const doesUserLike = users_which_like.find(like => user.id === like);
         this.setState({hasUserLiked: doesUserLike});
     }
 
@@ -105,10 +101,10 @@ class ImageModal extends Component {
      */
     likePhoto() {
         const {imageId} = this.props;
-        const {user_id} = this.state;
+        const {user} = this.state;
 
         // if user is not logged in, return
-        if (!user_id) {
+        if (!user.id) {
             // TODO - inform user to log in
             return;
         }
@@ -125,7 +121,7 @@ class ImageModal extends Component {
                 'X-CSRF-TOKEN': token
             },
             body: JSON.stringify({
-                'user_id': user_id,
+                'user_id': user.id,
                 'photo_id': imageId
             })
         })
@@ -137,7 +133,12 @@ class ImageModal extends Component {
     }
 
     toggleDisplaySettings() {
-        const {displaySettings} = this.state;
+        const {user, displaySettings} = this.state;
+
+        if (!user.isAdmin) {
+            return;
+        }
+
         this.setState({displaySettings: !displaySettings});
     }
 
@@ -153,6 +154,12 @@ class ImageModal extends Component {
      * Delete the photo from the DB via REST API
      */
     async actionDelete() {
+        const {user} = this.state;
+
+        if (!user.isAdmin) {
+            return;
+        }
+
         const {album_cover_photo, homepage_background} = this.state.imageDetails;
         const {imageId, closeModal, refreshAlbum} = this.props;
         const token = document.querySelector('meta[name="csrf-token"]').content;
@@ -189,7 +196,12 @@ class ImageModal extends Component {
     }
 
     toggleEditPhoto() {
-        const {editPhoto} = this.state;
+        const {user, editPhoto} = this.state;
+
+        if (!user.isAdmin) {
+            return;
+        }
+
         this.setState({editPhoto: !editPhoto});
     }
 
@@ -257,6 +269,12 @@ class ImageModal extends Component {
      * Update image details via API
      */
     updateImageDetails() {
+        const {user} = this.state;
+
+        if (!user.isAdmin) {
+            return;
+        }
+
         const {title, description} = this.state.imageDetails;
         const {imageId} = this.props;
         const token = document.querySelector('meta[name="csrf-token"]').content;
@@ -316,7 +334,7 @@ class ImageModal extends Component {
     
     render() {
         const {closeModal, previousImageId, nextImageId} = this.props;
-        const {user_id, imageDetails, hasUserLiked, displaySettings, displayModal, editPhoto, photoZoomed, displayAlert, alertMsg} = this.state;
+        const {user, imageDetails, hasUserLiked, displaySettings, displayModal, editPhoto, photoZoomed, displayAlert, alertMsg} = this.state;
 
         let thumbsUpStyle = null, imageStyle = null;
         if (hasUserLiked) {
@@ -416,12 +434,16 @@ class ImageModal extends Component {
 
                         <div className='imageModal-footer'>
                             <span>
-                                <span onClick={this.toggleDisplaySettings}><i className = "fas fa-cog"></i></span>
+                                {
+                                    !!user.isAdmin &&
+                                    <span onClick={this.toggleDisplaySettings}><i className = "fas fa-cog"></i></span>
+                                }
+
                                 {
                                     displaySettings &&
                                     <Settings 
                                     imageDetails={imageDetails} 
-                                    user_id={user_id} 
+                                    user_id={user.id} 
                                     toggleDisplayModal={this.toggleDisplayModal} 
                                     toggleEditPhoto={this.toggleEditPhoto}
                                     /> 

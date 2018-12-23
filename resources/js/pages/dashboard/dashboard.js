@@ -46,7 +46,6 @@ class Dashboard extends Component {
     }
 
     displayWarning() {
-        // TODO - make user confirm deletion of account by retyping password
         this.setState({shouldDeleteAccount: true});
     }
 
@@ -65,7 +64,8 @@ class Dashboard extends Component {
                 'Content-Type': 'text/plain',
                 'Access-Control-Allow-Origin': '*',
                 'X-CSRF-TOKEN': token
-            }
+            },
+            redirect: 'follow'
         })
         .then(response => console.log(response))
         .catch(error => console.log(error));
