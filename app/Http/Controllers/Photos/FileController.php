@@ -49,7 +49,7 @@ class FileController extends Controller
    public function __construct($file = null)
    {
 
-        if (!isset($file)) {
+     if (!isset($file)) {
             return;
         }
 
