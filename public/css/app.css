@@ -5858,6 +5858,7 @@ form .selection .option {
 
 .comments-wrapper .comments-body {
   overflow-y: scroll;
+  height: 80%;
 }
 
 .comments-wrapper .comments-footer {
@@ -5917,6 +5918,84 @@ form .selection .option {
 
 .comments-wrapper .comments-footer .character-counter span {
   color: #1d58b7;
+}
+
+.comments-wrapper .comments-footer .login {
+  color: #05704c;
+}
+
+.comments-wrapper .comments-footer .login:hover {
+  color: #353535;
+}
+
+.comment {
+  border-bottom: 1px solid #999999;
+  padding: 10px 15px;
+  position: relative;
+}
+
+.comment .flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.comment .user-info {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  text-align: center;
+}
+
+.comment .user-info .username {
+  color: #999999;
+}
+
+.comment .user-info .avatar {
+  width: 100%;
+}
+
+.comment .user-info .avatar img {
+  width: 60%;
+  height: 60%;
+  -o-object-fit: contain;
+     object-fit: contain;
+  border-radius: 60%;
+}
+
+.comment .comment-message {
+  -webkit-box-flex: 10;
+      -ms-flex: 10;
+          flex: 10;
+  padding: 5px;
+  color: #353535;
+}
+
+.comment .comment-message .timestamp {
+  font-size: 0.8rem;
+}
+
+.comment .delete-comment {
+  position: absolute;
+  width: 100%;
+  text-align: right;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  bottom: 0;
+  right: 15px;
+}
+
+.comment .delete-comment i {
+  cursor: pointer;
+  color: #9e0401;
+  font-size: 0.8rem;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+}
+
+.comment .delete-comment i:hover {
+  color: #111111;
 }
 
 .navigation-wrapper {

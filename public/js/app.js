@@ -62755,7 +62755,8 @@ var ImageModal = function (_Component) {
                 displayCommentsModal && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__commentsModal__["a" /* default */], {
                     close: this.hideCommentsModal,
                     imageDetails: imageDetails,
-                    user: user
+                    user: user,
+                    refresh: this.getImageData
                 }),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
@@ -63218,6 +63219,7 @@ var Alert = function (_Component) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__classes_Validate__ = __webpack_require__(59);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -63225,6 +63227,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -63297,7 +63300,7 @@ var Comments = function (_Component) {
                 imageDetails = _props.imageDetails;
 
 
-            if (!user || !user.isAdmin) {
+            if (!user) {
                 return;
             }
 
@@ -63327,7 +63330,12 @@ var Comments = function (_Component) {
                 return console.log(error);
             });
 
-            this.setState({ commentMessage: '' });
+            var characterLimit = this.state.characterLimit;
+
+            this.setState({ commentMessage: '', charactersRemaining: characterLimit });
+
+            // Refresh details to display most up to date comments
+            this.props.refresh(imageDetails.id);
         }
 
         /**
@@ -63340,10 +63348,15 @@ var Comments = function (_Component) {
         value: function renderComments() {
             var _this2 = this;
 
-            var comments = this.props.imageDetails.comments;
+            var imageDetails = this.props.imageDetails;
 
 
-            return comments.map(function (comment, index) {
+            return imageDetails.comments.map(function (comment, index) {
+
+                if (imageDetails.id !== comment.photo_id) {
+                    return;
+                }
+
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     { className: 'comment', key: index },
@@ -63360,33 +63373,56 @@ var Comments = function (_Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'span',
-                                null,
-                                comments.username
+                                { className: 'username' },
+                                comment.username
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             { className: 'comment-message' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'timestamp' },
+                                __WEBPACK_IMPORTED_MODULE_1__classes_Validate__["a" /* default */].validateDate(comment.created_at)
+                            ),
                             comment.post_text
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             { className: 'delete-comment' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-trash-alt', onClick: _this2.deleteComment })
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-trash-alt', onClick: function onClick() {
+                                    return _this2.deleteComment(comment.id);
+                                } })
                         )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'timestamp' },
-                        comment.created_at
                     )
                 );
             });
         }
+
+        /**
+         * @param int postId 
+         */
+
     }, {
         key: 'deleteComment',
-        value: function deleteComment() {
-            console.log('comment deleted');
+        value: function deleteComment(postId) {
+            var token = document.querySelector('meta[name="csrf-token"]').content;
+
+            fetch('/api/delete_comment/' + postId, {
+                method: 'Delete',
+                headers: {
+                    'X-CSRF-TOKEN': token
+                }
+            }).then(function (response) {
+                return console.log(response);
+            }).catch(function (error) {
+                return console.log(error);
+            });
+
+            // Refresh details to display most up to date comments
+            var id = this.props.imageDetails.id;
+
+            this.props.refresh(id);
         }
     }, {
         key: 'render',
@@ -63421,7 +63457,7 @@ var Comments = function (_Component) {
                         { className: 'comments-body' },
                         comments
                     ),
-                    user && user.isAdmin ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    user ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
                         { className: 'comments-footer' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -63465,7 +63501,7 @@ var Comments = function (_Component) {
                         'Please ',
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'a',
-                            { href: '/login' },
+                            { href: '/login', className: 'login' },
                             'login'
                         ),
                         ' to comment.'

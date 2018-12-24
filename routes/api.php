@@ -109,3 +109,8 @@ Route::post('/user/{id}', 'Photos\UserAvatar@storeAvatarFilepath');#
  * Post photo comment
  */
 Route::post('/post_comment/{photo_id}', 'Photos\PostsController@postComment');
+
+/**
+ * Delete photo comment
+ */
+Route::delete('/delete_comment/{post_id}', 'Photos\PostsController@deleteComment');

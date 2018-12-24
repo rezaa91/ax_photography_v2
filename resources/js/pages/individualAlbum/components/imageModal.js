@@ -389,9 +389,9 @@ class ImageModal extends Component {
                     close={this.hideCommentsModal}
                     imageDetails={imageDetails}
                     user={user}
+                    refresh={this.getImageData}
                     />
                 }
-
 
                 <div 
                 className='imageModal-wrapper' 

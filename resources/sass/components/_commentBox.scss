@@ -41,6 +41,7 @@
 
     .comments-body {
         overflow-y: scroll;
+        height: 80%;
     }
 
     .comments-footer {
@@ -91,7 +92,76 @@
             span {
                 color: $blue;
             }
-        } 
+        }
+        
+        .login {
+            color: $green;
+
+            &:hover {
+                color: $darkgrey;
+            }
+        }
+    }
+}
+
+
+// Actual comment box styling
+.comment {
+    border-bottom: 1px solid $grey;
+    padding: 10px 15px;
+    position: relative;
+    
+    .flex {
+        display: flex;
     }
 
+    .user-info {
+        flex: 1;
+        text-align: center;
+
+        .username {
+            color: $grey;
+        }
+
+        .avatar {
+            width: 100%;
+
+            img {
+                width: 60%;
+                height: 60%;
+                object-fit: contain;
+                border-radius: 60%;
+            }
+        }
+    }
+
+    .comment-message {
+        flex: 10;
+        padding: 5px;
+        color: $darkgrey;
+
+        .timestamp {
+            font-size: $font-small;
+        }
+    }
+
+    .delete-comment {
+        position: absolute;
+        width: 100%;
+        text-align: right;
+        flex: 1;
+        bottom: 0;
+        right: 15px;
+
+        i {
+            cursor: pointer;
+            color: $red;
+            font-size: $font-small;
+            transition: color 0.3s;
+
+            &:hover {
+                color: $black;
+            }
+        }
+    }
 }

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Validate from '../../../classes/Validate';
 
 class Comments extends Component {
     constructor() {
@@ -50,7 +51,7 @@ class Comments extends Component {
     postMessage() {
         const {user, imageDetails} = this.props;
 
-        if (!user || !user.isAdmin) {
+        if (!user) {
             return;
         }
 
@@ -77,7 +78,11 @@ class Comments extends Component {
         .then(response => console.log(response))
         .catch(error => console.log(error));
 
-        this.setState({commentMessage: ''});
+        const {characterLimit} = this.state;
+        this.setState({commentMessage: '', charactersRemaining: characterLimit});
+
+        // Refresh details to display most up to date comments
+        this.props.refresh(imageDetails.id);
     }
 
     /**
@@ -85,36 +90,56 @@ class Comments extends Component {
      * @return JSX which is used to render each comment in render function
      */
     renderComments() {
-        const {comments} = this.props.imageDetails;
+        const {imageDetails} = this.props;
 
-        return comments.map((comment, index) => (
-            <div className="comment" key={index}>
+        return imageDetails.comments.map((comment, index) => {
+
+            if (imageDetails.id !== comment.photo_id) {
+                return;
+            }
+
+            return <div className="comment" key={index}>
                 <div className="flex">
                     <div className="user-info">
                         <div className='avatar'>
                             <img src={`/storage/avatars/${comment.avatar_filepath}`} />
                         </div>
-                        <span>{comments.username}</span>
+                        <span className="username">{comment.username}</span>
                     </div>
 
                     <div className="comment-message">
+                        <div className="timestamp">
+                            {Validate.validateDate(comment.created_at)}
+                        </div>
                         {comment.post_text}
                     </div>
 
                     <div className="delete-comment">
-                        <i className="fas fa-trash-alt" onClick={this.deleteComment}></i>
+                        <i className="fas fa-trash-alt" onClick={() => this.deleteComment(comment.id)}></i>
                     </div>
                 </div>
-
-                <div className="timestamp">
-                    {comment.created_at}
-                </div>
             </div>
-        ));
+        });
     }
 
-    deleteComment() {
-        console.log('comment deleted');
+    /**
+     * @param int postId 
+     */
+    deleteComment(postId) {
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+
+        fetch(`/api/delete_comment/${postId}`, {
+            method: 'Delete',
+            headers: {
+                'X-CSRF-TOKEN': token
+            }
+        })
+        .then(response => console.log(response))
+        .catch(error => console.log(error));
+
+        // Refresh details to display most up to date comments
+        const {id} = this.props.imageDetails;
+        this.props.refresh(id);
     }
 
     render() {
@@ -134,7 +159,7 @@ class Comments extends Component {
                         {comments}
                     </div>
 
-                    { user && user.isAdmin ? (
+                    { user ? (
                         <div className="comments-footer">
                             <div className="character-counter">
                                 <span>{charactersRemaining} characters remaining</span>
@@ -158,7 +183,7 @@ class Comments extends Component {
                             </div>
                         </div>
                     ) : (
-                        <div className="comments-footer">Please <a href="/login">login</a> to comment.</div> 
+                        <div className="comments-footer">Please <a href="/login" className="login">login</a> to comment.</div> 
                     )}
 
                 </div>

@@ -43,7 +43,7 @@ class Photos extends JsonResource
     {
         return DB::table('posts')
             ->leftJoin('users', 'posts.user_id', '=', 'users.id')
-            ->select('posts.post_text', 'posts.created_at', 'users.username', 'users.avatar_filepath')
+            ->select('posts.id', 'posts.photo_id', 'posts.post_text', 'posts.created_at', 'users.username', 'users.avatar_filepath')
             ->get();
     }
 }
