@@ -14082,7 +14082,7 @@ module.exports = checkPropTypes;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(17);
-module.exports = __webpack_require__(72);
+module.exports = __webpack_require__(73);
 
 
 /***/ }),
@@ -36549,7 +36549,7 @@ var Navigation = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { id: 'arrow', className: arrowClasses }),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'a',
-                        { href: '#', onClick: this.toggleUserDropdownMenu },
+                        { onClick: this.toggleUserDropdownMenu },
                         user.username
                     ),
                     dropdownMenu
@@ -62213,6 +62213,7 @@ if (document.getElementById('individualAlbum')) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__settings__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_components_modal__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__global_components_alert__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__commentsModal__ = __webpack_require__(72);
 
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -62229,6 +62230,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
  // modal specific javascript
+
 
 
 
@@ -62258,12 +62260,16 @@ var ImageModal = function (_Component) {
                 users_which_like: null,
                 displayModal: false,
                 displayAlert: false,
-                alertMsg: ''
+                alertMsg: '',
+                total_likes: 0,
+                total_comments: 0,
+                comments: null
             },
             hasUserLiked: false,
             displaySettings: false,
             editPhoto: false,
-            photoZoomed: false
+            photoZoomed: false,
+            displayCommentsModal: false
         };
 
         _this.getImageData = _this.getImageData.bind(_this);
@@ -62281,6 +62287,8 @@ var ImageModal = function (_Component) {
         _this.navigate = _this.navigate.bind(_this);
         _this.toggleZoom = _this.toggleZoom.bind(_this);
         _this.hideAlert = _this.hideAlert.bind(_this);
+        _this.displayCommentsModal = _this.displayCommentsModal.bind(_this);
+        _this.hideCommentsModal = _this.hideCommentsModal.bind(_this);
         return _this;
     }
 
@@ -62691,6 +62699,16 @@ var ImageModal = function (_Component) {
             this.setState({ displayAlert: false });
         }
     }, {
+        key: 'displayCommentsModal',
+        value: function displayCommentsModal() {
+            this.setState({ displayCommentsModal: true });
+        }
+    }, {
+        key: 'hideCommentsModal',
+        value: function hideCommentsModal() {
+            this.setState({ displayCommentsModal: false });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _this3 = this;
@@ -62708,7 +62726,8 @@ var ImageModal = function (_Component) {
                 editPhoto = _state3.editPhoto,
                 photoZoomed = _state3.photoZoomed,
                 displayAlert = _state3.displayAlert,
-                alertMsg = _state3.alertMsg;
+                alertMsg = _state3.alertMsg,
+                displayCommentsModal = _state3.displayCommentsModal;
 
 
             var thumbsUpStyle = null,
@@ -62732,6 +62751,11 @@ var ImageModal = function (_Component) {
                 displayAlert && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__global_components_alert__["a" /* default */], {
                     message: alertMsg,
                     resetState: this.hideAlert
+                }),
+                displayCommentsModal && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__commentsModal__["a" /* default */], {
+                    close: this.hideCommentsModal,
+                    imageDetails: imageDetails,
+                    user: user
                 }),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
@@ -62846,6 +62870,12 @@ var ImageModal = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'span',
                                 null,
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'span',
+                                    { className: 'like-counter' },
+                                    imageDetails.total_comments
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-comment comments-icon', onClick: this.displayCommentsModal }),
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                     'span',
                                     { className: 'like-counter' },
@@ -63183,6 +63213,275 @@ var Alert = function (_Component) {
 
 /***/ }),
 /* 72 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var Comments = function (_Component) {
+    _inherits(Comments, _Component);
+
+    function Comments() {
+        _classCallCheck(this, Comments);
+
+        var _this = _possibleConstructorReturn(this, (Comments.__proto__ || Object.getPrototypeOf(Comments)).call(this));
+
+        _this.state = {
+            commentMessage: '',
+            characterLimit: 250,
+            charactersRemaining: 250
+        };
+
+        _this.onChangeMessage = _this.onChangeMessage.bind(_this);
+        _this.postMessage = _this.postMessage.bind(_this);
+        _this.postMessageOnEnter = _this.postMessageOnEnter.bind(_this);
+        _this.renderComments = _this.renderComments.bind(_this);
+        _this.deleteComment = _this.deleteComment.bind(_this);
+        return _this;
+    }
+
+    /**
+     * Update comments message and character counter on change
+     * @param {event} e 
+     */
+
+
+    _createClass(Comments, [{
+        key: 'onChangeMessage',
+        value: function onChangeMessage(e) {
+            var _state = this.state,
+                charactersRemaining = _state.charactersRemaining,
+                characterLimit = _state.characterLimit;
+
+            var value = e.target.value;
+            var charactersLeft = characterLimit - value.length;
+
+            if (charactersRemaining < 0) {
+                return;
+            }
+
+            this.setState({ commentMessage: value, charactersRemaining: charactersLeft });
+        }
+
+        /**
+         * Post message when user presses the enter key
+         * @param {event} e 
+         */
+
+    }, {
+        key: 'postMessageOnEnter',
+        value: function postMessageOnEnter(e) {
+            var enterKeyCode = 13;
+
+            if (e.keyCode !== enterKeyCode) {
+                return;
+            }
+
+            this.postMessage();
+        }
+    }, {
+        key: 'postMessage',
+        value: function postMessage() {
+            var _props = this.props,
+                user = _props.user,
+                imageDetails = _props.imageDetails;
+
+
+            if (!user || !user.isAdmin) {
+                return;
+            }
+
+            var token = document.querySelector('meta[name="csrf-token"]').content;
+            var commentMessage = this.state.commentMessage;
+
+            // return if comment is empty string
+
+            if (!commentMessage) {
+                return;
+            }
+
+            fetch('/api/post_comment/' + imageDetails.id, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token
+                },
+                body: JSON.stringify({
+                    'user_id': user.id,
+                    'post': commentMessage
+                })
+            }).then(function (response) {
+                return console.log(response);
+            }).catch(function (error) {
+                return console.log(error);
+            });
+
+            this.setState({ commentMessage: '' });
+        }
+
+        /**
+         * loops through and styles each comment in appropriate jsx in order to display in render function
+         * @return JSX which is used to render each comment in render function
+         */
+
+    }, {
+        key: 'renderComments',
+        value: function renderComments() {
+            var _this2 = this;
+
+            var comments = this.props.imageDetails.comments;
+
+
+            return comments.map(function (comment, index) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'comment', key: index },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'flex' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'user-info' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'avatar' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/storage/avatars/' + comment.avatar_filepath })
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'span',
+                                null,
+                                comments.username
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'comment-message' },
+                            comment.post_text
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'delete-comment' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-trash-alt', onClick: _this2.deleteComment })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'timestamp' },
+                        comment.created_at
+                    )
+                );
+            });
+        }
+    }, {
+        key: 'deleteComment',
+        value: function deleteComment() {
+            console.log('comment deleted');
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _state2 = this.state,
+                commentMessage = _state2.commentMessage,
+                charactersRemaining = _state2.charactersRemaining,
+                characterLimit = _state2.characterLimit;
+            var _props2 = this.props,
+                user = _props2.user,
+                close = _props2.close;
+
+            var comments = this.renderComments();
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'comments-wrapper' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'comments-box' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'comments-header' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'span',
+                            { onClick: close },
+                            '\xD7'
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'comments-body' },
+                        comments
+                    ),
+                    user && user.isAdmin ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'comments-footer' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'character-counter' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'span',
+                                null,
+                                charactersRemaining,
+                                ' characters remaining'
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'flex' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'textbox' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('textarea', {
+                                    placeholder: 'write a comment...',
+                                    value: commentMessage,
+                                    onChange: this.onChangeMessage,
+                                    maxLength: characterLimit,
+                                    onKeyUp: this.postMessageOnEnter,
+                                    autoFocus: true
+                                })
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'post' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'button',
+                                    { onClick: this.postMessage },
+                                    'POST'
+                                )
+                            )
+                        )
+                    ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'comments-footer' },
+                        'Please ',
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'a',
+                            { href: '/login' },
+                            'login'
+                        ),
+                        ' to comment.'
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Comments;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Comments);
+
+/***/ }),
+/* 73 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

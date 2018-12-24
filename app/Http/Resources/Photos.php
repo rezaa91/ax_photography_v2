@@ -25,9 +25,25 @@ class Photos extends JsonResource
             'user_id' => $this->user_id,
             'album_id' => $this->album_id,
             'total_likes' => DB::table('photos_users_likes')->where('photo_id', $this->id)->count(),
+            'total_comments' => DB::table('posts')->where('photo_id', $this->id)->count(),
             'users_which_like' => DB::table('photos_users_likes')->where('photo_id', $this->id)->pluck('user_id'),
             'album_cover_photo' => DB::table('albums')->where('cover_photo_id', $this->id)->count() === 1 ? true : false,
-            'homepage_background' => DB::table('homepage_backgrounds')->where('photo_id', $this->id)->count() === 1 ? true : false
+            'homepage_background' => DB::table('homepage_backgrounds')->where('photo_id', $this->id)->count() === 1 ? true : false,
+            'comments' => $this->getCommentInformation($this->id)
         ];
+    }
+
+    /**
+     * Get all the comment information associated to the individual photo identified by the photoId arg
+     *
+     * @param int $photoId
+     * @return array consisting of comment information
+     */
+    private function getCommentInformation($photoId)
+    {
+        return DB::table('posts')
+            ->leftJoin('users', 'posts.user_id', '=', 'users.id')
+            ->select('posts.post_text', 'posts.created_at', 'users.username', 'users.avatar_filepath')
+            ->get();
     }
 }

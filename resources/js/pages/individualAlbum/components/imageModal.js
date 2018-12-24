@@ -3,6 +3,7 @@ import imageModalInit from '../modalSettings'; // modal specific javascript
 import Settings from './settings';
 import Modal from '../../../global_components/modal';
 import Alert from '../../../global_components/alert';
+import Comments from './commentsModal';
 
 class ImageModal extends Component {
     constructor(props) {
@@ -25,12 +26,16 @@ class ImageModal extends Component {
                 users_which_like: null,
                 displayModal: false,
                 displayAlert: false,
-                alertMsg: ''
+                alertMsg: '',
+                total_likes: 0,
+                total_comments: 0,
+                comments: null
             },
             hasUserLiked: false,
             displaySettings: false,
             editPhoto: false,
-            photoZoomed: false
+            photoZoomed: false,
+            displayCommentsModal: false
         }
 
         this.getImageData = this.getImageData.bind(this);
@@ -48,6 +53,8 @@ class ImageModal extends Component {
         this.navigate = this.navigate.bind(this);
         this.toggleZoom = this.toggleZoom.bind(this);
         this.hideAlert = this.hideAlert.bind(this);
+        this.displayCommentsModal = this.displayCommentsModal.bind(this);
+        this.hideCommentsModal = this.hideCommentsModal.bind(this);
     }
 
     componentDidMount() {
@@ -331,10 +338,19 @@ class ImageModal extends Component {
     hideAlert() {
         this.setState({displayAlert: false});
     }
+
+    displayCommentsModal() {
+        this.setState({displayCommentsModal: true});
+    }
+
+    hideCommentsModal() {
+        this.setState({displayCommentsModal: false});
+    }
     
     render() {
         const {closeModal, previousImageId, nextImageId} = this.props;
-        const {user, imageDetails, hasUserLiked, displaySettings, displayModal, editPhoto, photoZoomed, displayAlert, alertMsg} = this.state;
+        const {user, imageDetails, hasUserLiked, displaySettings, 
+            displayModal, editPhoto, photoZoomed, displayAlert, alertMsg, displayCommentsModal} = this.state;
 
         let thumbsUpStyle = null, imageStyle = null;
         if (hasUserLiked) {
@@ -363,6 +379,16 @@ class ImageModal extends Component {
                     <Alert 
                     message={alertMsg}
                     resetState={this.hideAlert}
+                    />
+                }
+
+                {
+                    displayCommentsModal &&
+
+                    <Comments
+                    close={this.hideCommentsModal}
+                    imageDetails={imageDetails}
+                    user={user}
                     />
                 }
 
@@ -450,6 +476,9 @@ class ImageModal extends Component {
                                 }
                             </span>
                             <span>
+                                <span className="like-counter">{imageDetails.total_comments}</span>
+                                <i className="fas fa-comment comments-icon" onClick={this.displayCommentsModal}></i>
+
                                 <span className='like-counter'>{imageDetails.total_likes}</span>
                                 <i className = "fas fa-thumbs-up" onClick={this.likePhoto} style={thumbsUpStyle}></i>
                             </span>

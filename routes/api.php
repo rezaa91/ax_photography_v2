@@ -103,4 +103,9 @@ Route::delete('/delete_album/{albumId}', 'Photos\AlbumsController@deleteAlbum');
 /**
  * Upload profile avatar image
  */
-Route::post('/user/{id}', 'Photos\UserAvatar@storeAvatarFilepath');
+Route::post('/user/{id}', 'Photos\UserAvatar@storeAvatarFilepath');#
+
+/**
+ * Post photo comment
+ */
+Route::post('/post_comment/{photo_id}', 'Photos\PostsController@postComment');

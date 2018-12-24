@@ -5745,7 +5745,11 @@ form .selection .option {
 .imageModal-wrapper .imageModal-content .imageModal-footer .like-counter {
   color: #f4f4f4;
   padding: 0 3px;
-  margin-right: 5px;
+  margin: 0 3px;
+}
+
+.imageModal-wrapper .imageModal-content .imageModal-footer .comments-icon {
+  margin-right: 10px;
 }
 
 .imageModal-wrapper .imageModal-content .imageModal-footer span {
@@ -5800,6 +5804,119 @@ form .selection .option {
   background-color: #111111;
   cursor: pointer;
   font-weight: 900;
+}
+
+.comments-wrapper {
+  position: absolute;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.comments-wrapper .comments-box {
+  position: relative;
+  width: 80%;
+  margin: auto;
+  background-color: #f4f4f4;
+  height: 75%;
+  border: 1px solid #999999;
+  -webkit-box-shadow: 0 0 20px 3px #111111;
+          box-shadow: 0 0 20px 3px #111111;
+}
+
+.comments-wrapper .comments-header {
+  width: 100%;
+  text-align: right;
+  background-color: #044730;
+  font-size: 1.4rem;
+  padding: 5px;
+  border-bottom: 1px solid #111111;
+}
+
+.comments-wrapper .comments-header span {
+  color: #f4f4f4;
+  cursor: pointer;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+}
+
+.comments-wrapper .comments-header span:hover {
+  color: #999999;
+}
+
+.comments-wrapper .comments-body {
+  overflow-y: scroll;
+}
+
+.comments-wrapper .comments-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.comments-wrapper .comments-footer .flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.comments-wrapper .comments-footer .textbox {
+  -webkit-box-flex: 5;
+      -ms-flex: 5;
+          flex: 5;
+}
+
+.comments-wrapper .comments-footer .textbox textarea {
+  display: block;
+  width: 100%;
+}
+
+.comments-wrapper .comments-footer .textbox textarea:focus {
+  -webkit-box-shadow: 0 0 0;
+          box-shadow: 0 0 0;
+}
+
+.comments-wrapper .comments-footer .post {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  width: 100%;
+  text-align: center;
+}
+
+.comments-wrapper .comments-footer .post button {
+  color: #f4f4f4;
+  width: 100%;
+  height: 100%;
+  background-color: #05704c;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.comments-wrapper .comments-footer .post button:hover {
+  background-color: #044730;
+  font-weight: 900;
+}
+
+.comments-wrapper .comments-footer .character-counter {
+  display: inline-block;
+}
+
+.comments-wrapper .comments-footer .character-counter span {
+  color: #1d58b7;
 }
 
 .navigation-wrapper {
