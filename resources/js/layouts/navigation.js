@@ -92,7 +92,7 @@ class Navigation extends Component {
             return(
                 <li className = {usernameClass}>
                     <i id="arrow" className={arrowClasses}></i>
-                    <a href='#' onClick = {this.toggleUserDropdownMenu}>{user.username}</a>
+                    <a onClick = {this.toggleUserDropdownMenu}>{user.username}</a>
                     {dropdownMenu}
                 </li>
             );
