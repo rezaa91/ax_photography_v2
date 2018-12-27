@@ -122,7 +122,11 @@
             .like-counter {
                 color: $white;
                 padding: 0 3px;
-                margin-right: 5px;
+                margin: 0 3px;
+            }
+
+            .comments-icon {
+                margin-right: 10px;
             }
 
             span {
