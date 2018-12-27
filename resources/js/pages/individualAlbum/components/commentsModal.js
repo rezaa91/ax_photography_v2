@@ -8,7 +8,7 @@ class Comments extends Component {
         this.state = {
             commentMessage: '',
             characterLimit: 250,
-            charactersRemaining: 250
+            charactersRemaining: 250,
         }
 
         this.onChangeMessage = this.onChangeMessage.bind(this);
@@ -114,12 +114,15 @@ class Comments extends Component {
                         {comment.post_text}
                     </div>
 
-                    <div className="delete-comment">
-                        <i className="fas fa-trash-alt" onClick={() => this.deleteComment(comment.id)}></i>
-                    </div>
+                    {/* Only allow users to delete their own comments */}
+                    {this.props.user && this.props.user.id === comment.user_id &&
+                        <div className="delete-comment">
+                            <i className="fas fa-trash-alt" onClick={() => this.deleteComment(comment.id)}></i>
+                        </div>
+                    }
                 </div>
             </div>
-        });
+        }, this);
     }
 
     /**
