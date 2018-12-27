@@ -60636,12 +60636,46 @@ var About = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'p',
                                 null,
-                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis et pharetra sem, eget fringilla libero. Maecenas lobortis dapibus pellentesque. In convallis, ipsum et accumsan lobortis, ipsum lorem gravida dolor, eu commodo ipsum justo quis ante. Vestibulum luctus, lorem venenatis dignissim tristique, ante ante tristique neque, non maximus risus eros ut massa. Nulla dictum arcu eget elit malesuada aliquam.'
+                                'Hello and welcome to my website. My name is Hamid and I am a hobbyist photographer with over 30 years experience. I like taking pictures of anything and everything, from landscape shots to wedding ceremonies and everything else in between. This website displays a short portfolio of my most recent work and can be found ',
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'u',
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'a',
+                                        { href: '/albums' },
+                                        'here.'
+                                    )
+                                )
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'p',
                                 null,
-                                'Mauris pellentesque porta tristique. Suspendisse bibendum, libero vitae scelerisque laoreet, eros mauris molestie orci, vitae consectetur lorem magna eget nibh. Pellentesque bibendum nibh enim, sit amet lacinia odio placerat eu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nullam mattis libero eu risus faucibus tempor. Nulla turpis enim, cursus in quam sed, sodales gravida elit. Praesent vestibulum odio erat, vitae fermentum tortor semper nec.'
+                                'I would love to hear your feedback so please ',
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'u',
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'a',
+                                        { href: '/register' },
+                                        'register'
+                                    )
+                                ),
+                                ' and get commenting! If you like my style of work and you believe that my style of photography can help you with any upcoming events, whether that be a wedding, a fundraiser, or anything along those lines, then please get in touch by filling in the form found on the ',
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'u',
+                                    null,
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'a',
+                                        { href: '/contact' },
+                                        'contacts'
+                                    )
+                                ),
+                                ' page. I will respond to any queries as soon as possible.'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                null,
+                                'This website gets regular updates so make sure to check back regularly for new content and features!'
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
