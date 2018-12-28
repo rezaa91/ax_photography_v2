@@ -6016,6 +6016,10 @@ form .selection .option {
   display: inline-block;
 }
 
+.navigation-wrapper .navigation .main-links {
+  display: inline-block;
+}
+
 .navigation-wrapper .navigation .main-link {
   display: block;
   padding: 5px;
@@ -6028,6 +6032,7 @@ form .selection .option {
 }
 
 .navigation-wrapper .navigation .nav-title {
+  display: inline-block;
   font-size: 1.4rem;
   margin-right: 3rem;
 }
@@ -6038,6 +6043,10 @@ form .selection .option {
 
 .navigation-wrapper .navigation .nav-title a:hover {
   color: #044730;
+}
+
+.navigation-wrapper .navigation .mobile-menu {
+  display: none;
 }
 
 .navigation-wrapper .navigation-left {
@@ -6105,6 +6114,46 @@ form .selection .option {
   transition: -webkit-transform 0.5s;
   transition: transform 0.5s;
   transition: transform 0.5s, -webkit-transform 0.5s;
+}
+
+@media only screen and (max-width: 700px) {
+  .navigation-wrapper {
+    height: auto;
+    width: 100%;
+    background-color: #044730;
+    display: block;
+    padding-bottom: 0;
+  }
+
+  .navigation-wrapper .navigation {
+    font-size: 0.8rem;
+  }
+
+  .navigation-wrapper .navigation li {
+    display: none;
+  }
+
+  .navigation-wrapper .navigation .nav-title {
+    font-size: 1rem;
+    padding: 5px;
+  }
+
+  .navigation-wrapper .navigation .nav-title a {
+    color: #f4f4f4;
+  }
+
+  .navigation-wrapper .navigation .mobile-menu {
+    display: inline-block;
+    position: absolute;
+    right: 5px;
+    color: #999999;
+    padding: 3px;
+    font-size: 1rem;
+  }
+
+  .navigation-wrapper .navigation-right {
+    display: none;
+  }
 }
 
 .mainBtn {
@@ -16955,6 +17004,7 @@ button {
 
 a {
   color: #111111;
+  cursor: pointer;
 }
 
 a:hover {
@@ -16998,8 +17048,6 @@ textarea {
 
 input,
 textarea {
-  background-color: rgba(0, 0, 0, 0.4);
-  color: #a0dbc7;
   border: 0;
 }
 

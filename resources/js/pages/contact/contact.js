@@ -16,7 +16,7 @@ class Contact extends Component {
                         <div className='body-1'>
                             <form>
                                 <div className="form-section">
-                                    <input type="text" placeholder="Name..." />
+                                    <input type="text" placeholder="Name..." autoFocus />
                                 </div>
                                 <div className='form-section'>
                                     <input type="text" placeholder="Email@example.co.uk" />
@@ -37,10 +37,10 @@ class Contact extends Component {
 
                     <div className='contact-footer'>
                         <div className='social-media-wrapper'>
-                            <span className='icon'><a href="#"><span className="fab fa-flickr"></span></a></span>
-                            <span className='icon'><a href="#"><span className="fab fa-twitter-square"></span></a></span>
-                            <span className='icon'><a href="#"><span className="fab fa-instagram"></span></a></span>
-                            <span className='icon'><a href="#"><span className="fab fa-facebook"></span></a></span>
+                            <span className='icon'><a href="https://www.flickr.com/photos/68234194@N05/" target="_blank"><span className="fab fa-flickr"></span></a></span>
+                            <span className='icon'><a href="#" target="_blank"><span className="fab fa-twitter-square"></span></a></span>
+                            <span className='icon'><a href="#" target="_blank"><span className="fab fa-instagram"></span></a></span>
+                            <span className='icon'><a href="#" target="_blank"><span className="fab fa-facebook"></span></a></span>
                         </div>
                     </div>
                     

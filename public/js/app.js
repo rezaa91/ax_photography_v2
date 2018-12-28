@@ -36617,7 +36617,7 @@ var Navigation = function (_Component) {
     }, {
         key: 'hideUserDropdownMenu',
         value: function hideUserDropdownMenu() {
-            this.setState({ isDropdownPresent: false });
+            this.setState({ isDropdownPresent: false, rotateArrowClass: 'rotate-down' });
         }
     }, {
         key: 'render',
@@ -36629,7 +36629,7 @@ var Navigation = function (_Component) {
                     'ul',
                     { className: 'navigation navigation-left' },
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'li',
+                        'span',
                         { className: 'nav-title' },
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'a',
@@ -36638,30 +36638,39 @@ var Navigation = function (_Component) {
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'li',
-                        null,
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            'a',
-                            { href: '/albums', className: 'main-link' },
-                            'Albums'
-                        )
+                        'span',
+                        { className: 'mobile-menu' },
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-bars' })
                     ),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'li',
-                        null,
+                        'div',
+                        { className: 'main-links' },
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            'a',
-                            { href: '/about', className: 'main-link' },
-                            'About'
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'li',
-                        null,
+                            'li',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'a',
+                                { href: '/albums', className: 'main-link' },
+                                'Albums'
+                            )
+                        ),
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            'a',
-                            { href: '/contact', className: 'main-link' },
-                            'Contact'
+                            'li',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'a',
+                                { href: '/about', className: 'main-link' },
+                                'About'
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'li',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'a',
+                                { href: '/contact', className: 'main-link' },
+                                'Contact'
+                            )
                         )
                     )
                 ),
@@ -60771,7 +60780,7 @@ var Contact = function (_Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
                                     { className: 'form-section' },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', placeholder: 'Name...' })
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', placeholder: 'Name...', autoFocus: true })
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
@@ -60803,7 +60812,7 @@ var Contact = function (_Component) {
                                 { className: 'icon' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'a',
-                                    { href: '#' },
+                                    { href: 'https://www.flickr.com/photos/68234194@N05/', target: '_blank' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'fab fa-flickr' })
                                 )
                             ),
@@ -60812,7 +60821,7 @@ var Contact = function (_Component) {
                                 { className: 'icon' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'a',
-                                    { href: '#' },
+                                    { href: '#', target: '_blank' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'fab fa-twitter-square' })
                                 )
                             ),
@@ -60821,7 +60830,7 @@ var Contact = function (_Component) {
                                 { className: 'icon' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'a',
-                                    { href: '#' },
+                                    { href: '#', target: '_blank' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'fab fa-instagram' })
                                 )
                             ),
@@ -60830,7 +60839,7 @@ var Contact = function (_Component) {
                                 { className: 'icon' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'a',
-                                    { href: '#' },
+                                    { href: '#', target: '_blank' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'fab fa-facebook' })
                                 )
                             )

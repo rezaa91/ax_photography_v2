@@ -25,6 +25,7 @@ button {
 
 a {
     color: $black;
+    cursor: pointer;
 }
 
 a:hover {
@@ -62,7 +63,5 @@ textarea {
 }
 
 input, textarea {
-    background-color: rgba(0, 0, 0, 0.4);
-    color: $lightgreen;
     border: 0;
 }

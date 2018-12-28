@@ -76,7 +76,7 @@ class Navigation extends Component {
             // display different dropdown menus dependent on whether user is an administrator or not
             if (isDropdownPresent) {
                 if (user.isAdmin) {
-                    dropdownMenu = <ul className='user-dropdown-menu'>
+                    dropdownMenu = <ul className={'user-dropdown-menu'}>
                         <li><a href="/user">Dashboard</a></li>
                         <li><a href="/upload">Upload</a></li>
                         <li><a href="/logout">Logout</a></li>
@@ -115,17 +115,20 @@ class Navigation extends Component {
     }
 
     hideUserDropdownMenu() {
-        this.setState({isDropdownPresent: false});
+        this.setState({isDropdownPresent: false, rotateArrowClass: 'rotate-down'});
     }
 
     render() {
         return(
             <div className="navigation-wrapper" onMouseLeave={this.hideUserDropdownMenu}>
                 <ul className="navigation navigation-left">
-                    <li className="nav-title"><a href='/'>AX PHOTOGRAPHY</a></li>
-                    <li><a href='/albums' className = 'main-link'>Albums</a></li>
-                    <li><a href='/about' className = 'main-link'>About</a></li>
-                    <li><a href='/contact' className = 'main-link'>Contact</a></li>
+                    <span className="nav-title"><a href='/'>AX PHOTOGRAPHY</a></span>
+                    <span className="mobile-menu"><i className="fas fa-bars"></i></span>
+                    <div className="main-links">
+                        <li><a href='/albums' className = 'main-link'>Albums</a></li>
+                        <li><a href='/about' className = 'main-link'>About</a></li>
+                        <li><a href='/contact' className = 'main-link'>Contact</a></li>
+                    </div>
                 </ul>
 
                 <ul className="navigation navigation-right">
