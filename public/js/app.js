@@ -36430,6 +36430,7 @@ var Navigation = function (_Component) {
         _this.displayLoginOrUser = _this.displayLoginOrUser.bind(_this);
         _this.toggleUserDropdownMenu = _this.toggleUserDropdownMenu.bind(_this);
         _this.hideUserDropdownMenu = _this.hideUserDropdownMenu.bind(_this);
+        _this.toggleMobileDropdown = _this.toggleMobileDropdown.bind(_this);
         return _this;
     }
 
@@ -36620,6 +36621,12 @@ var Navigation = function (_Component) {
             this.setState({ isDropdownPresent: false, rotateArrowClass: 'rotate-down' });
         }
     }, {
+        key: 'toggleMobileDropdown',
+        value: function toggleMobileDropdown() {
+            var mobileDropdown = document.querySelector('.main-links');
+            mobileDropdown.style.display === 'block' ? mobileDropdown.style.display = 'none' : mobileDropdown.style.display = 'block';
+        }
+    }, {
         key: 'render',
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -36639,7 +36646,7 @@ var Navigation = function (_Component) {
                     ),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'span',
-                        { className: 'mobile-menu' },
+                        { className: 'mobile-menu', onClick: this.toggleMobileDropdown },
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-bars' })
                     ),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(

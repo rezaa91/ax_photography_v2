@@ -20,6 +20,7 @@ class Navigation extends Component {
         this.displayLoginOrUser = this.displayLoginOrUser.bind(this);
         this.toggleUserDropdownMenu = this.toggleUserDropdownMenu.bind(this);
         this.hideUserDropdownMenu = this.hideUserDropdownMenu.bind(this);
+        this.toggleMobileDropdown = this.toggleMobileDropdown.bind(this);
     }
 
     /**
@@ -76,7 +77,7 @@ class Navigation extends Component {
             // display different dropdown menus dependent on whether user is an administrator or not
             if (isDropdownPresent) {
                 if (user.isAdmin) {
-                    dropdownMenu = <ul className={'user-dropdown-menu'}>
+                    dropdownMenu = <ul className='user-dropdown-menu'>
                         <li><a href="/user">Dashboard</a></li>
                         <li><a href="/upload">Upload</a></li>
                         <li><a href="/logout">Logout</a></li>
@@ -118,12 +119,17 @@ class Navigation extends Component {
         this.setState({isDropdownPresent: false, rotateArrowClass: 'rotate-down'});
     }
 
+    toggleMobileDropdown() {
+        const mobileDropdown = document.querySelector('.main-links');
+        mobileDropdown.style.display === 'block' ? mobileDropdown.style.display = 'none' : mobileDropdown.style.display = 'block';
+    }
+
     render() {
         return(
             <div className="navigation-wrapper" onMouseLeave={this.hideUserDropdownMenu}>
                 <ul className="navigation navigation-left">
                     <span className="nav-title"><a href='/'>AX PHOTOGRAPHY</a></span>
-                    <span className="mobile-menu"><i className="fas fa-bars"></i></span>
+                    <span className="mobile-menu" onClick={this.toggleMobileDropdown}><i className="fas fa-bars"></i></span>
                     <div className="main-links">
                         <li><a href='/albums' className = 'main-link'>Albums</a></li>
                         <li><a href='/about' className = 'main-link'>About</a></li>
