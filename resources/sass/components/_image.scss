@@ -1,13 +1,13 @@
 .image {
-    flex: 1 0 17%;
-    margin: 2.5px;
+    flex: 0 1 22.5%;
+    margin: 5px 1.6%;
     background-color: white;
     overflow: hidden;
+    text-align: center;
 
     img {
         cursor: pointer;
         max-width: 100%;
-        height: auto;
         max-height: 350px;
         object-fit:contain;
         transition: transform 0.3s;
@@ -15,5 +15,12 @@
         &:hover {
             transform: scale(1.1);
         }
+    }
+}
+
+@media only screen and (max-width: $medium) {
+    .image {
+        flex: 0 0 100%;
+        margin: 0;
     }
 }

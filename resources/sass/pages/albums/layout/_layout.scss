@@ -2,8 +2,6 @@
     display: flex;
     flex-wrap: wrap;
     max-width: 100%;
-    border-top: 2px solid $grey;
-    border-bottom: 2px solid $grey;
     padding: 20px 10px;
 
     .albumContainer {
@@ -58,6 +56,18 @@
                     text-align: right;
                 }
             }
+        }
+    }
+}
+
+@media only screen and (max-width: $medium) {
+    .albums-wrapper {
+        display: block;
+        padding: 0;
+
+        .albumContainer {
+            margin: 0;
+            border: 0;
         }
     }
 }

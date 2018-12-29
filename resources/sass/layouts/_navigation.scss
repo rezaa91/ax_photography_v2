@@ -48,6 +48,8 @@
         flex: 1;
         text-align: right;
         margin-right: 10px;
+        font-family: $font-family-display;
+
         a {
             &:hover {
                 font-weight: 600;
@@ -57,9 +59,13 @@
 
     .user-dropdown-menu {
         text-align: center;
+        font-family: $font-family-sans-serif;
+        border-left: 1px solid $black;
+        border-right: 1px solid $black;
 
         li {
             display: block;
+            border-bottom: 1px solid $darkgrey;
         }
         a {
             color: $white;
@@ -70,12 +76,6 @@
                 background-color: $darkgreen;
             }
         }
-    }
-
-    .user-clicked {
-        border-left: 2px solid $darkgrey;
-        border-right: 2px solid $darkgrey;
-        border-bottom: 2px solid $darkgrey;
     }
     
     .rotate-arrow {
@@ -104,6 +104,7 @@
 
         .navigation {
             font-size: $font-small;
+            margin: 0;
 
             li {
                 display: block;

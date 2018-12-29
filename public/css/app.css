@@ -5577,18 +5577,18 @@ form .selection .option {
 }
 
 .image {
-  -webkit-box-flex: 1;
-      -ms-flex: 1 0 17%;
-          flex: 1 0 17%;
-  margin: 2.5px;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 1 22.5%;
+          flex: 0 1 22.5%;
+  margin: 5px 1.6%;
   background-color: white;
   overflow: hidden;
+  text-align: center;
 }
 
 .image img {
   cursor: pointer;
   max-width: 100%;
-  height: auto;
   max-height: 350px;
   -o-object-fit: contain;
      object-fit: contain;
@@ -5601,6 +5601,15 @@ form .selection .option {
 .image img:hover {
   -webkit-transform: scale(1.1);
           transform: scale(1.1);
+}
+
+@media only screen and (max-width: 700px) {
+  .image {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 100%;
+            flex: 0 0 100%;
+    margin: 0;
+  }
 }
 
 .imageModal-wrapper {
@@ -6059,6 +6068,7 @@ form .selection .option {
           flex: 1;
   text-align: right;
   margin-right: 10px;
+  font-family: "Comfortaa", cursive;
 }
 
 .navigation-wrapper .navigation-right a:hover {
@@ -6067,10 +6077,14 @@ form .selection .option {
 
 .navigation-wrapper .user-dropdown-menu {
   text-align: center;
+  font-family: "Nunito", sans-serif;
+  border-left: 1px solid #111111;
+  border-right: 1px solid #111111;
 }
 
 .navigation-wrapper .user-dropdown-menu li {
   display: block;
+  border-bottom: 1px solid #353535;
 }
 
 .navigation-wrapper .user-dropdown-menu a {
@@ -6082,12 +6096,6 @@ form .selection .option {
 
 .navigation-wrapper .user-dropdown-menu a:hover {
   background-color: #044730;
-}
-
-.navigation-wrapper .user-clicked {
-  border-left: 2px solid #353535;
-  border-right: 2px solid #353535;
-  border-bottom: 2px solid #353535;
 }
 
 .navigation-wrapper .rotate-arrow {
@@ -6125,6 +6133,7 @@ form .selection .option {
 
   .navigation-wrapper .navigation {
     font-size: 0.8rem;
+    margin: 0;
   }
 
   .navigation-wrapper .navigation li {
@@ -6185,13 +6194,23 @@ form .selection .option {
 
 .mainBtn {
   border: 1px solid #353535;
-  padding: 5px;
+  padding: 5px 10px;
   color: #f4f4f4;
+  font-size: 1.4rem;
   background-color: #05704c;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
 }
 
 .mainBtn:hover {
   color: #f4f4f4;
+  background-color: #044730;
+}
+
+@media only screen and (max-width: 700px) {
+  .mainBtn {
+    font-size: 1rem;
+  }
 }
 
 .homepage-wrapper {
@@ -6205,6 +6224,27 @@ form .selection .option {
   text-align: center;
   padding-top: 30vh;
   z-index: 1;
+}
+
+.homepage-wrapper .homepage-header h1 {
+  font-family: "ZCOOL XiaoWei", serif;
+  color: #111111;
+  font-size: 55px;
+}
+
+.homepage-wrapper .homepage-header h3 {
+  color: #999999;
+  margin-bottom: 2rem;
+}
+
+@media only screen and (max-width: 700px) {
+  .homepage-wrapper .homepage-header h1 {
+    font-size: 1.7rem;
+  }
+
+  .homepage-wrapper .homepage-header h3 {
+    font-size: 1.4rem;
+  }
 }
 
 .dashboard-wrapper {
@@ -6398,8 +6438,6 @@ form .selection .option {
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
   max-width: 100%;
-  border-top: 2px solid #999999;
-  border-bottom: 2px solid #999999;
   padding: 20px 10px;
 }
 
@@ -6475,9 +6513,22 @@ form .selection .option {
   text-align: right;
 }
 
+@media only screen and (max-width: 700px) {
+  .albums-wrapper {
+    display: block;
+    padding: 0;
+  }
+
+  .albums-wrapper .albumContainer {
+    margin: 0;
+    border: 0;
+  }
+}
+
 .individualAlbum {
   width: 90%;
-  margin: 20px auto;
+  margin: 0 auto;
+  padding: 20px 0;
 }
 
 .individualAlbum .album-information {
@@ -6533,6 +6584,30 @@ form .selection .option {
   display: flex;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
+}
+
+.individualAlbum .images :first-child {
+  margin-left: 0;
+}
+
+.individualAlbum .images :nth-child(5) {
+  margin-left: 0;
+}
+
+.individualAlbum .images :nth-child(4) {
+  margin-right: 0;
+}
+
+@media only screen and (max-width: 700px) {
+  .individualAlbum {
+    height: 100vh;
+    overflow-y: scroll;
+    width: 100%;
+  }
+
+  .individualAlbum .album-information {
+    min-height: auto;
+  }
 }
 
 /*!
