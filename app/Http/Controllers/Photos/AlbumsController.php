@@ -79,7 +79,7 @@ class AlbumsController extends PhotosController
     {
         $this->validate($request, [
             'title' => 'required',
-            'file' => 'required | max:1999',
+            'file' => 'required | max:2999',
             'description' => 'nullable'
         ]);
 

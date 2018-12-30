@@ -141,6 +141,7 @@
         color: $darkgrey;
 
         .timestamp {
+            color: $grey;
             font-size: $font-small;
         }
     }
@@ -161,6 +162,37 @@
 
             &:hover {
                 color: $black;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: $medium) {
+    .comments-wrapper {
+        .comments-box {
+            width: 95%;
+            height: 90%;
+        }
+
+        .comments-footer {
+            .character-counter {
+                font-size: 0.7rem;
+            }
+        }
+    }
+
+    .comment {
+        .user-info {
+            .username {
+                font-size: 0.7rem;
+            }
+        }
+        .comment-message {
+            flex: 12;
+            font-size: $font-small;
+
+            .timestamp {
+                font-size: 0.6rem;
             }
         }
     }

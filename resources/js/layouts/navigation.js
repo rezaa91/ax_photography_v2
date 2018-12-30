@@ -128,7 +128,7 @@ class Navigation extends Component {
         return(
             <div className="navigation-wrapper" onMouseLeave={this.hideUserDropdownMenu}>
                 <ul className="navigation navigation-left">
-                    <span className="nav-title"><a href='/'>AX PHOTOGRAPHY</a></span>
+                    <span className="nav-title"><a href='/'>AX52 PHOTOGRAPHY</a></span>
                     <span className="mobile-menu" onClick={this.toggleMobileDropdown}><i className="fas fa-bars"></i></span>
                     <div className="main-links">
                         <li><a href='/albums' className = 'main-link'>Albums</a></li>

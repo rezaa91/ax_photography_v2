@@ -2,6 +2,8 @@
 
 @section('content')
 
+<div id="validation-container"></div>
+
 <div class = 'upload-wrapper'>
 
     <div class = 'title'>

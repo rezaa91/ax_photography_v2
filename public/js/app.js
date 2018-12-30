@@ -36641,7 +36641,7 @@ var Navigation = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'a',
                             { href: '/' },
-                            'AX PHOTOGRAPHY'
+                            'AX52 PHOTOGRAPHY'
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -60267,7 +60267,7 @@ var Homepage = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'h1',
                             null,
-                            'AX PHOTOGRAPHY'
+                            'AX52 PHOTOGRAPHY'
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'h3',
@@ -60640,7 +60640,7 @@ var About = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'h3',
                             null,
-                            'Landscape Photographer.'
+                            'Hull Photographer.'
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -60692,18 +60692,37 @@ var About = function (_Component) {
                                 'p',
                                 null,
                                 'This website gets regular updates so make sure to check back regularly for new content and features!'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'about-footer' },
+                                '- Hamid Issaee'
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             { className: 'body-2' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '' })
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'image-container' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'collage-1', src: '/images/about-1.jpg' })
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'image-container' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'collage-2', src: '/images/about-2.jpg' })
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'image-container' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'collage-3', src: '/images/about-3.jpg' })
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'image-container' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'collage-4', src: '/images/about-4.jpg' })
+                            )
                         )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'about-footer' },
-                        '- Hamid Issaee'
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -61720,6 +61739,38 @@ if (document.querySelector('.upload-wrapper')) {
     };
 
     /**
+     * Prevent form firing if user fails validation
+     */
+
+
+    var checkValidation = function checkValidation(e) {
+        var title = DOMElements.title,
+            selectBox = DOMElements.selectBox,
+            createAlbumInput = DOMElements.createAlbumInput,
+            file = DOMElements.file,
+            validationContainer = DOMElements.validationContainer;
+
+        var validationErrorMsg = '';
+
+        if (!title.value) {
+            e.preventDefault();
+            validationErrorMsg += '<p>Please enter a title</p>';
+        }
+
+        if (selectBox.value === 'default' && !createAlbumInput.value) {
+            e.preventDefault();
+            validationErrorMsg += '<p>Please select or create a new album</p>';
+        }
+
+        if (!file.value) {
+            e.preventDefault();
+            validationErrorMsg += '<p>Please select an image to upload</p>';
+        }
+
+        validationContainer.innerHTML = validationErrorMsg;
+    };
+
+    /**
      * Set up event listeners
      */
 
@@ -61733,6 +61784,7 @@ if (document.querySelector('.upload-wrapper')) {
         // Set the select box value of current albums to default if user begins to typing in to new album field
         createAlbumInput.addEventListener('input', setExistingAlbumValueToDefault);
         selectedExistingAlbum.addEventListener('change', removeCreateAlbumValue);
+        form.addEventListener('submit', checkValidation);
     };
 
     /**
@@ -61744,7 +61796,12 @@ if (document.querySelector('.upload-wrapper')) {
         form: document.querySelector('#form'),
         albumTypeRadioBtns: document.forms[0].elements.album_type,
         selectAlbumSection: document.querySelector('#select_album'),
-        createAlbumSection: document.querySelector('#create_album')
+        createAlbumSection: document.querySelector('#create_album'),
+        title: document.querySelector('input[name="title"]'),
+        selectBox: document.querySelector('select[name="album"]'),
+        createAlbumInput: document.querySelector('input[name="create_album"]'),
+        file: document.querySelector('input[name="file"]'),
+        validationContainer: document.getElementById('validation-container')
     };init();
 }
 
