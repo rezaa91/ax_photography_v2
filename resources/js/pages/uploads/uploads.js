@@ -107,7 +107,6 @@ if (document.querySelector('.upload-wrapper')) {
         }
 
         validationContainer.innerHTML = validationErrorMsg;
-
     }
 
     /**

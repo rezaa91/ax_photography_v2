@@ -9,7 +9,7 @@ class About extends Component {
                 <div className='about-section'>
                     <div className='about-header'>
                         <h1>ABOUT</h1>
-                        <h3>Hull Photographer.</h3>
+                        <h3>Hull Photographer</h3>
                     </div> 
                 
                     <div className='about-body'>
@@ -36,21 +36,7 @@ class About extends Component {
                         </div>
 
                         <div className='body-2'>
-                            <div className="image-container">
-                                <img className="collage-1" src="/images/about-1.jpg" />
-                            </div>
-
-                            <div className="image-container">
-                                <img className="collage-2" src="/images/about-2.jpg" />
-                            </div>
-
-                            <div className="image-container">
-                                <img className="collage-3" src="/images/about-3.jpg" />
-                            </div>
-
-                            <div className="image-container">
-                                <img className="collage-4" src="/images/about-4.jpg" />
-                            </div>
+                            
                         </div>
                     </div>
 
@@ -58,7 +44,21 @@ class About extends Component {
                 
                 <div className='carousel-wrapper'>
                     <div className='carousel'>
-                        {/* Display carousel images here */}
+                        <div className="image-container">
+                            <img className="collage-1" src="/images/about-1.jpg" />
+                        </div>
+
+                        <div className="image-container">
+                            <img className="collage-2" src="/images/about-2.jpg" />
+                        </div>
+
+                        <div className="image-container">
+                            <img className="collage-3" src="/images/about-3.jpg" />
+                        </div>
+
+                        <div className="image-container">
+                            <img className="collage-4" src="/images/about-4.jpg" />
+                        </div>
                     </div>
                 </div>
 

@@ -76,6 +76,10 @@
 
         .album-information {
             min-height: auto;
+
+            h1,input {
+                font-size: $font-sub-header;
+            }
         }
     }
 }

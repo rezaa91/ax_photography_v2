@@ -9,6 +9,10 @@
 
     .contact-body {
         @extend .about-body ;
+        
+        textarea {
+            height: 200px;
+        }
     }
 
     .contact-footer {
@@ -30,6 +34,15 @@
                     }
                 }
             }
+        }
+    }
+}
+
+@media only screen and (max-width: $medium) {
+    .contact-wrapper {
+
+        .contact-footer {
+            width: 100%;
         }
     }
 }

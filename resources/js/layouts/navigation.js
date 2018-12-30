@@ -23,6 +23,17 @@ class Navigation extends Component {
         this.toggleMobileDropdown = this.toggleMobileDropdown.bind(this);
     }
 
+    componentDidUpdate() {
+        // Apply class to the navigation links to show which page the user is currently on
+        const mainNavLinks = [...document.querySelectorAll('.main-link')];
+
+        mainNavLinks.map(link => {
+            const url = window.location.href;
+            url.match(link) ? link.classList.add('active') : link.classList.remove('active');
+        })
+
+    }
+
     /**
      * Get logged in user through API call
      */

@@ -43,6 +43,7 @@
                 font-size: $font-sub-header;
                 width: 100%;
                 text-align: center;
+                letter-spacing: $sub-header;
             }
 
             .timestamp-wrapper {
@@ -68,6 +69,17 @@
         .albumContainer {
             margin: 0;
             border: 0;
+        }
+
+        .album-details {
+            .title {
+                font-size: $font-regular !important;
+                letter-spacing: $regular !important;
+            }
+
+            .timestamp-wrapper {
+                display: none !important;
+            }
         }
     }
 }

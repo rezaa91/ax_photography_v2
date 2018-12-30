@@ -2,19 +2,17 @@
 
 @section('content')
 
-<div id="validation-container"></div>
-
 <div class = 'upload-wrapper'>
 
     <div class = 'title'>
-        <h1>Upload Images</h1>
+        <h1>Upload Image</h1>
     </div>
 
     {!! Form::open(['action' => 'Photos\AlbumsController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data', 'id' => 'form']) !!}
 
     <div class='form-section'>
         {{ Form::label('title *') }}
-        {{ Form::text('title', '') }}
+        {{ Form::text('title', '', ['autofocus']) }}
     </div>
 
     <div class='form-section'>
@@ -55,6 +53,10 @@
 
     {!! Form::close() !!}
     
+</div>
+
+<div class="validation-wrapper">
+    <div id="validation-container"></div>
 </div>
 
 @endsection

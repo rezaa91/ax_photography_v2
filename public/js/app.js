@@ -36399,6 +36399,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -36434,12 +36436,23 @@ var Navigation = function (_Component) {
         return _this;
     }
 
-    /**
-     * Get logged in user through API call
-     */
-
-
     _createClass(Navigation, [{
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate() {
+            // Apply class to the navigation links to show which page the user is currently on
+            var mainNavLinks = [].concat(_toConsumableArray(document.querySelectorAll('.main-link')));
+
+            mainNavLinks.map(function (link) {
+                var url = window.location.href;
+                url.match(link) ? link.classList.add('active') : link.classList.remove('active');
+            });
+        }
+
+        /**
+         * Get logged in user through API call
+         */
+
+    }, {
         key: 'getUser',
         value: function () {
             var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
@@ -60640,7 +60653,7 @@ var About = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'h3',
                             null,
-                            'Hull Photographer.'
+                            'Hull Photographer'
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -60699,36 +60712,36 @@ var About = function (_Component) {
                                 '- Hamid Issaee'
                             )
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'body-2' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'image-container' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'collage-1', src: '/images/about-1.jpg' })
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'image-container' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'collage-2', src: '/images/about-2.jpg' })
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'image-container' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'collage-3', src: '/images/about-3.jpg' })
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'image-container' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'collage-4', src: '/images/about-4.jpg' })
-                            )
-                        )
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'body-2' })
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     { className: 'carousel-wrapper' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'carousel' })
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'carousel' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'image-container' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'collage-1', src: '/images/about-1.jpg' })
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'image-container' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'collage-2', src: '/images/about-2.jpg' })
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'image-container' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'collage-3', src: '/images/about-3.jpg' })
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'image-container' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'collage-4', src: '/images/about-4.jpg' })
+                        )
+                    )
                 )
             );
         }
@@ -60786,12 +60799,12 @@ var Contact = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'h1',
                             null,
-                            'CONTACT.'
+                            'CONTACT'
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'h3',
                             null,
-                            'Get in touch for a quote.'
+                            'Get in touch for a quote'
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(

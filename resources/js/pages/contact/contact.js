@@ -8,8 +8,8 @@ class Contact extends Component {
                 <div className='contact-section'>
 
                     <div className='contact-header'>
-                        <h1>CONTACT.</h1>
-                        <h3>Get in touch for a quote.</h3>                    
+                        <h1>CONTACT</h1>
+                        <h3>Get in touch for a quote</h3>                    
                     </div>
 
                     <div className='contact-body'>
