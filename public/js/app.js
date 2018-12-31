@@ -60857,28 +60857,28 @@ var Contact = function (_Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'span',
-                                { className: 'icon' },
+                                { className: 'icon inactive' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'a',
-                                    { href: '#', target: '_blank' },
+                                    { title: 'unavailable', target: '_blank' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'fab fa-twitter-square' })
                                 )
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'span',
-                                { className: 'icon' },
+                                { className: 'icon inactive' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'a',
-                                    { href: '#', target: '_blank' },
+                                    { title: 'unavailable', target: '_blank' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'fab fa-instagram' })
                                 )
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'span',
-                                { className: 'icon' },
+                                { className: 'icon inactive' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'a',
-                                    { href: '#', target: '_blank' },
+                                    { title: 'unavailable', target: '_blank' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'fab fa-facebook' })
                                 )
                             )

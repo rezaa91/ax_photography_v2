@@ -5446,7 +5446,7 @@ form .selection .option {
 
 .card-wrapper .card-body .left-side .avatar-wrapper .change-image-form .change-image-link {
   cursor: pointer;
-  color: #044730;
+  color: #111111;
 }
 
 .card-wrapper .card-body .left-side .avatar-wrapper .change-image-form .change-image-link:hover {
@@ -6994,6 +6994,48 @@ form .selection .option {
   .login-wrapper .card-header,
   .register-wrapper .card-header {
     font-weight: 900;
+  }
+}
+
+.edit-profile-wrapper {
+  margin: 30px 0;
+}
+
+.edit-profile-wrapper .edit-profile-form {
+  width: 70%;
+  margin: auto;
+  background-color: #ededed;
+}
+
+.edit-profile-wrapper .edit-profile-form label {
+  font-weight: 900;
+}
+
+@media only screen and (max-width: 700px) {
+  .edit-profile-wrapper {
+    margin: 0;
+  }
+
+  .edit-profile-wrapper .edit-profile-form {
+    width: 100%;
+  }
+
+  .edit-profile-wrapper label {
+    width: 100%;
+    font-weight: 100 !important;
+  }
+
+  .edit-profile-wrapper input {
+    width: 100%;
+  }
+
+  .edit-profile-wrapper input[type="submit"] {
+    margin-top: 30px;
+  }
+
+  .edit-profile-wrapper .form-section {
+    display: block !important;
+    margin-bottom: 15px;
   }
 }
 
@@ -17547,5 +17589,13 @@ textarea {
 
 .active {
   font-weight: 900;
+}
+
+.inactive span {
+  color: #999999 !important;
+}
+
+.inactive a:hover {
+  opacity: 1 !important;
 }
 
