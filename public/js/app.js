@@ -36399,6 +36399,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -36430,15 +36432,27 @@ var Navigation = function (_Component) {
         _this.displayLoginOrUser = _this.displayLoginOrUser.bind(_this);
         _this.toggleUserDropdownMenu = _this.toggleUserDropdownMenu.bind(_this);
         _this.hideUserDropdownMenu = _this.hideUserDropdownMenu.bind(_this);
+        _this.toggleMobileDropdown = _this.toggleMobileDropdown.bind(_this);
         return _this;
     }
 
-    /**
-     * Get logged in user through API call
-     */
-
-
     _createClass(Navigation, [{
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate() {
+            // Apply class to the navigation links to show which page the user is currently on
+            var mainNavLinks = [].concat(_toConsumableArray(document.querySelectorAll('.main-link')));
+
+            mainNavLinks.map(function (link) {
+                var url = window.location.href;
+                url.match(link) ? link.classList.add('active') : link.classList.remove('active');
+            });
+        }
+
+        /**
+         * Get logged in user through API call
+         */
+
+    }, {
         key: 'getUser',
         value: function () {
             var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
@@ -36617,7 +36631,13 @@ var Navigation = function (_Component) {
     }, {
         key: 'hideUserDropdownMenu',
         value: function hideUserDropdownMenu() {
-            this.setState({ isDropdownPresent: false });
+            this.setState({ isDropdownPresent: false, rotateArrowClass: 'rotate-down' });
+        }
+    }, {
+        key: 'toggleMobileDropdown',
+        value: function toggleMobileDropdown() {
+            var mobileDropdown = document.querySelector('.main-links');
+            mobileDropdown.style.display === 'block' ? mobileDropdown.style.display = 'none' : mobileDropdown.style.display = 'block';
         }
     }, {
         key: 'render',
@@ -36629,39 +36649,48 @@ var Navigation = function (_Component) {
                     'ul',
                     { className: 'navigation navigation-left' },
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'li',
+                        'span',
                         { className: 'nav-title' },
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'a',
                             { href: '/' },
-                            'AX PHOTOGRAPHY'
+                            'AX52 PHOTOGRAPHY'
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'li',
-                        null,
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            'a',
-                            { href: '/albums', className: 'main-link' },
-                            'Albums'
-                        )
+                        'span',
+                        { className: 'mobile-menu', onClick: this.toggleMobileDropdown },
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-bars' })
                     ),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'li',
-                        null,
+                        'div',
+                        { className: 'main-links' },
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            'a',
-                            { href: '/about', className: 'main-link' },
-                            'About'
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'li',
-                        null,
+                            'li',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'a',
+                                { href: '/albums', className: 'main-link' },
+                                'Albums'
+                            )
+                        ),
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            'a',
-                            { href: '/contact', className: 'main-link' },
-                            'Contact'
+                            'li',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'a',
+                                { href: '/about', className: 'main-link' },
+                                'About'
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'li',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'a',
+                                { href: '/contact', className: 'main-link' },
+                                'Contact'
+                            )
                         )
                     )
                 ),
@@ -60251,7 +60280,7 @@ var Homepage = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'h1',
                             null,
-                            'AX PHOTOGRAPHY'
+                            'AX52 PHOTOGRAPHY'
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'h3',
@@ -60624,7 +60653,7 @@ var About = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'h3',
                             null,
-                            'Landscape Photographer.'
+                            'Hull Photographer'
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -60676,24 +60705,43 @@ var About = function (_Component) {
                                 'p',
                                 null,
                                 'This website gets regular updates so make sure to check back regularly for new content and features!'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'about-footer' },
+                                '- Hamid Issaee'
                             )
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'body-2' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '' })
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'about-footer' },
-                        '- Hamid Issaee'
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'body-2' })
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     { className: 'carousel-wrapper' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'carousel' })
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'carousel' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'image-container' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'collage-1', src: '/images/about-1.jpg' })
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'image-container' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'collage-2', src: '/images/about-2.jpg' })
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'image-container' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'collage-3', src: '/images/about-3.jpg' })
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'image-container' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { className: 'collage-4', src: '/images/about-4.jpg' })
+                        )
+                    )
                 )
             );
         }
@@ -60751,12 +60799,12 @@ var Contact = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'h1',
                             null,
-                            'CONTACT.'
+                            'CONTACT'
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'h3',
                             null,
-                            'Get in touch for a quote.'
+                            'Get in touch for a quote'
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -60771,7 +60819,7 @@ var Contact = function (_Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
                                     { className: 'form-section' },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', placeholder: 'Name...' })
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', placeholder: 'Name...', autoFocus: true })
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
@@ -60803,34 +60851,34 @@ var Contact = function (_Component) {
                                 { className: 'icon' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'a',
-                                    { href: '#' },
+                                    { href: 'https://www.flickr.com/photos/68234194@N05/', target: '_blank' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'fab fa-flickr' })
                                 )
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'span',
-                                { className: 'icon' },
+                                { className: 'icon inactive' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'a',
-                                    { href: '#' },
+                                    { title: 'unavailable', target: '_blank' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'fab fa-twitter-square' })
                                 )
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'span',
-                                { className: 'icon' },
+                                { className: 'icon inactive' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'a',
-                                    { href: '#' },
+                                    { title: 'unavailable', target: '_blank' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'fab fa-instagram' })
                                 )
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'span',
-                                { className: 'icon' },
+                                { className: 'icon inactive' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'a',
-                                    { href: '#' },
+                                    { title: 'unavailable', target: '_blank' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'fab fa-facebook' })
                                 )
                             )
@@ -61704,6 +61752,38 @@ if (document.querySelector('.upload-wrapper')) {
     };
 
     /**
+     * Prevent form firing if user fails validation
+     */
+
+
+    var checkValidation = function checkValidation(e) {
+        var title = DOMElements.title,
+            selectBox = DOMElements.selectBox,
+            createAlbumInput = DOMElements.createAlbumInput,
+            file = DOMElements.file,
+            validationContainer = DOMElements.validationContainer;
+
+        var validationErrorMsg = '';
+
+        if (!title.value) {
+            e.preventDefault();
+            validationErrorMsg += '<p>Please enter a title</p>';
+        }
+
+        if (selectBox.value === 'default' && !createAlbumInput.value) {
+            e.preventDefault();
+            validationErrorMsg += '<p>Please select or create a new album</p>';
+        }
+
+        if (!file.value) {
+            e.preventDefault();
+            validationErrorMsg += '<p>Please select an image to upload</p>';
+        }
+
+        validationContainer.innerHTML = validationErrorMsg;
+    };
+
+    /**
      * Set up event listeners
      */
 
@@ -61717,6 +61797,7 @@ if (document.querySelector('.upload-wrapper')) {
         // Set the select box value of current albums to default if user begins to typing in to new album field
         createAlbumInput.addEventListener('input', setExistingAlbumValueToDefault);
         selectedExistingAlbum.addEventListener('change', removeCreateAlbumValue);
+        form.addEventListener('submit', checkValidation);
     };
 
     /**
@@ -61728,7 +61809,12 @@ if (document.querySelector('.upload-wrapper')) {
         form: document.querySelector('#form'),
         albumTypeRadioBtns: document.forms[0].elements.album_type,
         selectAlbumSection: document.querySelector('#select_album'),
-        createAlbumSection: document.querySelector('#create_album')
+        createAlbumSection: document.querySelector('#create_album'),
+        title: document.querySelector('input[name="title"]'),
+        selectBox: document.querySelector('select[name="album"]'),
+        createAlbumInput: document.querySelector('input[name="create_album"]'),
+        file: document.querySelector('input[name="file"]'),
+        validationContainer: document.getElementById('validation-container')
     };init();
 }
 

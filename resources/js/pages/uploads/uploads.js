@@ -13,7 +13,12 @@ if (document.querySelector('.upload-wrapper')) {
         form: document.querySelector('#form'),
         albumTypeRadioBtns: document.forms[0].elements.album_type,
         selectAlbumSection: document.querySelector('#select_album'),
-        createAlbumSection: document.querySelector('#create_album')
+        createAlbumSection: document.querySelector('#create_album'),
+        title: document.querySelector('input[name="title"]'),
+        selectBox: document.querySelector('select[name="album"]'),
+        createAlbumInput: document.querySelector('input[name="create_album"]'),
+        file: document.querySelector('input[name="file"]'),
+        validationContainer: document.getElementById('validation-container')
     };
 
     /**
@@ -80,6 +85,31 @@ if (document.querySelector('.upload-wrapper')) {
     }
 
     /**
+     * Prevent form firing if user fails validation
+     */
+    function checkValidation(e) {
+        const {title, selectBox, createAlbumInput, file, validationContainer} = DOMElements;
+        let validationErrorMsg = '';
+
+        if (!title.value) {
+            e.preventDefault();
+            validationErrorMsg += '<p>Please enter a title</p>';
+        }
+        
+        if (selectBox.value === 'default' && !createAlbumInput.value) {
+            e.preventDefault();
+            validationErrorMsg += '<p>Please select or create a new album</p>';
+        }
+
+        if (!file.value) {
+            e.preventDefault();
+            validationErrorMsg += '<p>Please select an image to upload</p>'
+        }
+
+        validationContainer.innerHTML = validationErrorMsg;
+    }
+
+    /**
      * Set up event listeners
      */
     function setupEventListeners() {
@@ -90,6 +120,7 @@ if (document.querySelector('.upload-wrapper')) {
         // Set the select box value of current albums to default if user begins to typing in to new album field
         createAlbumInput.addEventListener('input', setExistingAlbumValueToDefault);
         selectedExistingAlbum.addEventListener('change', removeCreateAlbumValue);
+        form.addEventListener('submit', checkValidation);
     }
 
     /**

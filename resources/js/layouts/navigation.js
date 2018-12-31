@@ -20,6 +20,18 @@ class Navigation extends Component {
         this.displayLoginOrUser = this.displayLoginOrUser.bind(this);
         this.toggleUserDropdownMenu = this.toggleUserDropdownMenu.bind(this);
         this.hideUserDropdownMenu = this.hideUserDropdownMenu.bind(this);
+        this.toggleMobileDropdown = this.toggleMobileDropdown.bind(this);
+    }
+
+    componentDidUpdate() {
+        // Apply class to the navigation links to show which page the user is currently on
+        const mainNavLinks = [...document.querySelectorAll('.main-link')];
+
+        mainNavLinks.map(link => {
+            const url = window.location.href;
+            url.match(link) ? link.classList.add('active') : link.classList.remove('active');
+        })
+
     }
 
     /**
@@ -115,17 +127,25 @@ class Navigation extends Component {
     }
 
     hideUserDropdownMenu() {
-        this.setState({isDropdownPresent: false});
+        this.setState({isDropdownPresent: false, rotateArrowClass: 'rotate-down'});
+    }
+
+    toggleMobileDropdown() {
+        const mobileDropdown = document.querySelector('.main-links');
+        mobileDropdown.style.display === 'block' ? mobileDropdown.style.display = 'none' : mobileDropdown.style.display = 'block';
     }
 
     render() {
         return(
             <div className="navigation-wrapper" onMouseLeave={this.hideUserDropdownMenu}>
                 <ul className="navigation navigation-left">
-                    <li className="nav-title"><a href='/'>AX PHOTOGRAPHY</a></li>
-                    <li><a href='/albums' className = 'main-link'>Albums</a></li>
-                    <li><a href='/about' className = 'main-link'>About</a></li>
-                    <li><a href='/contact' className = 'main-link'>Contact</a></li>
+                    <span className="nav-title"><a href='/'>AX52 PHOTOGRAPHY</a></span>
+                    <span className="mobile-menu" onClick={this.toggleMobileDropdown}><i className="fas fa-bars"></i></span>
+                    <div className="main-links">
+                        <li><a href='/albums' className = 'main-link'>Albums</a></li>
+                        <li><a href='/about' className = 'main-link'>About</a></li>
+                        <li><a href='/contact' className = 'main-link'>Contact</a></li>
+                    </div>
                 </ul>
 
                 <ul className="navigation navigation-right">

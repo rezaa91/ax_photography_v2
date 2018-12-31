@@ -467,7 +467,7 @@ class ImageModal extends Component {
 
                                 {
                                     displaySettings &&
-                                    <Settings 
+                                    <Settings
                                     imageDetails={imageDetails} 
                                     user_id={user.id} 
                                     toggleDisplayModal={this.toggleDisplayModal} 

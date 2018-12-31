@@ -1,3 +1,19 @@
 .hide {
     display: none !important;
 }
+
+.active {
+    font-weight: 900;
+}
+
+.inactive {
+    span {
+        color: $grey !important;
+    }
+
+    a {
+        &:hover {
+            opacity: 1 !important;
+        }
+    }
+}

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Http\Controllers\Photos\UserAvatar;
 
 class DashboardController extends Controller
 {
@@ -63,7 +64,7 @@ class DashboardController extends Controller
     }
 
     /**
-     * Delete the users profile
+     * Delete the users profile along with avatar image
      * 
      * @param Request $request
      * @param integer $id
@@ -73,7 +74,10 @@ class DashboardController extends Controller
         if (auth()->user()->id !== $id) {
             return redirect('/')->with('failure', 'Unauthorised access');
         }
+
         $user = User::find($id);
+        $avatarImage = new UserAvatar($request);
+        $avatarImage->removeCurrentImage($user);
         $user->delete();
         
         return redirect('/')->with('success', 'Your account has been deleted.');
