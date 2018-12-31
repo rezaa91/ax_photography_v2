@@ -1,14 +1,66 @@
 .upload-wrapper {
     width: 40%;
-    margin: 20px auto 0;
-    border: 1px solid $darkgrey;
-    padding: 10px;
+    margin: 30px auto 0;
+    border: 1px solid $grey;
+    padding: 25px 10px;
+    background-color: $white;
+
+    label {
+        font-weight: 900;
+    }
 
     .title {
         text-align: center;
         margin-bottom: 10px;
+
         h1 {
+            color: $darkgrey;
+            letter-spacing: $sub-header;
             font-size: $font-header;
+        }
+    }
+}
+
+.validation-wrapper {
+    width: 40%;
+    margin: 10px auto;
+    
+    #validation-container {
+        background-color: $red;
+
+        p {
+            margin: 0;
+            padding: 5px;
+            color: $white;
+            font-weight: 900;
+            border-bottom: 1px solid $grey;
+        }
+    }
+}
+
+@media only screen and (max-width: $medium) {
+    .upload-wrapper {
+        width: 100%;
+        margin: 0;
+        border: 0;
+
+        label {
+            font-size: $font-small;
+        }
+
+        .title {
+            h1 {
+                font-size: $font-sub-header;
+            }
+        }
+    }
+
+    .validation-wrapper {
+        width: 100%;
+
+        #validation-container {
+            width: 80%;
+            margin: auto;
         }
     }
 }

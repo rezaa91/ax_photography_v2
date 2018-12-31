@@ -6,9 +6,11 @@
     .about-header {
         h1 {
             color: $lightgreen;
+            letter-spacing: $header;
         }
         h3 {
             color: $darkgreen;
+            letter-spacing: $sub-header;
         }
     }
 
@@ -20,6 +22,17 @@
         }
         .body-2 {
             flex: 1;
+
+            .image-container {
+                flex: 0 1 50%;
+                max-height: 50%;
+            }
+
+            img {
+                object-fit: cover;
+                width: 100%;
+                height: 100%;
+            }
         }
 
         p {
@@ -28,9 +41,59 @@
     }
 
     .about-footer {
-        width: 50%;
         text-align: right;
+        padding: 5px 20px;
         color: $grey;
         font-size: 1.2rem;
+    }
+
+    .carousel-wrapper {
+        margin-top: 5rem;
+        
+        .carousel {
+            width: 100%;
+            display: flex;
+        }
+
+        .image-container {
+            flex: 1;
+
+            img {
+                object-fit: cover;
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: $medium) {
+    .about-wrapper {
+        border-bottom: 0;
+        
+        .about-header {
+            h1 {
+                font-size: $font-sub-header;
+            }
+            h3 {
+                font-size: $font-regular;
+                margin-bottom: 20px;
+            }
+        }
+
+        .about-body {
+            display: block;
+            p {
+                color: $grey;
+            }
+        }
+        
+        .about-footer {
+            color: $darkgrey;
+        }
+
+        .carousel-wrapper {
+            display: none;
+        }
     }
 }
