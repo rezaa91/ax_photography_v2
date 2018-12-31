@@ -1,6 +1,7 @@
 
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css?family=Comfortaa|ZCOOL+XiaoWei');
 
 // Font awesome
 @import '~@fortawesome/fontawesome-free/scss/brands';
@@ -31,6 +32,8 @@
 @import './pages/contact/_contact';
 @import './pages/albums/_albums';
 @import './pages/individualAlbum/_individualAlbum';
+@import './pages/auth/_auth';
+@import './pages/editProfile/_editProfile';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';

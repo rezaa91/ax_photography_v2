@@ -1,9 +1,19 @@
 .mainBtn {
     border: 1px solid $darkgrey;
-    padding: 5px;
+    padding: 5px 10px;
     color: $white;
+    font-size: $font-sub-header;
     background-color: $green;
+    transition: background-color 0.3s;
+
     &:hover {
         color: $white;
+        background-color: $darkgreen;
+    }
+}
+
+@media only screen and (max-width: $medium) {
+    .mainBtn {
+        font-size: $font-regular;
     }
 }

@@ -46,7 +46,7 @@ class UserAvatar extends FileController
      *
      * @param object $user
      */
-    private function removeCurrentImage($user)
+    public function removeCurrentImage($user)
     {
         // Return if user has no avatar set
         if (!isset($user->avatar_filepath)) {
