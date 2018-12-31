@@ -12,7 +12,7 @@
 
     <div class='form-section'>
         {{ Form::label('title *') }}
-        {{ Form::text('title', '', ['autofocus']) }}
+        {{ Form::text('title', '', ['autofocus', 'required']) }}
     </div>
 
     <div class='form-section'>

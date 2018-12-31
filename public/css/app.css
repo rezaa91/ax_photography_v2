@@ -6939,6 +6939,64 @@ form .selection .option {
   }
 }
 
+.login-wrapper,
+.register-wrapper {
+  margin: 30px 0;
+}
+
+.login-wrapper .login-btn,
+.register-wrapper .login-btn {
+  background-color: #05704c;
+  color: #ededed;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+
+.login-wrapper .login-btn:hover,
+.register-wrapper .login-btn:hover {
+  background-color: #044730;
+}
+
+.login-wrapper input:focus,
+.register-wrapper input:focus {
+  outline: none;
+  border-color: #044730;
+  -webkit-box-shadow: 0 0 7px #05704c;
+          box-shadow: 0 0 7px #05704c;
+}
+
+.login-wrapper .forgot-password,
+.register-wrapper .forgot-password {
+  color: #044730;
+}
+
+.login-wrapper .is-invalid,
+.register-wrapper .is-invalid {
+  border-color: #9e0401 !important;
+}
+
+.login-wrapper .register,
+.register-wrapper .register {
+  font-size: 0.8rem;
+}
+
+@media only screen and (max-width: 700px) {
+  .login-wrapper,
+  .register-wrapper {
+    font-size: 0.8rem;
+  }
+
+  .login-wrapper .forgot-password,
+  .register-wrapper .forgot-password {
+    font-size: 0.8rem;
+  }
+
+  .login-wrapper .card-header,
+  .register-wrapper .card-header {
+    font-weight: 900;
+  }
+}
+
 /*!
  * Bootstrap v4.1.3 (https://getbootstrap.com/)
  * Copyright 2011-2018 The Bootstrap Authors

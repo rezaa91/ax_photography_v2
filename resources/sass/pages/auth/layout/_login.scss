@@ -1,0 +1,45 @@
+.login-wrapper {
+    margin: 30px 0;
+
+    .login-btn {
+        background-color: $green;
+        color: $white;
+        transition: background-color 0.3s;
+
+        &:hover {
+            background-color: $darkgreen;
+        }        
+    }
+
+    input:focus {
+        outline: none;
+        border-color: $darkgreen;
+        box-shadow: 0 0 7px $green;
+    }
+
+    .forgot-password {
+        color: $darkgreen;
+    }
+
+    .is-invalid {
+        border-color: $red !important;
+    }
+
+    .register {
+        font-size: $font-small;
+    }
+}
+
+@media only screen and (max-width: $medium) {
+    .login-wrapper {
+        font-size: $font-small;
+
+        .forgot-password {
+            font-size: $font-small;
+        }
+
+        .card-header {
+            font-weight: 900;
+        }
+    }
+}
