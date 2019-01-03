@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Photos\UserAvatar;
 
 class DashboardController extends Controller
@@ -44,20 +45,40 @@ class DashboardController extends Controller
     }
 
     /**
-     * Update the user edited data
+     * Update users details
      *
      * @param Request $request
+     * @param int $userId
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $userId)
     {
         $this->validate($request, [
             'username' => 'required',
             'email' => 'required'
         ]);
 
-        $user = User::find($id);
-        $user->username = $request->input('username');
-        $user->email = $request->input('email');
+        $user = User::find($userId);
+
+        if ($request->current_password) {
+
+            if (!Hash::check($request->current_password, $user->password)) {
+                return redirect("/user/$userId/edit")->with('failure', 'Password incorrect.');
+            }
+
+            $this->validate($request, [
+                'new_password' => 'required',
+                'confirm_password' => 'required'
+            ]);
+
+            if ($request->input('new_password') !== $request->confirm_password) {
+                return redirect("/user/$userId/edit")->with('failure', 'New password and password confirmation do not match.');
+            }
+
+            $user->password = Hash::make($request->new_password);
+        }
+
+        $user->username = $request->username;
+        $user->email = $request->email;
         $user->save();
 
         return redirect('/user')->with('success', 'Profile updated');
