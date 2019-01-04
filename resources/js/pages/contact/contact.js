@@ -2,6 +2,53 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 class Contact extends Component {
+    constructor() {
+        super();
+
+        this.state = {
+            formIsValid: true, //REMEMBER TO SET TO FALSE
+            formData: {
+                name: '',
+                email: '',
+                body: ''
+            }
+        }
+
+        this.updateValueOnChange = this.updateValueOnChange.bind(this);
+        this.submitForm = this.submitForm.bind(this);
+    }
+
+    updateValueOnChange(e) {
+        const property = e.target.name;
+        const value = e.target.value;
+        const formData = {...this.state.formData};
+        formData[property] = value;
+
+        this.setState({formData});
+    }
+
+    submitForm(e) {
+        e.preventDefault();
+        const {formIsValid} = this.state;
+
+        if (!formIsValid) {
+            return;
+        }
+        
+        const {name, email, body} = this.state.formData;
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+
+        fetch('/api/email', {
+            method: 'POST',
+            headers: {
+                'x-csrf-token': token
+            },
+            body: JSON.stringify({name, email, body})
+        })
+        .then(response => console.log(response))
+        .catch(error => console.log(error));
+    }
+
     render() {
         return(
             <div className='contact-wrapper'>
@@ -14,15 +61,15 @@ class Contact extends Component {
 
                     <div className='contact-body'>
                         <div className='body-1'>
-                            <form>
+                            <form onSubmit={this.submitForm}>
                                 <div className="form-section">
-                                    <input type="text" placeholder="Name..." autoFocus />
+                                    <input type="text" name="name" placeholder="Name..." onChange={this.updateValueOnChange} required autoFocus />
                                 </div>
                                 <div className='form-section'>
-                                    <input type="text" placeholder="Email@example.co.uk" />
+                                    <input type="text" name="email" placeholder="Email@example.co.uk" onChange={this.updateValueOnChange} required />
                                 </div>
                                 <div className="form-section">
-                                    <textarea placeholder="Enter a message..."></textarea>
+                                    <textarea name="body" placeholder="Enter a message..." onChange={this.updateValueOnChange} required></textarea>
                                 </div>
                                 <div className="form-section">
                                     <input type="submit" value="SEND" /> 
