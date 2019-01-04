@@ -60741,6 +60741,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -60758,10 +60760,63 @@ var Contact = function (_Component) {
     function Contact() {
         _classCallCheck(this, Contact);
 
-        return _possibleConstructorReturn(this, (Contact.__proto__ || Object.getPrototypeOf(Contact)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (Contact.__proto__ || Object.getPrototypeOf(Contact)).call(this));
+
+        _this.state = {
+            formIsValid: true, //REMEMBER TO SET TO FALSE
+            formData: {
+                name: '',
+                email: '',
+                body: ''
+            }
+        };
+
+        _this.updateValueOnChange = _this.updateValueOnChange.bind(_this);
+        _this.submitForm = _this.submitForm.bind(_this);
+        return _this;
     }
 
     _createClass(Contact, [{
+        key: 'updateValueOnChange',
+        value: function updateValueOnChange(e) {
+            var property = e.target.name;
+            var value = e.target.value;
+            var formData = _extends({}, this.state.formData);
+            formData[property] = value;
+
+            this.setState({ formData: formData });
+        }
+    }, {
+        key: 'submitForm',
+        value: function submitForm(e) {
+            e.preventDefault();
+            var formIsValid = this.state.formIsValid;
+
+
+            if (!formIsValid) {
+                return;
+            }
+
+            var _state$formData = this.state.formData,
+                name = _state$formData.name,
+                email = _state$formData.email,
+                body = _state$formData.body;
+
+            var token = document.querySelector('meta[name="csrf-token"]').content;
+
+            fetch('/api/email', {
+                method: 'POST',
+                headers: {
+                    'x-csrf-token': token
+                },
+                body: JSON.stringify({ name: name, email: email, body: body })
+            }).then(function (response) {
+                return console.log(response);
+            }).catch(function (error) {
+                return console.log(error);
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -60792,21 +60847,21 @@ var Contact = function (_Component) {
                             { className: 'body-1' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'form',
-                                null,
+                                { onSubmit: this.submitForm },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
                                     { className: 'form-section' },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', placeholder: 'Name...', autoFocus: true })
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', name: 'name', placeholder: 'Name...', onChange: this.updateValueOnChange, required: true, autoFocus: true })
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
                                     { className: 'form-section' },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', placeholder: 'Email@example.co.uk' })
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', name: 'email', placeholder: 'Email@example.co.uk', onChange: this.updateValueOnChange, required: true })
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
                                     { className: 'form-section' },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('textarea', { placeholder: 'Enter a message...' })
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('textarea', { name: 'body', placeholder: 'Enter a message...', onChange: this.updateValueOnChange, required: true })
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
