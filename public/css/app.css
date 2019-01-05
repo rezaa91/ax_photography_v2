@@ -6374,6 +6374,10 @@ form .selection .option {
   font-size: 1.7rem;
 }
 
+.upload-wrapper textarea {
+  height: 80px;
+}
+
 .validation-wrapper {
   width: 40%;
   margin: 10px auto;

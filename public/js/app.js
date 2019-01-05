@@ -14121,7 +14121,7 @@ var Validate = {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(18);
-module.exports = __webpack_require__(70);
+module.exports = __webpack_require__(71);
 
 
 /***/ }),
@@ -61789,18 +61789,12 @@ if (document.querySelector('.upload-wrapper')) {
 
 
     var checkValidation = function checkValidation(e) {
-        var title = DOMElements.title,
-            selectBox = DOMElements.selectBox,
+        var selectBox = DOMElements.selectBox,
             createAlbumInput = DOMElements.createAlbumInput,
             file = DOMElements.file,
             validationContainer = DOMElements.validationContainer;
 
         var validationErrorMsg = '';
-
-        if (!title.value) {
-            e.preventDefault();
-            validationErrorMsg += '<p>Please enter a title</p>';
-        }
 
         if (selectBox.value === 'default' && !createAlbumInput.value) {
             e.preventDefault();
@@ -61864,7 +61858,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_imageModal__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_components_modal__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__individualAbumSettings__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__individualAbumSettings__ = __webpack_require__(70);
 
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -62762,7 +62756,7 @@ var ImageModal = function (_Component) {
         value: function saveOnEnter(e) {
             var enterKeyCharCode = 13;
 
-            if (e.charCode !== enterKeyCharCode) {
+            if (e.keyCode !== enterKeyCharCode) {
                 return;
             }
 
@@ -62946,7 +62940,7 @@ var ImageModal = function (_Component) {
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', {
                                     type: 'text',
                                     placeholder: 'Title...',
-                                    value: imageDetails.title.toUpperCase(),
+                                    value: imageDetails.title ? imageDetails.title.toUpperCase() : '',
                                     onChange: function onChange(e) {
                                         _this3.changeInput(e);
                                     },
@@ -63677,32 +63671,6 @@ var Comments = function (_Component) {
 
 /***/ }),
 /* 70 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */,
-/* 78 */,
-/* 79 */,
-/* 80 */,
-/* 81 */,
-/* 82 */,
-/* 83 */,
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */,
-/* 91 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63743,6 +63711,12 @@ function setHeightOfAlbumPage() {
 
     albumImagesWrapper.style.height = imagesWrapperHeight + 'px';
 }
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

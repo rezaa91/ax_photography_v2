@@ -28,7 +28,7 @@ class PhotosController extends FileController
     {
 
         $this->validate($request, [
-            'title' => 'required',
+            'title' => 'nullable',
             'description' => 'nullable'
         ]);
 
@@ -57,7 +57,7 @@ class PhotosController extends FileController
     public function updateImage(int $photo_id, Request $request)
     {
         $this->validate($request, [
-            'title' => 'required',
+            'title' => 'nullable',
             'description' => 'nullable'
         ]);
 
