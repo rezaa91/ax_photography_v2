@@ -4,7 +4,8 @@
     padding: 20px 0;
 
     .album-information {
-        min-height: 60px; 
+        min-height: 60px;
+        padding-left: 1.6%; // same as image margin in components/_image.scss
 
         .inline {
             display: inline-block;
@@ -53,16 +54,10 @@
     .images {
         display: flex;
         flex-wrap: wrap;
-
-        :first-child {
-            margin-left: 0;
-        }
-
-        :nth-child(5n) {
-            margin-left: 0;
-        }
+        overflow-y: scroll;
 
         :nth-child(4n) {
+            margin-left: 0;
             margin-right: 0;
         }
     }

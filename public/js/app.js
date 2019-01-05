@@ -61864,6 +61864,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_imageModal__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_components_modal__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__individualAbumSettings__ = __webpack_require__(91);
 
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -61875,6 +61876,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -61921,6 +61923,11 @@ var IndividualAlbum = function (_Component) {
     }
 
     _createClass(IndividualAlbum, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            Object(__WEBPACK_IMPORTED_MODULE_5__individualAbumSettings__["a" /* default */])();
+        }
+    }, {
         key: 'componentDidUpdate',
         value: function componentDidUpdate() {
             // focus on edit title input field when in DOM
@@ -63673,6 +63680,69 @@ var Comments = function (_Component) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 71 */,
+/* 72 */,
+/* 73 */,
+/* 74 */,
+/* 75 */,
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = individualAlbumInit;
+/**
+ * Initialisation function called on componentDidMount in ./individualAlbum.js
+ */
+function individualAlbumInit() {
+    setHeightOfAlbumPage();
+}
+
+/**
+ * Get DOM elements
+ */
+function getDOMElements() {
+    return {
+        navBar: document.querySelector('nav'),
+        albumInformation: document.querySelector('.album-information'),
+        albumImagesWrapper: document.querySelector('.images')
+    };
+}
+
+function getWindowHeight() {
+    return window.innerHeight;
+}
+
+function setHeightOfAlbumPage() {
+    var _getDOMElements = getDOMElements(),
+        navBar = _getDOMElements.navBar,
+        albumInformation = _getDOMElements.albumInformation,
+        albumImagesWrapper = _getDOMElements.albumImagesWrapper;
+
+    var windowHeight = getWindowHeight();
+    var navBarHeight = navBar.clientHeight;
+    var albumInformationHeight = albumInformation.clientHeight;
+    var offsetBottom = 40;
+    var imagesWrapperHeight = windowHeight - navBarHeight - albumInformationHeight - offsetBottom;
+
+    albumImagesWrapper.style.height = imagesWrapperHeight + 'px';
+}
 
 /***/ })
 /******/ ]);
