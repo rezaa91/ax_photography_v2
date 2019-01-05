@@ -6857,6 +6857,7 @@ form .selection .option {
 
 .individualAlbum .album-information {
   min-height: 60px;
+  padding-left: 1.6%;
 }
 
 .individualAlbum .album-information .inline {
@@ -6908,17 +6909,11 @@ form .selection .option {
   display: flex;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-}
-
-.individualAlbum .images :first-child {
-  margin-left: 0;
-}
-
-.individualAlbum .images :nth-child(5n) {
-  margin-left: 0;
+  overflow-y: scroll;
 }
 
 .individualAlbum .images :nth-child(4n) {
+  margin-left: 0;
   margin-right: 0;
 }
 
