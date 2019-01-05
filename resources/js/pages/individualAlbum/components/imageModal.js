@@ -264,7 +264,7 @@ class ImageModal extends Component {
     saveOnEnter(e) {
         const enterKeyCharCode = 13;
 
-        if (e.charCode !== enterKeyCharCode) {
+        if (e.keyCode !== enterKeyCharCode) {
             return;
         }
 
@@ -409,7 +409,7 @@ class ImageModal extends Component {
                                     <input 
                                     type="text"
                                     placeholder="Title..."
-                                    value={imageDetails.title.toUpperCase()}
+                                    value={imageDetails.title ? imageDetails.title.toUpperCase() : ''}
                                     onChange={(e) => {this.changeInput(e)}}
                                     onKeyDown={(e) => {this.saveOnEnter(e)}}
                                     />

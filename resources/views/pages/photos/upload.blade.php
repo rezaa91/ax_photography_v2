@@ -11,8 +11,8 @@
     {!! Form::open(['action' => 'Photos\AlbumsController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data', 'id' => 'form']) !!}
 
     <div class='form-section'>
-        {{ Form::label('title *') }}
-        {{ Form::text('title', '', ['autofocus', 'required']) }}
+        {{ Form::label('title') }}
+        {{ Form::text('title', '', ['placeholder' => 'optional...', 'autofocus']) }}
     </div>
 
     <div class='form-section'>

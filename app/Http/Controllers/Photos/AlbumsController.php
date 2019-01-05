@@ -78,9 +78,9 @@ class AlbumsController extends PhotosController
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title' => 'required',
-            'file' => 'required | max:2999',
-            'description' => 'nullable'
+            'title' => 'nullable',
+            'description' => 'nullable',
+            'file' => 'required | max:2999'
         ]);
 
         // If no album type selected, return and inform user
