@@ -36,7 +36,11 @@ class HomepageBackgroundController extends PhotosController
      * @param int $photoId
      */
     public function updateBackgroundImage(int $photoId)
-    {
+    {        
+        if (!auth()->user()->isAdmin) {
+            return;
+        }
+
         if (Image::count() !== 1) {
             return;
         }

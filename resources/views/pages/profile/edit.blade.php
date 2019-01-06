@@ -6,6 +6,7 @@
     <div class="edit-profile-form">
 
         {!! Form::open(['action' => ['DashboardController@update', $user->id], 'method' => 'POST']) !!}
+        @csrf
 
             <div class="form-section">
                 {{ Form::label('username') }}

@@ -88,13 +88,8 @@ if (document.querySelector('.upload-wrapper')) {
      * Prevent form firing if user fails validation
      */
     function checkValidation(e) {
-        const {title, selectBox, createAlbumInput, file, validationContainer} = DOMElements;
+        const {selectBox, createAlbumInput, file, validationContainer} = DOMElements;
         let validationErrorMsg = '';
-
-        if (!title.value) {
-            e.preventDefault();
-            validationErrorMsg += '<p>Please enter a title</p>';
-        }
         
         if (selectBox.value === 'default' && !createAlbumInput.value) {
             e.preventDefault();

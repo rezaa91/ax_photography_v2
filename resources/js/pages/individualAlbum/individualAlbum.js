@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import ImageModal from './components/imageModal';
 import Modal from '../../global_components/modal';
+import individualAlbumInit from './individualAbumSettings';
 
 class IndividualAlbum extends Component {
     constructor() {
@@ -35,6 +36,10 @@ class IndividualAlbum extends Component {
         this.actionDeleteAlbum = this.actionDeleteAlbum.bind(this);
         this.updateAlbum = this.updateAlbum.bind(this);
         this.updateAlbumOnEnter = this.updateAlbumOnEnter.bind(this);
+    }
+
+    componentDidMount() {
+        individualAlbumInit();
     }
 
     componentDidUpdate() {
@@ -219,7 +224,8 @@ class IndividualAlbum extends Component {
         fetch(`/api/delete_album/${albumId}`, {
             method: 'DELETE',
             headers: {
-                'X-CSRF-TOKEN': token
+                'X-CSRF-TOKEN': token,
+                'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
             },
             redirect: 'follow'
         })
@@ -254,7 +260,8 @@ class IndividualAlbum extends Component {
             headers: {
                 'Content': 'application/json',
                 'Accept': 'application/json',
-                'X-CSRF-TOKEN': token
+                'X-CSRF-TOKEN': token,
+                'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
             },
             body: JSON.stringify({
                 'album_name': albumTitle
