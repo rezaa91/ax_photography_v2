@@ -62461,6 +62461,8 @@ var ImageModal = function (_Component) {
             displayCommentsModal: false
         };
 
+        _this.fadeOutHeader = _this.fadeOutHeader.bind(_this);
+        _this.fadeInHeader = _this.fadeInHeader.bind(_this);
         _this.getImageData = _this.getImageData.bind(_this);
         _this.likePhoto = _this.likePhoto.bind(_this);
         _this.doesUserLikePhoto = _this.doesUserLikePhoto.bind(_this);
@@ -62485,17 +62487,38 @@ var ImageModal = function (_Component) {
     _createClass(ImageModal, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
+            var _this2 = this;
+
             // function imported at the top of this file
             Object(__WEBPACK_IMPORTED_MODULE_2__modalSettings__["a" /* default */])();
 
             // set up event listeners for photo traversing using arrow keys
             document.addEventListener('keydown', this.setDirection);
+
+            // fade out image header with title and description
+            setTimeout(function () {
+                return _this2.fadeOutHeader();
+            }, 1000);
         }
     }, {
         key: 'componentWillUnmount',
         value: function componentWillUnmount() {
             // remove event listeners
             document.removeEventListener('keydown', this.setDirection);
+        }
+    }, {
+        key: 'fadeOutHeader',
+        value: function fadeOutHeader() {
+            var imageHeader = document.querySelector('.image-information');
+            imageHeader.style.opacity = 0;
+            imageHeader.style.transition = "opacity 2s";
+        }
+    }, {
+        key: 'fadeInHeader',
+        value: function fadeInHeader() {
+            var imageHeader = document.querySelector('.image-information');
+            imageHeader.style.opacity = 1;
+            imageHeader.style.transition = "opacity 0.2s";
         }
 
         /**
@@ -62527,7 +62550,7 @@ var ImageModal = function (_Component) {
         key: 'getImageData',
         value: function () {
             var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(imageId) {
-                var _this2 = this;
+                var _this3 = this;
 
                 return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
                     while (1) {
@@ -62538,7 +62561,7 @@ var ImageModal = function (_Component) {
                                     return response.status === 200 && response.json();
                                 }).then(function (data) {
                                     var imageDetails = data.data;
-                                    _this2.setState({ imageDetails: imageDetails });
+                                    _this3.setState({ imageDetails: imageDetails });
                                 }).catch(function (error) {
                                     return console.log(error);
                                 });
@@ -62909,7 +62932,7 @@ var ImageModal = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this4 = this;
 
             var _props3 = this.props,
                 closeModal = _props3.closeModal,
@@ -62961,7 +62984,7 @@ var ImageModal = function (_Component) {
                     {
                         className: 'imageModal-wrapper',
                         onClick: function onClick(e) {
-                            _this3.stopEditPhoto(e);
+                            _this4.stopEditPhoto(e);
                         }
                     },
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -62978,7 +63001,10 @@ var ImageModal = function (_Component) {
                         ),
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'div',
-                            { className: 'image-information' },
+                            { className: 'image-information',
+                                onMouseOver: this.fadeInHeader,
+                                onMouseOut: this.fadeOutHeader
+                            },
                             editPhoto ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'div',
                                 { className: 'image-input' },
@@ -62987,20 +63013,20 @@ var ImageModal = function (_Component) {
                                     placeholder: 'Title...',
                                     value: imageDetails.title ? imageDetails.title.toUpperCase() : '',
                                     onChange: function onChange(e) {
-                                        _this3.changeInput(e);
+                                        _this4.changeInput(e);
                                     },
                                     onKeyDown: function onKeyDown(e) {
-                                        _this3.saveOnEnter(e);
+                                        _this4.saveOnEnter(e);
                                     }
                                 }),
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('textarea', {
                                     placeholder: 'Description...',
                                     value: imageDetails.description ? imageDetails.description : '',
                                     onChange: function onChange(e) {
-                                        _this3.changeInput(e);
+                                        _this4.changeInput(e);
                                     },
                                     onKeyDown: function onKeyDown(e) {
-                                        _this3.saveOnEnter(e);
+                                        _this4.saveOnEnter(e);
                                     }
                                 })
                             ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -63026,7 +63052,7 @@ var ImageModal = function (_Component) {
                                 {
                                     className: 'arrow left-arrow',
                                     onClick: function onClick() {
-                                        return _this3.navigate('left');
+                                        return _this4.navigate('left');
                                     }
                                 },
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-chevron-left' })
@@ -63042,7 +63068,7 @@ var ImageModal = function (_Component) {
                                 {
                                     className: 'arrow right-arrow',
                                     onClick: function onClick() {
-                                        return _this3.navigate('right');
+                                        return _this4.navigate('right');
                                     }
                                 },
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-chevron-right' })
