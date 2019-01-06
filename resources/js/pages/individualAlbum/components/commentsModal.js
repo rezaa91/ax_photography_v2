@@ -68,7 +68,8 @@ class Comments extends Component {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': token
+                'X-CSRF-TOKEN': token,
+                'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
             },
             body: JSON.stringify({
                 'user_id': user.id,
@@ -134,7 +135,8 @@ class Comments extends Component {
         fetch(`/api/delete_comment/${postId}`, {
             method: 'Delete',
             headers: {
-                'X-CSRF-TOKEN': token
+                'X-CSRF-TOKEN': token,
+                'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
             }
         })
         .then(response => console.log(response))

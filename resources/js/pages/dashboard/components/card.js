@@ -47,7 +47,7 @@ class Card extends Component {
      */
     changeImage() {
         const form = document.forms[0];
-        const fileUpload = form.elements[0];
+        const fileUpload = form.elements.file;
         fileUpload.click();
     }
 
@@ -70,7 +70,8 @@ class Card extends Component {
         await fetch(`/api/user/${user.user_id}`, {
             method: 'POST',
             headers: {
-                'X-CSRF-TOKEN': token
+                'X-CSRF-TOKEN': token,
+                'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
             },
             body: data
         })
@@ -113,7 +114,8 @@ class Card extends Component {
                                 <div className='change-image-form'>
                                     <span className='change-image-link'>Change Image</span>
                                     <form style={{display: 'none'}}>
-                                        <input type="file" name="file" onChange={this.submitForm} />
+                                        <input name="_token" value="{{ csrf_token() }}" type="hidden" />
+                                        <input name="file" type="file" name="file" onChange={this.submitForm} />
                                         <input type="submit" value="Save" />
                                     </form>
                                 </div>

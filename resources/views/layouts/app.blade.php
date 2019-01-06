@@ -7,6 +7,9 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- API Token -->
+    <meta name="api_token" content="{{ (Auth::user()) ? Auth::user()->api_token : '' }}">
+
     <title>@yield('title', 'Ax Photography')</title>
 
     <!-- Fonts -->

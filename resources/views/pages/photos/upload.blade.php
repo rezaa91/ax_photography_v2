@@ -9,6 +9,7 @@
     </div>
 
     {!! Form::open(['action' => 'Photos\AlbumsController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data', 'id' => 'form']) !!}
+    @csrf
 
     <div class='form-section'>
         {{ Form::label('title') }}

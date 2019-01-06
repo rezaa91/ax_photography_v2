@@ -41,7 +41,8 @@ class Contact extends Component {
         fetch('/api/email', {
             method: 'POST',
             headers: {
-                'x-csrf-token': token
+                'x-csrf-token': token,
+                'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
             },
             body: JSON.stringify({name, email, body})
         })
@@ -62,6 +63,9 @@ class Contact extends Component {
                     <div className='contact-body'>
                         <div className='body-1'>
                             <form onSubmit={this.submitForm}>
+                                
+                                <input name="_token" value="{{ csrf_token() }}" type="hidden" />
+
                                 <div className="form-section">
                                     <input type="text" name="name" placeholder="Name..." onChange={this.updateValueOnChange} required autoFocus />
                                 </div>

@@ -25,6 +25,14 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'api_token'
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+        self::creating(function($user) {
+            $user->api_token = \Hash::make(\Carbon\Carbon::now()->toRfc2822String());
+        });
+    }
 }

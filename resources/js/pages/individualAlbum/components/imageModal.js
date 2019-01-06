@@ -125,7 +125,8 @@ class ImageModal extends Component {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': token
+                'X-CSRF-TOKEN': token,
+                'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
             },
             body: JSON.stringify({
                 'user_id': user.id,
@@ -190,7 +191,8 @@ class ImageModal extends Component {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'token': token
+                'token': token,
+                'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
             }
         })
         .then(res => console.log(res))
@@ -291,7 +293,8 @@ class ImageModal extends Component {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'token': token
+                'token': token,
+                'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
             },
             body: JSON.stringify({
                 title: title,
