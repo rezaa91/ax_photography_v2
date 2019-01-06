@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Photos;
+use App\HomepageBackground;
 
 class InidividualAlbum extends JsonResource
 {
@@ -19,6 +20,12 @@ class InidividualAlbum extends JsonResource
             'title' => $this->album_name,
             'albumId' => $this->album_id,
             'images' => Photos::where('album_id', $this->album_id)->get(),
+            'containsBackgroundImage' => Photos::where('id', $this->backgroundImageId())->where('album_id', $this->album_id)->count() === 1 ? true : false,
         ];
+    }
+
+    private function backgroundImageId()
+    {
+        return HomepageBackground::find(1)->photo_id;
     }
 }

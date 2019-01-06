@@ -38,6 +38,8 @@ class ImageModal extends Component {
             displayCommentsModal: false
         }
 
+        this.fadeOutHeader = this.fadeOutHeader.bind(this);
+        this.fadeInHeader = this.fadeInHeader.bind(this);
         this.getImageData = this.getImageData.bind(this);
         this.likePhoto = this.likePhoto.bind(this);
         this.doesUserLikePhoto = this.doesUserLikePhoto.bind(this);
@@ -64,11 +66,26 @@ class ImageModal extends Component {
 
         // set up event listeners for photo traversing using arrow keys
         document.addEventListener('keydown', this.setDirection);
+
+        // fade out image header with title and description
+        setTimeout(() => this.fadeOutHeader(), 1000);
     }
 
     componentWillUnmount() {
         // remove event listeners
         document.removeEventListener('keydown', this.setDirection);
+    }
+
+    fadeOutHeader() {
+        const imageHeader = document.querySelector('.image-information');
+        imageHeader.style.opacity = 0;
+        imageHeader.style.transition = "opacity 2s";
+    }
+
+    fadeInHeader() {
+        const imageHeader = document.querySelector('.image-information');
+        imageHeader.style.opacity = 1;
+        imageHeader.style.transition = "opacity 0.2s";
     }
 
     /**
@@ -411,7 +428,10 @@ class ImageModal extends Component {
                             <a onClick = {closeModal}>&times;</a>
                         </div>
 
-                        <div className='image-information'>
+                        <div className='image-information'
+                            onMouseOver={this.fadeInHeader}
+                            onMouseOut={this.fadeOutHeader}
+                        >
                             { editPhoto ?
                                 <div className='image-input'>
                                     <input 
