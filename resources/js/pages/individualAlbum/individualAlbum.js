@@ -198,9 +198,17 @@ class IndividualAlbum extends Component {
     }
 
     saveAlbumTitle() {
-        const {user} = this.state;
+        const {user, albumTitle} = this.state;
 
         if (!user.isAdmin) {
+            return;
+        }
+
+        // User cannot save album title if empty, style input box to display error colouring
+        if (!albumTitle) {
+            const editAlbumInput = document.querySelector('input[name="editAlbum"]');
+            editAlbumInput.style.border = "1px solid #9e0401";
+            editAlbumInput.style.boxShadow = "0 0 7px #9e0401";
             return;
         }
 
@@ -260,6 +268,12 @@ class IndividualAlbum extends Component {
         }
 
         if (!editAlbumTitle) {
+            return;
+        }
+
+        if (!albumTitle) {
+            const editAlbumTitleInput = document.querySelector('input[name="editAlbum"]');
+            editAlbumTitleInput.focus();
             return;
         }
 
