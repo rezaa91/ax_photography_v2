@@ -61867,7 +61867,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_imageModal__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_components_modal__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__individualAbumSettings__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__global_components_alert__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__individualAbumSettings__ = __webpack_require__(70);
 
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -61879,6 +61880,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -61902,11 +61904,14 @@ var IndividualAlbum = function (_Component) {
             albumId: null,
             albumTitle: '',
             albumImages: null,
+            containsBackgroundImage: null,
             editAlbumTitle: false,
             enlargedImage: null,
             previousImageId: null,
             nextImageId: null,
-            deleteAlbum: false
+            deleteAlbum: false,
+            displayAlert: false,
+            alertMsg: null
         };
 
         _this.getAlbum = _this.getAlbum.bind(_this);
@@ -61922,13 +61927,14 @@ var IndividualAlbum = function (_Component) {
         _this.actionDeleteAlbum = _this.actionDeleteAlbum.bind(_this);
         _this.updateAlbum = _this.updateAlbum.bind(_this);
         _this.updateAlbumOnEnter = _this.updateAlbumOnEnter.bind(_this);
+        _this.closeAlertBox = _this.closeAlertBox.bind(_this);
         return _this;
     }
 
     _createClass(IndividualAlbum, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            Object(__WEBPACK_IMPORTED_MODULE_5__individualAbumSettings__["a" /* default */])();
+            Object(__WEBPACK_IMPORTED_MODULE_6__individualAbumSettings__["a" /* default */])();
         }
     }, {
         key: 'componentDidUpdate',
@@ -61966,8 +61972,9 @@ var IndividualAlbum = function (_Component) {
                                     var albumImages = data.data.images;
                                     var albumTitle = data.data.title;
                                     var albumId = data.data.albumId;
+                                    var containsBackgroundImage = data.data.containsBackgroundImage;
 
-                                    _this2.setState({ albumImages: albumImages, albumTitle: albumTitle, albumId: albumId });
+                                    _this2.setState({ albumImages: albumImages, albumTitle: albumTitle, albumId: albumId, containsBackgroundImage: containsBackgroundImage });
                                 }).catch(function (error) {
                                     // redirect user back to albums page if album does not exist (e.g. user puts a different id in url)
                                     if (error) {
@@ -62208,10 +62215,17 @@ var IndividualAlbum = function (_Component) {
         value: function actionDeleteAlbum() {
             var _state4 = this.state,
                 user = _state4.user,
-                albumId = _state4.albumId;
+                albumId = _state4.albumId,
+                containsBackgroundImage = _state4.containsBackgroundImage;
 
 
             if (!user.isAdmin) {
+                return;
+            }
+
+            if (containsBackgroundImage) {
+                var alertMsg = "You cannot delete this album as one of the images is the homepage background";
+                this.setState({ displayAlert: true, alertMsg: alertMsg });
                 return;
             }
 
@@ -62284,6 +62298,11 @@ var IndividualAlbum = function (_Component) {
             this.getAlbum();
         }
     }, {
+        key: 'closeAlertBox',
+        value: function closeAlertBox() {
+            this.setState({ displayAlert: false });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _state6 = this.state,
@@ -62291,7 +62310,9 @@ var IndividualAlbum = function (_Component) {
                 albumTitle = _state6.albumTitle,
                 enlargedImage = _state6.enlargedImage,
                 editAlbumTitle = _state6.editAlbumTitle,
-                deleteAlbum = _state6.deleteAlbum;
+                deleteAlbum = _state6.deleteAlbum,
+                displayAlert = _state6.displayAlert,
+                alertMsg = _state6.alertMsg;
 
             var albumTitleState = void 0;
 
@@ -62336,6 +62357,10 @@ var IndividualAlbum = function (_Component) {
                     message: 'Are you sure you want to delete this album?',
                     resetState: this.toggleDeleteAlbum,
                     action: this.actionDeleteAlbum
+                }),
+                displayAlert && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__global_components_alert__["a" /* default */], {
+                    message: alertMsg,
+                    resetState: this.closeAlertBox
                 }),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
@@ -62436,6 +62461,8 @@ var ImageModal = function (_Component) {
             displayCommentsModal: false
         };
 
+        _this.fadeOutHeader = _this.fadeOutHeader.bind(_this);
+        _this.fadeInHeader = _this.fadeInHeader.bind(_this);
         _this.getImageData = _this.getImageData.bind(_this);
         _this.likePhoto = _this.likePhoto.bind(_this);
         _this.doesUserLikePhoto = _this.doesUserLikePhoto.bind(_this);
@@ -62453,23 +62480,45 @@ var ImageModal = function (_Component) {
         _this.hideAlert = _this.hideAlert.bind(_this);
         _this.displayCommentsModal = _this.displayCommentsModal.bind(_this);
         _this.hideCommentsModal = _this.hideCommentsModal.bind(_this);
+        _this.alertChange = _this.alertChange.bind(_this);
         return _this;
     }
 
     _createClass(ImageModal, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
+            var _this2 = this;
+
             // function imported at the top of this file
             Object(__WEBPACK_IMPORTED_MODULE_2__modalSettings__["a" /* default */])();
 
             // set up event listeners for photo traversing using arrow keys
             document.addEventListener('keydown', this.setDirection);
+
+            // fade out image header with title and description
+            setTimeout(function () {
+                return _this2.fadeOutHeader();
+            }, 1000);
         }
     }, {
         key: 'componentWillUnmount',
         value: function componentWillUnmount() {
             // remove event listeners
             document.removeEventListener('keydown', this.setDirection);
+        }
+    }, {
+        key: 'fadeOutHeader',
+        value: function fadeOutHeader() {
+            var imageHeader = document.querySelector('.image-information');
+            imageHeader.style.opacity = 0;
+            imageHeader.style.transition = "opacity 2s";
+        }
+    }, {
+        key: 'fadeInHeader',
+        value: function fadeInHeader() {
+            var imageHeader = document.querySelector('.image-information');
+            imageHeader.style.opacity = 1;
+            imageHeader.style.transition = "opacity 0.2s";
         }
 
         /**
@@ -62501,7 +62550,7 @@ var ImageModal = function (_Component) {
         key: 'getImageData',
         value: function () {
             var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(imageId) {
-                var _this2 = this;
+                var _this3 = this;
 
                 return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
                     while (1) {
@@ -62512,7 +62561,7 @@ var ImageModal = function (_Component) {
                                     return response.status === 200 && response.json();
                                 }).then(function (data) {
                                     var imageDetails = data.data;
-                                    _this2.setState({ imageDetails: imageDetails });
+                                    _this3.setState({ imageDetails: imageDetails });
                                 }).catch(function (error) {
                                     return console.log(error);
                                 });
@@ -62876,9 +62925,14 @@ var ImageModal = function (_Component) {
             this.setState({ displayCommentsModal: false });
         }
     }, {
+        key: 'alertChange',
+        value: function alertChange(alertMsg) {
+            this.setState({ displayAlert: true, alertMsg: alertMsg });
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this4 = this;
 
             var _props3 = this.props,
                 closeModal = _props3.closeModal,
@@ -62930,7 +62984,7 @@ var ImageModal = function (_Component) {
                     {
                         className: 'imageModal-wrapper',
                         onClick: function onClick(e) {
-                            _this3.stopEditPhoto(e);
+                            _this4.stopEditPhoto(e);
                         }
                     },
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -62947,7 +63001,10 @@ var ImageModal = function (_Component) {
                         ),
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'div',
-                            { className: 'image-information' },
+                            { className: 'image-information',
+                                onMouseOver: this.fadeInHeader,
+                                onMouseOut: this.fadeOutHeader
+                            },
                             editPhoto ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'div',
                                 { className: 'image-input' },
@@ -62956,20 +63013,20 @@ var ImageModal = function (_Component) {
                                     placeholder: 'Title...',
                                     value: imageDetails.title ? imageDetails.title.toUpperCase() : '',
                                     onChange: function onChange(e) {
-                                        _this3.changeInput(e);
+                                        _this4.changeInput(e);
                                     },
                                     onKeyDown: function onKeyDown(e) {
-                                        _this3.saveOnEnter(e);
+                                        _this4.saveOnEnter(e);
                                     }
                                 }),
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('textarea', {
                                     placeholder: 'Description...',
                                     value: imageDetails.description ? imageDetails.description : '',
                                     onChange: function onChange(e) {
-                                        _this3.changeInput(e);
+                                        _this4.changeInput(e);
                                     },
                                     onKeyDown: function onKeyDown(e) {
-                                        _this3.saveOnEnter(e);
+                                        _this4.saveOnEnter(e);
                                     }
                                 })
                             ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -62995,7 +63052,7 @@ var ImageModal = function (_Component) {
                                 {
                                     className: 'arrow left-arrow',
                                     onClick: function onClick() {
-                                        return _this3.navigate('left');
+                                        return _this4.navigate('left');
                                     }
                                 },
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-chevron-left' })
@@ -63011,7 +63068,7 @@ var ImageModal = function (_Component) {
                                 {
                                     className: 'arrow right-arrow',
                                     onClick: function onClick() {
-                                        return _this3.navigate('right');
+                                        return _this4.navigate('right');
                                     }
                                 },
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-chevron-right' })
@@ -63032,7 +63089,8 @@ var ImageModal = function (_Component) {
                                     imageDetails: imageDetails,
                                     user_id: user.id,
                                     toggleDisplayModal: this.toggleDisplayModal,
-                                    toggleEditPhoto: this.toggleEditPhoto
+                                    toggleEditPhoto: this.toggleEditPhoto,
+                                    alertChange: this.alertChange
                                 })
                             ),
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -63195,6 +63253,8 @@ var Settings = function (_Component) {
     }, {
         key: 'setAlbumCover',
         value: function setAlbumCover() {
+            var _this2 = this;
+
             var id = this.props.imageDetails.id;
             var token = this.state.token;
 
@@ -63207,10 +63267,12 @@ var Settings = function (_Component) {
                     'token': token,
                     'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 }
-            }).then(function (res) {
-                return res.status === 200 && console.log('success');
-            }).catch(function (err) {
-                return console.log('could not update album cover: ' + err);
+            }).then(function () {
+                var alertMsg = "The album cover has been changed successfully.";
+                _this2.props.alertChange(alertMsg);
+            }).catch(function () {
+                var alertMsg = "Sorry, something went wrong, please try again.";
+                _this2.props.alertChange(alertMsg);
             });
 
             this.hideSettings();
@@ -63218,6 +63280,8 @@ var Settings = function (_Component) {
     }, {
         key: 'setHomepageCover',
         value: function setHomepageCover() {
+            var _this3 = this;
+
             var id = this.props.imageDetails.id;
             var token = this.state.token;
 
@@ -63230,10 +63294,12 @@ var Settings = function (_Component) {
                     'X-CSRF-TOKEN': token,
                     'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 }
-            }).then(function (res) {
-                return console.log(res);
-            }).catch(function (error) {
-                return console.log(error);
+            }).then(function () {
+                var alertMsg = "The homepage background has been changed successfully.";
+                _this3.props.alertChange(alertMsg);
+            }).catch(function () {
+                var alertMsg = "Sorry, something went wrong, please try again.";
+                _this3.props.alertChange(alertMsg);
             });
         }
     }, {

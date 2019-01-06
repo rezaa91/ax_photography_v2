@@ -38,6 +38,8 @@ class ImageModal extends Component {
             displayCommentsModal: false
         }
 
+        this.fadeOutHeader = this.fadeOutHeader.bind(this);
+        this.fadeInHeader = this.fadeInHeader.bind(this);
         this.getImageData = this.getImageData.bind(this);
         this.likePhoto = this.likePhoto.bind(this);
         this.doesUserLikePhoto = this.doesUserLikePhoto.bind(this);
@@ -55,6 +57,7 @@ class ImageModal extends Component {
         this.hideAlert = this.hideAlert.bind(this);
         this.displayCommentsModal = this.displayCommentsModal.bind(this);
         this.hideCommentsModal = this.hideCommentsModal.bind(this);
+        this.alertChange = this.alertChange.bind(this);
     }
 
     componentDidMount() {
@@ -63,11 +66,26 @@ class ImageModal extends Component {
 
         // set up event listeners for photo traversing using arrow keys
         document.addEventListener('keydown', this.setDirection);
+
+        // fade out image header with title and description
+        setTimeout(() => this.fadeOutHeader(), 1000);
     }
 
     componentWillUnmount() {
         // remove event listeners
         document.removeEventListener('keydown', this.setDirection);
+    }
+
+    fadeOutHeader() {
+        const imageHeader = document.querySelector('.image-information');
+        imageHeader.style.opacity = 0;
+        imageHeader.style.transition = "opacity 2s";
+    }
+
+    fadeInHeader() {
+        const imageHeader = document.querySelector('.image-information');
+        imageHeader.style.opacity = 1;
+        imageHeader.style.transition = "opacity 0.2s";
     }
 
     /**
@@ -349,6 +367,10 @@ class ImageModal extends Component {
     hideCommentsModal() {
         this.setState({displayCommentsModal: false});
     }
+
+    alertChange(alertMsg) {
+        this.setState({displayAlert: true, alertMsg});
+    }
     
     render() {
         const {closeModal, previousImageId, nextImageId} = this.props;
@@ -406,7 +428,10 @@ class ImageModal extends Component {
                             <a onClick = {closeModal}>&times;</a>
                         </div>
 
-                        <div className='image-information'>
+                        <div className='image-information'
+                            onMouseOver={this.fadeInHeader}
+                            onMouseOut={this.fadeOutHeader}
+                        >
                             { editPhoto ?
                                 <div className='image-input'>
                                     <input 
@@ -475,6 +500,7 @@ class ImageModal extends Component {
                                     user_id={user.id} 
                                     toggleDisplayModal={this.toggleDisplayModal} 
                                     toggleEditPhoto={this.toggleEditPhoto}
+                                    alertChange={this.alertChange}
                                     /> 
                                 }
                             </span>

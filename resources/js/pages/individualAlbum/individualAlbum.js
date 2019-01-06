@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import ImageModal from './components/imageModal';
 import Modal from '../../global_components/modal';
+import Alert from '../../global_components/alert';
 import individualAlbumInit from './individualAbumSettings';
 
 class IndividualAlbum extends Component {
@@ -16,11 +17,14 @@ class IndividualAlbum extends Component {
             albumId: null,
             albumTitle: '',
             albumImages: null,
+            containsBackgroundImage: null,
             editAlbumTitle: false,
             enlargedImage: null,
             previousImageId: null,
             nextImageId: null,
-            deleteAlbum: false
+            deleteAlbum: false,
+            displayAlert: false,
+            alertMsg: null
         }
 
         this.getAlbum = this.getAlbum.bind(this);
@@ -36,6 +40,7 @@ class IndividualAlbum extends Component {
         this.actionDeleteAlbum = this.actionDeleteAlbum.bind(this);
         this.updateAlbum = this.updateAlbum.bind(this);
         this.updateAlbumOnEnter = this.updateAlbumOnEnter.bind(this);
+        this.closeAlertBox = this.closeAlertBox.bind(this);
     }
 
     componentDidMount() {
@@ -64,8 +69,9 @@ class IndividualAlbum extends Component {
             const albumImages = data.data.images;
             const albumTitle = data.data.title;
             const albumId = data.data.albumId;
+            const containsBackgroundImage = data.data.containsBackgroundImage;
 
-            this.setState({albumImages, albumTitle, albumId});
+            this.setState({albumImages, albumTitle, albumId, containsBackgroundImage});
         })
         .catch(error => {
             // redirect user back to albums page if album does not exist (e.g. user puts a different id in url)
@@ -212,9 +218,15 @@ class IndividualAlbum extends Component {
     }
 
     actionDeleteAlbum() {
-        const {user, albumId} = this.state;
+        const {user, albumId, containsBackgroundImage} = this.state;
 
         if (!user.isAdmin) {
+            return;
+        }
+
+        if (containsBackgroundImage) {
+            const alertMsg = "You cannot delete this album as one of the images is the homepage background";
+            this.setState({displayAlert: true, alertMsg});
             return;
         }
 
@@ -274,8 +286,12 @@ class IndividualAlbum extends Component {
         this.getAlbum();
     }
 
+    closeAlertBox() {
+        this.setState({displayAlert: false});
+    }
+
     render() {
-        const {user, albumTitle, enlargedImage, editAlbumTitle, deleteAlbum} = this.state;
+        const {user, albumTitle, enlargedImage, editAlbumTitle, deleteAlbum, displayAlert, alertMsg} = this.state;
         let albumTitleState;
 
         if (editAlbumTitle) {
@@ -308,6 +324,14 @@ class IndividualAlbum extends Component {
                         message='Are you sure you want to delete this album?'
                         resetState={this.toggleDeleteAlbum}
                         action={this.actionDeleteAlbum}
+                    />
+                }
+
+                {
+                    displayAlert &&
+                    <Alert 
+                        message={alertMsg}
+                        resetState={this.closeAlertBox}
                     />
                 }
 
