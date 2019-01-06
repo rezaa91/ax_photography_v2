@@ -55,6 +55,7 @@ class ImageModal extends Component {
         this.hideAlert = this.hideAlert.bind(this);
         this.displayCommentsModal = this.displayCommentsModal.bind(this);
         this.hideCommentsModal = this.hideCommentsModal.bind(this);
+        this.alertChange = this.alertChange.bind(this);
     }
 
     componentDidMount() {
@@ -349,6 +350,10 @@ class ImageModal extends Component {
     hideCommentsModal() {
         this.setState({displayCommentsModal: false});
     }
+
+    alertChange(alertMsg) {
+        this.setState({displayAlert: true, alertMsg});
+    }
     
     render() {
         const {closeModal, previousImageId, nextImageId} = this.props;
@@ -475,6 +480,7 @@ class ImageModal extends Component {
                                     user_id={user.id} 
                                     toggleDisplayModal={this.toggleDisplayModal} 
                                     toggleEditPhoto={this.toggleEditPhoto}
+                                    alertChange={this.alertChange}
                                     /> 
                                 }
                             </span>

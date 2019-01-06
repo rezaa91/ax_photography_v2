@@ -37,8 +37,14 @@ class Settings extends Component {
                 'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
             }
         })
-        .then(res => res.status === 200 && console.log('success'))
-        .catch(err => console.log('could not update album cover: ' + err));
+        .then(() => {
+            const alertMsg = "The album cover has been changed successfully.";
+            this.props.alertChange(alertMsg);
+        })
+        .catch(() => {
+            const alertMsg = "Sorry, something went wrong, please try again.";
+            this.props.alertChange(alertMsg);
+        });
 
         this.hideSettings();
     }
@@ -56,8 +62,14 @@ class Settings extends Component {
                 'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
             }
         })
-        .then(res => console.log(res))
-        .catch(error => console.log(error));
+        .then(() => {
+            const alertMsg = "The homepage background has been changed successfully.";
+            this.props.alertChange(alertMsg);
+        })
+        .catch(() => {
+            const alertMsg = "Sorry, something went wrong, please try again.";
+            this.props.alertChange(alertMsg);
+        });
     }
 
     render() {

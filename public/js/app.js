@@ -62453,6 +62453,7 @@ var ImageModal = function (_Component) {
         _this.hideAlert = _this.hideAlert.bind(_this);
         _this.displayCommentsModal = _this.displayCommentsModal.bind(_this);
         _this.hideCommentsModal = _this.hideCommentsModal.bind(_this);
+        _this.alertChange = _this.alertChange.bind(_this);
         return _this;
     }
 
@@ -62876,6 +62877,11 @@ var ImageModal = function (_Component) {
             this.setState({ displayCommentsModal: false });
         }
     }, {
+        key: 'alertChange',
+        value: function alertChange(alertMsg) {
+            this.setState({ displayAlert: true, alertMsg: alertMsg });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _this3 = this;
@@ -63032,7 +63038,8 @@ var ImageModal = function (_Component) {
                                     imageDetails: imageDetails,
                                     user_id: user.id,
                                     toggleDisplayModal: this.toggleDisplayModal,
-                                    toggleEditPhoto: this.toggleEditPhoto
+                                    toggleEditPhoto: this.toggleEditPhoto,
+                                    alertChange: this.alertChange
                                 })
                             ),
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -63195,6 +63202,8 @@ var Settings = function (_Component) {
     }, {
         key: 'setAlbumCover',
         value: function setAlbumCover() {
+            var _this2 = this;
+
             var id = this.props.imageDetails.id;
             var token = this.state.token;
 
@@ -63207,10 +63216,12 @@ var Settings = function (_Component) {
                     'token': token,
                     'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 }
-            }).then(function (res) {
-                return res.status === 200 && console.log('success');
-            }).catch(function (err) {
-                return console.log('could not update album cover: ' + err);
+            }).then(function () {
+                var alertMsg = "The album cover has been changed successfully.";
+                _this2.props.alertChange(alertMsg);
+            }).catch(function () {
+                var alertMsg = "Sorry, something went wrong, please try again.";
+                _this2.props.alertChange(alertMsg);
             });
 
             this.hideSettings();
@@ -63218,6 +63229,8 @@ var Settings = function (_Component) {
     }, {
         key: 'setHomepageCover',
         value: function setHomepageCover() {
+            var _this3 = this;
+
             var id = this.props.imageDetails.id;
             var token = this.state.token;
 
@@ -63230,10 +63243,12 @@ var Settings = function (_Component) {
                     'X-CSRF-TOKEN': token,
                     'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 }
-            }).then(function (res) {
-                return console.log(res);
-            }).catch(function (error) {
-                return console.log(error);
+            }).then(function () {
+                var alertMsg = "The homepage background has been changed successfully.";
+                _this3.props.alertChange(alertMsg);
+            }).catch(function () {
+                var alertMsg = "Sorry, something went wrong, please try again.";
+                _this3.props.alertChange(alertMsg);
             });
         }
     }, {
