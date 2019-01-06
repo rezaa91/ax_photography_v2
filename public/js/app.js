@@ -14084,6 +14084,8 @@ module.exports = checkPropTypes;
 "use strict";
 var Validate = {
 
+  months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+
   /**
    * @param {string} string
    * 
@@ -14106,10 +14108,10 @@ var Validate = {
   validateDate: function validateDate(date) {
     var newDate = new Date(date);
     var year = newDate.getFullYear();
-    var month = newDate.getMonth();
+    var month = this.months[newDate.getMonth()];
     var day = newDate.getDate();
 
-    return day + "-" + month + "-" + year;
+    return day + '-' + month + '-' + year;
   }
 
 };
