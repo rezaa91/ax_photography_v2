@@ -33,7 +33,8 @@ class Settings extends Component {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'token': token
+                'token': token,
+                'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
             }
         })
         .then(res => res.status === 200 && console.log('success'))
@@ -50,8 +51,9 @@ class Settings extends Component {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': token
+                'X-Requested-With': "XMLHttpRequest",
+                'X-CSRF-TOKEN': token,
+                'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
             }
         })
         .then(res => console.log(res))

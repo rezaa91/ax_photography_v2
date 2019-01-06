@@ -60807,7 +60807,8 @@ var Contact = function (_Component) {
             fetch('/api/email', {
                 method: 'POST',
                 headers: {
-                    'x-csrf-token': token
+                    'x-csrf-token': token,
+                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 },
                 body: JSON.stringify({ name: name, email: email, body: body })
             }).then(function (response) {
@@ -60848,6 +60849,7 @@ var Contact = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'form',
                                 { onSubmit: this.submitForm },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: '_token', value: '{{ csrf_token() }}', type: 'hidden' }),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
                                     { className: 'form-section' },
@@ -61054,7 +61056,8 @@ var Dashboard = function (_Component) {
                 headers: {
                     'Content-Type': 'text/plain',
                     'Access-Control-Allow-Origin': '*',
-                    'X-CSRF-TOKEN': token
+                    'X-CSRF-TOKEN': token,
+                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 },
                 redirect: 'follow'
             }).then(function (response) {
@@ -61112,6 +61115,8 @@ if (document.getElementById('dashboard')) {
 
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
@@ -61188,7 +61193,7 @@ var Card = function (_Component) {
         key: 'changeImage',
         value: function changeImage() {
             var form = document.forms[0];
-            var fileUpload = form.elements[0];
+            var fileUpload = form.elements.file;
             fileUpload.click();
         }
 
@@ -61226,7 +61231,8 @@ var Card = function (_Component) {
                                 return fetch('/api/user/' + user.user_id, {
                                     method: 'POST',
                                     headers: {
-                                        'X-CSRF-TOKEN': token
+                                        'X-CSRF-TOKEN': token,
+                                        'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                                     },
                                     body: data
                                 }).then(function (response) {
@@ -61257,6 +61263,8 @@ var Card = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
+            var _React$createElement;
+
             var changeImageLink = this.state.changeImageLink;
             var _props = this.props,
                 displayWarning = _props.displayWarning,
@@ -61313,7 +61321,8 @@ var Card = function (_Component) {
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                     'form',
                                     { style: { display: 'none' } },
-                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { type: 'file', name: 'file', onChange: this.submitForm }),
+                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { name: '_token', value: '{{ csrf_token() }}', type: 'hidden' }),
+                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', (_React$createElement = { name: 'file', type: 'file' }, _defineProperty(_React$createElement, 'name', 'file'), _defineProperty(_React$createElement, 'onChange', this.submitForm), _React$createElement)),
                                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { type: 'submit', value: 'Save' })
                                 )
                             )
@@ -62212,7 +62221,8 @@ var IndividualAlbum = function (_Component) {
             fetch('/api/delete_album/' + albumId, {
                 method: 'DELETE',
                 headers: {
-                    'X-CSRF-TOKEN': token
+                    'X-CSRF-TOKEN': token,
+                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 },
                 redirect: 'follow'
             }).then(function (response) {
@@ -62258,7 +62268,8 @@ var IndividualAlbum = function (_Component) {
                 headers: {
                     'Content': 'application/json',
                     'Accept': 'application/json',
-                    'X-CSRF-TOKEN': token
+                    'X-CSRF-TOKEN': token,
+                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 },
                 body: JSON.stringify({
                     'album_name': albumTitle
@@ -62554,7 +62565,8 @@ var ImageModal = function (_Component) {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': token
+                    'X-CSRF-TOKEN': token,
+                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 },
                 body: JSON.stringify({
                     'user_id': user.id,
@@ -62652,7 +62664,8 @@ var ImageModal = function (_Component) {
                                     headers: {
                                         'Content-Type': 'application/json',
                                         'Accept': 'application/json',
-                                        'token': token
+                                        'token': token,
+                                        'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                                     }
                                 }).then(function (res) {
                                     return console.log(res);
@@ -62790,7 +62803,8 @@ var ImageModal = function (_Component) {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'token': token
+                    'token': token,
+                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 },
                 body: JSON.stringify({
                     title: title,
@@ -63190,7 +63204,8 @@ var Settings = function (_Component) {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'token': token
+                    'token': token,
+                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 }
             }).then(function (res) {
                 return res.status === 200 && console.log('success');
@@ -63211,8 +63226,9 @@ var Settings = function (_Component) {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': token
+                    'X-Requested-With': "XMLHttpRequest",
+                    'X-CSRF-TOKEN': token,
+                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 }
             }).then(function (res) {
                 return console.log(res);
@@ -63471,7 +63487,8 @@ var Comments = function (_Component) {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': token
+                    'X-CSRF-TOKEN': token,
+                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 },
                 body: JSON.stringify({
                     'user_id': user.id,
@@ -63564,7 +63581,8 @@ var Comments = function (_Component) {
             fetch('/api/delete_comment/' + postId, {
                 method: 'Delete',
                 headers: {
-                    'X-CSRF-TOKEN': token
+                    'X-CSRF-TOKEN': token,
+                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 }
             }).then(function (response) {
                 return console.log(response);

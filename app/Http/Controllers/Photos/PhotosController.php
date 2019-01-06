@@ -56,6 +56,10 @@ class PhotosController extends FileController
      */
     public function updateImage(int $photo_id, Request $request)
     {
+        if (!auth()->user()->isAdmin) {
+            return;
+        }
+        
         $this->validate($request, [
             'title' => 'nullable',
             'description' => 'nullable'
@@ -75,6 +79,10 @@ class PhotosController extends FileController
      */
     public function deleteImage(int $photoId, bool $deletingAlbum = false)
     {
+        if (!auth()->user()->isAdmin) {
+            return;
+        }
+        
         $photo = Photos::find($photoId);
         $albumId = $photo->album_id;
 

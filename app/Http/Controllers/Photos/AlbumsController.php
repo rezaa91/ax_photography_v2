@@ -157,6 +157,10 @@ class AlbumsController extends PhotosController
      */
     public function updateCoverImage(int $photoId)
     {
+        if (!auth()->user()->isAdmin) {
+            return;
+        }
+
         $albumId = $this->getAlbumIdFromPhotoId($photoId);
         $album = Albums::find($albumId);
         $album->cover_photo_id = $photoId;
@@ -185,6 +189,10 @@ class AlbumsController extends PhotosController
      */
     public function updateAlbumTitle(Request $request, int $albumId)
     {
+        if (!auth()->user()->isAdmin) {
+            return;
+        }
+
         $albumData = $request->json()->all();
         $validator = Validator::make($albumData, [
             'album_name' => 'required'
@@ -205,6 +213,10 @@ class AlbumsController extends PhotosController
      */
     public function deleteAlbum(int $albumId)
     {
+        if (!auth()->user()->isAdmin) {
+            return;
+        }
+        
         $photosInAlbum = Photos::where('album_id', $albumId)->get();
 
         // Do not allow admin to delete album if one of the photos is the homepage background

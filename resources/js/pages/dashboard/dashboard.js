@@ -63,7 +63,8 @@ class Dashboard extends Component {
             headers: {
                 'Content-Type': 'text/plain',
                 'Access-Control-Allow-Origin': '*',
-                'X-CSRF-TOKEN': token
+                'X-CSRF-TOKEN': token,
+                'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
             },
             redirect: 'follow'
         })
