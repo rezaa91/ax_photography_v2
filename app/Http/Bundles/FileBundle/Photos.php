@@ -1,42 +1,55 @@
 <?php
 
-namespace App\Http\Controllers\Photos;
+namespace App\Http\Bundles\FileBundle;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use App\Photos;
+use App\Photos as PhotosModel;
 use App\Albums;
 use App\Posts;
-use App\Http\Controllers\Photos\HomepageBackgroundController as HomepageBackground;
+use App\Http\Bundles\FileBundle\File;
+use App\Http\Controllers\Photos\HomepageBackgroundController;
+use App\Http\Bundles\FileBundle\HomepageBackground;
+use Validator;
 
-class PhotosController extends FileController 
+class Photos extends File 
 {
-
     /**
      * @inheritDoc
      */
     protected $directoryToStore = 'uploads';
 
     /**
+     * @param string $uploadsDir
+     */
+    public function __construct($file = null)
+    {
+        if ($file) {
+            parent::__construct($file);
+        }
+    }
+
+    /**
      * Store image in database
-     * @param Request $request
-     * @param Array $album
+     * @param Array $fileInfo
+     * @param int $albumId
      * 
      * @return integer - photo id of newly inserted record
      */
-    public function storeImageInDatabase(Request $request, Array $album)
+    public function storeImageInDatabase(Array $fileInfo, int $albumId)
     {
-
-        $this->validate($request, [
+        $validate = Validator::make($fileInfo, [
             'title' => 'nullable',
             'description' => 'nullable'
         ]);
 
-        $photo = new Photos();
-        $photo->title = $request->input('title');
-        $photo->description = $request->input('description');
-        $photo->album_id = $album['id'];
+        if ($validate->fails()) {
+            return false;
+        }
+
+        $photo = new PhotosModel();
+        $photo->title = $fileInfo['title'];
+        $photo->description = $fileInfo['description'];
+        $photo->album_id = $albumId;
         $photo->filepath = $this->getFilenameToStore();
         $photo->created_at = Now();
         $photo->user_id = auth()->user()->id;
@@ -49,42 +62,28 @@ class PhotosController extends FileController
     }
 
     /**
-     * Update image details
+     * Change image details
      * @param integer $photo_id
-     * @param Request $request
+     * @param Array $imageDetails
      * 
      * @return boolean
      */
-    public function updateImage(int $photo_id, Request $request)
+    public function changeImageDetails(int $photoId, Array $imageDetails)
     {
-        if (!auth()->user()->isAdmin) {
-            return;
-        }
-        
-        $this->validate($request, [
-            'title' => 'nullable',
-            'description' => 'nullable'
-        ]);
-
-        $photo = Photos::find($photo_id);
-        $photo->title = $request->input('title');
-        $photo->description = $request->input('description');
+        $photo = PhotosModel::find($photoId);
+        $photo->title = $imageDetails['title'];
+        $photo->description = $imageDetails['description'];
         $photo->save();
     }
 
     /**
      * Delete image from DB
-     * Route = {/api/delete_photo/{id}}
      * @param int $photoId
      * @param bool $deletingAlbum - if set to true, the photo will be deleted regardless of whether it is the album cover
      */
     public function deleteImage(int $photoId, bool $deletingAlbum = false)
     {
-        if (!auth()->user()->isAdmin) {
-            return;
-        }
-        
-        $photo = Photos::find($photoId);
+        $photo = PhotosModel::find($photoId);
         $albumId = $photo->album_id;
 
         // Do not allow user to delete photo if it is currently the homepage
@@ -131,6 +130,7 @@ class PhotosController extends FileController
     protected function isHomepageBackground(int $photoId)
     {
         $currentBackgroundImage = new HomepageBackground();
+        
         if ($currentBackgroundImage->getBackgroundImage()->photo_id !== $photoId) {
             return false;
         }
@@ -156,17 +156,5 @@ class PhotosController extends FileController
     {
         $posts = Posts::where('photo_id', $photoId);
         $posts->delete();
-    }
-
-    /**
-     * Return the album id from the photoId passed as an arg
-     *
-     * @param int $photoId
-     * @return int $albumId
-     */
-    protected function getAlbumIdFromPhotoId($photoId)
-    {
-        $photo = Photos::find($photoId);
-        return $photo->album_id;
     }
 }   

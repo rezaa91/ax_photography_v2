@@ -1,21 +1,26 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
+use App\Http\Bundles\UserBundle\User as UserClass;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Controllers\Photos\UserAvatar;
 
-class DashboardController extends Controller
+class UserController extends Controller
 {
+
+    private $moduleClass;
+
     /**
-     * Create a new controller instance.
-     *
+     * @param UserClass $moduleClass
+     * 
      * @return void
      */
-    public function __construct()
+    public function __construct(UserClass $moduleClass)
     {
+        $this->moduleClass = $moduleClass;
         $this->middleware('auth');
     }
 
@@ -32,12 +37,15 @@ class DashboardController extends Controller
     /**
      * Edit user profile
      * 
-     * @param integer $id
+     * @param integer $userId
+     * 
+     * @return \Illuminate\Http\Response
      */
-    public function edit(int $id) 
+    public function edit(int $userId) 
     {
-        $user = User::find($id);
-        if (auth()->user()->id !== $id) {
+        $user = User::find($userId);
+
+        if (auth()->user()->id !== $userId) {
             return redirect('/')->with('failure', 'Unauthorised access');
         }
 
@@ -49,6 +57,8 @@ class DashboardController extends Controller
      *
      * @param Request $request
      * @param int $userId
+     * 
+     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, int $userId)
     {
@@ -89,6 +99,8 @@ class DashboardController extends Controller
      * 
      * @param Request $request
      * @param integer $id
+     * 
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, int $id)
     {
@@ -97,8 +109,7 @@ class DashboardController extends Controller
         }
 
         $user = User::find($id);
-        $avatarImage = new UserAvatar($request);
-        $avatarImage->removeCurrentImage($user);
+        $this->moduleClass->removeCurrentImage($user);
         $user->delete();
         
         return redirect('/')->with('success', 'Your account has been deleted.');

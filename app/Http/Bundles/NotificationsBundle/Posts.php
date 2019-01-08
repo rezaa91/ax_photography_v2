@@ -1,24 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Photos;
+namespace App\Http\Bundles\NotificationsBundle;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Posts;
-use App\Photos;
+use App\Posts as PostsModel;
 
-class PostsController extends Controller
+class Posts
 {
     /**
      * Post photo comment
-     * @param Request $request
+     * @param Array $postData
      * @param int $photoId
      */
-    public function postComment(Request $request, $photoId)
+    public function postComment(Array $postData, int $photoId)
     {
-        $postData = $request->json()->all();
-
-        $post = new Posts();
+        $post = new PostsModel();
         $post->photo_id = $photoId;
         $post->user_id = $postData['user_id'];
         $post->post_text = $postData['post'];
@@ -32,7 +27,7 @@ class PostsController extends Controller
      */
     public function deleteComment(Request $request, $postId)
     {
-        $post = Posts::find($postId);
+        $post = PostsModel::find($postId);
         $post->delete();
     }
 }
