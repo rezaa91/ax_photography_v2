@@ -33,15 +33,18 @@ class AlbumsController extends ApiController
 
     /**
      * {/api/update_album/{id}}
+     * 
+     * @param Request $request
+     * @param int $albumId
      */
-    public function postUpdateAlbumTitle(int $albumId)
+    public function postUpdateAlbumTitle(Request $request, int $albumId)
     {
         if (!auth()->user()->isAdmin) {
             return;
         }
 
         $albumData = $request->json()->all();
-        $this->moduleClass->updateAlbumTitle($albumId, $albumData);
+        $this->moduleClass->updateAlbumTitle($albumId, $albumData['album_name']);
     }
 
     /**
