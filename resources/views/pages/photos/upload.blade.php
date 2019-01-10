@@ -8,7 +8,7 @@
         <h1>Upload Image</h1>
     </div>
 
-    {!! Form::open(['action' => 'Photos\AlbumsController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data', 'id' => 'form']) !!}
+    {!! Form::open(['action' => 'Web\AlbumsController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data', 'id' => 'form']) !!}
     @csrf
 
     <div class='form-section'>

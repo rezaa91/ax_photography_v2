@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Photos;
+namespace App\Http\Bundles\FileBundle;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\HomepageBackground as Image;
+use App\Http\Bundles\FileBundle\Photos;
 
-class HomepageBackgroundController extends PhotosController
+class HomepageBackground extends Photos
 {
 
     private $backgroundImage = null;
@@ -31,16 +30,10 @@ class HomepageBackgroundController extends PhotosController
     }
 
     /**
-     * Update background image {/api/background_image/{id}}
-     *
      * @param int $photoId
      */
-    public function updateBackgroundImage(int $photoId)
-    {        
-        if (!auth()->user()->isAdmin) {
-            return;
-        }
-
+    public function changeBackgroundImage(int $photoId)
+    {
         if (Image::count() !== 1) {
             return;
         }

@@ -68,54 +68,54 @@ Route::get('/background_image', function() {
 /**
  * Update homepage background image
  */
-Route::post('/background_image/{id}', 'Photos\HomepageBackgroundController@updateBackgroundImage')->middleware('auth:api');
+Route::post('/background_image/{id}', 'Api\HomepageBackgroundController@postUpdateBackgroundImage')->middleware('auth:api');
 
 /**
  * Toggle like/dislike image
  */
-Route::post('/reaction', 'Api\ImageSettingsController@toggleLikeImage')->middleware('auth:api');
+Route::post('/reaction', 'Api\ImageSettingsController@postToggleLikeImage')->middleware('auth:api');
 
 /**
  * Update image title and description
  */
-Route::post('/update_photo/{id}', 'Photos\PhotosController@updateImage')->middleware('auth:api');
+Route::post('/update_photo/{id}', 'Api\PhotosController@postUpdateImageDetails')->middleware('auth:api');
 
 /**
  * Delete image
  */
-Route::delete('/delete_photo/{id}', 'Photos\PhotosController@deleteImage')->middleware('auth:api');
+Route::delete('/delete_photo/{id}', 'Api\PhotosController@deleteImage')->middleware('auth:api');
 
 /**
  * Update album cover photo
  */
-Route::post('/update_cover_photo/{photoId}', 'Photos\AlbumsController@updateCoverImage')->middleware('auth:api');
+Route::post('/update_cover_photo/{photoId}', 'Api\AlbumsController@postUpdateCoverImage')->middleware('auth:api');
 
 /**
  * Update album title
  */
-Route::post('/update_album/{albumId}', 'Photos\AlbumsController@updateAlbumTitle')->middleware('auth:api');
+Route::post('/update_album/{albumId}', 'Api\AlbumsController@postUpdateAlbumTitle')->middleware('auth:api');
 
 /**
  * Delete album along with its contents
  */
-Route::delete('/delete_album/{albumId}', 'Photos\AlbumsController@deleteAlbum')->middleware('auth:api');
+Route::delete('/delete_album/{albumId}', 'Api\AlbumsController@deleteAlbum')->middleware('auth:api');
 
 /**
  * Upload profile avatar image
  */
-Route::post('/user/{id}', 'Photos\UserAvatar@storeAvatarFilepath')->middleware('auth:api');
+Route::post('/user/{id}', 'Api\UserController@postStoreAvatarFilepath')->middleware('auth:api');
 
 /**
  * Post photo comment
  */
-Route::post('/post_comment/{photo_id}', 'Photos\PostsController@postComment')->middleware('auth:api');
+Route::post('/post_comment/{photo_id}', 'Api\PostsController@postComment')->middleware('auth:api');
 
 /**
  * Delete photo comment
  */
-Route::delete('/delete_comment/{post_id}', 'Photos\PostsController@deleteComment')->middleware('auth:api');
+Route::delete('/delete_comment/{post_id}', 'Api\PostsController@deleteComment')->middleware('auth:api');
 
 /**
  * Post email from contact form
  */
-Route::post('/email', 'ContactController@sendEmail')->middleware('auth:api');
+Route::post('/email', 'Api\EmailController@sendEmail')->middleware('auth:api');

@@ -1,13 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Photos;
+namespace App\Http\Bundles\FileBundle;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-
-class FileController extends Controller
+class File
 {
-
      /**
       * The file object uploaded in the constructor
       *
@@ -19,6 +15,11 @@ class FileController extends Controller
      * @var string
      */
     protected $filename = null;
+
+    /**
+     * @var string
+     */
+    private $filenameWithExt;
 
     /**
      * The file extension of uploaded image
@@ -44,31 +45,64 @@ class FileController extends Controller
     /**
      * Set file data to relevent properties
      *
-     * @param object $file
+     * @param $file
      */
    public function __construct($file = null)
    {
 
      if (!isset($file)) {
             return;
-        }
+     }
 
-        $this->file = $file;
-        $filenameWithExt = $file->getClientOriginalName();
-        $this->filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-        $this->extension = $file->getClientOriginalExtension();
-        $this->filenameToStore = $this->filename . '_' . time() . '.' . $this->extension;
+     $this->init($file);
    }
 
-    protected function getFilenameToStore()
+   public function init($file)
+   {
+     $this->file = $file;
+     $this->filenameWithExt = $file->getClientOriginalName();
+     $this->filename = pathinfo($this->filenameWithExt, PATHINFO_FILENAME);
+     $this->extension = $file->getClientOriginalExtension();
+     $this->filenameToStore = $this->filename . '_' . time() . '.' . $this->extension;
+   }
+
+   public function setFile($file)
+   {
+        $this->file = $file;
+   }
+
+   public function getFile()
+   {
+        return $this->file;
+   }
+
+   /**
+    * @param string $dir
+    */
+   public function setDirectoryToStore(string $dir)
+   {
+        $this->directoryToStore = $dir;
+   }
+
+   public function getDirectoryToStore()
+   {
+        return $this->directoryToStore;
+   }
+
+   /**
+    * @param string $filename
+    */
+   public function setFilenameToStore(string $filename)
+   {
+        $this->filenameToStore = $filename;
+   }
+
+    public function getFilenameToStore()
     {
         return $this->filenameToStore;
     }
 
-    /**
-     * Upload file to the directory passed as arg
-     */
-   protected function uploadFile()
+   public function uploadFile()
    {
         $this->file->storeAs("public/$this->directoryToStore", $this->filenameToStore);
    }
@@ -77,7 +111,7 @@ class FileController extends Controller
     * Delete file from storage folder
     * @param string $filepath
     */
-   protected function deleteFile(string $filepath)
+   public function deleteFile(string $filepath)
    {
         if (file_exists("storage/$this->directoryToStore/$filepath")) {
             unlink("storage/$this->directoryToStore/$filepath");
