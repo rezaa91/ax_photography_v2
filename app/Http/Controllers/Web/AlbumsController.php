@@ -8,6 +8,7 @@ use App\Photos;
 use App\Albums as AlbumsModel;
 use Carbon\Carbon;
 use App\Http\Bundles\FileBundle\Albums;
+use Exception;
 
 class AlbumsController extends Controller
 {
@@ -67,13 +68,12 @@ class AlbumsController extends Controller
             'create_album' => $request->input('create_album'),
         ];
 
-        $response = $this->moduleClass->storeImage($fileInfo);
-
-        if (!$response) {
-            return redirect('/upload')->with('failure', 'Please select an album to store the image in.');
+        try {
+            $response = $this->moduleClass->storeImage($fileInfo);
+            return redirect('/upload')->with('success', 'Image uploaded');
+        } catch (Exception $e) {
+            return redirect('/upload')->with('failure', $e->getMessage());
         }
-
-        return redirect('/upload')->with('success', 'Image uploaded');
     }
     
     /**

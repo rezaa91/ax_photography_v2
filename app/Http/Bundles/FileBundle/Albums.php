@@ -3,6 +3,7 @@
 namespace App\Http\Bundles\FileBundle;
 
 use Validator;
+use Exception;
 use App\Photos as PhotosModel;
 use App\Albums as AlbumsModel;
 use Carbon\Carbon;
@@ -46,6 +47,14 @@ class Albums extends Photos
     }
 
     /**
+     * Retrieve all albums in DB
+     */
+    public function getAllAlbums()
+    {
+        return AlbumsModel::all();
+    }
+
+    /**
      * @param Array $fileInfo
      * @return bool
      */
@@ -55,12 +64,14 @@ class Albums extends Photos
 
         // If no album type selected, return and inform user
         if (!$fileInfo['create_album'] && $fileInfo['album'] === 'default') {
-            return false;
+            throw new Exception('Please select an album to store your image in.');
         }
 
         // If new album created, store in database
         if ($fileInfo['create_album']) {
-            $this->createAlbum($fileInfo['create_album']);
+            if (!$this->createAlbum($fileInfo['create_album'])) {
+                throw new Exception("The album could not be created as the album name already exists.");
+            }
         }
 
         // If existing album selected, set the album id
@@ -83,14 +94,26 @@ class Albums extends Photos
      * Store Album details in database
      *
      * @param string $albumName
+     * 
+     * @return bool - if album created successfully
      */
     public function createAlbum(string $albumName)
     {
+        foreach ($this->getAllAlbums() as $album) {
+            $currentAlbumName = $album->album_name;
+
+            if ($currentAlbumName === $albumName) {
+                return false;
+            }
+        }
+
         $album = new AlbumsModel();
         $album->album_name = $albumName;
         $album->save();
 
         $this->setAlbumId($album->album_id);
+
+        return true;
     }
 
     /**
