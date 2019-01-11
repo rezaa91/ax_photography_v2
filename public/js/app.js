@@ -60861,7 +60861,8 @@ var Contact = function (_Component) {
         var _this = _possibleConstructorReturn(this, (Contact.__proto__ || Object.getPrototypeOf(Contact)).call(this));
 
         _this.state = {
-            formIsValid: true, //REMEMBER TO SET TO FALSE
+            formSubmitted: false,
+            isReadOnly: false,
             formData: {
                 name: '',
                 email: '',
@@ -60887,13 +60888,9 @@ var Contact = function (_Component) {
     }, {
         key: 'submitForm',
         value: function submitForm(e) {
+            var _this2 = this;
+
             e.preventDefault();
-            var formIsValid = this.state.formIsValid;
-
-
-            if (!formIsValid) {
-                return;
-            }
 
             var _state$formData = this.state.formData,
                 name = _state$formData.name,
@@ -60909,15 +60906,25 @@ var Contact = function (_Component) {
                     'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 },
                 body: JSON.stringify({ name: name, email: email, body: body })
-            }).then(function (response) {
-                return console.log(response);
-            }).catch(function (error) {
-                return console.log(error);
+            }).then(function () {
+                _this2.setState({ formSubmitted: true, isReadOnly: true }); // prevent further submissions
             });
         }
     }, {
         key: 'render',
         value: function render() {
+            var _state = this.state,
+                formSubmitted = _state.formSubmitted,
+                isReadOnly = _state.isReadOnly;
+
+
+            var btnStyle = void 0;
+            if (formSubmitted) {
+                btnStyle = {
+                    backgroundColor: '#044730'
+                };
+            }
+
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 { className: 'contact-wrapper' },
@@ -60951,22 +60958,27 @@ var Contact = function (_Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
                                     { className: 'form-section' },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', name: 'name', placeholder: 'Name...', onChange: this.updateValueOnChange, required: true, autoFocus: true })
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', name: 'name', placeholder: 'Name...', onChange: this.updateValueOnChange, required: true, autoFocus: true, readOnly: isReadOnly })
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
                                     { className: 'form-section' },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', name: 'email', placeholder: 'Email@example.co.uk', onChange: this.updateValueOnChange, required: true })
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', name: 'email', placeholder: 'Email@example.co.uk', onChange: this.updateValueOnChange, required: true, readOnly: isReadOnly })
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
                                     { className: 'form-section' },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('textarea', { name: 'body', placeholder: 'Enter a message...', onChange: this.updateValueOnChange, required: true })
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('textarea', { name: 'body', placeholder: 'Enter a message...', onChange: this.updateValueOnChange, required: true, readOnly: isReadOnly })
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
                                     { className: 'form-section' },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'submit', value: 'SEND' })
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'submit', value: !formSubmitted ? 'SEND' : 'SENT', style: btnStyle, disabled: formSubmitted })
+                                ),
+                                formSubmitted && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'span',
+                                    { className: 'form-submitted' },
+                                    'Thank you for your email, I will aim to reply as soon as possible.'
                                 )
                             )
                         ),

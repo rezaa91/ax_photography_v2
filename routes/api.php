@@ -118,4 +118,4 @@ Route::delete('/delete_comment/{post_id}', 'Api\PostsController@deleteComment')-
 /**
  * Post email from contact form
  */
-Route::post('/email', 'Api\EmailController@sendEmail')->middleware('auth:api');
+Route::post('/email', 'Api\EmailController@sendEmail');
