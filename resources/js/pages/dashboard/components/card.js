@@ -6,7 +6,8 @@ class Card extends Component {
         super(props);
 
         this.state = {
-            changeImageLink: false
+            changeImageLink: false,
+            uploadError: false
         }
 
         this.displayChangeImage = this.displayChangeImage.bind(this);
@@ -75,15 +76,19 @@ class Card extends Component {
             },
             body: data
         })
-        .then(response => console.log(response))
-        .catch(error => console.log(error))
+        .then(() => {
+            this.setState({uploadError: false});
+        })
+        .catch(() => {
+            this.setState({uploadError: true});
+        })
 
         // refresh state in order to get the new avatar
         this.props.refresh();
     }
 
     render() {
-        const {changeImageLink} = this.state;
+        const {changeImageLink, uploadError} = this.state;
         const {displayWarning, user} = this.props;
 
         let username, name, email, created_at, avatar_filepath;
@@ -103,10 +108,10 @@ class Card extends Component {
                 <div className='card-body'>
                     <div className='left-side'>
                         <div 
-                        className='avatar-wrapper' 
-                        onMouseOver={this.displayChangeImage} 
-                        onMouseLeave={this.hideChangeImage}
-                        onClick={this.changeImage}
+                            className='avatar-wrapper' 
+                            onMouseOver={this.displayChangeImage} 
+                            onMouseLeave={this.hideChangeImage}
+                            onClick={this.changeImage}
                         >
                             {avatar_filepath ? <img src={`/storage/avatars/${avatar_filepath}`} /> : <img src="/images/avatar.png" />}
 
@@ -121,6 +126,11 @@ class Card extends Component {
                                 </div>
                             }
                         </div>
+
+                        {
+                            uploadError &&
+                            <div className="error">The image could not be uploaded, please try again!</div>    
+                        }
 
                         <span className='card-label'>Username: </span><span className='card-content'>{username}</span><br />
                         <span className='card-label'>Name: </span><span className='card-content'>{name}</span><br />

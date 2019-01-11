@@ -36576,7 +36576,7 @@ var Navigation = function (_Component) {
                                             isAdmin: data.isAdmin
                                         }
                                     });
-                                }).catch(function (error) {
+                                }).catch(function () {
                                     _this2.setState({
                                         isLoggedIn: false,
                                         user: null
@@ -60327,11 +60327,14 @@ var Homepage = function (_Component) {
             fetch('/api/background_image').then(function (res) {
                 return res.json();
             }).then(function (data) {
-                var filepath = data.data.filepath;
+                var filepath = 'uploads/' + data.data.filepath;
 
                 _this2.setState({ filepath: filepath });
-            }).catch(function (error) {
-                return console.log(error);
+            }).catch(function () {
+                // if error fetching background image, use a default image
+                var filepath = 'defaults/homepage-default.jpg';
+
+                _this2.setState({ filepath: filepath });
             });
         }
     }, {
@@ -60340,7 +60343,7 @@ var Homepage = function (_Component) {
             var filepath = this.state.filepath;
 
             var style = filepath && {
-                'backgroundImage': 'url(storage/uploads/' + filepath + ')'
+                'backgroundImage': 'url(storage/' + filepath + ')'
             };
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -60608,8 +60611,6 @@ var AlbumContainer = function (_Component) {
                                     return response.status === 200 && response.json();
                                 }).then(function (data) {
                                     _this2.setState({ cover_photo: data.data.filepath });
-                                }).catch(function (error) {
-                                    return console.log(error);
                                 });
 
                             case 3:
@@ -61090,7 +61091,8 @@ var Dashboard = function (_Component) {
                 created_at: null,
                 avatar_filepath: null
             },
-            shouldDeleteAccount: false
+            shouldDeleteAccount: false,
+            deleteAccountError: false
         };
 
         _this.getUser = _this.getUser.bind(_this);
@@ -61125,8 +61127,6 @@ var Dashboard = function (_Component) {
                                             avatar_filepath: user.avatar_filepath
                                         }
                                     });
-                                }).catch(function (error) {
-                                    return console.log(error);
                                 });
 
                             case 2:
@@ -61156,6 +61156,8 @@ var Dashboard = function (_Component) {
     }, {
         key: 'deleteAccount',
         value: function deleteAccount() {
+            var _this3 = this;
+
             var user_id = this.state.user.user_id;
 
             this.setState({ shouldDeleteAccount: false }); //hide modal
@@ -61170,10 +61172,10 @@ var Dashboard = function (_Component) {
                     'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 },
                 redirect: 'follow'
-            }).then(function (response) {
-                return console.log(response);
-            }).catch(function (error) {
-                return console.log(error);
+            }).then(function () {
+                window.location.href = "/";
+            }).catch(function () {
+                _this3.setState({ deleteAccountError: true });
             });
         }
     }, {
@@ -61181,7 +61183,8 @@ var Dashboard = function (_Component) {
         value: function render() {
             var _state = this.state,
                 user = _state.user,
-                shouldDeleteAccount = _state.shouldDeleteAccount;
+                shouldDeleteAccount = _state.shouldDeleteAccount,
+                deleteAccountError = _state.deleteAccountError;
 
 
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -61198,7 +61201,12 @@ var Dashboard = function (_Component) {
                         user: user,
                         displayWarning: this.displayWarning,
                         refresh: this.getUser
-                    })
+                    }),
+                    deleteAccountError && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'span',
+                        null,
+                        'Oops, something went wrong and we could not delete your account. Please try again.'
+                    )
                 )
             );
         }
@@ -61248,7 +61256,8 @@ var Card = function (_Component) {
         var _this = _possibleConstructorReturn(this, (Card.__proto__ || Object.getPrototypeOf(Card)).call(this, props));
 
         _this.state = {
-            changeImageLink: false
+            changeImageLink: false,
+            uploadError: false
         };
 
         _this.displayChangeImage = _this.displayChangeImage.bind(_this);
@@ -61315,6 +61324,8 @@ var Card = function (_Component) {
         key: 'submitForm',
         value: function () {
             var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(e) {
+                var _this2 = this;
+
                 var user, data, token;
                 return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
                     while (1) {
@@ -61345,10 +61356,10 @@ var Card = function (_Component) {
                                         'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                                     },
                                     body: data
-                                }).then(function (response) {
-                                    return console.log(response);
-                                }).catch(function (error) {
-                                    return console.log(error);
+                                }).then(function () {
+                                    _this2.setState({ uploadError: false });
+                                }).catch(function () {
+                                    _this2.setState({ uploadError: true });
                                 });
 
                             case 8:
@@ -61375,7 +61386,9 @@ var Card = function (_Component) {
         value: function render() {
             var _React$createElement;
 
-            var changeImageLink = this.state.changeImageLink;
+            var _state = this.state,
+                changeImageLink = _state.changeImageLink,
+                uploadError = _state.uploadError;
             var _props = this.props,
                 displayWarning = _props.displayWarning,
                 user = _props.user;
@@ -61436,6 +61449,11 @@ var Card = function (_Component) {
                                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { type: 'submit', value: 'Save' })
                                 )
                             )
+                        ),
+                        uploadError && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'div',
+                            { className: 'error' },
+                            'The image could not be uploaded, please try again!'
                         ),
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'span',
@@ -62085,11 +62103,6 @@ var IndividualAlbum = function (_Component) {
                                     var containsBackgroundImage = data.data.containsBackgroundImage;
 
                                     _this2.setState({ albumImages: albumImages, albumTitle: albumTitle, albumId: albumId, containsBackgroundImage: containsBackgroundImage });
-                                }).catch(function (error) {
-                                    // redirect user back to albums page if album does not exist (e.g. user puts a different id in url)
-                                    if (error) {
-                                        // TODO - window.location.replace('/albums');
-                                    }
                                 });
 
                             case 4:
@@ -62140,11 +62153,6 @@ var IndividualAlbum = function (_Component) {
                                             created_at: data.created_at,
                                             isAdmin: data.isAdmin
                                         }
-                                    });
-                                }).catch(function (error) {
-                                    _this3.setState({
-                                        isLoggedIn: false,
-                                        user: null
                                     });
                                 });
 
@@ -62333,6 +62341,8 @@ var IndividualAlbum = function (_Component) {
     }, {
         key: 'actionDeleteAlbum',
         value: function actionDeleteAlbum() {
+            var _this5 = this;
+
             var _state5 = this.state,
                 user = _state5.user,
                 albumId = _state5.albumId,
@@ -62359,10 +62369,11 @@ var IndividualAlbum = function (_Component) {
                     'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 },
                 redirect: 'follow'
-            }).then(function (response) {
-                return response.status === 200 && window.location.replace("/albums");
-            }).catch(function (error) {
-                return console.log(error);
+            }).then(function () {
+                window.location.replace("/albums");
+            }).catch(function () {
+                var alertMsg = "Sorry, something went wrong and the album could not be deleted. Please try again";
+                _this5.setState({ displayAlert: true, alertMsg: alertMsg });
             });
         }
 
@@ -62415,10 +62426,6 @@ var IndividualAlbum = function (_Component) {
                     'album_name': albumTitle
                 }),
                 redirect: 'follow'
-            }).then(function (response) {
-                return console.log(response);
-            }).catch(function (error) {
-                return console.log(error);
             });
 
             this.getAlbum();
@@ -62688,18 +62695,12 @@ var ImageModal = function (_Component) {
                                 }).then(function (data) {
                                     var imageDetails = data.data;
                                     _this3.setState({ imageDetails: imageDetails });
-                                }).catch(function (error) {
-                                    return console.log(error);
+
+                                    // After collecting the data, check whether the current user has liked the photo
+                                    _this3.doesUserLikePhoto();
                                 });
 
                             case 2:
-
-                                // After collecting the data, check whether the current user has liked the photo
-                                this.doesUserLikePhoto();
-
-                                console.log(this.state);
-
-                            case 4:
                             case 'end':
                                 return _context.stop();
                         }
@@ -62747,10 +62748,6 @@ var ImageModal = function (_Component) {
                     'user_id': user.id,
                     'photo_id': imageId
                 })
-            }).then(function (response) {
-                return console.log(response);
-            }).catch(function (error) {
-                return console.log(error);
             });
 
             // get updated image data in order to immediately refresh the view and update the state
@@ -62784,13 +62781,15 @@ var ImageModal = function (_Component) {
         }
 
         /**
-         * Delete the photo from the DB via REST API
+         * Delete the photo from the DB and storage
          */
 
     }, {
         key: 'actionDelete',
         value: function () {
             var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
+                var _this4 = this;
+
                 var user, _state$imageDetails, album_cover_photo, homepage_background, _props, imageId, closeModal, refreshAlbum, token, alertMsg;
 
                 return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
@@ -62842,20 +62841,18 @@ var ImageModal = function (_Component) {
                                         'token': token,
                                         'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                                     }
-                                }).then(function (res) {
-                                    return console.log(res);
-                                }).catch(function (err) {
-                                    return console.log(err);
+                                }).then(function () {
+                                    // reset state
+                                    _this4.setState({ displayAlert: false });
+                                    _this4.toggleDisplayModal();
+                                    closeModal();
+                                    refreshAlbum();
+                                }).then(function () {
+                                    alertMsg = 'There was an error deleting the image. Please try again';
+                                    _this4.setState({ displayAlert: true, alertMsg: alertMsg });
                                 });
 
                             case 17:
-
-                                // reset state
-                                this.toggleDisplayModal();
-                                closeModal();
-                                refreshAlbum();
-
-                            case 20:
                             case 'end':
                                 return _context2.stop();
                         }
@@ -63058,7 +63055,7 @@ var ImageModal = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this4 = this;
+            var _this5 = this;
 
             var _props3 = this.props,
                 closeModal = _props3.closeModal,
@@ -63110,7 +63107,7 @@ var ImageModal = function (_Component) {
                     {
                         className: 'imageModal-wrapper',
                         onClick: function onClick(e) {
-                            _this4.stopEditPhoto(e);
+                            _this5.stopEditPhoto(e);
                         }
                     },
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -63139,20 +63136,20 @@ var ImageModal = function (_Component) {
                                     placeholder: 'Title...',
                                     value: imageDetails.title ? imageDetails.title.toUpperCase() : '',
                                     onChange: function onChange(e) {
-                                        _this4.changeInput(e);
+                                        _this5.changeInput(e);
                                     },
                                     onKeyDown: function onKeyDown(e) {
-                                        _this4.saveOnEnter(e);
+                                        _this5.saveOnEnter(e);
                                     }
                                 }),
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('textarea', {
                                     placeholder: 'Description...',
                                     value: imageDetails.description ? imageDetails.description : '',
                                     onChange: function onChange(e) {
-                                        _this4.changeInput(e);
+                                        _this5.changeInput(e);
                                     },
                                     onKeyDown: function onKeyDown(e) {
-                                        _this4.saveOnEnter(e);
+                                        _this5.saveOnEnter(e);
                                     }
                                 })
                             ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -63178,7 +63175,7 @@ var ImageModal = function (_Component) {
                                 {
                                     className: 'arrow left-arrow',
                                     onClick: function onClick() {
-                                        return _this4.navigate('left');
+                                        return _this5.navigate('left');
                                     }
                                 },
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-chevron-left' })
@@ -63194,7 +63191,7 @@ var ImageModal = function (_Component) {
                                 {
                                     className: 'arrow right-arrow',
                                     onClick: function onClick() {
-                                        return _this4.navigate('right');
+                                        return _this5.navigate('right');
                                     }
                                 },
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-chevron-right' })
@@ -63560,6 +63557,8 @@ var Comments = function (_Component) {
     }, {
         key: 'postMessage',
         value: function postMessage() {
+            var _this2 = this;
+
             var _props = this.props,
                 user = _props.user,
                 imageDetails = _props.imageDetails;
@@ -63590,18 +63589,16 @@ var Comments = function (_Component) {
                     'user_id': user.id,
                     'post': commentMessage
                 })
-            }).then(function (response) {
-                return console.log(response);
-            }).catch(function (error) {
-                return console.log(error);
+            }).then(function () {
+                var characterLimit = _this2.state.characterLimit;
+
+                _this2.setState({ commentMessage: '', charactersRemaining: characterLimit });
+
+                // Refresh details to display most up to date comments
+                _this2.props.refresh(imageDetails.id);
+            }).finally(function () {
+                // remove loading spinner
             });
-
-            var characterLimit = this.state.characterLimit;
-
-            this.setState({ commentMessage: '', charactersRemaining: characterLimit });
-
-            // Refresh details to display most up to date comments
-            this.props.refresh(imageDetails.id);
         }
 
         /**
@@ -63612,7 +63609,7 @@ var Comments = function (_Component) {
     }, {
         key: 'renderComments',
         value: function renderComments() {
-            var _this2 = this;
+            var _this3 = this;
 
             var imageDetails = this.props.imageDetails;
 
@@ -63653,11 +63650,11 @@ var Comments = function (_Component) {
                             ),
                             comment.post_text
                         ),
-                        _this2.props.user && _this2.props.user.id === comment.user_id && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        _this3.props.user && _this3.props.user.id === comment.user_id && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             { className: 'delete-comment' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-trash-alt', onClick: function onClick() {
-                                    return _this2.deleteComment(comment.id);
+                                    return _this3.deleteComment(comment.id);
                                 } })
                         )
                     )
@@ -63680,10 +63677,6 @@ var Comments = function (_Component) {
                     'X-CSRF-TOKEN': token,
                     'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 }
-            }).then(function (response) {
-                return console.log(response);
-            }).catch(function (error) {
-                return console.log(error);
             });
 
             // Refresh details to display most up to date comments

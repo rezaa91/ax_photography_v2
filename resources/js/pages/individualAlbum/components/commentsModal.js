@@ -76,14 +76,16 @@ class Comments extends Component {
                 'post': commentMessage
             })
         })
-        .then(response => console.log(response))
-        .catch(error => console.log(error));
-
-        const {characterLimit} = this.state;
-        this.setState({commentMessage: '', charactersRemaining: characterLimit});
-
-        // Refresh details to display most up to date comments
-        this.props.refresh(imageDetails.id);
+        .then(() => {
+            const {characterLimit} = this.state;
+            this.setState({commentMessage: '', charactersRemaining: characterLimit});
+            
+            // Refresh details to display most up to date comments
+            this.props.refresh(imageDetails.id);
+        })
+        .finally(() => {
+            // remove loading spinner
+        })
     }
 
     /**
@@ -139,8 +141,6 @@ class Comments extends Component {
                 'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
             }
         })
-        .then(response => console.log(response))
-        .catch(error => console.log(error));
 
         // Refresh details to display most up to date comments
         const {id} = this.props.imageDetails;

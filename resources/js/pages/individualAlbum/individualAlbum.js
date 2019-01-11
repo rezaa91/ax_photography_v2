@@ -73,12 +73,6 @@ class IndividualAlbum extends Component {
 
             this.setState({albumImages, albumTitle, albumId, containsBackgroundImage});
         })
-        .catch(error => {
-            // redirect user back to albums page if album does not exist (e.g. user puts a different id in url)
-            if (error) {
-                // TODO - window.location.replace('/albums');
-            }
-        });
     }
 
     /**
@@ -105,12 +99,6 @@ class IndividualAlbum extends Component {
                     isAdmin: data.isAdmin
                 }
             })            
-        })
-        .catch((error) => {
-            this.setState({
-                isLoggedIn: false,
-                user: null
-            })
         })
     }
 
@@ -249,8 +237,13 @@ class IndividualAlbum extends Component {
             },
             redirect: 'follow'
         })
-        .then(response => response.status === 200 && window.location.replace("/albums"))
-        .catch(error => console.log(error));
+        .then(() => {
+            window.location.replace("/albums");
+        })
+        .catch(() => {
+            const alertMsg = "Sorry, something went wrong and the album could not be deleted. Please try again";
+            this.setState({displayAlert: true, alertMsg});
+        });
     }
 
     /**
@@ -294,8 +287,6 @@ class IndividualAlbum extends Component {
             }),
             redirect: 'follow'
         })
-        .then(response => console.log(response))
-        .catch(error => console.log(error));
 
         this.getAlbum();
     }

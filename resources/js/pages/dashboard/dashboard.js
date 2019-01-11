@@ -17,7 +17,8 @@ class Dashboard extends Component {
                 created_at: null,
                 avatar_filepath: null
             },
-            shouldDeleteAccount: false
+            shouldDeleteAccount: false,
+            deleteAccountError: false,
         }
 
         this.getUser = this.getUser.bind(this);
@@ -42,7 +43,6 @@ class Dashboard extends Component {
                 }
             })
         })
-        .catch(error => console.log(error));
     }
 
     displayWarning() {
@@ -68,12 +68,16 @@ class Dashboard extends Component {
             },
             redirect: 'follow'
         })
-        .then(response => console.log(response))
-        .catch(error => console.log(error));
+        .then(() => {
+            window.location.href = "/";
+        })
+        .catch(() => {
+            this.setState({deleteAccountError: true});
+        });
     }
 
     render() {
-        const {user, shouldDeleteAccount} = this.state;
+        const {user, shouldDeleteAccount, deleteAccountError} = this.state;
 
         return(
             <div className='dashboard-wrapper container'>
@@ -91,6 +95,11 @@ class Dashboard extends Component {
                     displayWarning={this.displayWarning}
                     refresh={this.getUser}
                     />
+                }
+
+                {
+                    deleteAccountError &&
+                    <span>Oops, something went wrong and we could not delete your account. Please try again.</span>
                 }
                 </div>
             </div>

@@ -16,7 +16,6 @@ class User {
             this.avatar_filepath = user.avatar_filepath;
             this.isAdmin = user.isAdmin;
         })
-        .catch(error => console.log('error finding user'));
    }
 
    //Getters bellow

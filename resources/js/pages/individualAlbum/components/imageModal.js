@@ -112,13 +112,10 @@ class ImageModal extends Component {
         .then(data => {
             const imageDetails = data.data;
             this.setState({imageDetails});
+
+            // After collecting the data, check whether the current user has liked the photo
+            this.doesUserLikePhoto();
         })
-        .catch(error => console.log(error));
-
-        // After collecting the data, check whether the current user has liked the photo
-        this.doesUserLikePhoto();
-
-        console.log(this.state);
     }
 
     /**
@@ -151,8 +148,6 @@ class ImageModal extends Component {
                 'photo_id': imageId
             })
         })
-        .then(response => console.log(response))
-        .catch(error => console.log(error));
 
         // get updated image data in order to immediately refresh the view and update the state
         this.getImageData(imageId);
@@ -177,7 +172,7 @@ class ImageModal extends Component {
     }
 
     /**
-     * Delete the photo from the DB via REST API
+     * Delete the photo from the DB and storage
      */
     async actionDelete() {
         const {user} = this.state;
@@ -213,13 +208,17 @@ class ImageModal extends Component {
                 'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
             }
         })
-        .then(res => console.log(res))
-        .catch(err => console.log(err));
-
-        // reset state
-        this.toggleDisplayModal();
-        closeModal();
-        refreshAlbum();
+        .then(() => {
+            // reset state
+            this.setState({displayAlert: false});
+            this.toggleDisplayModal();
+            closeModal();
+            refreshAlbum();
+        })
+        .then(() => {
+            alertMsg = 'There was an error deleting the image. Please try again';
+            this.setState({displayAlert: true, alertMsg});
+        });
     }
 
     toggleEditPhoto() {
