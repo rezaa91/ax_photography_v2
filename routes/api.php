@@ -28,7 +28,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
  * API resource showing all album data
  */
 Route::get('albums', function() {
-    return new AlbumsResource(Albums::all());
+    return new AlbumsResource(Albums::orderBy('created_at', 'desc')->get());
 });
 
 /**
