@@ -28,7 +28,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
  * API resource showing all album data
  */
 Route::get('albums', function() {
-    return new AlbumsResource(Albums::all());
+    return new AlbumsResource(Albums::orderBy('created_at', 'desc')->get());
 });
 
 /**
@@ -118,4 +118,4 @@ Route::delete('/delete_comment/{post_id}', 'Api\PostsController@deleteComment')-
 /**
  * Post email from contact form
  */
-Route::post('/email', 'Api\EmailController@sendEmail')->middleware('auth:api');
+Route::post('/email', 'Api\EmailController@sendEmail');

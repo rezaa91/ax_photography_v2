@@ -30,8 +30,7 @@ class AlbumsController extends Controller
      */
     public function index()
     {
-        $albums = AlbumsModel::all();
-        return view('pages.photos.albums')->with('albums', $albums);
+        return view('pages.photos.albums');
     }
     
     /**

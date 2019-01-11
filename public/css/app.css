@@ -6718,6 +6718,10 @@ form .selection .option {
   height: 200px;
 }
 
+.contact-wrapper .form-submitted {
+  color: #9e0401;
+}
+
 .contact-wrapper .contact-footer {
   background-color: #044730;
   border-top: 1px solid #999999;

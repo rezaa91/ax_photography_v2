@@ -119,13 +119,25 @@ class Albums extends Photos
     /**
      * Set default album cover to newly uploaded photo
      * 
-     * @param int $photoId of newly uploaded image
+     * @param Int $photoId of newly uploaded image
      */
     private function setDefaultAlbumCoverPhoto($photoId)
     {
         $album = AlbumsModel::find($this->getAlbum()['id']);
         $album->cover_photo_id = $photoId;
         $album->save();
+    }
+
+    /**
+     * @param Integer $albumId
+     * @param String $albumName
+     */
+    public function updateAlbumTitle(int $albumId, string $albumName)
+    {
+        $album = AlbumsModel::find($albumId);
+        $album->album_name = $albumName;
+        $album->save();
+        return true;
     }
 
     /**
