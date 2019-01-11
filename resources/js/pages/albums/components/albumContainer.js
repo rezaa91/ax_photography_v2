@@ -25,7 +25,6 @@ class AlbumContainer extends Component {
         .then(data => {
             this.setState({cover_photo: data.data.filepath});
         })
-        .catch(error => console.log(error));
     }
 
     render() {

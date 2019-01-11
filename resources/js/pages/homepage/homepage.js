@@ -19,17 +19,22 @@ class Homepage extends Component {
         fetch('/api/background_image')
         .then(res => res.json())
         .then(data => {
-            const filepath = data.data.filepath;
+            const filepath = `uploads/${data.data.filepath}`;
 
             this.setState({filepath});
         })
-        .catch(error => console.log(error));
+        .catch(() => {
+            // if error fetching background image, use a default image
+            const filepath = 'defaults/homepage-default.jpg';
+            
+            this.setState({filepath});
+        });
     }
 
     render() {
         const {filepath} = this.state;
         const style = filepath && {
-            'backgroundImage': `url(storage/uploads/${filepath})`
+            'backgroundImage': `url(storage/${filepath})`
         }
 
         return(

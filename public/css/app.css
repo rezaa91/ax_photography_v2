@@ -17602,3 +17602,7 @@ textarea {
   opacity: 1 !important;
 }
 
+.error {
+  color: #9e0401;
+}
+
