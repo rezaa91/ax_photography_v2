@@ -110,9 +110,9 @@ class Comments extends Component {
                 <div className="flex">
                     <div className="user-info">
                         <div className='avatar'>
-                            <img src={`/storage/avatars/${comment.avatar_filepath}`} />
+                            <img src={`/storage/${comment.avatar_filepath ? `avatars/${comment.avatar_filepath}` : 'defaults/avatar.png'}`} />
                         </div>
-                        <span className="username">{comment.username}</span>
+                        <span className="username">{comment.username && comment.username}</span>
                     </div>
 
                     <div className="comment-message">

@@ -134,7 +134,7 @@ class Card extends Component {
                                 <LoadingWidget />
                             }
 
-                            {avatar_filepath ? <img src={`/storage/avatars/${avatar_filepath}`} /> : <img src="/images/avatar.png" />}
+                            {avatar_filepath ? <img src={`/storage/avatars/${avatar_filepath}`} /> : <img src="/storage/defaults/avatar.png" />}
 
                             {changeImageLink && 
                                 <div className='change-image-form'>
