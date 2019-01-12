@@ -4,6 +4,7 @@ import Settings from './settings';
 import Modal from '../../../global_components/modal';
 import Alert from '../../../global_components/alert';
 import Comments from './commentsModal';
+import LoadingWidget from '../../../global_components/loadingWidget';
 
 class ImageModal extends Component {
     constructor(props) {
@@ -35,7 +36,8 @@ class ImageModal extends Component {
             displaySettings: false,
             editPhoto: false,
             photoZoomed: false,
-            displayCommentsModal: false
+            displayCommentsModal: false,
+            isLoading: false
         }
 
         this.fadeOutHeader = this.fadeOutHeader.bind(this);
@@ -131,6 +133,8 @@ class ImageModal extends Component {
             return;
         }
 
+        this.toggleLoading();
+
         const token = document.querySelector('meta[name="csrf-token"]').content;
 
         // Post like/un-like to database
@@ -147,6 +151,9 @@ class ImageModal extends Component {
                 'user_id': user.id,
                 'photo_id': imageId
             })
+        })
+        .finally(() => {
+            this.toggleLoading();
         })
 
         // get updated image data in order to immediately refresh the view and update the state
@@ -198,6 +205,8 @@ class ImageModal extends Component {
             return;
         }
 
+        this.toggleLoading();
+
         await fetch(`/api/delete_photo/${imageId}`, {
             method: 'DELETE',
             redirect: 'follow',
@@ -215,10 +224,11 @@ class ImageModal extends Component {
             closeModal();
             refreshAlbum();
         })
-        .then(() => {
+        .catch(() => {
             alertMsg = 'There was an error deleting the image. Please try again';
             this.setState({displayAlert: true, alertMsg});
-        });
+            this.toggleLoading();
+        })
     }
 
     toggleEditPhoto() {
@@ -305,6 +315,8 @@ class ImageModal extends Component {
         const {imageId} = this.props;
         const token = document.querySelector('meta[name="csrf-token"]').content;
 
+        this.toggleLoading();
+
         fetch(`/api/update_photo/${imageId}`, {
             method: 'POST',
             headers: {
@@ -317,6 +329,9 @@ class ImageModal extends Component {
                 title: title,
                 description: description
             })
+        })
+        .finally(() => {
+            this.toggleLoading();
         })
     }
 
@@ -370,11 +385,16 @@ class ImageModal extends Component {
     alertChange(alertMsg) {
         this.setState({displayAlert: true, alertMsg});
     }
+
+    toggleLoading() {
+        const {isLoading} = this.state;
+        this.setState({isLoading: !isLoading});
+    }
     
     render() {
         const {closeModal, previousImageId, nextImageId} = this.props;
         const {user, imageDetails, hasUserLiked, displaySettings, 
-            displayModal, editPhoto, photoZoomed, displayAlert, alertMsg, displayCommentsModal} = this.state;
+            displayModal, editPhoto, photoZoomed, displayAlert, alertMsg, displayCommentsModal, isLoading} = this.state;
 
         let thumbsUpStyle = null, imageStyle = null;
         if (hasUserLiked) {
@@ -421,6 +441,11 @@ class ImageModal extends Component {
                 className='imageModal-wrapper' 
                 onClick={(e) => {this.stopEditPhoto(e)}}
                 >
+
+                {
+                    isLoading &&
+                    <LoadingWidget />
+                }
 
                     <div className='imageModal-content'>        
                         <div className='imageModal-header'>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import dateFormat from 'dateformat';
+import LoadingWidget from '../../../global_components/loadingWidget';
 
 class Card extends Component {
     constructor(props) {
@@ -7,13 +8,15 @@ class Card extends Component {
 
         this.state = {
             changeImageLink: false,
-            uploadError: false
+            uploadError: false,
+            isLoading: false
         }
 
         this.displayChangeImage = this.displayChangeImage.bind(this);
         this.hideChangeImage = this.hideChangeImage.bind(this);
         this.changeImage = this.changeImage.bind(this);
         this.submitForm = this.submitForm.bind(this);
+        this.toggleLoading = this.toggleLoading.bind(this);
     }
     
     /**
@@ -63,6 +66,9 @@ class Card extends Component {
             return;
         }
 
+        // display loading widget
+        this.toggleLoading();
+
         const data = new FormData();
         data.append('file', e.target.files[0]);
 
@@ -81,14 +87,21 @@ class Card extends Component {
         })
         .catch(() => {
             this.setState({uploadError: true});
-        })
+        }).finally(() => {
+            this.toggleLoading(); // remove loading spinner
+        });
 
         // refresh state in order to get the new avatar
         this.props.refresh();
     }
 
+    toggleLoading() {
+        const {isLoading} = this.state;
+        this.setState({isLoading: !isLoading});
+    }
+
     render() {
-        const {changeImageLink, uploadError} = this.state;
+        const {changeImageLink, uploadError, isLoading} = this.state;
         const {displayWarning, user} = this.props;
 
         let username, name, email, created_at, avatar_filepath;
@@ -102,9 +115,11 @@ class Card extends Component {
         
         return(
             <div className='card-wrapper'>
+            
                 <div className='card-head'>
                     <span>Dashboard</span>
                 </div>
+
                 <div className='card-body'>
                     <div className='left-side'>
                         <div 
@@ -113,6 +128,12 @@ class Card extends Component {
                             onMouseLeave={this.hideChangeImage}
                             onClick={this.changeImage}
                         >
+
+                            {
+                                isLoading &&
+                                <LoadingWidget />
+                            }
+
                             {avatar_filepath ? <img src={`/storage/avatars/${avatar_filepath}`} /> : <img src="/images/avatar.png" />}
 
                             {changeImageLink && 

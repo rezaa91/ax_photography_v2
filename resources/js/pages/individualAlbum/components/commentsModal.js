@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Validate from '../../../classes/Validate';
+import LoadingWidget from '../../../global_components/loadingWidget';
 
 class Comments extends Component {
     constructor() {
@@ -9,6 +10,7 @@ class Comments extends Component {
             commentMessage: '',
             characterLimit: 250,
             charactersRemaining: 250,
+            isLoading: false
         }
 
         this.onChangeMessage = this.onChangeMessage.bind(this);
@@ -16,6 +18,7 @@ class Comments extends Component {
         this.postMessageOnEnter = this.postMessageOnEnter.bind(this);
         this.renderComments = this.renderComments.bind(this);
         this.deleteComment = this.deleteComment.bind(this);
+        this.toggleLoading = this.toggleLoading.bind(this);
     }
 
     /**
@@ -63,6 +66,8 @@ class Comments extends Component {
             return;
         }
 
+        this.toggleLoading();
+
         fetch(`/api/post_comment/${imageDetails.id}`, {
             method: 'POST',
             headers: {
@@ -84,7 +89,7 @@ class Comments extends Component {
             this.props.refresh(imageDetails.id);
         })
         .finally(() => {
-            // remove loading spinner
+            this.toggleLoading();
         })
     }
 
@@ -134,6 +139,8 @@ class Comments extends Component {
     deleteComment(postId) {
         const token = document.querySelector('meta[name="csrf-token"]').content;
 
+        this.toggleLoading();
+
         fetch(`/api/delete_comment/${postId}`, {
             method: 'Delete',
             headers: {
@@ -141,14 +148,22 @@ class Comments extends Component {
                 'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
             }
         })
+        .finally(() => {
+            this.toggleLoading();
+        })
 
         // Refresh details to display most up to date comments
         const {id} = this.props.imageDetails;
         this.props.refresh(id);
     }
 
+    toggleLoading() {
+        const {isLoading} = this.state;
+        this.setState({isLoading: !isLoading});
+    }
+
     render() {
-        const {commentMessage, charactersRemaining, characterLimit} = this.state;
+        const {commentMessage, charactersRemaining, characterLimit, isLoading} = this.state;
         const {user, close} = this.props;
         const comments = this.renderComments();
 
@@ -156,6 +171,12 @@ class Comments extends Component {
             <div className="comments-wrapper">
 
                 <div className="comments-box">
+
+                {
+                    isLoading &&
+                    <LoadingWidget />
+                }
+
                     <div className="comments-header">
                         <span onClick={close}>&times;</span>
                     </div>

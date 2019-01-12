@@ -5401,6 +5401,7 @@ form .selection .option {
   border: 1px solid #111111;
   background-color: #ededed;
   width: 100%;
+  position: relative;
 }
 
 .card-wrapper .card-head {
@@ -5860,7 +5861,7 @@ form .selection .option {
 
 .comments-wrapper {
   position: absolute;
-  z-index: 999;
+  z-index: 998;
   top: 0;
   left: 0;
   width: 100%;
@@ -6075,6 +6076,60 @@ form .selection .option {
   .comment .comment-message .timestamp {
     font-size: 0.6rem;
   }
+}
+
+@-webkit-keyframes spinner {
+  0% {
+    -webkit-transform: translate3d(-50%, -50%, 0) rotate(0deg);
+            transform: translate3d(-50%, -50%, 0) rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: translate3d(-50%, -50%, 0) rotate(360deg);
+            transform: translate3d(-50%, -50%, 0) rotate(360deg);
+  }
+}
+
+@keyframes spinner {
+  0% {
+    -webkit-transform: translate3d(-50%, -50%, 0) rotate(0deg);
+            transform: translate3d(-50%, -50%, 0) rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: translate3d(-50%, -50%, 0) rotate(360deg);
+            transform: translate3d(-50%, -50%, 0) rotate(360deg);
+  }
+}
+
+.loading-widget {
+  height: 100%;
+  position: absolute;
+  left: 50%;
+  opacity: 1;
+  -webkit-transition: opacity linear 0.1s;
+  transition: opacity linear 0.1s;
+  z-index: 999;
+}
+
+.loading-widget::before {
+  -webkit-animation: 1.4s linear infinite spinner;
+          animation: 1.4s linear infinite spinner;
+  border: solid 3px #999999;
+  border-bottom-color: #05704c;
+  border-radius: 50%;
+  content: "";
+  height: 40px;
+  left: 50%;
+  opacity: inherit;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translate3d(-50%, -50%, 0);
+          transform: translate3d(-50%, -50%, 0);
+  -webkit-transform-origin: center;
+          transform-origin: center;
+  width: 40px;
+  will-change: transform;
 }
 
 .navigation-wrapper {

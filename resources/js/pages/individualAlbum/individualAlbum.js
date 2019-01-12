@@ -4,13 +4,11 @@ import ImageModal from './components/imageModal';
 import Modal from '../../global_components/modal';
 import Alert from '../../global_components/alert';
 import individualAlbumInit from './individualAbumSettings';
+import LoadingWidget from '../../global_components/loadingWidget';
 
 class IndividualAlbum extends Component {
     constructor() {
         super();
-
-        this.getAlbum();
-        this.getUser();
 
         this.state = {
             user: null,
@@ -24,7 +22,8 @@ class IndividualAlbum extends Component {
             nextImageId: null,
             deleteAlbum: false,
             displayAlert: false,
-            alertMsg: null
+            alertMsg: null,
+            isLoading: false
         }
 
         this.getAlbum = this.getAlbum.bind(this);
@@ -41,6 +40,12 @@ class IndividualAlbum extends Component {
         this.updateAlbum = this.updateAlbum.bind(this);
         this.updateAlbumOnEnter = this.updateAlbumOnEnter.bind(this);
         this.closeAlertBox = this.closeAlertBox.bind(this);
+        this.toggleLoading = this.toggleLoading.bind(this);
+    }
+
+    componentWillMount() {
+        this.getAlbum();
+        this.getUser();
     }
 
     componentDidMount() {
@@ -60,6 +65,9 @@ class IndividualAlbum extends Component {
     async getAlbum() {
         const url = window.location.href;
 
+        //display loading spinner
+        this.toggleLoading();
+
         // find the id from the url by getting the last digit in the url (note that the url must finish with this digit)
         const id = url.match(/\d+$/)[0];
 
@@ -72,6 +80,9 @@ class IndividualAlbum extends Component {
             const containsBackgroundImage = data.data.containsBackgroundImage;
 
             this.setState({albumImages, albumTitle, albumId, containsBackgroundImage});
+        })
+        .finally(() => {
+            this.toggleLoading();
         })
     }
 
@@ -226,6 +237,8 @@ class IndividualAlbum extends Component {
             return;
         }
 
+        this.toggleLoading();
+
         this.setState({deleteAlbum: false});
         const token = document.querySelector('meta[name="csrf-token"]').content;
 
@@ -243,7 +256,10 @@ class IndividualAlbum extends Component {
         .catch(() => {
             const alertMsg = "Sorry, something went wrong and the album could not be deleted. Please try again";
             this.setState({displayAlert: true, alertMsg});
-        });
+        })
+        .finally(() => {
+            this.toggleLoading();
+        })
     }
 
     /**
@@ -295,8 +311,13 @@ class IndividualAlbum extends Component {
         this.setState({displayAlert: false});
     }
 
+    toggleLoading() {
+        const {isLoading} = this.state;
+        this.setState({isLoading: !isLoading});
+    }
+
     render() {
-        const {user, albumTitle, enlargedImage, editAlbumTitle, deleteAlbum, displayAlert, alertMsg} = this.state;
+        const {user, albumTitle, enlargedImage, editAlbumTitle, deleteAlbum, displayAlert, alertMsg, isLoading} = this.state;
         let albumTitleState;
 
         if (editAlbumTitle) {
@@ -349,6 +370,11 @@ class IndividualAlbum extends Component {
                     }
                 </div>
                 <div className="images">
+                    {
+                        isLoading &&
+                        <LoadingWidget />
+                    }
+
                     {this.displayImages()}
                 </div>
                 {enlargedImage}

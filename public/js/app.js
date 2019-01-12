@@ -550,7 +550,7 @@ module.exports = defaults;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__btn__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__btn__ = __webpack_require__(64);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -14219,7 +14219,7 @@ var Alert = function (_Component) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(19);
-module.exports = __webpack_require__(71);
+module.exports = __webpack_require__(72);
 
 
 /***/ }),
@@ -14237,10 +14237,10 @@ __webpack_require__(44);
 __webpack_require__(54);
 __webpack_require__(56);
 __webpack_require__(58);
-__webpack_require__(59);
 __webpack_require__(60);
-__webpack_require__(64);
+__webpack_require__(61);
 __webpack_require__(65);
+__webpack_require__(66);
 
 /***/ }),
 /* 20 */
@@ -60835,6 +60835,48 @@ if (document.getElementById('about')) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var LoadingWidget = function (_Component) {
+    _inherits(LoadingWidget, _Component);
+
+    function LoadingWidget() {
+        _classCallCheck(this, LoadingWidget);
+
+        return _possibleConstructorReturn(this, (LoadingWidget.__proto__ || Object.getPrototypeOf(LoadingWidget)).apply(this, arguments));
+    }
+
+    _createClass(LoadingWidget, [{
+        key: "render",
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "div",
+                { className: "loading-widget-wrapper" },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "loading-widget" })
+            );
+        }
+    }]);
+
+    return LoadingWidget;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (LoadingWidget);
+
+/***/ }),
+/* 60 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
@@ -61042,7 +61084,7 @@ if (document.getElementById('contact')) {
 }
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61053,7 +61095,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_card__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_card__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_components_modal__ = __webpack_require__(5);
 
 
@@ -61220,7 +61262,7 @@ if (document.getElementById('dashboard')) {
 }
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61228,8 +61270,9 @@ if (document.getElementById('dashboard')) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_dateformat__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_dateformat__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_dateformat___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_dateformat__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__global_components_loadingWidget__ = __webpack_require__(59);
 
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -61247,6 +61290,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+
 var Card = function (_Component) {
     _inherits(Card, _Component);
 
@@ -61257,13 +61301,15 @@ var Card = function (_Component) {
 
         _this.state = {
             changeImageLink: false,
-            uploadError: false
+            uploadError: false,
+            isLoading: false
         };
 
         _this.displayChangeImage = _this.displayChangeImage.bind(_this);
         _this.hideChangeImage = _this.hideChangeImage.bind(_this);
         _this.changeImage = _this.changeImage.bind(_this);
         _this.submitForm = _this.submitForm.bind(_this);
+        _this.toggleLoading = _this.toggleLoading.bind(_this);
         return _this;
     }
 
@@ -61343,12 +61389,16 @@ var Card = function (_Component) {
                                 return _context.abrupt('return');
 
                             case 3:
+
+                                // display loading widget
+                                this.toggleLoading();
+
                                 data = new FormData();
 
                                 data.append('file', e.target.files[0]);
 
                                 token = document.querySelector('meta[name="csrf-token"]').content;
-                                _context.next = 8;
+                                _context.next = 9;
                                 return fetch('/api/user/' + user.user_id, {
                                     method: 'POST',
                                     headers: {
@@ -61360,14 +61410,16 @@ var Card = function (_Component) {
                                     _this2.setState({ uploadError: false });
                                 }).catch(function () {
                                     _this2.setState({ uploadError: true });
+                                }).finally(function () {
+                                    _this2.toggleLoading(); // remove loading spinner
                                 });
 
-                            case 8:
+                            case 9:
 
                                 // refresh state in order to get the new avatar
                                 this.props.refresh();
 
-                            case 9:
+                            case 10:
                             case 'end':
                                 return _context.stop();
                         }
@@ -61382,13 +61434,21 @@ var Card = function (_Component) {
             return submitForm;
         }()
     }, {
+        key: 'toggleLoading',
+        value: function toggleLoading() {
+            var isLoading = this.state.isLoading;
+
+            this.setState({ isLoading: !isLoading });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _React$createElement;
 
             var _state = this.state,
                 changeImageLink = _state.changeImageLink,
-                uploadError = _state.uploadError;
+                uploadError = _state.uploadError,
+                isLoading = _state.isLoading;
             var _props = this.props,
                 displayWarning = _props.displayWarning,
                 user = _props.user;
@@ -61432,6 +61492,7 @@ var Card = function (_Component) {
                                 onMouseLeave: this.hideChangeImage,
                                 onClick: this.changeImage
                             },
+                            isLoading && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__global_components_loadingWidget__["a" /* default */], null),
                             avatar_filepath ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: '/storage/avatars/' + avatar_filepath }) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: '/images/avatar.png' }),
                             changeImageLink && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'div',
@@ -61542,7 +61603,7 @@ var Card = function (_Component) {
 /* harmony default export */ __webpack_exports__["a"] = (Card);
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -61778,7 +61839,7 @@ function kindOf(val) {
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61826,7 +61887,7 @@ var Btn = function (_Component) {
 /* harmony default export */ __webpack_exports__["a"] = (Btn);
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports) {
 
 if (document.querySelector('.upload-wrapper')) {
@@ -61982,7 +62043,7 @@ if (document.querySelector('.upload-wrapper')) {
 }
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61993,10 +62054,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_imageModal__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_imageModal__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_components_modal__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__global_components_alert__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__individualAbumSettings__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__individualAbumSettings__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__global_components_loadingWidget__ = __webpack_require__(59);
 
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -62016,6 +62078,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+
 var IndividualAlbum = function (_Component) {
     _inherits(IndividualAlbum, _Component);
 
@@ -62023,9 +62086,6 @@ var IndividualAlbum = function (_Component) {
         _classCallCheck(this, IndividualAlbum);
 
         var _this = _possibleConstructorReturn(this, (IndividualAlbum.__proto__ || Object.getPrototypeOf(IndividualAlbum)).call(this));
-
-        _this.getAlbum();
-        _this.getUser();
 
         _this.state = {
             user: null,
@@ -62039,7 +62099,8 @@ var IndividualAlbum = function (_Component) {
             nextImageId: null,
             deleteAlbum: false,
             displayAlert: false,
-            alertMsg: null
+            alertMsg: null,
+            isLoading: false
         };
 
         _this.getAlbum = _this.getAlbum.bind(_this);
@@ -62056,10 +62117,17 @@ var IndividualAlbum = function (_Component) {
         _this.updateAlbum = _this.updateAlbum.bind(_this);
         _this.updateAlbumOnEnter = _this.updateAlbumOnEnter.bind(_this);
         _this.closeAlertBox = _this.closeAlertBox.bind(_this);
+        _this.toggleLoading = _this.toggleLoading.bind(_this);
         return _this;
     }
 
     _createClass(IndividualAlbum, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            this.getAlbum();
+            this.getUser();
+        }
+    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
             Object(__WEBPACK_IMPORTED_MODULE_6__individualAbumSettings__["a" /* default */])();
@@ -62090,10 +62158,13 @@ var IndividualAlbum = function (_Component) {
                             case 0:
                                 url = window.location.href;
 
-                                // find the id from the url by getting the last digit in the url (note that the url must finish with this digit)
+                                //display loading spinner
 
+                                this.toggleLoading();
+
+                                // find the id from the url by getting the last digit in the url (note that the url must finish with this digit)
                                 id = url.match(/\d+$/)[0];
-                                _context.next = 4;
+                                _context.next = 5;
                                 return fetch('/api/albums/' + id).then(function (response) {
                                     return response.status === 200 && response.json();
                                 }).then(function (data) {
@@ -62103,9 +62174,11 @@ var IndividualAlbum = function (_Component) {
                                     var containsBackgroundImage = data.data.containsBackgroundImage;
 
                                     _this2.setState({ albumImages: albumImages, albumTitle: albumTitle, albumId: albumId, containsBackgroundImage: containsBackgroundImage });
+                                }).finally(function () {
+                                    _this2.toggleLoading();
                                 });
 
-                            case 4:
+                            case 5:
                             case 'end':
                                 return _context.stop();
                         }
@@ -62359,6 +62432,8 @@ var IndividualAlbum = function (_Component) {
                 return;
             }
 
+            this.toggleLoading();
+
             this.setState({ deleteAlbum: false });
             var token = document.querySelector('meta[name="csrf-token"]').content;
 
@@ -62374,6 +62449,8 @@ var IndividualAlbum = function (_Component) {
             }).catch(function () {
                 var alertMsg = "Sorry, something went wrong and the album could not be deleted. Please try again";
                 _this5.setState({ displayAlert: true, alertMsg: alertMsg });
+            }).finally(function () {
+                _this5.toggleLoading();
             });
         }
 
@@ -62436,6 +62513,13 @@ var IndividualAlbum = function (_Component) {
             this.setState({ displayAlert: false });
         }
     }, {
+        key: 'toggleLoading',
+        value: function toggleLoading() {
+            var isLoading = this.state.isLoading;
+
+            this.setState({ isLoading: !isLoading });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _state7 = this.state,
@@ -62445,7 +62529,8 @@ var IndividualAlbum = function (_Component) {
                 editAlbumTitle = _state7.editAlbumTitle,
                 deleteAlbum = _state7.deleteAlbum,
                 displayAlert = _state7.displayAlert,
-                alertMsg = _state7.alertMsg;
+                alertMsg = _state7.alertMsg,
+                isLoading = _state7.isLoading;
 
             var albumTitleState = void 0;
 
@@ -62508,6 +62593,7 @@ var IndividualAlbum = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
                     { className: 'images' },
+                    isLoading && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__global_components_loadingWidget__["a" /* default */], null),
                     this.displayImages()
                 ),
                 enlargedImage
@@ -62523,7 +62609,7 @@ if (document.getElementById('individualAlbum')) {
 }
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -62531,11 +62617,12 @@ if (document.getElementById('individualAlbum')) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modalSettings__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__settings__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modalSettings__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__settings__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_components_modal__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__global_components_alert__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__commentsModal__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__commentsModal__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__global_components_loadingWidget__ = __webpack_require__(59);
 
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -62552,6 +62639,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
  // modal specific javascript
+
 
 
 
@@ -62591,7 +62679,8 @@ var ImageModal = function (_Component) {
             displaySettings: false,
             editPhoto: false,
             photoZoomed: false,
-            displayCommentsModal: false
+            displayCommentsModal: false,
+            isLoading: false
         };
 
         _this.fadeOutHeader = _this.fadeOutHeader.bind(_this);
@@ -62722,6 +62811,8 @@ var ImageModal = function (_Component) {
     }, {
         key: 'likePhoto',
         value: function likePhoto() {
+            var _this4 = this;
+
             var imageId = this.props.imageId;
             var user = this.state.user;
 
@@ -62731,6 +62822,8 @@ var ImageModal = function (_Component) {
                 // TODO - inform user to log in
                 return;
             }
+
+            this.toggleLoading();
 
             var token = document.querySelector('meta[name="csrf-token"]').content;
 
@@ -62748,6 +62841,8 @@ var ImageModal = function (_Component) {
                     'user_id': user.id,
                     'photo_id': imageId
                 })
+            }).finally(function () {
+                _this4.toggleLoading();
             });
 
             // get updated image data in order to immediately refresh the view and update the state
@@ -62788,7 +62883,7 @@ var ImageModal = function (_Component) {
         key: 'actionDelete',
         value: function () {
             var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
-                var _this4 = this;
+                var _this5 = this;
 
                 var user, _state$imageDetails, album_cover_photo, homepage_background, _props, imageId, closeModal, refreshAlbum, token, alertMsg;
 
@@ -62831,7 +62926,10 @@ var ImageModal = function (_Component) {
                                 return _context2.abrupt('return');
 
                             case 15:
-                                _context2.next = 17;
+
+                                this.toggleLoading();
+
+                                _context2.next = 18;
                                 return fetch('/api/delete_photo/' + imageId, {
                                     method: 'DELETE',
                                     redirect: 'follow',
@@ -62843,16 +62941,17 @@ var ImageModal = function (_Component) {
                                     }
                                 }).then(function () {
                                     // reset state
-                                    _this4.setState({ displayAlert: false });
-                                    _this4.toggleDisplayModal();
+                                    _this5.setState({ displayAlert: false });
+                                    _this5.toggleDisplayModal();
                                     closeModal();
                                     refreshAlbum();
-                                }).then(function () {
+                                }).catch(function () {
                                     alertMsg = 'There was an error deleting the image. Please try again';
-                                    _this4.setState({ displayAlert: true, alertMsg: alertMsg });
+                                    _this5.setState({ displayAlert: true, alertMsg: alertMsg });
+                                    _this5.toggleLoading();
                                 });
 
-                            case 17:
+                            case 18:
                             case 'end':
                                 return _context2.stop();
                         }
@@ -62956,6 +63055,8 @@ var ImageModal = function (_Component) {
     }, {
         key: 'updateImageDetails',
         value: function updateImageDetails() {
+            var _this6 = this;
+
             var user = this.state.user;
 
 
@@ -62970,6 +63071,8 @@ var ImageModal = function (_Component) {
 
             var token = document.querySelector('meta[name="csrf-token"]').content;
 
+            this.toggleLoading();
+
             fetch('/api/update_photo/' + imageId, {
                 method: 'POST',
                 headers: {
@@ -62982,6 +63085,8 @@ var ImageModal = function (_Component) {
                     title: title,
                     description: description
                 })
+            }).finally(function () {
+                _this6.toggleLoading();
             });
         }
     }, {
@@ -63053,9 +63158,16 @@ var ImageModal = function (_Component) {
             this.setState({ displayAlert: true, alertMsg: alertMsg });
         }
     }, {
+        key: 'toggleLoading',
+        value: function toggleLoading() {
+            var isLoading = this.state.isLoading;
+
+            this.setState({ isLoading: !isLoading });
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var _this5 = this;
+            var _this7 = this;
 
             var _props3 = this.props,
                 closeModal = _props3.closeModal,
@@ -63071,7 +63183,8 @@ var ImageModal = function (_Component) {
                 photoZoomed = _state3.photoZoomed,
                 displayAlert = _state3.displayAlert,
                 alertMsg = _state3.alertMsg,
-                displayCommentsModal = _state3.displayCommentsModal;
+                displayCommentsModal = _state3.displayCommentsModal,
+                isLoading = _state3.isLoading;
 
 
             var thumbsUpStyle = null,
@@ -63107,9 +63220,10 @@ var ImageModal = function (_Component) {
                     {
                         className: 'imageModal-wrapper',
                         onClick: function onClick(e) {
-                            _this5.stopEditPhoto(e);
+                            _this7.stopEditPhoto(e);
                         }
                     },
+                    isLoading && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__global_components_loadingWidget__["a" /* default */], null),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
                         { className: 'imageModal-content' },
@@ -63136,20 +63250,20 @@ var ImageModal = function (_Component) {
                                     placeholder: 'Title...',
                                     value: imageDetails.title ? imageDetails.title.toUpperCase() : '',
                                     onChange: function onChange(e) {
-                                        _this5.changeInput(e);
+                                        _this7.changeInput(e);
                                     },
                                     onKeyDown: function onKeyDown(e) {
-                                        _this5.saveOnEnter(e);
+                                        _this7.saveOnEnter(e);
                                     }
                                 }),
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('textarea', {
                                     placeholder: 'Description...',
                                     value: imageDetails.description ? imageDetails.description : '',
                                     onChange: function onChange(e) {
-                                        _this5.changeInput(e);
+                                        _this7.changeInput(e);
                                     },
                                     onKeyDown: function onKeyDown(e) {
-                                        _this5.saveOnEnter(e);
+                                        _this7.saveOnEnter(e);
                                     }
                                 })
                             ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -63175,7 +63289,7 @@ var ImageModal = function (_Component) {
                                 {
                                     className: 'arrow left-arrow',
                                     onClick: function onClick() {
-                                        return _this5.navigate('left');
+                                        return _this7.navigate('left');
                                     }
                                 },
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-chevron-left' })
@@ -63191,7 +63305,7 @@ var ImageModal = function (_Component) {
                                 {
                                     className: 'arrow right-arrow',
                                     onClick: function onClick() {
-                                        return _this5.navigate('right');
+                                        return _this7.navigate('right');
                                     }
                                 },
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-chevron-right' })
@@ -63245,7 +63359,7 @@ var ImageModal = function (_Component) {
 /* harmony default export */ __webpack_exports__["a"] = (ImageModal);
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63324,7 +63438,7 @@ function setImageHeight() {
 }
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63475,13 +63589,14 @@ var Settings = function (_Component) {
 /* harmony default export */ __webpack_exports__["a"] = (Settings);
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__classes_Validate__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__global_components_loadingWidget__ = __webpack_require__(59);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -63489,6 +63604,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -63504,7 +63620,8 @@ var Comments = function (_Component) {
         _this.state = {
             commentMessage: '',
             characterLimit: 250,
-            charactersRemaining: 250
+            charactersRemaining: 250,
+            isLoading: false
         };
 
         _this.onChangeMessage = _this.onChangeMessage.bind(_this);
@@ -63512,6 +63629,7 @@ var Comments = function (_Component) {
         _this.postMessageOnEnter = _this.postMessageOnEnter.bind(_this);
         _this.renderComments = _this.renderComments.bind(_this);
         _this.deleteComment = _this.deleteComment.bind(_this);
+        _this.toggleLoading = _this.toggleLoading.bind(_this);
         return _this;
     }
 
@@ -63577,6 +63695,8 @@ var Comments = function (_Component) {
                 return;
             }
 
+            this.toggleLoading();
+
             fetch('/api/post_comment/' + imageDetails.id, {
                 method: 'POST',
                 headers: {
@@ -63597,7 +63717,7 @@ var Comments = function (_Component) {
                 // Refresh details to display most up to date comments
                 _this2.props.refresh(imageDetails.id);
             }).finally(function () {
-                // remove loading spinner
+                _this2.toggleLoading();
             });
         }
 
@@ -63669,7 +63789,11 @@ var Comments = function (_Component) {
     }, {
         key: 'deleteComment',
         value: function deleteComment(postId) {
+            var _this4 = this;
+
             var token = document.querySelector('meta[name="csrf-token"]').content;
+
+            this.toggleLoading();
 
             fetch('/api/delete_comment/' + postId, {
                 method: 'Delete',
@@ -63677,6 +63801,8 @@ var Comments = function (_Component) {
                     'X-CSRF-TOKEN': token,
                     'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 }
+            }).finally(function () {
+                _this4.toggleLoading();
             });
 
             // Refresh details to display most up to date comments
@@ -63685,12 +63811,20 @@ var Comments = function (_Component) {
             this.props.refresh(id);
         }
     }, {
+        key: 'toggleLoading',
+        value: function toggleLoading() {
+            var isLoading = this.state.isLoading;
+
+            this.setState({ isLoading: !isLoading });
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _state2 = this.state,
                 commentMessage = _state2.commentMessage,
                 charactersRemaining = _state2.charactersRemaining,
-                characterLimit = _state2.characterLimit;
+                characterLimit = _state2.characterLimit,
+                isLoading = _state2.isLoading;
             var _props2 = this.props,
                 user = _props2.user,
                 close = _props2.close;
@@ -63703,6 +63837,7 @@ var Comments = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     { className: 'comments-box' },
+                    isLoading && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__global_components_loadingWidget__["a" /* default */], null),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
                         { className: 'comments-header' },
@@ -63777,7 +63912,7 @@ var Comments = function (_Component) {
 /* harmony default export */ __webpack_exports__["a"] = (Comments);
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63820,7 +63955,7 @@ function setHeightOfAlbumPage() {
 }
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
