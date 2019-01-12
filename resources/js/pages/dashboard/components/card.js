@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
 import dateFormat from 'dateformat';
+import LoadingWidget from '../../../global_components/loadingWidget';
 
 class Card extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            changeImageLink: false
+            changeImageLink: false,
+            uploadError: false,
+            isLoading: false
         }
 
         this.displayChangeImage = this.displayChangeImage.bind(this);
         this.hideChangeImage = this.hideChangeImage.bind(this);
         this.changeImage = this.changeImage.bind(this);
         this.submitForm = this.submitForm.bind(this);
+        this.toggleLoading = this.toggleLoading.bind(this);
     }
     
     /**
@@ -62,6 +66,9 @@ class Card extends Component {
             return;
         }
 
+        // display loading widget
+        this.toggleLoading();
+
         const data = new FormData();
         data.append('file', e.target.files[0]);
 
@@ -75,15 +82,26 @@ class Card extends Component {
             },
             body: data
         })
-        .then(response => console.log(response))
-        .catch(error => console.log(error))
+        .then(() => {
+            this.setState({uploadError: false});
+        })
+        .catch(() => {
+            this.setState({uploadError: true});
+        }).finally(() => {
+            this.toggleLoading(); // remove loading spinner
+        });
 
         // refresh state in order to get the new avatar
         this.props.refresh();
     }
 
+    toggleLoading() {
+        const {isLoading} = this.state;
+        this.setState({isLoading: !isLoading});
+    }
+
     render() {
-        const {changeImageLink} = this.state;
+        const {changeImageLink, uploadError, isLoading} = this.state;
         const {displayWarning, user} = this.props;
 
         let username, name, email, created_at, avatar_filepath;
@@ -97,18 +115,26 @@ class Card extends Component {
         
         return(
             <div className='card-wrapper'>
+            
                 <div className='card-head'>
                     <span>Dashboard</span>
                 </div>
+
                 <div className='card-body'>
                     <div className='left-side'>
                         <div 
-                        className='avatar-wrapper' 
-                        onMouseOver={this.displayChangeImage} 
-                        onMouseLeave={this.hideChangeImage}
-                        onClick={this.changeImage}
+                            className='avatar-wrapper' 
+                            onMouseOver={this.displayChangeImage} 
+                            onMouseLeave={this.hideChangeImage}
+                            onClick={this.changeImage}
                         >
-                            {avatar_filepath ? <img src={`/storage/avatars/${avatar_filepath}`} /> : <img src="/images/avatar.png" />}
+
+                            {
+                                isLoading &&
+                                <LoadingWidget />
+                            }
+
+                            {avatar_filepath ? <img src={`/storage/avatars/${avatar_filepath}`} /> : <img src="/storage/defaults/avatar.png" />}
 
                             {changeImageLink && 
                                 <div className='change-image-form'>
@@ -121,6 +147,11 @@ class Card extends Component {
                                 </div>
                             }
                         </div>
+
+                        {
+                            uploadError &&
+                            <div className="error">The image could not be uploaded, please try again!</div>    
+                        }
 
                         <span className='card-label'>Username: </span><span className='card-content'>{username}</span><br />
                         <span className='card-label'>Name: </span><span className='card-content'>{name}</span><br />

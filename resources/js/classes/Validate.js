@@ -1,4 +1,6 @@
 const Validate = {
+    
+    months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 
     /**
      * @param {string} string
@@ -26,7 +28,7 @@ const Validate = {
     validateDate: function(date) {
         const newDate = new Date(date);
         const year = newDate.getFullYear();
-        const month = newDate.getMonth();
+        const month = this.months[newDate.getMonth()];
         const day = newDate.getDate();
 
         return `${day}-${month}-${year}`;

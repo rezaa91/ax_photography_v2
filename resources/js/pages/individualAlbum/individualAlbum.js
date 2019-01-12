@@ -4,13 +4,11 @@ import ImageModal from './components/imageModal';
 import Modal from '../../global_components/modal';
 import Alert from '../../global_components/alert';
 import individualAlbumInit from './individualAbumSettings';
+import LoadingWidget from '../../global_components/loadingWidget';
 
 class IndividualAlbum extends Component {
     constructor() {
         super();
-
-        this.getAlbum();
-        this.getUser();
 
         this.state = {
             user: null,
@@ -24,7 +22,8 @@ class IndividualAlbum extends Component {
             nextImageId: null,
             deleteAlbum: false,
             displayAlert: false,
-            alertMsg: null
+            alertMsg: null,
+            isLoading: false
         }
 
         this.getAlbum = this.getAlbum.bind(this);
@@ -41,6 +40,12 @@ class IndividualAlbum extends Component {
         this.updateAlbum = this.updateAlbum.bind(this);
         this.updateAlbumOnEnter = this.updateAlbumOnEnter.bind(this);
         this.closeAlertBox = this.closeAlertBox.bind(this);
+        this.toggleLoading = this.toggleLoading.bind(this);
+    }
+
+    componentWillMount() {
+        this.getAlbum();
+        this.getUser();
     }
 
     componentDidMount() {
@@ -60,6 +65,9 @@ class IndividualAlbum extends Component {
     async getAlbum() {
         const url = window.location.href;
 
+        //display loading spinner
+        this.toggleLoading();
+
         // find the id from the url by getting the last digit in the url (note that the url must finish with this digit)
         const id = url.match(/\d+$/)[0];
 
@@ -73,12 +81,9 @@ class IndividualAlbum extends Component {
 
             this.setState({albumImages, albumTitle, albumId, containsBackgroundImage});
         })
-        .catch(error => {
-            // redirect user back to albums page if album does not exist (e.g. user puts a different id in url)
-            if (error) {
-                // TODO - window.location.replace('/albums');
-            }
-        });
+        .finally(() => {
+            this.toggleLoading();
+        })
     }
 
     /**
@@ -105,12 +110,6 @@ class IndividualAlbum extends Component {
                     isAdmin: data.isAdmin
                 }
             })            
-        })
-        .catch((error) => {
-            this.setState({
-                isLoggedIn: false,
-                user: null
-            })
         })
     }
 
@@ -198,9 +197,17 @@ class IndividualAlbum extends Component {
     }
 
     saveAlbumTitle() {
-        const {user} = this.state;
+        const {user, albumTitle} = this.state;
 
         if (!user.isAdmin) {
+            return;
+        }
+
+        // User cannot save album title if empty, style input box to display error colouring
+        if (!albumTitle) {
+            const editAlbumInput = document.querySelector('input[name="editAlbum"]');
+            editAlbumInput.style.border = "1px solid #9e0401";
+            editAlbumInput.style.boxShadow = "0 0 7px #9e0401";
             return;
         }
 
@@ -230,6 +237,8 @@ class IndividualAlbum extends Component {
             return;
         }
 
+        this.toggleLoading();
+
         this.setState({deleteAlbum: false});
         const token = document.querySelector('meta[name="csrf-token"]').content;
 
@@ -241,8 +250,16 @@ class IndividualAlbum extends Component {
             },
             redirect: 'follow'
         })
-        .then(response => response.status === 200 && window.location.replace("/albums"))
-        .catch(error => console.log(error));
+        .then(() => {
+            window.location.replace("/albums");
+        })
+        .catch(() => {
+            const alertMsg = "Sorry, something went wrong and the album could not be deleted. Please try again";
+            this.setState({displayAlert: true, alertMsg});
+        })
+        .finally(() => {
+            this.toggleLoading();
+        })
     }
 
     /**
@@ -263,6 +280,12 @@ class IndividualAlbum extends Component {
             return;
         }
 
+        if (!albumTitle) {
+            const editAlbumTitleInput = document.querySelector('input[name="editAlbum"]');
+            editAlbumTitleInput.focus();
+            return;
+        }
+
         this.setState({editAlbumTitle: false});
 
         const token = document.querySelector('meta[name="csrf-token"]').content;
@@ -280,8 +303,6 @@ class IndividualAlbum extends Component {
             }),
             redirect: 'follow'
         })
-        .then(response => console.log(response))
-        .catch(error => console.log(error));
 
         this.getAlbum();
     }
@@ -290,8 +311,13 @@ class IndividualAlbum extends Component {
         this.setState({displayAlert: false});
     }
 
+    toggleLoading() {
+        const {isLoading} = this.state;
+        this.setState({isLoading: !isLoading});
+    }
+
     render() {
-        const {user, albumTitle, enlargedImage, editAlbumTitle, deleteAlbum, displayAlert, alertMsg} = this.state;
+        const {user, albumTitle, enlargedImage, editAlbumTitle, deleteAlbum, displayAlert, alertMsg, isLoading} = this.state;
         let albumTitleState;
 
         if (editAlbumTitle) {
@@ -344,6 +370,11 @@ class IndividualAlbum extends Component {
                     }
                 </div>
                 <div className="images">
+                    {
+                        isLoading &&
+                        <LoadingWidget />
+                    }
+
                     {this.displayImages()}
                 </div>
                 {enlargedImage}

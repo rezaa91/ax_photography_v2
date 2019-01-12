@@ -5,7 +5,7 @@
 <div class="edit-profile-wrapper">
     <div class="edit-profile-form">
 
-        {!! Form::open(['action' => ['DashboardController@update', $user->id], 'method' => 'POST']) !!}
+        {!! Form::open(['action' => ['Web\UserController@update', $user->id], 'method' => 'POST']) !!}
         @csrf
 
             <div class="form-section">

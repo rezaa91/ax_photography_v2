@@ -4,6 +4,7 @@ import Settings from './settings';
 import Modal from '../../../global_components/modal';
 import Alert from '../../../global_components/alert';
 import Comments from './commentsModal';
+import LoadingWidget from '../../../global_components/loadingWidget';
 
 class ImageModal extends Component {
     constructor(props) {
@@ -35,7 +36,8 @@ class ImageModal extends Component {
             displaySettings: false,
             editPhoto: false,
             photoZoomed: false,
-            displayCommentsModal: false
+            displayCommentsModal: false,
+            isLoading: false
         }
 
         this.fadeOutHeader = this.fadeOutHeader.bind(this);
@@ -112,13 +114,10 @@ class ImageModal extends Component {
         .then(data => {
             const imageDetails = data.data;
             this.setState({imageDetails});
+
+            // After collecting the data, check whether the current user has liked the photo
+            this.doesUserLikePhoto();
         })
-        .catch(error => console.log(error));
-
-        // After collecting the data, check whether the current user has liked the photo
-        this.doesUserLikePhoto();
-
-        console.log(this.state);
     }
 
     /**
@@ -133,6 +132,8 @@ class ImageModal extends Component {
             // TODO - inform user to log in
             return;
         }
+
+        this.toggleLoading();
 
         const token = document.querySelector('meta[name="csrf-token"]').content;
 
@@ -151,8 +152,9 @@ class ImageModal extends Component {
                 'photo_id': imageId
             })
         })
-        .then(response => console.log(response))
-        .catch(error => console.log(error));
+        .finally(() => {
+            this.toggleLoading();
+        })
 
         // get updated image data in order to immediately refresh the view and update the state
         this.getImageData(imageId);
@@ -177,7 +179,7 @@ class ImageModal extends Component {
     }
 
     /**
-     * Delete the photo from the DB via REST API
+     * Delete the photo from the DB and storage
      */
     async actionDelete() {
         const {user} = this.state;
@@ -203,6 +205,8 @@ class ImageModal extends Component {
             return;
         }
 
+        this.toggleLoading();
+
         await fetch(`/api/delete_photo/${imageId}`, {
             method: 'DELETE',
             redirect: 'follow',
@@ -213,13 +217,18 @@ class ImageModal extends Component {
                 'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
             }
         })
-        .then(res => console.log(res))
-        .catch(err => console.log(err));
-
-        // reset state
-        this.toggleDisplayModal();
-        closeModal();
-        refreshAlbum();
+        .then(() => {
+            // reset state
+            this.setState({displayAlert: false});
+            this.toggleDisplayModal();
+            closeModal();
+            refreshAlbum();
+        })
+        .catch(() => {
+            alertMsg = 'There was an error deleting the image. Please try again';
+            this.setState({displayAlert: true, alertMsg});
+            this.toggleLoading();
+        })
     }
 
     toggleEditPhoto() {
@@ -306,6 +315,8 @@ class ImageModal extends Component {
         const {imageId} = this.props;
         const token = document.querySelector('meta[name="csrf-token"]').content;
 
+        this.toggleLoading();
+
         fetch(`/api/update_photo/${imageId}`, {
             method: 'POST',
             headers: {
@@ -318,6 +329,9 @@ class ImageModal extends Component {
                 title: title,
                 description: description
             })
+        })
+        .finally(() => {
+            this.toggleLoading();
         })
     }
 
@@ -371,11 +385,16 @@ class ImageModal extends Component {
     alertChange(alertMsg) {
         this.setState({displayAlert: true, alertMsg});
     }
+
+    toggleLoading() {
+        const {isLoading} = this.state;
+        this.setState({isLoading: !isLoading});
+    }
     
     render() {
         const {closeModal, previousImageId, nextImageId} = this.props;
         const {user, imageDetails, hasUserLiked, displaySettings, 
-            displayModal, editPhoto, photoZoomed, displayAlert, alertMsg, displayCommentsModal} = this.state;
+            displayModal, editPhoto, photoZoomed, displayAlert, alertMsg, displayCommentsModal, isLoading} = this.state;
 
         let thumbsUpStyle = null, imageStyle = null;
         if (hasUserLiked) {
@@ -422,6 +441,11 @@ class ImageModal extends Component {
                 className='imageModal-wrapper' 
                 onClick={(e) => {this.stopEditPhoto(e)}}
                 >
+
+                {
+                    isLoading &&
+                    <LoadingWidget />
+                }
 
                     <div className='imageModal-content'>        
                         <div className='imageModal-header'>

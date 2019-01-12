@@ -3,35 +3,29 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
+use App\Http\Bundles\SettingsBundle\ImageSettings;
 
-class ImageSettingsController extends Controller
+class ImageSettingsController extends ApiController
 {
+    private $moduleClass;
+
     /**
-     * Toggle like/un-like on image
+     * @param ImageSettings $class
+     */
+    public function __construct(ImageSettings $class)
+    {
+        $this->moduleClass = $class;
+    }
+
+    /**
+     * {/api/reaction}
+     * 
      * @param Request $request
      */
-    public function toggleLikeImage(Request $request)
+    public function postToggleLikeImage(Request $request)
     {
         $data = $request->json()->all();
 
-        if ($this->hasUserPreviouslyLiked($data)) {
-            DB::table('photos_users_likes')->where(['photo_id' => $data['photo_id'], 'user_id' => $data['user_id']])->delete();
-        } else {
-            DB::table('photos_users_likes')->insert(['photo_id' => $data['photo_id'], 'user_id' => $data['user_id']]);
-        }
+        $this->moduleClass->toggleLikeImage($data);
     }
-
-    /**
-     * Check whether the user has already liked the picture
-     */
-    private function hasUserPreviouslyLiked($data)
-    {
-        return DB::table('photos_users_likes')
-        ->where('photo_id', $data['photo_id'])
-        ->where('user_id', $data['user_id'])
-        ->count();
-    }
-    
 }

@@ -6,7 +6,8 @@ class Contact extends Component {
         super();
 
         this.state = {
-            formIsValid: true, //REMEMBER TO SET TO FALSE
+            formSubmitted: false,
+            isReadOnly: false,
             formData: {
                 name: '',
                 email: '',
@@ -29,11 +30,6 @@ class Contact extends Component {
 
     submitForm(e) {
         e.preventDefault();
-        const {formIsValid} = this.state;
-
-        if (!formIsValid) {
-            return;
-        }
         
         const {name, email, body} = this.state.formData;
         const token = document.querySelector('meta[name="csrf-token"]').content;
@@ -46,11 +42,21 @@ class Contact extends Component {
             },
             body: JSON.stringify({name, email, body})
         })
-        .then(response => console.log(response))
-        .catch(error => console.log(error));
+        .then(() => {
+            this.setState({formSubmitted: true, isReadOnly: true}); // prevent further submissions
+        })
     }
 
     render() {
+        const {formSubmitted, isReadOnly} = this.state;
+        
+        let btnStyle;
+        if (formSubmitted) {
+            btnStyle = {
+                backgroundColor: '#044730'
+            }
+        }
+
         return(
             <div className='contact-wrapper'>
                 <div className='contact-section'>
@@ -67,17 +73,23 @@ class Contact extends Component {
                                 <input name="_token" value="{{ csrf_token() }}" type="hidden" />
 
                                 <div className="form-section">
-                                    <input type="text" name="name" placeholder="Name..." onChange={this.updateValueOnChange} required autoFocus />
+                                    <input type="text" name="name" placeholder="Name..." onChange={this.updateValueOnChange} required autoFocus readOnly={isReadOnly} />
                                 </div>
                                 <div className='form-section'>
-                                    <input type="text" name="email" placeholder="Email@example.co.uk" onChange={this.updateValueOnChange} required />
+                                    <input type="text" name="email" placeholder="Email@example.co.uk" onChange={this.updateValueOnChange} required readOnly={isReadOnly} />
                                 </div>
                                 <div className="form-section">
-                                    <textarea name="body" placeholder="Enter a message..." onChange={this.updateValueOnChange} required></textarea>
+                                    <textarea name="body" placeholder="Enter a message..." onChange={this.updateValueOnChange} required readOnly={isReadOnly}></textarea>
                                 </div>
                                 <div className="form-section">
-                                    <input type="submit" value="SEND" /> 
+                                    <input type="submit" value={!formSubmitted ? 'SEND' : 'SENT'} style={btnStyle} disabled={formSubmitted} /> 
                                 </div>
+
+                                {
+                                    formSubmitted &&
+                                    <span className="form-submitted">Thank you for your email, I will aim to reply as soon as possible.</span>
+                                }
+
                             </form>
                         </div>
 
