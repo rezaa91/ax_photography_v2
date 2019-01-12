@@ -6285,7 +6285,32 @@ form .selection .option {
   }
 
   .navigation-wrapper .navigation-right {
-    display: none;
+    position: fixed;
+    height: 5vh;
+    top: 95vh;
+    left: 0;
+    width: 100%;
+    background-color: #044730;
+    border-top: 1px solid #999999;
+    padding: 3px;
+  }
+
+  .navigation-wrapper .navigation-right li,
+  .navigation-wrapper .navigation-right a {
+    color: #ededed;
+  }
+
+  .navigation-wrapper .user-dropdown-menu {
+    position: absolute;
+    right: 0;
+    height: 15vh;
+    top: -95vh;
+    margin-top: 80vh;
+    border: none;
+  }
+
+  .navigation-wrapper .user-dropdown-menu a {
+    height: 5vh;
   }
 
   .navigation-wrapper .main-links {
@@ -6478,7 +6503,7 @@ form .selection .option {
 .about-wrapper,
 .contact-wrapper {
   border-bottom: 2px solid #999999;
-  padding: 20px 40px;
+  padding: 40px;
   background-color: #ededed;
 }
 
@@ -6625,7 +6650,7 @@ form .selection .option {
 .about-wrapper,
 .contact-wrapper {
   border-bottom: 2px solid #999999;
-  padding: 20px 40px;
+  padding: 40px;
   background-color: #ededed;
 }
 
@@ -6895,6 +6920,7 @@ form .selection .option {
   .albums-wrapper {
     display: block;
     padding: 0;
+    margin-bottom: 40px;
   }
 
   .albums-wrapper .albumContainer {
