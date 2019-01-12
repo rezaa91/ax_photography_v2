@@ -95,7 +95,7 @@
     }
 }
 
-// > Mobile
+// Mobile
 @media only screen and (max-width: $medium) {
     .navigation-wrapper {
         height: auto;
@@ -132,7 +132,31 @@
         }
 
         .navigation-right {
-            display: none;
+            position:fixed;
+            height: 5vh;
+            top: 95vh;
+            left: 0;
+            width: 100%;
+            background-color: $darkgreen;
+            border-top: 1px solid $grey;
+            padding: 3px;
+
+            li, a {
+                color: $white;
+            }
+        }
+
+        .user-dropdown-menu {
+            position: absolute;
+            right: 0;
+            height: 15vh;
+            top: -95vh;
+            margin-top: 80vh; // 100vh - 5vh (navigation-right height) - 3*5vh (a below)
+            border: none;
+
+            a {
+                height: 5vh;
+            }
         }
 
         .main-links {
@@ -161,7 +185,7 @@
     }
 }
 
-// > Tablet
+// Tablet
 @media only screen and (min-width: $large) {
     .navigation-wrapper {
         .navigation {
