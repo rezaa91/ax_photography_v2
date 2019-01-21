@@ -23,7 +23,8 @@ class AlbumContainer extends Component {
         await fetch(`/api/photos/${cover_photo_id}`)
         .then(response => response.status === 200 && response.json())
         .then(data => {
-            this.setState({cover_photo: data.data.filepath});
+            const filepath = data.data.filepath.split(' ').join('%20');
+            this.setState({cover_photo: filepath});
         })
     }
 

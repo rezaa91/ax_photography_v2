@@ -162,8 +162,8 @@ class Albums extends Photos
      */
     public function updateCoverImage(int $photoId)
     {
-        $albumId = PhotosModel::find($photoId)->pluck('album_id')->first();
-        $album = AlbumsModel::find($albumId);
+        $albumId = PhotosModel::select('album_id')->where('id', $photoId)->first();
+        $album = AlbumsModel::find($albumId->album_id);
         $album->cover_photo_id = $photoId;
         $album->save();
     }

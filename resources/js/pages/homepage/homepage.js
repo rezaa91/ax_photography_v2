@@ -19,7 +19,7 @@ class Homepage extends Component {
         fetch('/api/background_image')
         .then(res => res.json())
         .then(data => {
-            const filepath = `uploads/${data.data.filepath}`;
+            const filepath = `uploads/${data.data.filepath}`.split(' ').join('%20');
 
             this.setState({filepath});
         })
