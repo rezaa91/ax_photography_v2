@@ -11,19 +11,13 @@ class Card extends Component {
             uploadError: false,
             isLoading: false
         }
-
-        this.displayChangeImage = this.displayChangeImage.bind(this);
-        this.hideChangeImage = this.hideChangeImage.bind(this);
-        this.changeImage = this.changeImage.bind(this);
-        this.submitForm = this.submitForm.bind(this);
-        this.toggleLoading = this.toggleLoading.bind(this);
     }
     
     /**
      * Format the 'member since' date
      * @param {Object} dateObj 
      */
-    formatDate(dateObj) {
+    formatDate = (dateObj) => {
         if (dateObj === null) {
             return;
         }
@@ -35,21 +29,21 @@ class Card extends Component {
     /**
      * Display the link 'change image' when image hovered over
      */
-    displayChangeImage() {
+    displayChangeImage = () => {
         this.setState({changeImageLink: true});
     }
 
     /**
      * Hide the 'change image' link on image mouseout
      */
-    hideChangeImage() {
+    hideChangeImage = () => {
         this.setState({changeImageLink: false});
     }
 
     /**
      * Open file dialog box
      */
-    changeImage() {
+    changeImage = () => {
         const form = document.forms[0];
         const fileUpload = form.elements.file;
         fileUpload.click();
@@ -58,7 +52,7 @@ class Card extends Component {
     /**
      * Submit form if file selected for upload
      */
-    async submitForm(e) {
+    submitForm = async (e) => {
         const {user} = this.props;
 
         // if user not signed in, return
@@ -95,7 +89,7 @@ class Card extends Component {
         this.props.refresh();
     }
 
-    toggleLoading() {
+    toggleLoading = () => {
         const {isLoading} = this.state;
         this.setState({isLoading: !isLoading});
     }

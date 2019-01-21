@@ -12,20 +12,13 @@ class Comments extends Component {
             charactersRemaining: 250,
             isLoading: false
         }
-
-        this.onChangeMessage = this.onChangeMessage.bind(this);
-        this.postMessage = this.postMessage.bind(this);
-        this.postMessageOnEnter = this.postMessageOnEnter.bind(this);
-        this.renderComments = this.renderComments.bind(this);
-        this.deleteComment = this.deleteComment.bind(this);
-        this.toggleLoading = this.toggleLoading.bind(this);
     }
 
     /**
      * Update comments message and character counter on change
      * @param {event} e 
      */
-    onChangeMessage(e) {
+    onChangeMessage = (e) => {
         const {charactersRemaining, characterLimit} = this.state;
         const value = e.target.value;        
         const charactersLeft = characterLimit - value.length;
@@ -41,7 +34,7 @@ class Comments extends Component {
      * Post message when user presses the enter key
      * @param {event} e 
      */
-    postMessageOnEnter(e) {
+    postMessageOnEnter = (e) => {
         const enterKeyCode = 13;
 
         if (e.keyCode !== enterKeyCode) {
@@ -51,7 +44,7 @@ class Comments extends Component {
         this.postMessage();
     }
 
-    postMessage() {
+    postMessage = () => {
         const {user, imageDetails} = this.props;
 
         if (!user) {
@@ -97,7 +90,7 @@ class Comments extends Component {
      * loops through and styles each comment in appropriate jsx in order to display in render function
      * @return JSX which is used to render each comment in render function
      */
-    renderComments() {
+    renderComments = () => {
         const {imageDetails} = this.props;
 
         return imageDetails.comments.map((comment, index) => {
@@ -136,7 +129,7 @@ class Comments extends Component {
     /**
      * @param int postId 
      */
-    deleteComment(postId) {
+    deleteComment = (postId) => {
         const token = document.querySelector('meta[name="csrf-token"]').content;
 
         this.toggleLoading();
@@ -157,7 +150,7 @@ class Comments extends Component {
         this.props.refresh(id);
     }
 
-    toggleLoading() {
+    toggleLoading = () => {
         const {isLoading} = this.state;
         this.setState({isLoading: !isLoading});
     }

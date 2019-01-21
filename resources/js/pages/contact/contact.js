@@ -14,12 +14,9 @@ class Contact extends Component {
                 body: ''
             }
         }
-
-        this.updateValueOnChange = this.updateValueOnChange.bind(this);
-        this.submitForm = this.submitForm.bind(this);
     }
 
-    updateValueOnChange(e) {
+    updateValueOnChange = (e) => {
         const property = e.target.name;
         const value = e.target.value;
         const formData = {...this.state.formData};
@@ -28,7 +25,7 @@ class Contact extends Component {
         this.setState({formData});
     }
 
-    submitForm(e) {
+    submitForm = (e) => {
         e.preventDefault();
         
         const {name, email, body} = this.state.formData;

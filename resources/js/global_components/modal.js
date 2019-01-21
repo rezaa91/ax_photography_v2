@@ -14,18 +14,15 @@ class Modal extends Component {
         this.state = {
             displayModal: true
         }
-
-        this.closeModal = this.closeModal.bind(this);
-        this.action = this.action.bind(this);
     }
 
-    closeModal() {
+    closeModal = () => {
         const {resetState} = this.props;
         this.setState({displayModal: false});
         resetState(); //passed from parent and should reset any state passed when <Modal /> used
     }
 
-    action() {
+    action = () => {
         const {action} = this.props;
         action(); //this method is passed from parent and should action what happens when user clicks 'yes'
         this.closeModal();
