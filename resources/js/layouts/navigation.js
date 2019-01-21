@@ -14,13 +14,6 @@ class Navigation extends Component {
             isDropdownPresent: false,
             rotateArrowClass: null
         }
-        
-        //bind methods
-        this.getUser = this.getUser.bind(this);
-        this.displayLoginOrUser = this.displayLoginOrUser.bind(this);
-        this.toggleUserDropdownMenu = this.toggleUserDropdownMenu.bind(this);
-        this.hideUserDropdownMenu = this.hideUserDropdownMenu.bind(this);
-        this.toggleMobileDropdown = this.toggleMobileDropdown.bind(this);
     }
 
     componentDidUpdate() {
@@ -37,7 +30,7 @@ class Navigation extends Component {
     /**
      * Get logged in user through API call
      */
-    async getUser() {
+    getUser = async () => {
         //find user in session through api
         await fetch('/api/user')
         .then(response => response.status === 200 && response.json())
@@ -72,7 +65,7 @@ class Navigation extends Component {
      * If user is logged in then display username with dropdown menu for user links
      * Otherwise display login link
      */
-    displayLoginOrUser() {
+    displayLoginOrUser = () => {
         const {isLoggedIn, user, rotateArrowClass, isDropdownPresent} = this.state;
         
         if (!isLoggedIn) {
@@ -114,7 +107,7 @@ class Navigation extends Component {
     /**
      * Toggle the user dropdown menu
      */
-    toggleUserDropdownMenu() {
+    toggleUserDropdownMenu = () => {
         const {isDropdownPresent} = this.state;
 
         // prevent duplicates of dropdown menu being shown
@@ -126,11 +119,11 @@ class Navigation extends Component {
         }
     }
 
-    hideUserDropdownMenu() {
+    hideUserDropdownMenu = () => {
         this.setState({isDropdownPresent: false, rotateArrowClass: 'rotate-down'});
     }
 
-    toggleMobileDropdown() {
+    toggleMobileDropdown = () => {
         const mobileDropdown = document.querySelector('.main-links');
         mobileDropdown.style.display === 'block' ? mobileDropdown.style.display = 'none' : mobileDropdown.style.display = 'block';
     }

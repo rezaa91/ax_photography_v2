@@ -10,21 +10,17 @@ class Settings extends Component {
             displaySettings: true,
             token: document.querySelector('meta[name="csrf-token"]').content
         }
-
-        this.hideSettings = this.hideSettings.bind(this);
-        this.setAlbumCover = this.setAlbumCover.bind(this);
-        this.setHomepageCover = this.setHomepageCover.bind(this);
     }
 
 
-    hideSettings() {
+    hideSettings = () => {
         this.setState({displaySettings: false});
     }
 
     /**
      * Set the album cover to the currently selected photo
      */
-    setAlbumCover() {
+    setAlbumCover = () => {
         const {id} = this.props.imageDetails;
         const {token} = this.state;
 
@@ -49,7 +45,7 @@ class Settings extends Component {
         this.hideSettings();
     }
 
-    setHomepageCover() {
+    setHomepageCover = () => {
         const {id} = this.props.imageDetails;
         const {token} = this.state;
 

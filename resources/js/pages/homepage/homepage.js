@@ -11,15 +11,13 @@ class Homepage extends Component {
         this.state = {
             filepath: null
         }
-
-        this.getBackgroundImage = this.getBackgroundImage.bind(this);
     }
 
-    getBackgroundImage() {
+    getBackgroundImage = () => {
         fetch('/api/background_image')
         .then(res => res.json())
         .then(data => {
-            const filepath = `uploads/${data.data.filepath}`;
+            const filepath = `uploads/${data.data.filepath}`.split(' ').join('%20');
 
             this.setState({filepath});
         })

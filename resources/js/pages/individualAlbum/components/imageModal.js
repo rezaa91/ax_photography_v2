@@ -39,27 +39,6 @@ class ImageModal extends Component {
             displayCommentsModal: false,
             isLoading: false
         }
-
-        this.fadeOutHeader = this.fadeOutHeader.bind(this);
-        this.fadeInHeader = this.fadeInHeader.bind(this);
-        this.getImageData = this.getImageData.bind(this);
-        this.likePhoto = this.likePhoto.bind(this);
-        this.doesUserLikePhoto = this.doesUserLikePhoto.bind(this);
-        this.toggleDisplaySettings = this.toggleDisplaySettings.bind(this);
-        this.toggleDisplayModal = this.toggleDisplayModal.bind(this);
-        this.actionDelete = this.actionDelete.bind(this);
-        this.toggleEditPhoto = this.toggleEditPhoto.bind(this);
-        this.stopEditPhoto = this.stopEditPhoto.bind(this);
-        this.changeInput = this.changeInput.bind(this);
-        this.saveOnEnter = this.saveOnEnter.bind(this);
-        this.updateImageDetails = this.updateImageDetails.bind(this);
-        this.setDirection = this.setDirection.bind(this);
-        this.navigate = this.navigate.bind(this);
-        this.toggleZoom = this.toggleZoom.bind(this);
-        this.hideAlert = this.hideAlert.bind(this);
-        this.displayCommentsModal = this.displayCommentsModal.bind(this);
-        this.hideCommentsModal = this.hideCommentsModal.bind(this);
-        this.alertChange = this.alertChange.bind(this);
     }
 
     componentDidMount() {
@@ -78,13 +57,13 @@ class ImageModal extends Component {
         document.removeEventListener('keydown', this.setDirection);
     }
 
-    fadeOutHeader() {
+    fadeOutHeader = () => {
         const imageHeader = document.querySelector('.image-information');
         imageHeader.style.opacity = 0;
         imageHeader.style.transition = "opacity 2s";
     }
 
-    fadeInHeader() {
+    fadeInHeader = () => {
         const imageHeader = document.querySelector('.image-information');
         imageHeader.style.opacity = 1;
         imageHeader.style.transition = "opacity 0.2s";
@@ -93,7 +72,7 @@ class ImageModal extends Component {
     /**
      * Check whether the user likes the photo
      */
-    doesUserLikePhoto() {
+    doesUserLikePhoto = () => {
         const {users_which_like} = this.state.imageDetails;
         const {user} = this.state;
 
@@ -108,7 +87,7 @@ class ImageModal extends Component {
     /**
      * fetch the individual photo data via an API
      */
-    async getImageData(imageId) {
+    getImageData = async (imageId) => {
         await fetch(`/api/photos/${imageId}`)
         .then(response => response.status === 200 && response.json())
         .then(data => {
@@ -123,7 +102,7 @@ class ImageModal extends Component {
     /**
      * Store photo like in database
      */
-    likePhoto() {
+    likePhoto = () => {
         const {imageId} = this.props;
         const {user} = this.state;
 
@@ -160,7 +139,7 @@ class ImageModal extends Component {
         this.getImageData(imageId);
     }
 
-    toggleDisplaySettings() {
+    toggleDisplaySettings = () => {
         const {user, displaySettings} = this.state;
 
         if (!user || !user.isAdmin) {
@@ -173,7 +152,7 @@ class ImageModal extends Component {
     /**
      * Display the modal confirming whether the user wishes to delete the photo
      */
-    toggleDisplayModal() {
+    toggleDisplayModal = () => {
         const {displayModal} = this.state;
         this.setState({displayModal: !displayModal});
     }
@@ -181,7 +160,7 @@ class ImageModal extends Component {
     /**
      * Delete the photo from the DB and storage
      */
-    async actionDelete() {
+    actionDelete = async () => {
         const {user} = this.state;
 
         if (!user || !user.isAdmin) {
@@ -231,11 +210,15 @@ class ImageModal extends Component {
         })
     }
 
-    toggleEditPhoto() {
+    toggleEditPhoto = () => {
         const {user, editPhoto} = this.state;
 
         if (!user || !user.isAdmin) {
             return;
+        }
+
+        if (!editPhoto) {
+            this.fadeInHeader();
         }
 
         this.setState({editPhoto: !editPhoto});
@@ -246,7 +229,7 @@ class ImageModal extends Component {
      * Save any changes
      * @param {event} e 
      */
-    stopEditPhoto(e) {
+    stopEditPhoto = (e) => {
         const {editPhoto} = this.state;
 
         if (!editPhoto) {
@@ -263,7 +246,7 @@ class ImageModal extends Component {
         this.updateImageDetails();
     }
 
-    changeInput(e) {
+    changeInput = (e) => {
         const {title, description} = this.state.imageDetails;
         const {imageDetails} = this.state;
         let titleValue = title;
@@ -290,7 +273,7 @@ class ImageModal extends Component {
         })
     }
 
-    saveOnEnter(e) {
+    saveOnEnter = (e) => {
         const enterKeyCharCode = 13;
 
         if (e.keyCode !== enterKeyCharCode) {
@@ -304,7 +287,7 @@ class ImageModal extends Component {
     /**
      * Update image details via API
      */
-    updateImageDetails() {
+    updateImageDetails = () => {
         const {user} = this.state;
 
         if (!user || !user.isAdmin) {
@@ -335,7 +318,7 @@ class ImageModal extends Component {
         })
     }
 
-    setDirection(e) {
+    setDirection = (e) => {
         const leftArrowCode = 37;
         const rightArrowCode = 39;
 
@@ -352,7 +335,7 @@ class ImageModal extends Component {
      * Navigate between images in album
      * @param {string} direction 
      */
-    navigate(direction) {
+    navigate = (direction) => {
         const {previousImageId, nextImageId, changeImage, closeModal} = this.props;
 
         if (direction === 'left' && previousImageId) {
@@ -365,28 +348,28 @@ class ImageModal extends Component {
     }
 
     // toggle zoom on image click
-    toggleZoom() {
+    toggleZoom = () => {
         const {photoZoomed} = this.state;
         this.setState({photoZoomed: !photoZoomed});
     }
 
-    hideAlert() {
+    hideAlert = () => {
         this.setState({displayAlert: false});
     }
 
-    displayCommentsModal() {
+    displayCommentsModal = () => {
         this.setState({displayCommentsModal: true});
     }
 
-    hideCommentsModal() {
+    hideCommentsModal = () => {
         this.setState({displayCommentsModal: false});
     }
 
-    alertChange(alertMsg) {
+    alertChange = (alertMsg) => {
         this.setState({displayAlert: true, alertMsg});
     }
 
-    toggleLoading() {
+    toggleLoading = () => {
         const {isLoading} = this.state;
         this.setState({isLoading: !isLoading});
     }
@@ -459,6 +442,7 @@ class ImageModal extends Component {
                             { editPhoto ?
                                 <div className='image-input'>
                                     <input 
+                                    name="title"
                                     type="text"
                                     placeholder="Title..."
                                     value={imageDetails.title ? imageDetails.title.toUpperCase() : ''}
