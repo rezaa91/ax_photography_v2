@@ -20,14 +20,9 @@ class Dashboard extends Component {
             shouldDeleteAccount: false,
             deleteAccountError: false,
         }
-
-        this.getUser = this.getUser.bind(this);
-        this.displayWarning = this.displayWarning.bind(this);
-        this.resetWarning = this.resetWarning.bind(this);
-        this.deleteAccount = this.deleteAccount.bind(this);
     }
 
-    async getUser() {
+    getUser = async () => {
         await fetch('/api/user')
         .then(response => response.json())
         .then(user => {
@@ -45,15 +40,15 @@ class Dashboard extends Component {
         })
     }
 
-    displayWarning() {
+    displayWarning = () => {
         this.setState({shouldDeleteAccount: true});
     }
 
-    resetWarning() {
+    resetWarning = () => {
         this.setState({shouldDeleteAccount: false});
     }
 
-    deleteAccount() {
+    deleteAccount = () => {
         const {user_id} = this.state.user;
         this.setState({shouldDeleteAccount: false}); //hide modal
         const token = document.querySelector('meta[name="csrf-token"]').content;

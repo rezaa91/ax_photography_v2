@@ -25,22 +25,6 @@ class IndividualAlbum extends Component {
             alertMsg: null,
             isLoading: false
         }
-
-        this.getAlbum = this.getAlbum.bind(this);
-        this.getUser = this.getUser.bind(this);
-        this.displayImages = this.displayImages.bind(this);
-        this.enlargeImage = this.enlargeImage.bind(this);
-        this.closeEnlargedImage = this.closeEnlargedImage.bind(this);
-        this.nextAndPreviousImageIds = this.nextAndPreviousImageIds.bind(this);
-        this.toggleAlbumEdit = this.toggleAlbumEdit.bind(this);
-        this.saveAlbumTitle = this.saveAlbumTitle.bind(this);
-        this.updateAlbumTitle = this.updateAlbumTitle.bind(this);
-        this.toggleDeleteAlbum = this.toggleDeleteAlbum.bind(this);
-        this.actionDeleteAlbum = this.actionDeleteAlbum.bind(this);
-        this.updateAlbum = this.updateAlbum.bind(this);
-        this.updateAlbumOnEnter = this.updateAlbumOnEnter.bind(this);
-        this.closeAlertBox = this.closeAlertBox.bind(this);
-        this.toggleLoading = this.toggleLoading.bind(this);
     }
 
     componentWillMount() {
@@ -62,7 +46,7 @@ class IndividualAlbum extends Component {
     /**
      * Get individual album data
      */
-    async getAlbum() {
+    getAlbum = async () => {
         const url = window.location.href;
 
         //display loading spinner
@@ -89,7 +73,7 @@ class IndividualAlbum extends Component {
     /**
      * Get logged in user through API call
      */
-    async getUser() {
+    getUser = async () => {
         //find user in session through api
         await fetch('/api/user')
         .then(response => response.status === 200 && response.json())
@@ -118,7 +102,7 @@ class IndividualAlbum extends Component {
      * These values are used to traverse images
      * @param int imageId 
      */
-    nextAndPreviousImageIds(imageId) {
+    nextAndPreviousImageIds = (imageId) => {
         const {albumImages} = this.state;
 
         if (!albumImages) {
@@ -135,7 +119,7 @@ class IndividualAlbum extends Component {
     /**
      * Render images on the page once the api call has returned
      */
-    displayImages() {
+    displayImages = () => {
         const {albumImages} = this.state;
 
         if (!albumImages) {
@@ -154,7 +138,7 @@ class IndividualAlbum extends Component {
      * 
      * @param {integer} imageId 
      */
-    async enlargeImage(imageId) {
+    enlargeImage = async (imageId) => {
         await this.nextAndPreviousImageIds(imageId);
         const {user, nextImageId, previousImageId} = this.state;
 
@@ -171,7 +155,7 @@ class IndividualAlbum extends Component {
         this.setState({enlargedImage});
     }
 
-    toggleAlbumEdit() {
+    toggleAlbumEdit = () => {
         const {user, editAlbumTitle} = this.state;
 
         if (!user || !user.isAdmin) {
@@ -181,12 +165,12 @@ class IndividualAlbum extends Component {
         this.setState({editAlbumTitle: !editAlbumTitle});
     }
 
-    updateAlbumTitle(e) {
+    updateAlbumTitle = (e) => {
         const value = e.target.value;
         this.setState({albumTitle: value});
     }
 
-    updateAlbumOnEnter(e) {
+    updateAlbumOnEnter = (e) => {
         const returnKey = 13;
 
         if (e.charCode !== returnKey) {
@@ -196,7 +180,7 @@ class IndividualAlbum extends Component {
         this.updateAlbum();
     }
 
-    saveAlbumTitle() {
+    saveAlbumTitle = () => {
         const {user, albumTitle} = this.state;
 
         if (!user.isAdmin) {
@@ -214,7 +198,7 @@ class IndividualAlbum extends Component {
         this.toggleAlbumEdit();
     }
 
-    toggleDeleteAlbum() {
+    toggleDeleteAlbum = () => {
         const {user, deleteAlbum} = this.state;
 
         if (!user.isAdmin) {
@@ -224,7 +208,7 @@ class IndividualAlbum extends Component {
         this.setState({deleteAlbum: !deleteAlbum});
     }
 
-    actionDeleteAlbum() {
+    actionDeleteAlbum = () => {
         const {user, albumId, containsBackgroundImage} = this.state;
 
         if (!user.isAdmin) {
@@ -265,11 +249,11 @@ class IndividualAlbum extends Component {
     /**
      * Close the enlarged image
      */
-    closeEnlargedImage() {
+    closeEnlargedImage = () => {
         this.setState({enlargedImage: null});
     }
 
-    updateAlbum() {
+    updateAlbum = () => {
         const {user, albumTitle, editAlbumTitle, albumId} = this.state;
 
         if (!user.isAdmin) {
@@ -307,11 +291,11 @@ class IndividualAlbum extends Component {
         this.getAlbum();
     }
 
-    closeAlertBox() {
+    closeAlertBox = () => {
         this.setState({displayAlert: false});
     }
 
-    toggleLoading() {
+    toggleLoading = () => {
         const {isLoading} = this.state;
         this.setState({isLoading: !isLoading});
     }

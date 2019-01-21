@@ -10,14 +10,12 @@ class AlbumContainer extends Component {
         this.state = {
             cover_photo: null
         }
-
-        this.getCoverPhoto = this.getCoverPhoto.bind(this);
     }
 
     /**
      * Get the cover photo filepath and set it in the state
      */
-    async getCoverPhoto() {
+    getCoverPhoto = async () => {
         const {cover_photo_id} = this.props.album;
 
         await fetch(`/api/photos/${cover_photo_id}`)

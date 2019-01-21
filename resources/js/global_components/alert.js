@@ -12,11 +12,9 @@ class Alert extends Component {
         this.state = {
             displayAlert: true
         }
-
-        this.closeAlert = this.closeAlert.bind(this);
     }
 
-    closeAlert() {
+    closeAlert = () => {
         const {resetState} = this.props;
         this.setState({displayAlert: false});
         resetState();

@@ -12,14 +12,12 @@ class Albums extends Component {
         this.state = {
             albums: null
         }
-
-        this.getAlbums = this.getAlbums.bind(this);
     }
 
     /**
      * Get all albums from the database using a GET API and store in the state
      */
-    async getAlbums() {
+    getAlbums = async () => {
         await fetch('/api/albums')
         .then(response => response.json())
         .then(data => {

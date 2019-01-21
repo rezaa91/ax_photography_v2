@@ -619,32 +619,27 @@ var Modal = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).call(this));
 
+        _this.closeModal = function () {
+            var resetState = _this.props.resetState;
+
+            _this.setState({ displayModal: false });
+            resetState(); //passed from parent and should reset any state passed when <Modal /> used
+        };
+
+        _this.action = function () {
+            var action = _this.props.action;
+
+            action(); //this method is passed from parent and should action what happens when user clicks 'yes'
+            _this.closeModal();
+        };
+
         _this.state = {
             displayModal: true
         };
-
-        _this.closeModal = _this.closeModal.bind(_this);
-        _this.action = _this.action.bind(_this);
         return _this;
     }
 
     _createClass(Modal, [{
-        key: 'closeModal',
-        value: function closeModal() {
-            var resetState = this.props.resetState;
-
-            this.setState({ displayModal: false });
-            resetState(); //passed from parent and should reset any state passed when <Modal /> used
-        }
-    }, {
-        key: 'action',
-        value: function action() {
-            var action = this.props.action;
-
-            action(); //this method is passed from parent and should action what happens when user clicks 'yes'
-            this.closeModal();
-        }
-    }, {
         key: 'render',
         value: function render() {
             var message = this.props.message;
@@ -14191,23 +14186,20 @@ var Alert = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (Alert.__proto__ || Object.getPrototypeOf(Alert)).call(this));
 
+        _this.closeAlert = function () {
+            var resetState = _this.props.resetState;
+
+            _this.setState({ displayAlert: false });
+            resetState();
+        };
+
         _this.state = {
             displayAlert: true
         };
-
-        _this.closeAlert = _this.closeAlert.bind(_this);
         return _this;
     }
 
     _createClass(Alert, [{
-        key: "closeAlert",
-        value: function closeAlert() {
-            var resetState = this.props.resetState;
-
-            this.setState({ displayAlert: false });
-            resetState();
-        }
-    }, {
         key: "render",
         value: function render() {
             var displayAlert = this.state.displayAlert;
@@ -36532,9 +36524,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -36549,110 +36541,60 @@ var Navigation = function (_Component) {
     _inherits(Navigation, _Component);
 
     function Navigation() {
+        var _this2 = this;
+
         _classCallCheck(this, Navigation);
 
         //check if user is in session
         var _this = _possibleConstructorReturn(this, (Navigation.__proto__ || Object.getPrototypeOf(Navigation)).call(this));
 
-        _this.getUser();
+        _this.getUser = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+            return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            _context.next = 2;
+                            return fetch('/api/user').then(function (response) {
+                                return response.status === 200 && response.json();
+                            }).then(function (data) {
+                                data = data.data;
 
-        _this.state = {
-            isLoggedIn: false,
-            user: null,
-            isDropdownPresent: false,
-            rotateArrowClass: null
+                                if (!data) {
+                                    return;
+                                }
 
-            //bind methods
-        };_this.getUser = _this.getUser.bind(_this);
-        _this.displayLoginOrUser = _this.displayLoginOrUser.bind(_this);
-        _this.toggleUserDropdownMenu = _this.toggleUserDropdownMenu.bind(_this);
-        _this.hideUserDropdownMenu = _this.hideUserDropdownMenu.bind(_this);
-        _this.toggleMobileDropdown = _this.toggleMobileDropdown.bind(_this);
-        return _this;
-    }
-
-    _createClass(Navigation, [{
-        key: 'componentDidUpdate',
-        value: function componentDidUpdate() {
-            // Apply class to the navigation links to show which page the user is currently on
-            var mainNavLinks = [].concat(_toConsumableArray(document.querySelectorAll('.main-link')));
-
-            mainNavLinks.map(function (link) {
-                var url = window.location.href;
-                url.match(link) ? link.classList.add('active') : link.classList.remove('active');
-            });
-        }
-
-        /**
-         * Get logged in user through API call
-         */
-
-    }, {
-        key: 'getUser',
-        value: function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
-                var _this2 = this;
-
-                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                _context.next = 2;
-                                return fetch('/api/user').then(function (response) {
-                                    return response.status === 200 && response.json();
-                                }).then(function (data) {
-                                    data = data.data;
-
-                                    if (!data) {
-                                        return;
+                                _this.setState({
+                                    isLoggedIn: true,
+                                    user: {
+                                        id: data.id,
+                                        username: data.username,
+                                        name: data.name,
+                                        email: data.email,
+                                        created_at: data.created_at,
+                                        isAdmin: data.isAdmin
                                     }
-
-                                    _this2.setState({
-                                        isLoggedIn: true,
-                                        user: {
-                                            id: data.id,
-                                            username: data.username,
-                                            name: data.name,
-                                            email: data.email,
-                                            created_at: data.created_at,
-                                            isAdmin: data.isAdmin
-                                        }
-                                    });
-                                }).catch(function () {
-                                    _this2.setState({
-                                        isLoggedIn: false,
-                                        user: null
-                                    });
                                 });
+                            }).catch(function () {
+                                _this.setState({
+                                    isLoggedIn: false,
+                                    user: null
+                                });
+                            });
 
-                            case 2:
-                            case 'end':
-                                return _context.stop();
-                        }
+                        case 2:
+                        case 'end':
+                            return _context.stop();
                     }
-                }, _callee, this);
-            }));
+                }
+            }, _callee, _this2);
+        }));
 
-            function getUser() {
-                return _ref.apply(this, arguments);
-            }
-
-            return getUser;
-        }()
-
-        /**
-         * If user is logged in then display username with dropdown menu for user links
-         * Otherwise display login link
-         */
-
-    }, {
-        key: 'displayLoginOrUser',
-        value: function displayLoginOrUser() {
-            var _state = this.state,
-                isLoggedIn = _state.isLoggedIn,
-                user = _state.user,
-                rotateArrowClass = _state.rotateArrowClass,
-                isDropdownPresent = _state.isDropdownPresent;
+        _this.displayLoginOrUser = function () {
+            var _this$state = _this.state,
+                isLoggedIn = _this$state.isLoggedIn,
+                user = _this$state.user,
+                rotateArrowClass = _this$state.rotateArrowClass,
+                isDropdownPresent = _this$state.isDropdownPresent;
 
 
             if (!isLoggedIn) {
@@ -36737,43 +36679,74 @@ var Navigation = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { id: 'arrow', className: arrowClasses }),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'a',
-                        { onClick: this.toggleUserDropdownMenu },
+                        { onClick: _this.toggleUserDropdownMenu },
                         user.username
                     ),
                     dropdownMenu
                 );
             }
+        };
+
+        _this.toggleUserDropdownMenu = function () {
+            var isDropdownPresent = _this.state.isDropdownPresent;
+
+            // prevent duplicates of dropdown menu being shown
+
+            if (isDropdownPresent) {
+                _this.setState({ isDropdownPresent: false, rotateArrowClass: 'rotate-down' });
+            } else {
+                _this.setState({ rotateArrowClass: 'rotate-up' });
+                _this.setState({ isDropdownPresent: true });
+            }
+        };
+
+        _this.hideUserDropdownMenu = function () {
+            _this.setState({ isDropdownPresent: false, rotateArrowClass: 'rotate-down' });
+        };
+
+        _this.toggleMobileDropdown = function () {
+            var mobileDropdown = document.querySelector('.main-links');
+            mobileDropdown.style.display === 'block' ? mobileDropdown.style.display = 'none' : mobileDropdown.style.display = 'block';
+        };
+
+        _this.getUser();
+
+        _this.state = {
+            isLoggedIn: false,
+            user: null,
+            isDropdownPresent: false,
+            rotateArrowClass: null
+        };
+        return _this;
+    }
+
+    _createClass(Navigation, [{
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate() {
+            // Apply class to the navigation links to show which page the user is currently on
+            var mainNavLinks = [].concat(_toConsumableArray(document.querySelectorAll('.main-link')));
+
+            mainNavLinks.map(function (link) {
+                var url = window.location.href;
+                url.match(link) ? link.classList.add('active') : link.classList.remove('active');
+            });
         }
+
+        /**
+         * Get logged in user through API call
+         */
+
+
+        /**
+         * If user is logged in then display username with dropdown menu for user links
+         * Otherwise display login link
+         */
+
 
         /**
          * Toggle the user dropdown menu
          */
 
-    }, {
-        key: 'toggleUserDropdownMenu',
-        value: function toggleUserDropdownMenu() {
-            var isDropdownPresent = this.state.isDropdownPresent;
-
-            // prevent duplicates of dropdown menu being shown
-
-            if (isDropdownPresent) {
-                this.setState({ isDropdownPresent: false, rotateArrowClass: 'rotate-down' });
-            } else {
-                this.setState({ rotateArrowClass: 'rotate-up' });
-                this.setState({ isDropdownPresent: true });
-            }
-        }
-    }, {
-        key: 'hideUserDropdownMenu',
-        value: function hideUserDropdownMenu() {
-            this.setState({ isDropdownPresent: false, rotateArrowClass: 'rotate-down' });
-        }
-    }, {
-        key: 'toggleMobileDropdown',
-        value: function toggleMobileDropdown() {
-            var mobileDropdown = document.querySelector('.main-links');
-            mobileDropdown.style.display === 'block' ? mobileDropdown.style.display = 'none' : mobileDropdown.style.display = 'block';
-        }
     }, {
         key: 'render',
         value: function render() {
@@ -60351,35 +60324,30 @@ var Homepage = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (Homepage.__proto__ || Object.getPrototypeOf(Homepage)).call(this));
 
-        _this.getBackgroundImage();
-
-        _this.state = {
-            filepath: null
-        };
-
-        _this.getBackgroundImage = _this.getBackgroundImage.bind(_this);
-        return _this;
-    }
-
-    _createClass(Homepage, [{
-        key: 'getBackgroundImage',
-        value: function getBackgroundImage() {
-            var _this2 = this;
-
+        _this.getBackgroundImage = function () {
             fetch('/api/background_image').then(function (res) {
                 return res.json();
             }).then(function (data) {
                 var filepath = ('uploads/' + data.data.filepath).split(' ').join('%20');
 
-                _this2.setState({ filepath: filepath });
+                _this.setState({ filepath: filepath });
             }).catch(function () {
                 // if error fetching background image, use a default image
                 var filepath = 'defaults/homepage-default.jpg';
 
-                _this2.setState({ filepath: filepath });
+                _this.setState({ filepath: filepath });
             });
-        }
-    }, {
+        };
+
+        _this.getBackgroundImage();
+
+        _this.state = {
+            filepath: null
+        };
+        return _this;
+    }
+
+    _createClass(Homepage, [{
         key: 'render',
         value: function render() {
             var filepath = this.state.filepath;
@@ -60498,17 +60466,38 @@ var Albums = function (_Component) {
     _inherits(Albums, _Component);
 
     function Albums() {
+        var _this2 = this;
+
         _classCallCheck(this, Albums);
 
         var _this = _possibleConstructorReturn(this, (Albums.__proto__ || Object.getPrototypeOf(Albums)).call(this));
+
+        _this.getAlbums = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+            return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            _context.next = 2;
+                            return fetch('/api/albums').then(function (response) {
+                                return response.json();
+                            }).then(function (data) {
+                                _this.setState({ albums: data.data });
+                            });
+
+                        case 2:
+                        case 'end':
+                            return _context.stop();
+                    }
+                }
+            }, _callee, _this2);
+        }));
+
 
         _this.getAlbums();
 
         _this.state = {
             albums: null
         };
-
-        _this.getAlbums = _this.getAlbums.bind(_this);
         return _this;
     }
 
@@ -60518,44 +60507,13 @@ var Albums = function (_Component) {
 
 
     _createClass(Albums, [{
-        key: 'getAlbums',
-        value: function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
-                var _this2 = this;
+        key: 'displayAlbums',
 
-                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                _context.next = 2;
-                                return fetch('/api/albums').then(function (response) {
-                                    return response.json();
-                                }).then(function (data) {
-                                    _this2.setState({ albums: data.data });
-                                });
-
-                            case 2:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this);
-            }));
-
-            function getAlbums() {
-                return _ref.apply(this, arguments);
-            }
-
-            return getAlbums;
-        }()
 
         /**
          * Return JSX album container passing along individual album details as props
          * @return JSX containing album container
          */
-
-    }, {
-        key: 'displayAlbums',
         value: function displayAlbums() {
             var albums = this.state.albums;
 
@@ -60617,17 +60575,41 @@ var AlbumContainer = function (_Component) {
     _inherits(AlbumContainer, _Component);
 
     function AlbumContainer(props) {
+        var _this2 = this;
+
         _classCallCheck(this, AlbumContainer);
 
         var _this = _possibleConstructorReturn(this, (AlbumContainer.__proto__ || Object.getPrototypeOf(AlbumContainer)).call(this, props));
+
+        _this.getCoverPhoto = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+            var cover_photo_id;
+            return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            cover_photo_id = _this.props.album.cover_photo_id;
+                            _context.next = 3;
+                            return fetch('/api/photos/' + cover_photo_id).then(function (response) {
+                                return response.status === 200 && response.json();
+                            }).then(function (data) {
+                                var filepath = data.data.filepath.split(' ').join('%20');
+                                _this.setState({ cover_photo: filepath });
+                            });
+
+                        case 3:
+                        case 'end':
+                            return _context.stop();
+                    }
+                }
+            }, _callee, _this2);
+        }));
+
 
         _this.getCoverPhoto();
 
         _this.state = {
             cover_photo: null
         };
-
-        _this.getCoverPhoto = _this.getCoverPhoto.bind(_this);
         return _this;
     }
 
@@ -60637,40 +60619,6 @@ var AlbumContainer = function (_Component) {
 
 
     _createClass(AlbumContainer, [{
-        key: 'getCoverPhoto',
-        value: function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
-                var _this2 = this;
-
-                var cover_photo_id;
-                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                cover_photo_id = this.props.album.cover_photo_id;
-                                _context.next = 3;
-                                return fetch('/api/photos/' + cover_photo_id).then(function (response) {
-                                    return response.status === 200 && response.json();
-                                }).then(function (data) {
-                                    var filepath = data.data.filepath.split(' ').join('%20');
-                                    _this2.setState({ cover_photo: filepath });
-                                });
-
-                            case 3:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this);
-            }));
-
-            function getCoverPhoto() {
-                return _ref.apply(this, arguments);
-            }
-
-            return getCoverPhoto;
-        }()
-    }, {
         key: 'render',
         value: function render() {
             var album = this.props.album;
@@ -60904,42 +60852,22 @@ var Contact = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (Contact.__proto__ || Object.getPrototypeOf(Contact)).call(this));
 
-        _this.state = {
-            formSubmitted: false,
-            isReadOnly: false,
-            formData: {
-                name: '',
-                email: '',
-                body: ''
-            }
-        };
-
-        _this.updateValueOnChange = _this.updateValueOnChange.bind(_this);
-        _this.submitForm = _this.submitForm.bind(_this);
-        return _this;
-    }
-
-    _createClass(Contact, [{
-        key: 'updateValueOnChange',
-        value: function updateValueOnChange(e) {
+        _this.updateValueOnChange = function (e) {
             var property = e.target.name;
             var value = e.target.value;
-            var formData = _extends({}, this.state.formData);
+            var formData = _extends({}, _this.state.formData);
             formData[property] = value;
 
-            this.setState({ formData: formData });
-        }
-    }, {
-        key: 'submitForm',
-        value: function submitForm(e) {
-            var _this2 = this;
+            _this.setState({ formData: formData });
+        };
 
+        _this.submitForm = function (e) {
             e.preventDefault();
 
-            var _state$formData = this.state.formData,
-                name = _state$formData.name,
-                email = _state$formData.email,
-                body = _state$formData.body;
+            var _this$state$formData = _this.state.formData,
+                name = _this$state$formData.name,
+                email = _this$state$formData.email,
+                body = _this$state$formData.body;
 
             var token = document.querySelector('meta[name="csrf-token"]').content;
 
@@ -60951,10 +60879,23 @@ var Contact = function (_Component) {
                 },
                 body: JSON.stringify({ name: name, email: email, body: body })
             }).then(function () {
-                _this2.setState({ formSubmitted: true, isReadOnly: true }); // prevent further submissions
+                _this.setState({ formSubmitted: true, isReadOnly: true }); // prevent further submissions
             });
-        }
-    }, {
+        };
+
+        _this.state = {
+            formSubmitted: false,
+            isReadOnly: false,
+            formData: {
+                name: '',
+                email: '',
+                body: ''
+            }
+        };
+        return _this;
+    }
+
+    _createClass(Contact, [{
         key: 'render',
         value: function render() {
             var _state = this.state,
@@ -61119,9 +61060,71 @@ var Dashboard = function (_Component) {
     _inherits(Dashboard, _Component);
 
     function Dashboard() {
+        var _this2 = this;
+
         _classCallCheck(this, Dashboard);
 
         var _this = _possibleConstructorReturn(this, (Dashboard.__proto__ || Object.getPrototypeOf(Dashboard)).call(this));
+
+        _this.getUser = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+            return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            _context.next = 2;
+                            return fetch('/api/user').then(function (response) {
+                                return response.json();
+                            }).then(function (user) {
+                                user = user.data;
+                                _this.setState({
+                                    user: {
+                                        user_id: user.id,
+                                        username: user.username,
+                                        name: user.name,
+                                        email: user.email,
+                                        created_at: user.created_at,
+                                        avatar_filepath: user.avatar_filepath
+                                    }
+                                });
+                            });
+
+                        case 2:
+                        case 'end':
+                            return _context.stop();
+                    }
+                }
+            }, _callee, _this2);
+        }));
+
+        _this.displayWarning = function () {
+            _this.setState({ shouldDeleteAccount: true });
+        };
+
+        _this.resetWarning = function () {
+            _this.setState({ shouldDeleteAccount: false });
+        };
+
+        _this.deleteAccount = function () {
+            var user_id = _this.state.user.user_id;
+
+            _this.setState({ shouldDeleteAccount: false }); //hide modal
+            var token = document.querySelector('meta[name="csrf-token"]').content;
+
+            fetch('/user/' + user_id, {
+                method: 'delete',
+                headers: {
+                    'Content-Type': 'text/plain',
+                    'Access-Control-Allow-Origin': '*',
+                    'X-CSRF-TOKEN': token,
+                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
+                },
+                redirect: 'follow'
+            }).then(function () {
+                window.location.href = "/";
+            }).catch(function () {
+                _this.setState({ deleteAccountError: true });
+            });
+        };
 
         _this.getUser();
 
@@ -61137,91 +61140,10 @@ var Dashboard = function (_Component) {
             shouldDeleteAccount: false,
             deleteAccountError: false
         };
-
-        _this.getUser = _this.getUser.bind(_this);
-        _this.displayWarning = _this.displayWarning.bind(_this);
-        _this.resetWarning = _this.resetWarning.bind(_this);
-        _this.deleteAccount = _this.deleteAccount.bind(_this);
         return _this;
     }
 
     _createClass(Dashboard, [{
-        key: 'getUser',
-        value: function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
-                var _this2 = this;
-
-                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                _context.next = 2;
-                                return fetch('/api/user').then(function (response) {
-                                    return response.json();
-                                }).then(function (user) {
-                                    user = user.data;
-                                    _this2.setState({
-                                        user: {
-                                            user_id: user.id,
-                                            username: user.username,
-                                            name: user.name,
-                                            email: user.email,
-                                            created_at: user.created_at,
-                                            avatar_filepath: user.avatar_filepath
-                                        }
-                                    });
-                                });
-
-                            case 2:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this);
-            }));
-
-            function getUser() {
-                return _ref.apply(this, arguments);
-            }
-
-            return getUser;
-        }()
-    }, {
-        key: 'displayWarning',
-        value: function displayWarning() {
-            this.setState({ shouldDeleteAccount: true });
-        }
-    }, {
-        key: 'resetWarning',
-        value: function resetWarning() {
-            this.setState({ shouldDeleteAccount: false });
-        }
-    }, {
-        key: 'deleteAccount',
-        value: function deleteAccount() {
-            var _this3 = this;
-
-            var user_id = this.state.user.user_id;
-
-            this.setState({ shouldDeleteAccount: false }); //hide modal
-            var token = document.querySelector('meta[name="csrf-token"]').content;
-
-            fetch('/user/' + user_id, {
-                method: 'delete',
-                headers: {
-                    'Content-Type': 'text/plain',
-                    'Access-Control-Allow-Origin': '*',
-                    'X-CSRF-TOKEN': token,
-                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
-                },
-                redirect: 'follow'
-            }).then(function () {
-                window.location.href = "/";
-            }).catch(function () {
-                _this3.setState({ deleteAccountError: true });
-            });
-        }
-    }, {
         key: 'render',
         value: function render() {
             var _state = this.state,
@@ -61296,89 +61218,43 @@ var Card = function (_Component) {
     _inherits(Card, _Component);
 
     function Card(props) {
+        var _this2 = this;
+
         _classCallCheck(this, Card);
 
         var _this = _possibleConstructorReturn(this, (Card.__proto__ || Object.getPrototypeOf(Card)).call(this, props));
 
-        _this.state = {
-            changeImageLink: false,
-            uploadError: false,
-            isLoading: false
-        };
-
-        _this.displayChangeImage = _this.displayChangeImage.bind(_this);
-        _this.hideChangeImage = _this.hideChangeImage.bind(_this);
-        _this.changeImage = _this.changeImage.bind(_this);
-        _this.submitForm = _this.submitForm.bind(_this);
-        _this.toggleLoading = _this.toggleLoading.bind(_this);
-        return _this;
-    }
-
-    /**
-     * Format the 'member since' date
-     * @param {Object} dateObj 
-     */
-
-
-    _createClass(Card, [{
-        key: 'formatDate',
-        value: function formatDate(dateObj) {
+        _this.formatDate = function (dateObj) {
             if (dateObj === null) {
                 return;
             }
 
             var date = new Date(dateObj);
             return __WEBPACK_IMPORTED_MODULE_2_dateformat___default()(date, 'dS mmmm, yyyy');
-        }
+        };
 
-        /**
-         * Display the link 'change image' when image hovered over
-         */
+        _this.displayChangeImage = function () {
+            _this.setState({ changeImageLink: true });
+        };
 
-    }, {
-        key: 'displayChangeImage',
-        value: function displayChangeImage() {
-            this.setState({ changeImageLink: true });
-        }
+        _this.hideChangeImage = function () {
+            _this.setState({ changeImageLink: false });
+        };
 
-        /**
-         * Hide the 'change image' link on image mouseout
-         */
-
-    }, {
-        key: 'hideChangeImage',
-        value: function hideChangeImage() {
-            this.setState({ changeImageLink: false });
-        }
-
-        /**
-         * Open file dialog box
-         */
-
-    }, {
-        key: 'changeImage',
-        value: function changeImage() {
+        _this.changeImage = function () {
             var form = document.forms[0];
             var fileUpload = form.elements.file;
             fileUpload.click();
-        }
+        };
 
-        /**
-         * Submit form if file selected for upload
-         */
-
-    }, {
-        key: 'submitForm',
-        value: function () {
+        _this.submitForm = function () {
             var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(e) {
-                var _this2 = this;
-
                 var user, data, token;
                 return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                user = this.props.user;
+                                user = _this.props.user;
 
                                 // if user not signed in, return
 
@@ -61392,7 +61268,7 @@ var Card = function (_Component) {
                             case 3:
 
                                 // display loading widget
-                                this.toggleLoading();
+                                _this.toggleLoading();
 
                                 data = new FormData();
 
@@ -61408,40 +61284,72 @@ var Card = function (_Component) {
                                     },
                                     body: data
                                 }).then(function () {
-                                    _this2.setState({ uploadError: false });
+                                    _this.setState({ uploadError: false });
                                 }).catch(function () {
-                                    _this2.setState({ uploadError: true });
+                                    _this.setState({ uploadError: true });
                                 }).finally(function () {
-                                    _this2.toggleLoading(); // remove loading spinner
+                                    _this.toggleLoading(); // remove loading spinner
                                 });
 
                             case 9:
 
                                 // refresh state in order to get the new avatar
-                                this.props.refresh();
+                                _this.props.refresh();
 
                             case 10:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, this);
+                }, _callee, _this2);
             }));
 
-            function submitForm(_x) {
+            return function (_x) {
                 return _ref.apply(this, arguments);
-            }
+            };
+        }();
 
-            return submitForm;
-        }()
-    }, {
-        key: 'toggleLoading',
-        value: function toggleLoading() {
-            var isLoading = this.state.isLoading;
+        _this.toggleLoading = function () {
+            var isLoading = _this.state.isLoading;
 
-            this.setState({ isLoading: !isLoading });
-        }
-    }, {
+            _this.setState({ isLoading: !isLoading });
+        };
+
+        _this.state = {
+            changeImageLink: false,
+            uploadError: false,
+            isLoading: false
+        };
+        return _this;
+    }
+
+    /**
+     * Format the 'member since' date
+     * @param {Object} dateObj 
+     */
+
+
+    /**
+     * Display the link 'change image' when image hovered over
+     */
+
+
+    /**
+     * Hide the 'change image' link on image mouseout
+     */
+
+
+    /**
+     * Open file dialog box
+     */
+
+
+    /**
+     * Submit form if file selected for upload
+     */
+
+
+    _createClass(Card, [{
         key: 'render',
         value: function render() {
             var _React$createElement;
@@ -62084,9 +61992,314 @@ var IndividualAlbum = function (_Component) {
     _inherits(IndividualAlbum, _Component);
 
     function IndividualAlbum() {
+        var _this2 = this;
+
         _classCallCheck(this, IndividualAlbum);
 
         var _this = _possibleConstructorReturn(this, (IndividualAlbum.__proto__ || Object.getPrototypeOf(IndividualAlbum)).call(this));
+
+        _this.getAlbum = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+            var url, id;
+            return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            url = window.location.href;
+
+                            //display loading spinner
+
+                            _this.toggleLoading();
+
+                            // find the id from the url by getting the last digit in the url (note that the url must finish with this digit)
+                            id = url.match(/\d+$/)[0];
+                            _context.next = 5;
+                            return fetch('/api/albums/' + id).then(function (response) {
+                                return response.status === 200 && response.json();
+                            }).then(function (data) {
+                                var albumImages = data.data.images;
+                                var albumTitle = data.data.title;
+                                var albumId = data.data.albumId;
+                                var containsBackgroundImage = data.data.containsBackgroundImage;
+
+                                _this.setState({ albumImages: albumImages, albumTitle: albumTitle, albumId: albumId, containsBackgroundImage: containsBackgroundImage });
+                            }).finally(function () {
+                                _this.toggleLoading();
+                            });
+
+                        case 5:
+                        case 'end':
+                            return _context.stop();
+                    }
+                }
+            }, _callee, _this2);
+        }));
+        _this.getUser = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
+            return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+                while (1) {
+                    switch (_context2.prev = _context2.next) {
+                        case 0:
+                            _context2.next = 2;
+                            return fetch('/api/user').then(function (response) {
+                                return response.status === 200 && response.json();
+                            }).then(function (data) {
+                                data = data.data;
+
+                                if (!data) {
+                                    return;
+                                }
+
+                                _this.setState({
+                                    user: {
+                                        id: data.id,
+                                        username: data.username,
+                                        name: data.name,
+                                        email: data.email,
+                                        created_at: data.created_at,
+                                        isAdmin: data.isAdmin
+                                    }
+                                });
+                            });
+
+                        case 2:
+                        case 'end':
+                            return _context2.stop();
+                    }
+                }
+            }, _callee2, _this2);
+        }));
+
+        _this.nextAndPreviousImageIds = function (imageId) {
+            var albumImages = _this.state.albumImages;
+
+
+            if (!albumImages) {
+                return;
+            }
+
+            var currentImageKey = albumImages.findIndex(function (image) {
+                return image.id === imageId;
+            });
+            var previousImageId = albumImages[currentImageKey - 1] && albumImages[currentImageKey - 1].id;
+            var nextImageId = albumImages[currentImageKey + 1] && albumImages[currentImageKey + 1].id;
+
+            _this.setState({ previousImageId: previousImageId, nextImageId: nextImageId });
+        };
+
+        _this.displayImages = function () {
+            var albumImages = _this.state.albumImages;
+
+
+            if (!albumImages) {
+                return;
+            }
+
+            return albumImages.map(function (image) {
+                return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'div',
+                    { className: 'image', key: image.id },
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { onClick: function onClick() {
+                            return _this.enlargeImage(image.id);
+                        }, src: '/storage/uploads/' + image.filepath })
+                );
+            });
+        };
+
+        _this.enlargeImage = function () {
+            var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3(imageId) {
+                var _this$state, user, nextImageId, previousImageId, enlargedImage;
+
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                _context3.next = 2;
+                                return _this.nextAndPreviousImageIds(imageId);
+
+                            case 2:
+                                _this$state = _this.state, user = _this$state.user, nextImageId = _this$state.nextImageId, previousImageId = _this$state.previousImageId;
+                                enlargedImage = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_imageModal__["a" /* default */], {
+                                    imageId: imageId,
+                                    closeModal: _this.closeEnlargedImage,
+                                    previousImageId: previousImageId,
+                                    nextImageId: nextImageId,
+                                    changeImage: _this.enlargeImage,
+                                    refreshAlbum: _this.getAlbum,
+                                    user: user
+                                });
+
+
+                                _this.setState({ enlargedImage: enlargedImage });
+
+                            case 5:
+                            case 'end':
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, _this2);
+            }));
+
+            return function (_x) {
+                return _ref3.apply(this, arguments);
+            };
+        }();
+
+        _this.toggleAlbumEdit = function () {
+            var _this$state2 = _this.state,
+                user = _this$state2.user,
+                editAlbumTitle = _this$state2.editAlbumTitle;
+
+
+            if (!user || !user.isAdmin) {
+                return;
+            }
+
+            _this.setState({ editAlbumTitle: !editAlbumTitle });
+        };
+
+        _this.updateAlbumTitle = function (e) {
+            var value = e.target.value;
+            _this.setState({ albumTitle: value });
+        };
+
+        _this.updateAlbumOnEnter = function (e) {
+            var returnKey = 13;
+
+            if (e.charCode !== returnKey) {
+                return;
+            }
+
+            _this.updateAlbum();
+        };
+
+        _this.saveAlbumTitle = function () {
+            var _this$state3 = _this.state,
+                user = _this$state3.user,
+                albumTitle = _this$state3.albumTitle;
+
+
+            if (!user.isAdmin) {
+                return;
+            }
+
+            // User cannot save album title if empty, style input box to display error colouring
+            if (!albumTitle) {
+                var editAlbumInput = document.querySelector('input[name="editAlbum"]');
+                editAlbumInput.style.border = "1px solid #9e0401";
+                editAlbumInput.style.boxShadow = "0 0 7px #9e0401";
+                return;
+            }
+
+            _this.toggleAlbumEdit();
+        };
+
+        _this.toggleDeleteAlbum = function () {
+            var _this$state4 = _this.state,
+                user = _this$state4.user,
+                deleteAlbum = _this$state4.deleteAlbum;
+
+
+            if (!user.isAdmin) {
+                return;
+            }
+
+            _this.setState({ deleteAlbum: !deleteAlbum });
+        };
+
+        _this.actionDeleteAlbum = function () {
+            var _this$state5 = _this.state,
+                user = _this$state5.user,
+                albumId = _this$state5.albumId,
+                containsBackgroundImage = _this$state5.containsBackgroundImage;
+
+
+            if (!user.isAdmin) {
+                return;
+            }
+
+            if (containsBackgroundImage) {
+                var alertMsg = "You cannot delete this album as one of the images is the homepage background";
+                _this.setState({ displayAlert: true, alertMsg: alertMsg });
+                return;
+            }
+
+            _this.toggleLoading();
+
+            _this.setState({ deleteAlbum: false });
+            var token = document.querySelector('meta[name="csrf-token"]').content;
+
+            fetch('/api/delete_album/' + albumId, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': token,
+                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
+                },
+                redirect: 'follow'
+            }).then(function () {
+                window.location.replace("/albums");
+            }).catch(function () {
+                var alertMsg = "Sorry, something went wrong and the album could not be deleted. Please try again";
+                _this.setState({ displayAlert: true, alertMsg: alertMsg });
+            }).finally(function () {
+                _this.toggleLoading();
+            });
+        };
+
+        _this.closeEnlargedImage = function () {
+            _this.setState({ enlargedImage: null });
+        };
+
+        _this.updateAlbum = function () {
+            var _this$state6 = _this.state,
+                user = _this$state6.user,
+                albumTitle = _this$state6.albumTitle,
+                editAlbumTitle = _this$state6.editAlbumTitle,
+                albumId = _this$state6.albumId;
+
+
+            if (!user.isAdmin) {
+                return;
+            }
+
+            if (!editAlbumTitle) {
+                return;
+            }
+
+            if (!albumTitle) {
+                var editAlbumTitleInput = document.querySelector('input[name="editAlbum"]');
+                editAlbumTitleInput.focus();
+                return;
+            }
+
+            _this.setState({ editAlbumTitle: false });
+
+            var token = document.querySelector('meta[name="csrf-token"]').content;
+
+            fetch('/api/update_album/' + albumId, {
+                method: 'POST',
+                headers: {
+                    'Content': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
+                },
+                body: JSON.stringify({
+                    'album_name': albumTitle
+                }),
+                redirect: 'follow'
+            });
+
+            _this.getAlbum();
+        };
+
+        _this.closeAlertBox = function () {
+            _this.setState({ displayAlert: false });
+        };
+
+        _this.toggleLoading = function () {
+            var isLoading = _this.state.isLoading;
+
+            _this.setState({ isLoading: !isLoading });
+        };
 
         _this.state = {
             user: null,
@@ -62103,22 +62316,6 @@ var IndividualAlbum = function (_Component) {
             alertMsg: null,
             isLoading: false
         };
-
-        _this.getAlbum = _this.getAlbum.bind(_this);
-        _this.getUser = _this.getUser.bind(_this);
-        _this.displayImages = _this.displayImages.bind(_this);
-        _this.enlargeImage = _this.enlargeImage.bind(_this);
-        _this.closeEnlargedImage = _this.closeEnlargedImage.bind(_this);
-        _this.nextAndPreviousImageIds = _this.nextAndPreviousImageIds.bind(_this);
-        _this.toggleAlbumEdit = _this.toggleAlbumEdit.bind(_this);
-        _this.saveAlbumTitle = _this.saveAlbumTitle.bind(_this);
-        _this.updateAlbumTitle = _this.updateAlbumTitle.bind(_this);
-        _this.toggleDeleteAlbum = _this.toggleDeleteAlbum.bind(_this);
-        _this.actionDeleteAlbum = _this.actionDeleteAlbum.bind(_this);
-        _this.updateAlbum = _this.updateAlbum.bind(_this);
-        _this.updateAlbumOnEnter = _this.updateAlbumOnEnter.bind(_this);
-        _this.closeAlertBox = _this.closeAlertBox.bind(_this);
-        _this.toggleLoading = _this.toggleLoading.bind(_this);
         return _this;
     }
 
@@ -62146,104 +62343,11 @@ var IndividualAlbum = function (_Component) {
          * Get individual album data
          */
 
-    }, {
-        key: 'getAlbum',
-        value: function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
-                var _this2 = this;
-
-                var url, id;
-                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                url = window.location.href;
-
-                                //display loading spinner
-
-                                this.toggleLoading();
-
-                                // find the id from the url by getting the last digit in the url (note that the url must finish with this digit)
-                                id = url.match(/\d+$/)[0];
-                                _context.next = 5;
-                                return fetch('/api/albums/' + id).then(function (response) {
-                                    return response.status === 200 && response.json();
-                                }).then(function (data) {
-                                    var albumImages = data.data.images;
-                                    var albumTitle = data.data.title;
-                                    var albumId = data.data.albumId;
-                                    var containsBackgroundImage = data.data.containsBackgroundImage;
-
-                                    _this2.setState({ albumImages: albumImages, albumTitle: albumTitle, albumId: albumId, containsBackgroundImage: containsBackgroundImage });
-                                }).finally(function () {
-                                    _this2.toggleLoading();
-                                });
-
-                            case 5:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this);
-            }));
-
-            function getAlbum() {
-                return _ref.apply(this, arguments);
-            }
-
-            return getAlbum;
-        }()
 
         /**
          * Get logged in user through API call
          */
 
-    }, {
-        key: 'getUser',
-        value: function () {
-            var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
-                var _this3 = this;
-
-                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
-                    while (1) {
-                        switch (_context2.prev = _context2.next) {
-                            case 0:
-                                _context2.next = 2;
-                                return fetch('/api/user').then(function (response) {
-                                    return response.status === 200 && response.json();
-                                }).then(function (data) {
-                                    data = data.data;
-
-                                    if (!data) {
-                                        return;
-                                    }
-
-                                    _this3.setState({
-                                        user: {
-                                            id: data.id,
-                                            username: data.username,
-                                            name: data.name,
-                                            email: data.email,
-                                            created_at: data.created_at,
-                                            isAdmin: data.isAdmin
-                                        }
-                                    });
-                                });
-
-                            case 2:
-                            case 'end':
-                                return _context2.stop();
-                        }
-                    }
-                }, _callee2, this);
-            }));
-
-            function getUser() {
-                return _ref2.apply(this, arguments);
-            }
-
-            return getUser;
-        }()
 
         /**
          * Set the previous and next image ids in the state
@@ -62251,51 +62355,11 @@ var IndividualAlbum = function (_Component) {
          * @param int imageId 
          */
 
-    }, {
-        key: 'nextAndPreviousImageIds',
-        value: function nextAndPreviousImageIds(imageId) {
-            var albumImages = this.state.albumImages;
-
-
-            if (!albumImages) {
-                return;
-            }
-
-            var currentImageKey = albumImages.findIndex(function (image) {
-                return image.id === imageId;
-            });
-            var previousImageId = albumImages[currentImageKey - 1] && albumImages[currentImageKey - 1].id;
-            var nextImageId = albumImages[currentImageKey + 1] && albumImages[currentImageKey + 1].id;
-
-            this.setState({ previousImageId: previousImageId, nextImageId: nextImageId });
-        }
 
         /**
          * Render images on the page once the api call has returned
          */
 
-    }, {
-        key: 'displayImages',
-        value: function displayImages() {
-            var _this4 = this;
-
-            var albumImages = this.state.albumImages;
-
-
-            if (!albumImages) {
-                return;
-            }
-
-            return albumImages.map(function (image) {
-                return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    'div',
-                    { className: 'image', key: image.id },
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { onClick: function onClick() {
-                            return _this4.enlargeImage(image.id);
-                        }, src: '/storage/uploads/' + image.filepath })
-                );
-            });
-        }
 
         /**
          * Enlarge image when clicked
@@ -62303,235 +62367,23 @@ var IndividualAlbum = function (_Component) {
          * @param {integer} imageId 
          */
 
-    }, {
-        key: 'enlargeImage',
-        value: function () {
-            var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3(imageId) {
-                var _state, user, nextImageId, previousImageId, enlargedImage;
-
-                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
-                    while (1) {
-                        switch (_context3.prev = _context3.next) {
-                            case 0:
-                                _context3.next = 2;
-                                return this.nextAndPreviousImageIds(imageId);
-
-                            case 2:
-                                _state = this.state, user = _state.user, nextImageId = _state.nextImageId, previousImageId = _state.previousImageId;
-                                enlargedImage = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_imageModal__["a" /* default */], {
-                                    imageId: imageId,
-                                    closeModal: this.closeEnlargedImage,
-                                    previousImageId: previousImageId,
-                                    nextImageId: nextImageId,
-                                    changeImage: this.enlargeImage,
-                                    refreshAlbum: this.getAlbum,
-                                    user: user
-                                });
-
-
-                                this.setState({ enlargedImage: enlargedImage });
-
-                            case 5:
-                            case 'end':
-                                return _context3.stop();
-                        }
-                    }
-                }, _callee3, this);
-            }));
-
-            function enlargeImage(_x) {
-                return _ref3.apply(this, arguments);
-            }
-
-            return enlargeImage;
-        }()
-    }, {
-        key: 'toggleAlbumEdit',
-        value: function toggleAlbumEdit() {
-            var _state2 = this.state,
-                user = _state2.user,
-                editAlbumTitle = _state2.editAlbumTitle;
-
-
-            if (!user || !user.isAdmin) {
-                return;
-            }
-
-            this.setState({ editAlbumTitle: !editAlbumTitle });
-        }
-    }, {
-        key: 'updateAlbumTitle',
-        value: function updateAlbumTitle(e) {
-            var value = e.target.value;
-            this.setState({ albumTitle: value });
-        }
-    }, {
-        key: 'updateAlbumOnEnter',
-        value: function updateAlbumOnEnter(e) {
-            var returnKey = 13;
-
-            if (e.charCode !== returnKey) {
-                return;
-            }
-
-            this.updateAlbum();
-        }
-    }, {
-        key: 'saveAlbumTitle',
-        value: function saveAlbumTitle() {
-            var _state3 = this.state,
-                user = _state3.user,
-                albumTitle = _state3.albumTitle;
-
-
-            if (!user.isAdmin) {
-                return;
-            }
-
-            // User cannot save album title if empty, style input box to display error colouring
-            if (!albumTitle) {
-                var editAlbumInput = document.querySelector('input[name="editAlbum"]');
-                editAlbumInput.style.border = "1px solid #9e0401";
-                editAlbumInput.style.boxShadow = "0 0 7px #9e0401";
-                return;
-            }
-
-            this.toggleAlbumEdit();
-        }
-    }, {
-        key: 'toggleDeleteAlbum',
-        value: function toggleDeleteAlbum() {
-            var _state4 = this.state,
-                user = _state4.user,
-                deleteAlbum = _state4.deleteAlbum;
-
-
-            if (!user.isAdmin) {
-                return;
-            }
-
-            this.setState({ deleteAlbum: !deleteAlbum });
-        }
-    }, {
-        key: 'actionDeleteAlbum',
-        value: function actionDeleteAlbum() {
-            var _this5 = this;
-
-            var _state5 = this.state,
-                user = _state5.user,
-                albumId = _state5.albumId,
-                containsBackgroundImage = _state5.containsBackgroundImage;
-
-
-            if (!user.isAdmin) {
-                return;
-            }
-
-            if (containsBackgroundImage) {
-                var alertMsg = "You cannot delete this album as one of the images is the homepage background";
-                this.setState({ displayAlert: true, alertMsg: alertMsg });
-                return;
-            }
-
-            this.toggleLoading();
-
-            this.setState({ deleteAlbum: false });
-            var token = document.querySelector('meta[name="csrf-token"]').content;
-
-            fetch('/api/delete_album/' + albumId, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': token,
-                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
-                },
-                redirect: 'follow'
-            }).then(function () {
-                window.location.replace("/albums");
-            }).catch(function () {
-                var alertMsg = "Sorry, something went wrong and the album could not be deleted. Please try again";
-                _this5.setState({ displayAlert: true, alertMsg: alertMsg });
-            }).finally(function () {
-                _this5.toggleLoading();
-            });
-        }
 
         /**
          * Close the enlarged image
          */
 
     }, {
-        key: 'closeEnlargedImage',
-        value: function closeEnlargedImage() {
-            this.setState({ enlargedImage: null });
-        }
-    }, {
-        key: 'updateAlbum',
-        value: function updateAlbum() {
-            var _state6 = this.state,
-                user = _state6.user,
-                albumTitle = _state6.albumTitle,
-                editAlbumTitle = _state6.editAlbumTitle,
-                albumId = _state6.albumId;
-
-
-            if (!user.isAdmin) {
-                return;
-            }
-
-            if (!editAlbumTitle) {
-                return;
-            }
-
-            if (!albumTitle) {
-                var editAlbumTitleInput = document.querySelector('input[name="editAlbum"]');
-                editAlbumTitleInput.focus();
-                return;
-            }
-
-            this.setState({ editAlbumTitle: false });
-
-            var token = document.querySelector('meta[name="csrf-token"]').content;
-
-            fetch('/api/update_album/' + albumId, {
-                method: 'POST',
-                headers: {
-                    'Content': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': token,
-                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
-                },
-                body: JSON.stringify({
-                    'album_name': albumTitle
-                }),
-                redirect: 'follow'
-            });
-
-            this.getAlbum();
-        }
-    }, {
-        key: 'closeAlertBox',
-        value: function closeAlertBox() {
-            this.setState({ displayAlert: false });
-        }
-    }, {
-        key: 'toggleLoading',
-        value: function toggleLoading() {
-            var isLoading = this.state.isLoading;
-
-            this.setState({ isLoading: !isLoading });
-        }
-    }, {
         key: 'render',
         value: function render() {
-            var _state7 = this.state,
-                user = _state7.user,
-                albumTitle = _state7.albumTitle,
-                enlargedImage = _state7.enlargedImage,
-                editAlbumTitle = _state7.editAlbumTitle,
-                deleteAlbum = _state7.deleteAlbum,
-                displayAlert = _state7.displayAlert,
-                alertMsg = _state7.alertMsg,
-                isLoading = _state7.isLoading;
+            var _state = this.state,
+                user = _state.user,
+                albumTitle = _state.albumTitle,
+                enlargedImage = _state.enlargedImage,
+                editAlbumTitle = _state.editAlbumTitle,
+                deleteAlbum = _state.deleteAlbum,
+                displayAlert = _state.displayAlert,
+                alertMsg = _state.alertMsg,
+                isLoading = _state.isLoading;
 
             var albumTitleState = void 0;
 
@@ -62650,9 +62502,366 @@ var ImageModal = function (_Component) {
     _inherits(ImageModal, _Component);
 
     function ImageModal(props) {
+        var _this2 = this;
+
         _classCallCheck(this, ImageModal);
 
         var _this = _possibleConstructorReturn(this, (ImageModal.__proto__ || Object.getPrototypeOf(ImageModal)).call(this, props));
+
+        _this.fadeOutHeader = function () {
+            var imageHeader = document.querySelector('.image-information');
+            imageHeader.style.opacity = 0;
+            imageHeader.style.transition = "opacity 2s";
+        };
+
+        _this.fadeInHeader = function () {
+            var imageHeader = document.querySelector('.image-information');
+            imageHeader.style.opacity = 1;
+            imageHeader.style.transition = "opacity 0.2s";
+        };
+
+        _this.doesUserLikePhoto = function () {
+            var users_which_like = _this.state.imageDetails.users_which_like;
+            var user = _this.state.user;
+
+
+            if (!users_which_like || !user) {
+                return;
+            }
+
+            var doesUserLike = users_which_like.find(function (like) {
+                return user.id === like;
+            });
+            _this.setState({ hasUserLiked: doesUserLike });
+        };
+
+        _this.getImageData = function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(imageId) {
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                _context.next = 2;
+                                return fetch('/api/photos/' + imageId).then(function (response) {
+                                    return response.status === 200 && response.json();
+                                }).then(function (data) {
+                                    var imageDetails = data.data;
+                                    _this.setState({ imageDetails: imageDetails });
+
+                                    // After collecting the data, check whether the current user has liked the photo
+                                    _this.doesUserLikePhoto();
+                                });
+
+                            case 2:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, _this2);
+            }));
+
+            return function (_x) {
+                return _ref.apply(this, arguments);
+            };
+        }();
+
+        _this.likePhoto = function () {
+            var imageId = _this.props.imageId;
+            var user = _this.state.user;
+
+            // if user is not logged in, return
+
+            if (!user) {
+                // TODO - inform user to log in
+                return;
+            }
+
+            _this.toggleLoading();
+
+            var token = document.querySelector('meta[name="csrf-token"]').content;
+
+            // Post like/un-like to database
+            fetch('/api/reaction', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
+                },
+                body: JSON.stringify({
+                    'user_id': user.id,
+                    'photo_id': imageId
+                })
+            }).finally(function () {
+                _this.toggleLoading();
+            });
+
+            // get updated image data in order to immediately refresh the view and update the state
+            _this.getImageData(imageId);
+        };
+
+        _this.toggleDisplaySettings = function () {
+            var _this$state = _this.state,
+                user = _this$state.user,
+                displaySettings = _this$state.displaySettings;
+
+
+            if (!user || !user.isAdmin) {
+                return;
+            }
+
+            _this.setState({ displaySettings: !displaySettings });
+        };
+
+        _this.toggleDisplayModal = function () {
+            var displayModal = _this.state.displayModal;
+
+            _this.setState({ displayModal: !displayModal });
+        };
+
+        _this.actionDelete = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
+            var user, _this$state$imageDeta, album_cover_photo, homepage_background, _this$props, imageId, closeModal, refreshAlbum, token, alertMsg;
+
+            return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+                while (1) {
+                    switch (_context2.prev = _context2.next) {
+                        case 0:
+                            user = _this.state.user;
+
+                            if (!(!user || !user.isAdmin)) {
+                                _context2.next = 3;
+                                break;
+                            }
+
+                            return _context2.abrupt('return');
+
+                        case 3:
+                            _this$state$imageDeta = _this.state.imageDetails, album_cover_photo = _this$state$imageDeta.album_cover_photo, homepage_background = _this$state$imageDeta.homepage_background;
+                            _this$props = _this.props, imageId = _this$props.imageId, closeModal = _this$props.closeModal, refreshAlbum = _this$props.refreshAlbum;
+                            token = document.querySelector('meta[name="csrf-token"]').content;
+                            alertMsg = null;
+
+                            if (!album_cover_photo) {
+                                _context2.next = 11;
+                                break;
+                            }
+
+                            alertMsg = 'You cannot delete this photo as it is the album cover';
+                            _this.setState({ displayAlert: true, alertMsg: alertMsg });
+                            return _context2.abrupt('return');
+
+                        case 11:
+                            if (!homepage_background) {
+                                _context2.next = 15;
+                                break;
+                            }
+
+                            alertMsg = 'You cannot delete this photo as it is the homepage background image';
+                            _this.setState({ displayAlert: true, alertMsg: alertMsg });
+                            return _context2.abrupt('return');
+
+                        case 15:
+
+                            _this.toggleLoading();
+
+                            _context2.next = 18;
+                            return fetch('/api/delete_photo/' + imageId, {
+                                method: 'DELETE',
+                                redirect: 'follow',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json',
+                                    'token': token,
+                                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
+                                }
+                            }).then(function () {
+                                // reset state
+                                _this.setState({ displayAlert: false });
+                                _this.toggleDisplayModal();
+                                closeModal();
+                                refreshAlbum();
+                            }).catch(function () {
+                                alertMsg = 'There was an error deleting the image. Please try again';
+                                _this.setState({ displayAlert: true, alertMsg: alertMsg });
+                                _this.toggleLoading();
+                            });
+
+                        case 18:
+                        case 'end':
+                            return _context2.stop();
+                    }
+                }
+            }, _callee2, _this2);
+        }));
+
+        _this.toggleEditPhoto = function () {
+            var _this$state2 = _this.state,
+                user = _this$state2.user,
+                editPhoto = _this$state2.editPhoto;
+
+
+            if (!user || !user.isAdmin) {
+                return;
+            }
+
+            if (!editPhoto) {
+                _this.fadeInHeader();
+            }
+
+            _this.setState({ editPhoto: !editPhoto });
+        };
+
+        _this.stopEditPhoto = function (e) {
+            var editPhoto = _this.state.editPhoto;
+
+
+            if (!editPhoto) {
+                return;
+            }
+
+            if (e.target.nodeName === "INPUT" || e.target.nodeName === 'TEXTAREA') {
+                return;
+            }
+
+            editPhoto && _this.setState({ editPhoto: false });
+
+            // update image details in database via API call
+            _this.updateImageDetails();
+        };
+
+        _this.changeInput = function (e) {
+            var _this$state$imageDeta2 = _this.state.imageDetails,
+                title = _this$state$imageDeta2.title,
+                description = _this$state$imageDeta2.description;
+            var imageDetails = _this.state.imageDetails;
+
+            var titleValue = title;
+            var descriptionValue = description;
+            var elementChanging = e.target.nodeName;
+            var value = e.target.value;
+
+            switch (elementChanging) {
+                case 'INPUT':
+                    titleValue = value;
+                    break;
+
+                case 'TEXTAREA':
+                    descriptionValue = value;
+                    break;
+            }
+
+            _this.setState({
+                imageDetails: _extends({}, imageDetails, {
+                    title: titleValue,
+                    description: descriptionValue
+                })
+            });
+        };
+
+        _this.saveOnEnter = function (e) {
+            var enterKeyCharCode = 13;
+
+            if (e.keyCode !== enterKeyCharCode) {
+                return;
+            }
+
+            _this.updateImageDetails();
+            _this.toggleEditPhoto();
+        };
+
+        _this.updateImageDetails = function () {
+            var user = _this.state.user;
+
+
+            if (!user || !user.isAdmin) {
+                return;
+            }
+
+            var _this$state$imageDeta3 = _this.state.imageDetails,
+                title = _this$state$imageDeta3.title,
+                description = _this$state$imageDeta3.description;
+            var imageId = _this.props.imageId;
+
+            var token = document.querySelector('meta[name="csrf-token"]').content;
+
+            _this.toggleLoading();
+
+            fetch('/api/update_photo/' + imageId, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'token': token,
+                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
+                },
+                body: JSON.stringify({
+                    title: title,
+                    description: description
+                })
+            }).finally(function () {
+                _this.toggleLoading();
+            });
+        };
+
+        _this.setDirection = function (e) {
+            var leftArrowCode = 37;
+            var rightArrowCode = 39;
+
+            if (e.keyCode === leftArrowCode) {
+                _this.navigate('left');
+            } else if (e.keyCode === rightArrowCode) {
+                _this.navigate('right');
+            } else {
+                return;
+            }
+        };
+
+        _this.navigate = function (direction) {
+            var _this$props2 = _this.props,
+                previousImageId = _this$props2.previousImageId,
+                nextImageId = _this$props2.nextImageId,
+                changeImage = _this$props2.changeImage,
+                closeModal = _this$props2.closeModal;
+
+
+            if (direction === 'left' && previousImageId) {
+                closeModal();
+                changeImage(previousImageId);
+            } else if (direction === 'right' && nextImageId) {
+                closeModal();
+                changeImage(nextImageId);
+            }
+        };
+
+        _this.toggleZoom = function () {
+            var photoZoomed = _this.state.photoZoomed;
+
+            _this.setState({ photoZoomed: !photoZoomed });
+        };
+
+        _this.hideAlert = function () {
+            _this.setState({ displayAlert: false });
+        };
+
+        _this.displayCommentsModal = function () {
+            _this.setState({ displayCommentsModal: true });
+        };
+
+        _this.hideCommentsModal = function () {
+            _this.setState({ displayCommentsModal: false });
+        };
+
+        _this.alertChange = function (alertMsg) {
+            _this.setState({ displayAlert: true, alertMsg: alertMsg });
+        };
+
+        _this.toggleLoading = function () {
+            var isLoading = _this.state.isLoading;
+
+            _this.setState({ isLoading: !isLoading });
+        };
 
         _this.getImageData(_this.props.imageId);
 
@@ -62683,34 +62892,13 @@ var ImageModal = function (_Component) {
             displayCommentsModal: false,
             isLoading: false
         };
-
-        _this.fadeOutHeader = _this.fadeOutHeader.bind(_this);
-        _this.fadeInHeader = _this.fadeInHeader.bind(_this);
-        _this.getImageData = _this.getImageData.bind(_this);
-        _this.likePhoto = _this.likePhoto.bind(_this);
-        _this.doesUserLikePhoto = _this.doesUserLikePhoto.bind(_this);
-        _this.toggleDisplaySettings = _this.toggleDisplaySettings.bind(_this);
-        _this.toggleDisplayModal = _this.toggleDisplayModal.bind(_this);
-        _this.actionDelete = _this.actionDelete.bind(_this);
-        _this.toggleEditPhoto = _this.toggleEditPhoto.bind(_this);
-        _this.stopEditPhoto = _this.stopEditPhoto.bind(_this);
-        _this.changeInput = _this.changeInput.bind(_this);
-        _this.saveOnEnter = _this.saveOnEnter.bind(_this);
-        _this.updateImageDetails = _this.updateImageDetails.bind(_this);
-        _this.setDirection = _this.setDirection.bind(_this);
-        _this.navigate = _this.navigate.bind(_this);
-        _this.toggleZoom = _this.toggleZoom.bind(_this);
-        _this.hideAlert = _this.hideAlert.bind(_this);
-        _this.displayCommentsModal = _this.displayCommentsModal.bind(_this);
-        _this.hideCommentsModal = _this.hideCommentsModal.bind(_this);
-        _this.alertChange = _this.alertChange.bind(_this);
         return _this;
     }
 
     _createClass(ImageModal, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this2 = this;
+            var _this3 = this;
 
             // function imported at the top of this file
             Object(__WEBPACK_IMPORTED_MODULE_2__modalSettings__["a" /* default */])();
@@ -62720,7 +62908,7 @@ var ImageModal = function (_Component) {
 
             // fade out image header with title and description
             setTimeout(function () {
-                return _this2.fadeOutHeader();
+                return _this3.fadeOutHeader();
             }, 1000);
         }
     }, {
@@ -62729,257 +62917,31 @@ var ImageModal = function (_Component) {
             // remove event listeners
             document.removeEventListener('keydown', this.setDirection);
         }
-    }, {
-        key: 'fadeOutHeader',
-        value: function fadeOutHeader() {
-            var imageHeader = document.querySelector('.image-information');
-            imageHeader.style.opacity = 0;
-            imageHeader.style.transition = "opacity 2s";
-        }
-    }, {
-        key: 'fadeInHeader',
-        value: function fadeInHeader() {
-            var imageHeader = document.querySelector('.image-information');
-            imageHeader.style.opacity = 1;
-            imageHeader.style.transition = "opacity 0.2s";
-        }
 
         /**
          * Check whether the user likes the photo
          */
 
-    }, {
-        key: 'doesUserLikePhoto',
-        value: function doesUserLikePhoto() {
-            var users_which_like = this.state.imageDetails.users_which_like;
-            var user = this.state.user;
-
-
-            if (!users_which_like || !user) {
-                return;
-            }
-
-            var doesUserLike = users_which_like.find(function (like) {
-                return user.id === like;
-            });
-            this.setState({ hasUserLiked: doesUserLike });
-        }
 
         /**
          * fetch the individual photo data via an API
          */
 
-    }, {
-        key: 'getImageData',
-        value: function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(imageId) {
-                var _this3 = this;
-
-                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                _context.next = 2;
-                                return fetch('/api/photos/' + imageId).then(function (response) {
-                                    return response.status === 200 && response.json();
-                                }).then(function (data) {
-                                    var imageDetails = data.data;
-                                    _this3.setState({ imageDetails: imageDetails });
-
-                                    // After collecting the data, check whether the current user has liked the photo
-                                    _this3.doesUserLikePhoto();
-                                });
-
-                            case 2:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this);
-            }));
-
-            function getImageData(_x) {
-                return _ref.apply(this, arguments);
-            }
-
-            return getImageData;
-        }()
 
         /**
          * Store photo like in database
          */
 
-    }, {
-        key: 'likePhoto',
-        value: function likePhoto() {
-            var _this4 = this;
-
-            var imageId = this.props.imageId;
-            var user = this.state.user;
-
-            // if user is not logged in, return
-
-            if (!user) {
-                // TODO - inform user to log in
-                return;
-            }
-
-            this.toggleLoading();
-
-            var token = document.querySelector('meta[name="csrf-token"]').content;
-
-            // Post like/un-like to database
-            fetch('/api/reaction', {
-                method: 'POST',
-                credentials: 'same-origin',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': token,
-                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
-                },
-                body: JSON.stringify({
-                    'user_id': user.id,
-                    'photo_id': imageId
-                })
-            }).finally(function () {
-                _this4.toggleLoading();
-            });
-
-            // get updated image data in order to immediately refresh the view and update the state
-            this.getImageData(imageId);
-        }
-    }, {
-        key: 'toggleDisplaySettings',
-        value: function toggleDisplaySettings() {
-            var _state = this.state,
-                user = _state.user,
-                displaySettings = _state.displaySettings;
-
-
-            if (!user || !user.isAdmin) {
-                return;
-            }
-
-            this.setState({ displaySettings: !displaySettings });
-        }
 
         /**
          * Display the modal confirming whether the user wishes to delete the photo
          */
 
-    }, {
-        key: 'toggleDisplayModal',
-        value: function toggleDisplayModal() {
-            var displayModal = this.state.displayModal;
-
-            this.setState({ displayModal: !displayModal });
-        }
 
         /**
          * Delete the photo from the DB and storage
          */
 
-    }, {
-        key: 'actionDelete',
-        value: function () {
-            var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
-                var _this5 = this;
-
-                var user, _state$imageDetails, album_cover_photo, homepage_background, _props, imageId, closeModal, refreshAlbum, token, alertMsg;
-
-                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
-                    while (1) {
-                        switch (_context2.prev = _context2.next) {
-                            case 0:
-                                user = this.state.user;
-
-                                if (!(!user || !user.isAdmin)) {
-                                    _context2.next = 3;
-                                    break;
-                                }
-
-                                return _context2.abrupt('return');
-
-                            case 3:
-                                _state$imageDetails = this.state.imageDetails, album_cover_photo = _state$imageDetails.album_cover_photo, homepage_background = _state$imageDetails.homepage_background;
-                                _props = this.props, imageId = _props.imageId, closeModal = _props.closeModal, refreshAlbum = _props.refreshAlbum;
-                                token = document.querySelector('meta[name="csrf-token"]').content;
-                                alertMsg = null;
-
-                                if (!album_cover_photo) {
-                                    _context2.next = 11;
-                                    break;
-                                }
-
-                                alertMsg = 'You cannot delete this photo as it is the album cover';
-                                this.setState({ displayAlert: true, alertMsg: alertMsg });
-                                return _context2.abrupt('return');
-
-                            case 11:
-                                if (!homepage_background) {
-                                    _context2.next = 15;
-                                    break;
-                                }
-
-                                alertMsg = 'You cannot delete this photo as it is the homepage background image';
-                                this.setState({ displayAlert: true, alertMsg: alertMsg });
-                                return _context2.abrupt('return');
-
-                            case 15:
-
-                                this.toggleLoading();
-
-                                _context2.next = 18;
-                                return fetch('/api/delete_photo/' + imageId, {
-                                    method: 'DELETE',
-                                    redirect: 'follow',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'Accept': 'application/json',
-                                        'token': token,
-                                        'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
-                                    }
-                                }).then(function () {
-                                    // reset state
-                                    _this5.setState({ displayAlert: false });
-                                    _this5.toggleDisplayModal();
-                                    closeModal();
-                                    refreshAlbum();
-                                }).catch(function () {
-                                    alertMsg = 'There was an error deleting the image. Please try again';
-                                    _this5.setState({ displayAlert: true, alertMsg: alertMsg });
-                                    _this5.toggleLoading();
-                                });
-
-                            case 18:
-                            case 'end':
-                                return _context2.stop();
-                        }
-                    }
-                }, _callee2, this);
-            }));
-
-            function actionDelete() {
-                return _ref2.apply(this, arguments);
-            }
-
-            return actionDelete;
-        }()
-    }, {
-        key: 'toggleEditPhoto',
-        value: function toggleEditPhoto() {
-            var _state2 = this.state,
-                user = _state2.user,
-                editPhoto = _state2.editPhoto;
-
-
-            if (!user || !user.isAdmin) {
-                return;
-            }
-
-            this.setState({ editPhoto: !editPhoto });
-        }
 
         /**
          * Set editPhoto state value to false when user clicks outside of text input boxes
@@ -62987,205 +62949,41 @@ var ImageModal = function (_Component) {
          * @param {event} e 
          */
 
-    }, {
-        key: 'stopEditPhoto',
-        value: function stopEditPhoto(e) {
-            var editPhoto = this.state.editPhoto;
-
-
-            if (!editPhoto) {
-                return;
-            }
-
-            if (e.target.nodeName === "INPUT" || e.target.nodeName === 'TEXTAREA') {
-                return;
-            }
-
-            editPhoto && this.setState({ editPhoto: false });
-
-            // update image details in database via API call
-            this.updateImageDetails();
-        }
-    }, {
-        key: 'changeInput',
-        value: function changeInput(e) {
-            var _state$imageDetails2 = this.state.imageDetails,
-                title = _state$imageDetails2.title,
-                description = _state$imageDetails2.description;
-            var imageDetails = this.state.imageDetails;
-
-            var titleValue = title;
-            var descriptionValue = description;
-            var elementChanging = e.target.nodeName;
-            var value = e.target.value;
-
-            switch (elementChanging) {
-                case 'INPUT':
-                    titleValue = value;
-                    break;
-
-                case 'TEXTAREA':
-                    descriptionValue = value;
-                    break;
-            }
-
-            this.setState({
-                imageDetails: _extends({}, imageDetails, {
-                    title: titleValue,
-                    description: descriptionValue
-                })
-            });
-        }
-    }, {
-        key: 'saveOnEnter',
-        value: function saveOnEnter(e) {
-            var enterKeyCharCode = 13;
-
-            if (e.keyCode !== enterKeyCharCode) {
-                return;
-            }
-
-            this.updateImageDetails();
-            this.toggleEditPhoto();
-        }
 
         /**
          * Update image details via API
          */
 
-    }, {
-        key: 'updateImageDetails',
-        value: function updateImageDetails() {
-            var _this6 = this;
-
-            var user = this.state.user;
-
-
-            if (!user || !user.isAdmin) {
-                return;
-            }
-
-            var _state$imageDetails3 = this.state.imageDetails,
-                title = _state$imageDetails3.title,
-                description = _state$imageDetails3.description;
-            var imageId = this.props.imageId;
-
-            var token = document.querySelector('meta[name="csrf-token"]').content;
-
-            this.toggleLoading();
-
-            fetch('/api/update_photo/' + imageId, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'token': token,
-                    'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
-                },
-                body: JSON.stringify({
-                    title: title,
-                    description: description
-                })
-            }).finally(function () {
-                _this6.toggleLoading();
-            });
-        }
-    }, {
-        key: 'setDirection',
-        value: function setDirection(e) {
-            var leftArrowCode = 37;
-            var rightArrowCode = 39;
-
-            if (e.keyCode === leftArrowCode) {
-                this.navigate('left');
-            } else if (e.keyCode === rightArrowCode) {
-                this.navigate('right');
-            } else {
-                return;
-            }
-        }
 
         /**
          * Navigate between images in album
          * @param {string} direction 
          */
 
-    }, {
-        key: 'navigate',
-        value: function navigate(direction) {
-            var _props2 = this.props,
-                previousImageId = _props2.previousImageId,
-                nextImageId = _props2.nextImageId,
-                changeImage = _props2.changeImage,
-                closeModal = _props2.closeModal;
-
-
-            if (direction === 'left' && previousImageId) {
-                closeModal();
-                changeImage(previousImageId);
-            } else if (direction === 'right' && nextImageId) {
-                closeModal();
-                changeImage(nextImageId);
-            }
-        }
 
         // toggle zoom on image click
 
     }, {
-        key: 'toggleZoom',
-        value: function toggleZoom() {
-            var photoZoomed = this.state.photoZoomed;
-
-            this.setState({ photoZoomed: !photoZoomed });
-        }
-    }, {
-        key: 'hideAlert',
-        value: function hideAlert() {
-            this.setState({ displayAlert: false });
-        }
-    }, {
-        key: 'displayCommentsModal',
-        value: function displayCommentsModal() {
-            this.setState({ displayCommentsModal: true });
-        }
-    }, {
-        key: 'hideCommentsModal',
-        value: function hideCommentsModal() {
-            this.setState({ displayCommentsModal: false });
-        }
-    }, {
-        key: 'alertChange',
-        value: function alertChange(alertMsg) {
-            this.setState({ displayAlert: true, alertMsg: alertMsg });
-        }
-    }, {
-        key: 'toggleLoading',
-        value: function toggleLoading() {
-            var isLoading = this.state.isLoading;
-
-            this.setState({ isLoading: !isLoading });
-        }
-    }, {
         key: 'render',
         value: function render() {
-            var _this7 = this;
+            var _this4 = this;
 
-            var _props3 = this.props,
-                closeModal = _props3.closeModal,
-                previousImageId = _props3.previousImageId,
-                nextImageId = _props3.nextImageId;
-            var _state3 = this.state,
-                user = _state3.user,
-                imageDetails = _state3.imageDetails,
-                hasUserLiked = _state3.hasUserLiked,
-                displaySettings = _state3.displaySettings,
-                displayModal = _state3.displayModal,
-                editPhoto = _state3.editPhoto,
-                photoZoomed = _state3.photoZoomed,
-                displayAlert = _state3.displayAlert,
-                alertMsg = _state3.alertMsg,
-                displayCommentsModal = _state3.displayCommentsModal,
-                isLoading = _state3.isLoading;
+            var _props = this.props,
+                closeModal = _props.closeModal,
+                previousImageId = _props.previousImageId,
+                nextImageId = _props.nextImageId;
+            var _state = this.state,
+                user = _state.user,
+                imageDetails = _state.imageDetails,
+                hasUserLiked = _state.hasUserLiked,
+                displaySettings = _state.displaySettings,
+                displayModal = _state.displayModal,
+                editPhoto = _state.editPhoto,
+                photoZoomed = _state.photoZoomed,
+                displayAlert = _state.displayAlert,
+                alertMsg = _state.alertMsg,
+                displayCommentsModal = _state.displayCommentsModal,
+                isLoading = _state.isLoading;
 
 
             var thumbsUpStyle = null,
@@ -63221,7 +63019,7 @@ var ImageModal = function (_Component) {
                     {
                         className: 'imageModal-wrapper',
                         onClick: function onClick(e) {
-                            _this7.stopEditPhoto(e);
+                            _this4.stopEditPhoto(e);
                         }
                     },
                     isLoading && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__global_components_loadingWidget__["a" /* default */], null),
@@ -63247,24 +63045,25 @@ var ImageModal = function (_Component) {
                                 'div',
                                 { className: 'image-input' },
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', {
+                                    name: 'title',
                                     type: 'text',
                                     placeholder: 'Title...',
                                     value: imageDetails.title ? imageDetails.title.toUpperCase() : '',
                                     onChange: function onChange(e) {
-                                        _this7.changeInput(e);
+                                        _this4.changeInput(e);
                                     },
                                     onKeyDown: function onKeyDown(e) {
-                                        _this7.saveOnEnter(e);
+                                        _this4.saveOnEnter(e);
                                     }
                                 }),
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('textarea', {
                                     placeholder: 'Description...',
                                     value: imageDetails.description ? imageDetails.description : '',
                                     onChange: function onChange(e) {
-                                        _this7.changeInput(e);
+                                        _this4.changeInput(e);
                                     },
                                     onKeyDown: function onKeyDown(e) {
-                                        _this7.saveOnEnter(e);
+                                        _this4.saveOnEnter(e);
                                     }
                                 })
                             ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -63290,7 +63089,7 @@ var ImageModal = function (_Component) {
                                 {
                                     className: 'arrow left-arrow',
                                     onClick: function onClick() {
-                                        return _this7.navigate('left');
+                                        return _this4.navigate('left');
                                     }
                                 },
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-chevron-left' })
@@ -63306,7 +63105,7 @@ var ImageModal = function (_Component) {
                                 {
                                     className: 'arrow right-arrow',
                                     onClick: function onClick() {
-                                        return _this7.navigate('right');
+                                        return _this4.navigate('right');
                                     }
                                 },
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-chevron-right' })
@@ -63467,34 +63266,13 @@ var Settings = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (Settings.__proto__ || Object.getPrototypeOf(Settings)).call(this));
 
-        _this.state = (_this$state = {
-            displaySettings: true,
-            editPhoto: false
-        }, _defineProperty(_this$state, 'displaySettings', true), _defineProperty(_this$state, 'token', document.querySelector('meta[name="csrf-token"]').content), _this$state);
+        _this.hideSettings = function () {
+            _this.setState({ displaySettings: false });
+        };
 
-        _this.hideSettings = _this.hideSettings.bind(_this);
-        _this.setAlbumCover = _this.setAlbumCover.bind(_this);
-        _this.setHomepageCover = _this.setHomepageCover.bind(_this);
-        return _this;
-    }
-
-    _createClass(Settings, [{
-        key: 'hideSettings',
-        value: function hideSettings() {
-            this.setState({ displaySettings: false });
-        }
-
-        /**
-         * Set the album cover to the currently selected photo
-         */
-
-    }, {
-        key: 'setAlbumCover',
-        value: function setAlbumCover() {
-            var _this2 = this;
-
-            var id = this.props.imageDetails.id;
-            var token = this.state.token;
+        _this.setAlbumCover = function () {
+            var id = _this.props.imageDetails.id;
+            var token = _this.state.token;
 
 
             fetch('/api/update_cover_photo/' + id, {
@@ -63507,21 +63285,18 @@ var Settings = function (_Component) {
                 }
             }).then(function () {
                 var alertMsg = "The album cover has been changed successfully.";
-                _this2.props.alertChange(alertMsg);
+                _this.props.alertChange(alertMsg);
             }).catch(function () {
                 var alertMsg = "Sorry, something went wrong, please try again.";
-                _this2.props.alertChange(alertMsg);
+                _this.props.alertChange(alertMsg);
             });
 
-            this.hideSettings();
-        }
-    }, {
-        key: 'setHomepageCover',
-        value: function setHomepageCover() {
-            var _this3 = this;
+            _this.hideSettings();
+        };
 
-            var id = this.props.imageDetails.id;
-            var token = this.state.token;
+        _this.setHomepageCover = function () {
+            var id = _this.props.imageDetails.id;
+            var token = _this.state.token;
 
 
             fetch('/api/background_image/' + id, {
@@ -63534,13 +63309,26 @@ var Settings = function (_Component) {
                 }
             }).then(function () {
                 var alertMsg = "The homepage background has been changed successfully.";
-                _this3.props.alertChange(alertMsg);
+                _this.props.alertChange(alertMsg);
             }).catch(function () {
                 var alertMsg = "Sorry, something went wrong, please try again.";
-                _this3.props.alertChange(alertMsg);
+                _this.props.alertChange(alertMsg);
             });
-        }
-    }, {
+        };
+
+        _this.state = (_this$state = {
+            displaySettings: true,
+            editPhoto: false
+        }, _defineProperty(_this$state, 'displaySettings', true), _defineProperty(_this$state, 'token', document.querySelector('meta[name="csrf-token"]').content), _this$state);
+        return _this;
+    }
+
+    /**
+     * Set the album cover to the currently selected photo
+     */
+
+
+    _createClass(Settings, [{
         key: 'render',
         value: function render() {
             var displaySettings = this.state.displaySettings;
@@ -63618,34 +63406,10 @@ var Comments = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (Comments.__proto__ || Object.getPrototypeOf(Comments)).call(this));
 
-        _this.state = {
-            commentMessage: '',
-            characterLimit: 250,
-            charactersRemaining: 250,
-            isLoading: false
-        };
-
-        _this.onChangeMessage = _this.onChangeMessage.bind(_this);
-        _this.postMessage = _this.postMessage.bind(_this);
-        _this.postMessageOnEnter = _this.postMessageOnEnter.bind(_this);
-        _this.renderComments = _this.renderComments.bind(_this);
-        _this.deleteComment = _this.deleteComment.bind(_this);
-        _this.toggleLoading = _this.toggleLoading.bind(_this);
-        return _this;
-    }
-
-    /**
-     * Update comments message and character counter on change
-     * @param {event} e 
-     */
-
-
-    _createClass(Comments, [{
-        key: 'onChangeMessage',
-        value: function onChangeMessage(e) {
-            var _state = this.state,
-                charactersRemaining = _state.charactersRemaining,
-                characterLimit = _state.characterLimit;
+        _this.onChangeMessage = function (e) {
+            var _this$state = _this.state,
+                charactersRemaining = _this$state.charactersRemaining,
+                characterLimit = _this$state.characterLimit;
 
             var value = e.target.value;
             var charactersLeft = characterLimit - value.length;
@@ -63654,33 +63418,23 @@ var Comments = function (_Component) {
                 return;
             }
 
-            this.setState({ commentMessage: value, charactersRemaining: charactersLeft });
-        }
+            _this.setState({ commentMessage: value, charactersRemaining: charactersLeft });
+        };
 
-        /**
-         * Post message when user presses the enter key
-         * @param {event} e 
-         */
-
-    }, {
-        key: 'postMessageOnEnter',
-        value: function postMessageOnEnter(e) {
+        _this.postMessageOnEnter = function (e) {
             var enterKeyCode = 13;
 
             if (e.keyCode !== enterKeyCode) {
                 return;
             }
 
-            this.postMessage();
-        }
-    }, {
-        key: 'postMessage',
-        value: function postMessage() {
-            var _this2 = this;
+            _this.postMessage();
+        };
 
-            var _props = this.props,
-                user = _props.user,
-                imageDetails = _props.imageDetails;
+        _this.postMessage = function () {
+            var _this$props = _this.props,
+                user = _this$props.user,
+                imageDetails = _this$props.imageDetails;
 
 
             if (!user) {
@@ -63688,7 +63442,7 @@ var Comments = function (_Component) {
             }
 
             var token = document.querySelector('meta[name="csrf-token"]').content;
-            var commentMessage = this.state.commentMessage;
+            var commentMessage = _this.state.commentMessage;
 
             // return if comment is empty string
 
@@ -63696,7 +63450,7 @@ var Comments = function (_Component) {
                 return;
             }
 
-            this.toggleLoading();
+            _this.toggleLoading();
 
             fetch('/api/post_comment/' + imageDetails.id, {
                 method: 'POST',
@@ -63711,28 +63465,19 @@ var Comments = function (_Component) {
                     'post': commentMessage
                 })
             }).then(function () {
-                var characterLimit = _this2.state.characterLimit;
+                var characterLimit = _this.state.characterLimit;
 
-                _this2.setState({ commentMessage: '', charactersRemaining: characterLimit });
+                _this.setState({ commentMessage: '', charactersRemaining: characterLimit });
 
                 // Refresh details to display most up to date comments
-                _this2.props.refresh(imageDetails.id);
+                _this.props.refresh(imageDetails.id);
             }).finally(function () {
-                _this2.toggleLoading();
+                _this.toggleLoading();
             });
-        }
+        };
 
-        /**
-         * loops through and styles each comment in appropriate jsx in order to display in render function
-         * @return JSX which is used to render each comment in render function
-         */
-
-    }, {
-        key: 'renderComments',
-        value: function renderComments() {
-            var _this3 = this;
-
-            var imageDetails = this.props.imageDetails;
+        _this.renderComments = function () {
+            var imageDetails = _this.props.imageDetails;
 
 
             return imageDetails.comments.map(function (comment, index) {
@@ -63771,30 +63516,22 @@ var Comments = function (_Component) {
                             ),
                             comment.post_text
                         ),
-                        _this3.props.user && _this3.props.user.id === comment.user_id && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        _this.props.user && _this.props.user.id === comment.user_id && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             { className: 'delete-comment' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-trash-alt', onClick: function onClick() {
-                                    return _this3.deleteComment(comment.id);
+                                    return _this.deleteComment(comment.id);
                                 } })
                         )
                     )
                 );
-            }, this);
-        }
+            }, _this);
+        };
 
-        /**
-         * @param int postId 
-         */
-
-    }, {
-        key: 'deleteComment',
-        value: function deleteComment(postId) {
-            var _this4 = this;
-
+        _this.deleteComment = function (postId) {
             var token = document.querySelector('meta[name="csrf-token"]').content;
 
-            this.toggleLoading();
+            _this.toggleLoading();
 
             fetch('/api/delete_comment/' + postId, {
                 method: 'Delete',
@@ -63803,32 +63540,64 @@ var Comments = function (_Component) {
                     'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 }
             }).finally(function () {
-                _this4.toggleLoading();
+                _this.toggleLoading();
             });
 
             // Refresh details to display most up to date comments
-            var id = this.props.imageDetails.id;
+            var id = _this.props.imageDetails.id;
 
-            this.props.refresh(id);
-        }
-    }, {
-        key: 'toggleLoading',
-        value: function toggleLoading() {
-            var isLoading = this.state.isLoading;
+            _this.props.refresh(id);
+        };
 
-            this.setState({ isLoading: !isLoading });
-        }
-    }, {
+        _this.toggleLoading = function () {
+            var isLoading = _this.state.isLoading;
+
+            _this.setState({ isLoading: !isLoading });
+        };
+
+        _this.state = {
+            commentMessage: '',
+            characterLimit: 250,
+            charactersRemaining: 250,
+            isLoading: false
+        };
+        return _this;
+    }
+
+    /**
+     * Update comments message and character counter on change
+     * @param {event} e 
+     */
+
+
+    /**
+     * Post message when user presses the enter key
+     * @param {event} e 
+     */
+
+
+    /**
+     * loops through and styles each comment in appropriate jsx in order to display in render function
+     * @return JSX which is used to render each comment in render function
+     */
+
+
+    /**
+     * @param int postId 
+     */
+
+
+    _createClass(Comments, [{
         key: 'render',
         value: function render() {
-            var _state2 = this.state,
-                commentMessage = _state2.commentMessage,
-                charactersRemaining = _state2.charactersRemaining,
-                characterLimit = _state2.characterLimit,
-                isLoading = _state2.isLoading;
-            var _props2 = this.props,
-                user = _props2.user,
-                close = _props2.close;
+            var _state = this.state,
+                commentMessage = _state.commentMessage,
+                charactersRemaining = _state.charactersRemaining,
+                characterLimit = _state.characterLimit,
+                isLoading = _state.isLoading;
+            var _props = this.props,
+                user = _props.user,
+                close = _props.close;
 
             var comments = this.renderComments();
 
