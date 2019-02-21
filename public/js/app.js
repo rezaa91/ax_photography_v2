@@ -619,6 +619,7 @@ var Modal = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).call(this));
 
+<<<<<<< HEAD
         _this.closeModal = function () {
             var resetState = _this.props.resetState;
 
@@ -636,10 +637,37 @@ var Modal = function (_Component) {
         _this.state = {
             displayModal: true
         };
+=======
+        _this.state = {
+            displayModal: true
+        };
+
+        _this.closeModal = _this.closeModal.bind(_this);
+        _this.action = _this.action.bind(_this);
+>>>>>>> fcf3456... 144 - resolved
         return _this;
     }
 
     _createClass(Modal, [{
+<<<<<<< HEAD
+=======
+        key: 'closeModal',
+        value: function closeModal() {
+            var resetState = this.props.resetState;
+
+            this.setState({ displayModal: false });
+            resetState(); //passed from parent and should reset any state passed when <Modal /> used
+        }
+    }, {
+        key: 'action',
+        value: function action() {
+            var action = this.props.action;
+
+            action(); //this method is passed from parent and should action what happens when user clicks 'yes'
+            this.closeModal();
+        }
+    }, {
+>>>>>>> fcf3456... 144 - resolved
         key: 'render',
         value: function render() {
             var message = this.props.message;
@@ -14186,6 +14214,7 @@ var Alert = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (Alert.__proto__ || Object.getPrototypeOf(Alert)).call(this));
 
+<<<<<<< HEAD
         _this.closeAlert = function () {
             var resetState = _this.props.resetState;
 
@@ -14196,10 +14225,28 @@ var Alert = function (_Component) {
         _this.state = {
             displayAlert: true
         };
+=======
+        _this.state = {
+            displayAlert: true
+        };
+
+        _this.closeAlert = _this.closeAlert.bind(_this);
+>>>>>>> fcf3456... 144 - resolved
         return _this;
     }
 
     _createClass(Alert, [{
+<<<<<<< HEAD
+=======
+        key: "closeAlert",
+        value: function closeAlert() {
+            var resetState = this.props.resetState;
+
+            this.setState({ displayAlert: false });
+            resetState();
+        }
+    }, {
+>>>>>>> fcf3456... 144 - resolved
         key: "render",
         value: function render() {
             var displayAlert = this.state.displayAlert;
@@ -14258,7 +14305,16 @@ module.exports = __webpack_require__(72);
 
 /***/ }),
 /* 20 */
+<<<<<<< HEAD
 /***/ (function(module, exports, __webpack_require__) {
+=======
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utilities_displayBottmNavBarMobile__ = __webpack_require__(93);
+
+>>>>>>> fcf3456... 144 - resolved
 
 
 /** Require dependencies and helpers */
@@ -14267,6 +14323,13 @@ __webpack_require__(21);
 /** Require layouts */
 __webpack_require__(45);
 
+<<<<<<< HEAD
+=======
+window.addEventListener('load', function () {
+    Object(__WEBPACK_IMPORTED_MODULE_0__utilities_displayBottmNavBarMobile__["a" /* default */])();
+});
+
+>>>>>>> fcf3456... 144 - resolved
 /** Require pages */
 __webpack_require__(55);
 __webpack_require__(57);
@@ -36524,10 +36587,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+<<<<<<< HEAD
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+=======
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+>>>>>>> fcf3456... 144 - resolved
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -36541,13 +36611,17 @@ var Navigation = function (_Component) {
     _inherits(Navigation, _Component);
 
     function Navigation() {
+<<<<<<< HEAD
         var _this2 = this;
 
+=======
+>>>>>>> fcf3456... 144 - resolved
         _classCallCheck(this, Navigation);
 
         //check if user is in session
         var _this = _possibleConstructorReturn(this, (Navigation.__proto__ || Object.getPrototypeOf(Navigation)).call(this));
 
+<<<<<<< HEAD
         _this.getUser = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
             return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
                 while (1) {
@@ -36595,6 +36669,107 @@ var Navigation = function (_Component) {
                 user = _this$state.user,
                 rotateArrowClass = _this$state.rotateArrowClass,
                 isDropdownPresent = _this$state.isDropdownPresent;
+=======
+        _this.getUser();
+
+        _this.state = {
+            isLoggedIn: false,
+            user: null,
+            isDropdownPresent: false,
+            rotateArrowClass: null
+
+            //bind methods
+        };_this.getUser = _this.getUser.bind(_this);
+        _this.displayLoginOrUser = _this.displayLoginOrUser.bind(_this);
+        _this.toggleUserDropdownMenu = _this.toggleUserDropdownMenu.bind(_this);
+        _this.hideUserDropdownMenu = _this.hideUserDropdownMenu.bind(_this);
+        _this.toggleMobileDropdown = _this.toggleMobileDropdown.bind(_this);
+        return _this;
+    }
+
+    _createClass(Navigation, [{
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate() {
+            // Apply class to the navigation links to show which page the user is currently on
+            var mainNavLinks = [].concat(_toConsumableArray(document.querySelectorAll('.main-link')));
+
+            mainNavLinks.map(function (link) {
+                var url = window.location.href;
+                url.match(link) ? link.classList.add('active') : link.classList.remove('active');
+            });
+        }
+
+        /**
+         * Get logged in user through API call
+         */
+
+    }, {
+        key: 'getUser',
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+                var _this2 = this;
+
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                _context.next = 2;
+                                return fetch('/api/user').then(function (response) {
+                                    return response.status === 200 && response.json();
+                                }).then(function (data) {
+                                    data = data.data;
+
+                                    if (!data) {
+                                        return;
+                                    }
+
+                                    _this2.setState({
+                                        isLoggedIn: true,
+                                        user: {
+                                            id: data.id,
+                                            username: data.username,
+                                            name: data.name,
+                                            email: data.email,
+                                            created_at: data.created_at,
+                                            isAdmin: data.isAdmin
+                                        }
+                                    });
+                                }).catch(function () {
+                                    _this2.setState({
+                                        isLoggedIn: false,
+                                        user: null
+                                    });
+                                });
+
+                            case 2:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function getUser() {
+                return _ref.apply(this, arguments);
+            }
+
+            return getUser;
+        }()
+
+        /**
+         * If user is logged in then display username with dropdown menu for user links
+         * Otherwise display login link
+         */
+
+    }, {
+        key: 'displayLoginOrUser',
+        value: function displayLoginOrUser() {
+            var _state = this.state,
+                isLoggedIn = _state.isLoggedIn,
+                user = _state.user,
+                rotateArrowClass = _state.rotateArrowClass,
+                isDropdownPresent = _state.isDropdownPresent;
+>>>>>>> fcf3456... 144 - resolved
 
 
             if (!isLoggedIn) {
@@ -36679,20 +36854,38 @@ var Navigation = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { id: 'arrow', className: arrowClasses }),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'a',
+<<<<<<< HEAD
                         { onClick: _this.toggleUserDropdownMenu },
+=======
+                        { onClick: this.toggleUserDropdownMenu },
+>>>>>>> fcf3456... 144 - resolved
                         user.username
                     ),
                     dropdownMenu
                 );
             }
+<<<<<<< HEAD
         };
 
         _this.toggleUserDropdownMenu = function () {
             var isDropdownPresent = _this.state.isDropdownPresent;
+=======
+        }
+
+        /**
+         * Toggle the user dropdown menu
+         */
+
+    }, {
+        key: 'toggleUserDropdownMenu',
+        value: function toggleUserDropdownMenu() {
+            var isDropdownPresent = this.state.isDropdownPresent;
+>>>>>>> fcf3456... 144 - resolved
 
             // prevent duplicates of dropdown menu being shown
 
             if (isDropdownPresent) {
+<<<<<<< HEAD
                 _this.setState({ isDropdownPresent: false, rotateArrowClass: 'rotate-down' });
             } else {
                 _this.setState({ rotateArrowClass: 'rotate-up' });
@@ -36747,6 +36940,25 @@ var Navigation = function (_Component) {
          * Toggle the user dropdown menu
          */
 
+=======
+                this.setState({ isDropdownPresent: false, rotateArrowClass: 'rotate-down' });
+            } else {
+                this.setState({ rotateArrowClass: 'rotate-up' });
+                this.setState({ isDropdownPresent: true });
+            }
+        }
+    }, {
+        key: 'hideUserDropdownMenu',
+        value: function hideUserDropdownMenu() {
+            this.setState({ isDropdownPresent: false, rotateArrowClass: 'rotate-down' });
+        }
+    }, {
+        key: 'toggleMobileDropdown',
+        value: function toggleMobileDropdown() {
+            var mobileDropdown = document.querySelector('.main-links');
+            mobileDropdown.style.display === 'block' ? mobileDropdown.style.display = 'none' : mobileDropdown.style.display = 'block';
+        }
+>>>>>>> fcf3456... 144 - resolved
     }, {
         key: 'render',
         value: function render() {
@@ -60324,6 +60536,7 @@ var Homepage = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (Homepage.__proto__ || Object.getPrototypeOf(Homepage)).call(this));
 
+<<<<<<< HEAD
         _this.getBackgroundImage = function () {
             fetch('/api/background_image').then(function (res) {
                 return res.json();
@@ -60339,15 +60552,43 @@ var Homepage = function (_Component) {
             });
         };
 
+=======
+>>>>>>> fcf3456... 144 - resolved
         _this.getBackgroundImage();
 
         _this.state = {
             filepath: null
         };
+<<<<<<< HEAD
+=======
+
+        _this.getBackgroundImage = _this.getBackgroundImage.bind(_this);
+>>>>>>> fcf3456... 144 - resolved
         return _this;
     }
 
     _createClass(Homepage, [{
+<<<<<<< HEAD
+=======
+        key: 'getBackgroundImage',
+        value: function getBackgroundImage() {
+            var _this2 = this;
+
+            fetch('/api/background_image').then(function (res) {
+                return res.json();
+            }).then(function (data) {
+                var filepath = 'uploads/' + data.data.filepath;
+
+                _this2.setState({ filepath: filepath });
+            }).catch(function () {
+                // if error fetching background image, use a default image
+                var filepath = 'defaults/homepage-default.jpg';
+
+                _this2.setState({ filepath: filepath });
+            });
+        }
+    }, {
+>>>>>>> fcf3456... 144 - resolved
         key: 'render',
         value: function render() {
             var filepath = this.state.filepath;
@@ -60466,12 +60707,16 @@ var Albums = function (_Component) {
     _inherits(Albums, _Component);
 
     function Albums() {
+<<<<<<< HEAD
         var _this2 = this;
 
+=======
+>>>>>>> fcf3456... 144 - resolved
         _classCallCheck(this, Albums);
 
         var _this = _possibleConstructorReturn(this, (Albums.__proto__ || Object.getPrototypeOf(Albums)).call(this));
 
+<<<<<<< HEAD
         _this.getAlbums = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
             return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
                 while (1) {
@@ -60493,11 +60738,18 @@ var Albums = function (_Component) {
         }));
 
 
+=======
+>>>>>>> fcf3456... 144 - resolved
         _this.getAlbums();
 
         _this.state = {
             albums: null
         };
+<<<<<<< HEAD
+=======
+
+        _this.getAlbums = _this.getAlbums.bind(_this);
+>>>>>>> fcf3456... 144 - resolved
         return _this;
     }
 
@@ -60507,13 +60759,52 @@ var Albums = function (_Component) {
 
 
     _createClass(Albums, [{
+<<<<<<< HEAD
         key: 'displayAlbums',
 
+=======
+        key: 'getAlbums',
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+                var _this2 = this;
+
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                _context.next = 2;
+                                return fetch('/api/albums').then(function (response) {
+                                    return response.json();
+                                }).then(function (data) {
+                                    _this2.setState({ albums: data.data });
+                                });
+
+                            case 2:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function getAlbums() {
+                return _ref.apply(this, arguments);
+            }
+
+            return getAlbums;
+        }()
+>>>>>>> fcf3456... 144 - resolved
 
         /**
          * Return JSX album container passing along individual album details as props
          * @return JSX containing album container
          */
+<<<<<<< HEAD
+=======
+
+    }, {
+        key: 'displayAlbums',
+>>>>>>> fcf3456... 144 - resolved
         value: function displayAlbums() {
             var albums = this.state.albums;
 
@@ -60575,12 +60866,16 @@ var AlbumContainer = function (_Component) {
     _inherits(AlbumContainer, _Component);
 
     function AlbumContainer(props) {
+<<<<<<< HEAD
         var _this2 = this;
 
+=======
+>>>>>>> fcf3456... 144 - resolved
         _classCallCheck(this, AlbumContainer);
 
         var _this = _possibleConstructorReturn(this, (AlbumContainer.__proto__ || Object.getPrototypeOf(AlbumContainer)).call(this, props));
 
+<<<<<<< HEAD
         _this.getCoverPhoto = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
             var cover_photo_id;
             return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
@@ -60605,11 +60900,18 @@ var AlbumContainer = function (_Component) {
         }));
 
 
+=======
+>>>>>>> fcf3456... 144 - resolved
         _this.getCoverPhoto();
 
         _this.state = {
             cover_photo: null
         };
+<<<<<<< HEAD
+=======
+
+        _this.getCoverPhoto = _this.getCoverPhoto.bind(_this);
+>>>>>>> fcf3456... 144 - resolved
         return _this;
     }
 
@@ -60619,6 +60921,42 @@ var AlbumContainer = function (_Component) {
 
 
     _createClass(AlbumContainer, [{
+<<<<<<< HEAD
+=======
+        key: 'getCoverPhoto',
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+                var _this2 = this;
+
+                var cover_photo_id;
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                cover_photo_id = this.props.album.cover_photo_id;
+                                _context.next = 3;
+                                return fetch('/api/photos/' + cover_photo_id).then(function (response) {
+                                    return response.status === 200 && response.json();
+                                }).then(function (data) {
+                                    _this2.setState({ cover_photo: data.data.filepath });
+                                });
+
+                            case 3:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function getCoverPhoto() {
+                return _ref.apply(this, arguments);
+            }
+
+            return getCoverPhoto;
+        }()
+    }, {
+>>>>>>> fcf3456... 144 - resolved
         key: 'render',
         value: function render() {
             var album = this.props.album;
@@ -60852,6 +61190,7 @@ var Contact = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (Contact.__proto__ || Object.getPrototypeOf(Contact)).call(this));
 
+<<<<<<< HEAD
         _this.updateValueOnChange = function (e) {
             var property = e.target.name;
             var value = e.target.value;
@@ -60868,6 +61207,44 @@ var Contact = function (_Component) {
                 name = _this$state$formData.name,
                 email = _this$state$formData.email,
                 body = _this$state$formData.body;
+=======
+        _this.state = {
+            formSubmitted: false,
+            isReadOnly: false,
+            formData: {
+                name: '',
+                email: '',
+                body: ''
+            }
+        };
+
+        _this.updateValueOnChange = _this.updateValueOnChange.bind(_this);
+        _this.submitForm = _this.submitForm.bind(_this);
+        return _this;
+    }
+
+    _createClass(Contact, [{
+        key: 'updateValueOnChange',
+        value: function updateValueOnChange(e) {
+            var property = e.target.name;
+            var value = e.target.value;
+            var formData = _extends({}, this.state.formData);
+            formData[property] = value;
+
+            this.setState({ formData: formData });
+        }
+    }, {
+        key: 'submitForm',
+        value: function submitForm(e) {
+            var _this2 = this;
+
+            e.preventDefault();
+
+            var _state$formData = this.state.formData,
+                name = _state$formData.name,
+                email = _state$formData.email,
+                body = _state$formData.body;
+>>>>>>> fcf3456... 144 - resolved
 
             var token = document.querySelector('meta[name="csrf-token"]').content;
 
@@ -60879,6 +61256,7 @@ var Contact = function (_Component) {
                 },
                 body: JSON.stringify({ name: name, email: email, body: body })
             }).then(function () {
+<<<<<<< HEAD
                 _this.setState({ formSubmitted: true, isReadOnly: true }); // prevent further submissions
             });
         };
@@ -60896,6 +61274,12 @@ var Contact = function (_Component) {
     }
 
     _createClass(Contact, [{
+=======
+                _this2.setState({ formSubmitted: true, isReadOnly: true }); // prevent further submissions
+            });
+        }
+    }, {
+>>>>>>> fcf3456... 144 - resolved
         key: 'render',
         value: function render() {
             var _state = this.state,
@@ -61060,12 +61444,16 @@ var Dashboard = function (_Component) {
     _inherits(Dashboard, _Component);
 
     function Dashboard() {
+<<<<<<< HEAD
         var _this2 = this;
 
+=======
+>>>>>>> fcf3456... 144 - resolved
         _classCallCheck(this, Dashboard);
 
         var _this = _possibleConstructorReturn(this, (Dashboard.__proto__ || Object.getPrototypeOf(Dashboard)).call(this));
 
+<<<<<<< HEAD
         _this.getUser = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
             return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
                 while (1) {
@@ -61108,6 +61496,89 @@ var Dashboard = function (_Component) {
             var user_id = _this.state.user.user_id;
 
             _this.setState({ shouldDeleteAccount: false }); //hide modal
+=======
+        _this.getUser();
+
+        _this.state = {
+            user: {
+                user_id: null,
+                username: null,
+                name: null,
+                email: null,
+                created_at: null,
+                avatar_filepath: null
+            },
+            shouldDeleteAccount: false,
+            deleteAccountError: false
+        };
+
+        _this.getUser = _this.getUser.bind(_this);
+        _this.displayWarning = _this.displayWarning.bind(_this);
+        _this.resetWarning = _this.resetWarning.bind(_this);
+        _this.deleteAccount = _this.deleteAccount.bind(_this);
+        return _this;
+    }
+
+    _createClass(Dashboard, [{
+        key: 'getUser',
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+                var _this2 = this;
+
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                _context.next = 2;
+                                return fetch('/api/user').then(function (response) {
+                                    return response.json();
+                                }).then(function (user) {
+                                    user = user.data;
+                                    _this2.setState({
+                                        user: {
+                                            user_id: user.id,
+                                            username: user.username,
+                                            name: user.name,
+                                            email: user.email,
+                                            created_at: user.created_at,
+                                            avatar_filepath: user.avatar_filepath
+                                        }
+                                    });
+                                });
+
+                            case 2:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function getUser() {
+                return _ref.apply(this, arguments);
+            }
+
+            return getUser;
+        }()
+    }, {
+        key: 'displayWarning',
+        value: function displayWarning() {
+            this.setState({ shouldDeleteAccount: true });
+        }
+    }, {
+        key: 'resetWarning',
+        value: function resetWarning() {
+            this.setState({ shouldDeleteAccount: false });
+        }
+    }, {
+        key: 'deleteAccount',
+        value: function deleteAccount() {
+            var _this3 = this;
+
+            var user_id = this.state.user.user_id;
+
+            this.setState({ shouldDeleteAccount: false }); //hide modal
+>>>>>>> fcf3456... 144 - resolved
             var token = document.querySelector('meta[name="csrf-token"]').content;
 
             fetch('/user/' + user_id, {
@@ -61122,6 +61593,7 @@ var Dashboard = function (_Component) {
             }).then(function () {
                 window.location.href = "/";
             }).catch(function () {
+<<<<<<< HEAD
                 _this.setState({ deleteAccountError: true });
             });
         };
@@ -61144,6 +61616,12 @@ var Dashboard = function (_Component) {
     }
 
     _createClass(Dashboard, [{
+=======
+                _this3.setState({ deleteAccountError: true });
+            });
+        }
+    }, {
+>>>>>>> fcf3456... 144 - resolved
         key: 'render',
         value: function render() {
             var _state = this.state,
@@ -61218,19 +61696,49 @@ var Card = function (_Component) {
     _inherits(Card, _Component);
 
     function Card(props) {
+<<<<<<< HEAD
         var _this2 = this;
 
+=======
+>>>>>>> fcf3456... 144 - resolved
         _classCallCheck(this, Card);
 
         var _this = _possibleConstructorReturn(this, (Card.__proto__ || Object.getPrototypeOf(Card)).call(this, props));
 
+<<<<<<< HEAD
         _this.formatDate = function (dateObj) {
+=======
+        _this.state = {
+            changeImageLink: false,
+            uploadError: false,
+            isLoading: false
+        };
+
+        _this.displayChangeImage = _this.displayChangeImage.bind(_this);
+        _this.hideChangeImage = _this.hideChangeImage.bind(_this);
+        _this.changeImage = _this.changeImage.bind(_this);
+        _this.submitForm = _this.submitForm.bind(_this);
+        _this.toggleLoading = _this.toggleLoading.bind(_this);
+        return _this;
+    }
+
+    /**
+     * Format the 'member since' date
+     * @param {Object} dateObj 
+     */
+
+
+    _createClass(Card, [{
+        key: 'formatDate',
+        value: function formatDate(dateObj) {
+>>>>>>> fcf3456... 144 - resolved
             if (dateObj === null) {
                 return;
             }
 
             var date = new Date(dateObj);
             return __WEBPACK_IMPORTED_MODULE_2_dateformat___default()(date, 'dS mmmm, yyyy');
+<<<<<<< HEAD
         };
 
         _this.displayChangeImage = function () {
@@ -61249,12 +61757,62 @@ var Card = function (_Component) {
 
         _this.submitForm = function () {
             var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(e) {
+=======
+        }
+
+        /**
+         * Display the link 'change image' when image hovered over
+         */
+
+    }, {
+        key: 'displayChangeImage',
+        value: function displayChangeImage() {
+            this.setState({ changeImageLink: true });
+        }
+
+        /**
+         * Hide the 'change image' link on image mouseout
+         */
+
+    }, {
+        key: 'hideChangeImage',
+        value: function hideChangeImage() {
+            this.setState({ changeImageLink: false });
+        }
+
+        /**
+         * Open file dialog box
+         */
+
+    }, {
+        key: 'changeImage',
+        value: function changeImage() {
+            var form = document.forms[0];
+            var fileUpload = form.elements.file;
+            fileUpload.click();
+        }
+
+        /**
+         * Submit form if file selected for upload
+         */
+
+    }, {
+        key: 'submitForm',
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(e) {
+                var _this2 = this;
+
+>>>>>>> fcf3456... 144 - resolved
                 var user, data, token;
                 return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
+<<<<<<< HEAD
                                 user = _this.props.user;
+=======
+                                user = this.props.user;
+>>>>>>> fcf3456... 144 - resolved
 
                                 // if user not signed in, return
 
@@ -61268,7 +61826,11 @@ var Card = function (_Component) {
                             case 3:
 
                                 // display loading widget
+<<<<<<< HEAD
                                 _this.toggleLoading();
+=======
+                                this.toggleLoading();
+>>>>>>> fcf3456... 144 - resolved
 
                                 data = new FormData();
 
@@ -61284,23 +61846,36 @@ var Card = function (_Component) {
                                     },
                                     body: data
                                 }).then(function () {
+<<<<<<< HEAD
                                     _this.setState({ uploadError: false });
                                 }).catch(function () {
                                     _this.setState({ uploadError: true });
                                 }).finally(function () {
                                     _this.toggleLoading(); // remove loading spinner
+=======
+                                    _this2.setState({ uploadError: false });
+                                }).catch(function () {
+                                    _this2.setState({ uploadError: true });
+                                }).finally(function () {
+                                    _this2.toggleLoading(); // remove loading spinner
+>>>>>>> fcf3456... 144 - resolved
                                 });
 
                             case 9:
 
                                 // refresh state in order to get the new avatar
+<<<<<<< HEAD
                                 _this.props.refresh();
+=======
+                                this.props.refresh();
+>>>>>>> fcf3456... 144 - resolved
 
                             case 10:
                             case 'end':
                                 return _context.stop();
                         }
                     }
+<<<<<<< HEAD
                 }, _callee, _this2);
             }));
 
@@ -61350,6 +61925,25 @@ var Card = function (_Component) {
 
 
     _createClass(Card, [{
+=======
+                }, _callee, this);
+            }));
+
+            function submitForm(_x) {
+                return _ref.apply(this, arguments);
+            }
+
+            return submitForm;
+        }()
+    }, {
+        key: 'toggleLoading',
+        value: function toggleLoading() {
+            var isLoading = this.state.isLoading;
+
+            this.setState({ isLoading: !isLoading });
+        }
+    }, {
+>>>>>>> fcf3456... 144 - resolved
         key: 'render',
         value: function render() {
             var _React$createElement;
@@ -61992,12 +62586,16 @@ var IndividualAlbum = function (_Component) {
     _inherits(IndividualAlbum, _Component);
 
     function IndividualAlbum() {
+<<<<<<< HEAD
         var _this2 = this;
 
+=======
+>>>>>>> fcf3456... 144 - resolved
         _classCallCheck(this, IndividualAlbum);
 
         var _this = _possibleConstructorReturn(this, (IndividualAlbum.__proto__ || Object.getPrototypeOf(IndividualAlbum)).call(this));
 
+<<<<<<< HEAD
         _this.getAlbum = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
             var url, id;
             return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
@@ -62070,6 +62668,175 @@ var IndividualAlbum = function (_Component) {
 
         _this.nextAndPreviousImageIds = function (imageId) {
             var albumImages = _this.state.albumImages;
+=======
+        _this.state = {
+            user: null,
+            albumId: null,
+            albumTitle: '',
+            albumImages: null,
+            containsBackgroundImage: null,
+            editAlbumTitle: false,
+            enlargedImage: null,
+            previousImageId: null,
+            nextImageId: null,
+            deleteAlbum: false,
+            displayAlert: false,
+            alertMsg: null,
+            isLoading: false
+        };
+
+        _this.getAlbum = _this.getAlbum.bind(_this);
+        _this.getUser = _this.getUser.bind(_this);
+        _this.displayImages = _this.displayImages.bind(_this);
+        _this.enlargeImage = _this.enlargeImage.bind(_this);
+        _this.closeEnlargedImage = _this.closeEnlargedImage.bind(_this);
+        _this.nextAndPreviousImageIds = _this.nextAndPreviousImageIds.bind(_this);
+        _this.toggleAlbumEdit = _this.toggleAlbumEdit.bind(_this);
+        _this.saveAlbumTitle = _this.saveAlbumTitle.bind(_this);
+        _this.updateAlbumTitle = _this.updateAlbumTitle.bind(_this);
+        _this.toggleDeleteAlbum = _this.toggleDeleteAlbum.bind(_this);
+        _this.actionDeleteAlbum = _this.actionDeleteAlbum.bind(_this);
+        _this.updateAlbum = _this.updateAlbum.bind(_this);
+        _this.updateAlbumOnEnter = _this.updateAlbumOnEnter.bind(_this);
+        _this.closeAlertBox = _this.closeAlertBox.bind(_this);
+        _this.toggleLoading = _this.toggleLoading.bind(_this);
+        return _this;
+    }
+
+    _createClass(IndividualAlbum, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            this.getAlbum();
+            this.getUser();
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            Object(__WEBPACK_IMPORTED_MODULE_6__individualAbumSettings__["a" /* default */])();
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate() {
+            // focus on edit title input field when in DOM
+            if (document.querySelector('input[name="editAlbum"]')) {
+                document.querySelector('input[name="editAlbum"]').focus();
+            }
+        }
+
+        /**
+         * Get individual album data
+         */
+
+    }, {
+        key: 'getAlbum',
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+                var _this2 = this;
+
+                var url, id;
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                url = window.location.href;
+
+                                //display loading spinner
+
+                                this.toggleLoading();
+
+                                // find the id from the url by getting the last digit in the url (note that the url must finish with this digit)
+                                id = url.match(/\d+$/)[0];
+                                _context.next = 5;
+                                return fetch('/api/albums/' + id).then(function (response) {
+                                    return response.status === 200 && response.json();
+                                }).then(function (data) {
+                                    var albumImages = data.data.images;
+                                    var albumTitle = data.data.title;
+                                    var albumId = data.data.albumId;
+                                    var containsBackgroundImage = data.data.containsBackgroundImage;
+
+                                    _this2.setState({ albumImages: albumImages, albumTitle: albumTitle, albumId: albumId, containsBackgroundImage: containsBackgroundImage });
+                                }).finally(function () {
+                                    _this2.toggleLoading();
+                                });
+
+                            case 5:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function getAlbum() {
+                return _ref.apply(this, arguments);
+            }
+
+            return getAlbum;
+        }()
+
+        /**
+         * Get logged in user through API call
+         */
+
+    }, {
+        key: 'getUser',
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
+                var _this3 = this;
+
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                _context2.next = 2;
+                                return fetch('/api/user').then(function (response) {
+                                    return response.status === 200 && response.json();
+                                }).then(function (data) {
+                                    data = data.data;
+
+                                    if (!data) {
+                                        return;
+                                    }
+
+                                    _this3.setState({
+                                        user: {
+                                            id: data.id,
+                                            username: data.username,
+                                            name: data.name,
+                                            email: data.email,
+                                            created_at: data.created_at,
+                                            isAdmin: data.isAdmin
+                                        }
+                                    });
+                                });
+
+                            case 2:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function getUser() {
+                return _ref2.apply(this, arguments);
+            }
+
+            return getUser;
+        }()
+
+        /**
+         * Set the previous and next image ids in the state
+         * These values are used to traverse images
+         * @param int imageId 
+         */
+
+    }, {
+        key: 'nextAndPreviousImageIds',
+        value: function nextAndPreviousImageIds(imageId) {
+            var albumImages = this.state.albumImages;
+>>>>>>> fcf3456... 144 - resolved
 
 
             if (!albumImages) {
@@ -62082,11 +62849,27 @@ var IndividualAlbum = function (_Component) {
             var previousImageId = albumImages[currentImageKey - 1] && albumImages[currentImageKey - 1].id;
             var nextImageId = albumImages[currentImageKey + 1] && albumImages[currentImageKey + 1].id;
 
+<<<<<<< HEAD
             _this.setState({ previousImageId: previousImageId, nextImageId: nextImageId });
         };
 
         _this.displayImages = function () {
             var albumImages = _this.state.albumImages;
+=======
+            this.setState({ previousImageId: previousImageId, nextImageId: nextImageId });
+        }
+
+        /**
+         * Render images on the page once the api call has returned
+         */
+
+    }, {
+        key: 'displayImages',
+        value: function displayImages() {
+            var _this4 = this;
+
+            var albumImages = this.state.albumImages;
+>>>>>>> fcf3456... 144 - resolved
 
 
             if (!albumImages) {
@@ -62098,6 +62881,7 @@ var IndividualAlbum = function (_Component) {
                     'div',
                     { className: 'image', key: image.id },
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { onClick: function onClick() {
+<<<<<<< HEAD
                             return _this.enlargeImage(image.id);
                         }, src: '/storage/uploads/' + image.filepath })
                 );
@@ -62107,12 +62891,32 @@ var IndividualAlbum = function (_Component) {
         _this.enlargeImage = function () {
             var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3(imageId) {
                 var _this$state, user, nextImageId, previousImageId, enlargedImage;
+=======
+                            return _this4.enlargeImage(image.id);
+                        }, src: '/storage/uploads/' + image.filepath })
+                );
+            });
+        }
+
+        /**
+         * Enlarge image when clicked
+         * 
+         * @param {integer} imageId 
+         */
+
+    }, {
+        key: 'enlargeImage',
+        value: function () {
+            var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3(imageId) {
+                var _state, user, nextImageId, previousImageId, enlargedImage;
+>>>>>>> fcf3456... 144 - resolved
 
                 return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
                     while (1) {
                         switch (_context3.prev = _context3.next) {
                             case 0:
                                 _context3.next = 2;
+<<<<<<< HEAD
                                 return _this.nextAndPreviousImageIds(imageId);
 
                             case 2:
@@ -62124,17 +62928,35 @@ var IndividualAlbum = function (_Component) {
                                     nextImageId: nextImageId,
                                     changeImage: _this.enlargeImage,
                                     refreshAlbum: _this.getAlbum,
+=======
+                                return this.nextAndPreviousImageIds(imageId);
+
+                            case 2:
+                                _state = this.state, user = _state.user, nextImageId = _state.nextImageId, previousImageId = _state.previousImageId;
+                                enlargedImage = __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_imageModal__["a" /* default */], {
+                                    imageId: imageId,
+                                    closeModal: this.closeEnlargedImage,
+                                    previousImageId: previousImageId,
+                                    nextImageId: nextImageId,
+                                    changeImage: this.enlargeImage,
+                                    refreshAlbum: this.getAlbum,
+>>>>>>> fcf3456... 144 - resolved
                                     user: user
                                 });
 
 
+<<<<<<< HEAD
                                 _this.setState({ enlargedImage: enlargedImage });
+=======
+                                this.setState({ enlargedImage: enlargedImage });
+>>>>>>> fcf3456... 144 - resolved
 
                             case 5:
                             case 'end':
                                 return _context3.stop();
                         }
                     }
+<<<<<<< HEAD
                 }, _callee3, _this2);
             }));
 
@@ -62147,12 +62969,30 @@ var IndividualAlbum = function (_Component) {
             var _this$state2 = _this.state,
                 user = _this$state2.user,
                 editAlbumTitle = _this$state2.editAlbumTitle;
+=======
+                }, _callee3, this);
+            }));
+
+            function enlargeImage(_x) {
+                return _ref3.apply(this, arguments);
+            }
+
+            return enlargeImage;
+        }()
+    }, {
+        key: 'toggleAlbumEdit',
+        value: function toggleAlbumEdit() {
+            var _state2 = this.state,
+                user = _state2.user,
+                editAlbumTitle = _state2.editAlbumTitle;
+>>>>>>> fcf3456... 144 - resolved
 
 
             if (!user || !user.isAdmin) {
                 return;
             }
 
+<<<<<<< HEAD
             _this.setState({ editAlbumTitle: !editAlbumTitle });
         };
 
@@ -62162,12 +63002,26 @@ var IndividualAlbum = function (_Component) {
         };
 
         _this.updateAlbumOnEnter = function (e) {
+=======
+            this.setState({ editAlbumTitle: !editAlbumTitle });
+        }
+    }, {
+        key: 'updateAlbumTitle',
+        value: function updateAlbumTitle(e) {
+            var value = e.target.value;
+            this.setState({ albumTitle: value });
+        }
+    }, {
+        key: 'updateAlbumOnEnter',
+        value: function updateAlbumOnEnter(e) {
+>>>>>>> fcf3456... 144 - resolved
             var returnKey = 13;
 
             if (e.charCode !== returnKey) {
                 return;
             }
 
+<<<<<<< HEAD
             _this.updateAlbum();
         };
 
@@ -62175,6 +63029,16 @@ var IndividualAlbum = function (_Component) {
             var _this$state3 = _this.state,
                 user = _this$state3.user,
                 albumTitle = _this$state3.albumTitle;
+=======
+            this.updateAlbum();
+        }
+    }, {
+        key: 'saveAlbumTitle',
+        value: function saveAlbumTitle() {
+            var _state3 = this.state,
+                user = _state3.user,
+                albumTitle = _state3.albumTitle;
+>>>>>>> fcf3456... 144 - resolved
 
 
             if (!user.isAdmin) {
@@ -62189,6 +63053,7 @@ var IndividualAlbum = function (_Component) {
                 return;
             }
 
+<<<<<<< HEAD
             _this.toggleAlbumEdit();
         };
 
@@ -62196,12 +63061,23 @@ var IndividualAlbum = function (_Component) {
             var _this$state4 = _this.state,
                 user = _this$state4.user,
                 deleteAlbum = _this$state4.deleteAlbum;
+=======
+            this.toggleAlbumEdit();
+        }
+    }, {
+        key: 'toggleDeleteAlbum',
+        value: function toggleDeleteAlbum() {
+            var _state4 = this.state,
+                user = _state4.user,
+                deleteAlbum = _state4.deleteAlbum;
+>>>>>>> fcf3456... 144 - resolved
 
 
             if (!user.isAdmin) {
                 return;
             }
 
+<<<<<<< HEAD
             _this.setState({ deleteAlbum: !deleteAlbum });
         };
 
@@ -62210,6 +63086,19 @@ var IndividualAlbum = function (_Component) {
                 user = _this$state5.user,
                 albumId = _this$state5.albumId,
                 containsBackgroundImage = _this$state5.containsBackgroundImage;
+=======
+            this.setState({ deleteAlbum: !deleteAlbum });
+        }
+    }, {
+        key: 'actionDeleteAlbum',
+        value: function actionDeleteAlbum() {
+            var _this5 = this;
+
+            var _state5 = this.state,
+                user = _state5.user,
+                albumId = _state5.albumId,
+                containsBackgroundImage = _state5.containsBackgroundImage;
+>>>>>>> fcf3456... 144 - resolved
 
 
             if (!user.isAdmin) {
@@ -62218,6 +63107,7 @@ var IndividualAlbum = function (_Component) {
 
             if (containsBackgroundImage) {
                 var alertMsg = "You cannot delete this album as one of the images is the homepage background";
+<<<<<<< HEAD
                 _this.setState({ displayAlert: true, alertMsg: alertMsg });
                 return;
             }
@@ -62225,6 +63115,15 @@ var IndividualAlbum = function (_Component) {
             _this.toggleLoading();
 
             _this.setState({ deleteAlbum: false });
+=======
+                this.setState({ displayAlert: true, alertMsg: alertMsg });
+                return;
+            }
+
+            this.toggleLoading();
+
+            this.setState({ deleteAlbum: false });
+>>>>>>> fcf3456... 144 - resolved
             var token = document.querySelector('meta[name="csrf-token"]').content;
 
             fetch('/api/delete_album/' + albumId, {
@@ -62238,6 +63137,7 @@ var IndividualAlbum = function (_Component) {
                 window.location.replace("/albums");
             }).catch(function () {
                 var alertMsg = "Sorry, something went wrong and the album could not be deleted. Please try again";
+<<<<<<< HEAD
                 _this.setState({ displayAlert: true, alertMsg: alertMsg });
             }).finally(function () {
                 _this.toggleLoading();
@@ -62254,6 +63154,31 @@ var IndividualAlbum = function (_Component) {
                 albumTitle = _this$state6.albumTitle,
                 editAlbumTitle = _this$state6.editAlbumTitle,
                 albumId = _this$state6.albumId;
+=======
+                _this5.setState({ displayAlert: true, alertMsg: alertMsg });
+            }).finally(function () {
+                _this5.toggleLoading();
+            });
+        }
+
+        /**
+         * Close the enlarged image
+         */
+
+    }, {
+        key: 'closeEnlargedImage',
+        value: function closeEnlargedImage() {
+            this.setState({ enlargedImage: null });
+        }
+    }, {
+        key: 'updateAlbum',
+        value: function updateAlbum() {
+            var _state6 = this.state,
+                user = _state6.user,
+                albumTitle = _state6.albumTitle,
+                editAlbumTitle = _state6.editAlbumTitle,
+                albumId = _state6.albumId;
+>>>>>>> fcf3456... 144 - resolved
 
 
             if (!user.isAdmin) {
@@ -62270,7 +63195,11 @@ var IndividualAlbum = function (_Component) {
                 return;
             }
 
+<<<<<<< HEAD
             _this.setState({ editAlbumTitle: false });
+=======
+            this.setState({ editAlbumTitle: false });
+>>>>>>> fcf3456... 144 - resolved
 
             var token = document.querySelector('meta[name="csrf-token"]').content;
 
@@ -62288,6 +63217,7 @@ var IndividualAlbum = function (_Component) {
                 redirect: 'follow'
             });
 
+<<<<<<< HEAD
             _this.getAlbum();
         };
 
@@ -62384,6 +63314,34 @@ var IndividualAlbum = function (_Component) {
                 displayAlert = _state.displayAlert,
                 alertMsg = _state.alertMsg,
                 isLoading = _state.isLoading;
+=======
+            this.getAlbum();
+        }
+    }, {
+        key: 'closeAlertBox',
+        value: function closeAlertBox() {
+            this.setState({ displayAlert: false });
+        }
+    }, {
+        key: 'toggleLoading',
+        value: function toggleLoading() {
+            var isLoading = this.state.isLoading;
+
+            this.setState({ isLoading: !isLoading });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _state7 = this.state,
+                user = _state7.user,
+                albumTitle = _state7.albumTitle,
+                enlargedImage = _state7.enlargedImage,
+                editAlbumTitle = _state7.editAlbumTitle,
+                deleteAlbum = _state7.deleteAlbum,
+                displayAlert = _state7.displayAlert,
+                alertMsg = _state7.alertMsg,
+                isLoading = _state7.isLoading;
+>>>>>>> fcf3456... 144 - resolved
 
             var albumTitleState = void 0;
 
@@ -62502,12 +63460,16 @@ var ImageModal = function (_Component) {
     _inherits(ImageModal, _Component);
 
     function ImageModal(props) {
+<<<<<<< HEAD
         var _this2 = this;
 
+=======
+>>>>>>> fcf3456... 144 - resolved
         _classCallCheck(this, ImageModal);
 
         var _this = _possibleConstructorReturn(this, (ImageModal.__proto__ || Object.getPrototypeOf(ImageModal)).call(this, props));
 
+<<<<<<< HEAD
         _this.fadeOutHeader = function () {
             var imageHeader = document.querySelector('.image-information');
             imageHeader.style.opacity = 0;
@@ -62523,6 +63485,107 @@ var ImageModal = function (_Component) {
         _this.doesUserLikePhoto = function () {
             var users_which_like = _this.state.imageDetails.users_which_like;
             var user = _this.state.user;
+=======
+        _this.getImageData(_this.props.imageId);
+
+        _this.state = {
+            user: _this.props.user,
+            imageDetails: {
+                album_id: null,
+                created_at: null,
+                filepath: null,
+                id: null,
+                title: null,
+                description: null,
+                updated_at: null,
+                album_cover_photo: null,
+                homepage_background: null,
+                users_which_like: null,
+                displayModal: false,
+                displayAlert: false,
+                alertMsg: '',
+                total_likes: 0,
+                total_comments: 0,
+                comments: null
+            },
+            hasUserLiked: false,
+            displaySettings: false,
+            editPhoto: false,
+            photoZoomed: false,
+            displayCommentsModal: false,
+            isLoading: false
+        };
+
+        _this.fadeOutHeader = _this.fadeOutHeader.bind(_this);
+        _this.fadeInHeader = _this.fadeInHeader.bind(_this);
+        _this.getImageData = _this.getImageData.bind(_this);
+        _this.likePhoto = _this.likePhoto.bind(_this);
+        _this.doesUserLikePhoto = _this.doesUserLikePhoto.bind(_this);
+        _this.toggleDisplaySettings = _this.toggleDisplaySettings.bind(_this);
+        _this.toggleDisplayModal = _this.toggleDisplayModal.bind(_this);
+        _this.actionDelete = _this.actionDelete.bind(_this);
+        _this.toggleEditPhoto = _this.toggleEditPhoto.bind(_this);
+        _this.stopEditPhoto = _this.stopEditPhoto.bind(_this);
+        _this.changeInput = _this.changeInput.bind(_this);
+        _this.saveOnEnter = _this.saveOnEnter.bind(_this);
+        _this.updateImageDetails = _this.updateImageDetails.bind(_this);
+        _this.setDirection = _this.setDirection.bind(_this);
+        _this.navigate = _this.navigate.bind(_this);
+        _this.toggleZoom = _this.toggleZoom.bind(_this);
+        _this.hideAlert = _this.hideAlert.bind(_this);
+        _this.displayCommentsModal = _this.displayCommentsModal.bind(_this);
+        _this.hideCommentsModal = _this.hideCommentsModal.bind(_this);
+        _this.alertChange = _this.alertChange.bind(_this);
+        return _this;
+    }
+
+    _createClass(ImageModal, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            // function imported at the top of this file
+            Object(__WEBPACK_IMPORTED_MODULE_2__modalSettings__["a" /* default */])();
+
+            // set up event listeners for photo traversing using arrow keys
+            document.addEventListener('keydown', this.setDirection);
+
+            // fade out image header with title and description
+            setTimeout(function () {
+                return _this2.fadeOutHeader();
+            }, 1000);
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            // remove event listeners
+            document.removeEventListener('keydown', this.setDirection);
+        }
+    }, {
+        key: 'fadeOutHeader',
+        value: function fadeOutHeader() {
+            var imageHeader = document.querySelector('.image-information');
+            imageHeader.style.opacity = 0;
+            imageHeader.style.transition = "opacity 2s";
+        }
+    }, {
+        key: 'fadeInHeader',
+        value: function fadeInHeader() {
+            var imageHeader = document.querySelector('.image-information');
+            imageHeader.style.opacity = 1;
+            imageHeader.style.transition = "opacity 0.2s";
+        }
+
+        /**
+         * Check whether the user likes the photo
+         */
+
+    }, {
+        key: 'doesUserLikePhoto',
+        value: function doesUserLikePhoto() {
+            var users_which_like = this.state.imageDetails.users_which_like;
+            var user = this.state.user;
+>>>>>>> fcf3456... 144 - resolved
 
 
             if (!users_which_like || !user) {
@@ -62532,11 +63595,27 @@ var ImageModal = function (_Component) {
             var doesUserLike = users_which_like.find(function (like) {
                 return user.id === like;
             });
+<<<<<<< HEAD
             _this.setState({ hasUserLiked: doesUserLike });
         };
 
         _this.getImageData = function () {
             var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(imageId) {
+=======
+            this.setState({ hasUserLiked: doesUserLike });
+        }
+
+        /**
+         * fetch the individual photo data via an API
+         */
+
+    }, {
+        key: 'getImageData',
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(imageId) {
+                var _this3 = this;
+
+>>>>>>> fcf3456... 144 - resolved
                 return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -62546,10 +63625,17 @@ var ImageModal = function (_Component) {
                                     return response.status === 200 && response.json();
                                 }).then(function (data) {
                                     var imageDetails = data.data;
+<<<<<<< HEAD
                                     _this.setState({ imageDetails: imageDetails });
 
                                     // After collecting the data, check whether the current user has liked the photo
                                     _this.doesUserLikePhoto();
+=======
+                                    _this3.setState({ imageDetails: imageDetails });
+
+                                    // After collecting the data, check whether the current user has liked the photo
+                                    _this3.doesUserLikePhoto();
+>>>>>>> fcf3456... 144 - resolved
                                 });
 
                             case 2:
@@ -62557,6 +63643,7 @@ var ImageModal = function (_Component) {
                                 return _context.stop();
                         }
                     }
+<<<<<<< HEAD
                 }, _callee, _this2);
             }));
 
@@ -62568,6 +63655,29 @@ var ImageModal = function (_Component) {
         _this.likePhoto = function () {
             var imageId = _this.props.imageId;
             var user = _this.state.user;
+=======
+                }, _callee, this);
+            }));
+
+            function getImageData(_x) {
+                return _ref.apply(this, arguments);
+            }
+
+            return getImageData;
+        }()
+
+        /**
+         * Store photo like in database
+         */
+
+    }, {
+        key: 'likePhoto',
+        value: function likePhoto() {
+            var _this4 = this;
+
+            var imageId = this.props.imageId;
+            var user = this.state.user;
+>>>>>>> fcf3456... 144 - resolved
 
             // if user is not logged in, return
 
@@ -62576,7 +63686,11 @@ var ImageModal = function (_Component) {
                 return;
             }
 
+<<<<<<< HEAD
             _this.toggleLoading();
+=======
+            this.toggleLoading();
+>>>>>>> fcf3456... 144 - resolved
 
             var token = document.querySelector('meta[name="csrf-token"]').content;
 
@@ -62595,6 +63709,7 @@ var ImageModal = function (_Component) {
                     'photo_id': imageId
                 })
             }).finally(function () {
+<<<<<<< HEAD
                 _this.toggleLoading();
             });
 
@@ -62606,12 +63721,27 @@ var ImageModal = function (_Component) {
             var _this$state = _this.state,
                 user = _this$state.user,
                 displaySettings = _this$state.displaySettings;
+=======
+                _this4.toggleLoading();
+            });
+
+            // get updated image data in order to immediately refresh the view and update the state
+            this.getImageData(imageId);
+        }
+    }, {
+        key: 'toggleDisplaySettings',
+        value: function toggleDisplaySettings() {
+            var _state = this.state,
+                user = _state.user,
+                displaySettings = _state.displaySettings;
+>>>>>>> fcf3456... 144 - resolved
 
 
             if (!user || !user.isAdmin) {
                 return;
             }
 
+<<<<<<< HEAD
             _this.setState({ displaySettings: !displaySettings });
         };
 
@@ -62700,12 +63830,126 @@ var ImageModal = function (_Component) {
             var _this$state2 = _this.state,
                 user = _this$state2.user,
                 editPhoto = _this$state2.editPhoto;
+=======
+            this.setState({ displaySettings: !displaySettings });
+        }
+
+        /**
+         * Display the modal confirming whether the user wishes to delete the photo
+         */
+
+    }, {
+        key: 'toggleDisplayModal',
+        value: function toggleDisplayModal() {
+            var displayModal = this.state.displayModal;
+
+            this.setState({ displayModal: !displayModal });
+        }
+
+        /**
+         * Delete the photo from the DB and storage
+         */
+
+    }, {
+        key: 'actionDelete',
+        value: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
+                var _this5 = this;
+
+                var user, _state$imageDetails, album_cover_photo, homepage_background, _props, imageId, closeModal, refreshAlbum, token, alertMsg;
+
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+                    while (1) {
+                        switch (_context2.prev = _context2.next) {
+                            case 0:
+                                user = this.state.user;
+
+                                if (!(!user || !user.isAdmin)) {
+                                    _context2.next = 3;
+                                    break;
+                                }
+
+                                return _context2.abrupt('return');
+
+                            case 3:
+                                _state$imageDetails = this.state.imageDetails, album_cover_photo = _state$imageDetails.album_cover_photo, homepage_background = _state$imageDetails.homepage_background;
+                                _props = this.props, imageId = _props.imageId, closeModal = _props.closeModal, refreshAlbum = _props.refreshAlbum;
+                                token = document.querySelector('meta[name="csrf-token"]').content;
+                                alertMsg = null;
+
+                                if (!album_cover_photo) {
+                                    _context2.next = 11;
+                                    break;
+                                }
+
+                                alertMsg = 'You cannot delete this photo as it is the album cover';
+                                this.setState({ displayAlert: true, alertMsg: alertMsg });
+                                return _context2.abrupt('return');
+
+                            case 11:
+                                if (!homepage_background) {
+                                    _context2.next = 15;
+                                    break;
+                                }
+
+                                alertMsg = 'You cannot delete this photo as it is the homepage background image';
+                                this.setState({ displayAlert: true, alertMsg: alertMsg });
+                                return _context2.abrupt('return');
+
+                            case 15:
+
+                                this.toggleLoading();
+
+                                _context2.next = 18;
+                                return fetch('/api/delete_photo/' + imageId, {
+                                    method: 'DELETE',
+                                    redirect: 'follow',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Accept': 'application/json',
+                                        'token': token,
+                                        'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
+                                    }
+                                }).then(function () {
+                                    // reset state
+                                    _this5.setState({ displayAlert: false });
+                                    _this5.toggleDisplayModal();
+                                    closeModal();
+                                    refreshAlbum();
+                                }).catch(function () {
+                                    alertMsg = 'There was an error deleting the image. Please try again';
+                                    _this5.setState({ displayAlert: true, alertMsg: alertMsg });
+                                    _this5.toggleLoading();
+                                });
+
+                            case 18:
+                            case 'end':
+                                return _context2.stop();
+                        }
+                    }
+                }, _callee2, this);
+            }));
+
+            function actionDelete() {
+                return _ref2.apply(this, arguments);
+            }
+
+            return actionDelete;
+        }()
+    }, {
+        key: 'toggleEditPhoto',
+        value: function toggleEditPhoto() {
+            var _state2 = this.state,
+                user = _state2.user,
+                editPhoto = _state2.editPhoto;
+>>>>>>> fcf3456... 144 - resolved
 
 
             if (!user || !user.isAdmin) {
                 return;
             }
 
+<<<<<<< HEAD
             if (!editPhoto) {
                 _this.fadeInHeader();
             }
@@ -62715,6 +63959,21 @@ var ImageModal = function (_Component) {
 
         _this.stopEditPhoto = function (e) {
             var editPhoto = _this.state.editPhoto;
+=======
+            this.setState({ editPhoto: !editPhoto });
+        }
+
+        /**
+         * Set editPhoto state value to false when user clicks outside of text input boxes
+         * Save any changes
+         * @param {event} e 
+         */
+
+    }, {
+        key: 'stopEditPhoto',
+        value: function stopEditPhoto(e) {
+            var editPhoto = this.state.editPhoto;
+>>>>>>> fcf3456... 144 - resolved
 
 
             if (!editPhoto) {
@@ -62725,6 +63984,7 @@ var ImageModal = function (_Component) {
                 return;
             }
 
+<<<<<<< HEAD
             editPhoto && _this.setState({ editPhoto: false });
 
             // update image details in database via API call
@@ -62736,6 +63996,20 @@ var ImageModal = function (_Component) {
                 title = _this$state$imageDeta2.title,
                 description = _this$state$imageDeta2.description;
             var imageDetails = _this.state.imageDetails;
+=======
+            editPhoto && this.setState({ editPhoto: false });
+
+            // update image details in database via API call
+            this.updateImageDetails();
+        }
+    }, {
+        key: 'changeInput',
+        value: function changeInput(e) {
+            var _state$imageDetails2 = this.state.imageDetails,
+                title = _state$imageDetails2.title,
+                description = _state$imageDetails2.description;
+            var imageDetails = this.state.imageDetails;
+>>>>>>> fcf3456... 144 - resolved
 
             var titleValue = title;
             var descriptionValue = description;
@@ -62752,33 +64026,62 @@ var ImageModal = function (_Component) {
                     break;
             }
 
+<<<<<<< HEAD
             _this.setState({
+=======
+            this.setState({
+>>>>>>> fcf3456... 144 - resolved
                 imageDetails: _extends({}, imageDetails, {
                     title: titleValue,
                     description: descriptionValue
                 })
             });
+<<<<<<< HEAD
         };
 
         _this.saveOnEnter = function (e) {
+=======
+        }
+    }, {
+        key: 'saveOnEnter',
+        value: function saveOnEnter(e) {
+>>>>>>> fcf3456... 144 - resolved
             var enterKeyCharCode = 13;
 
             if (e.keyCode !== enterKeyCharCode) {
                 return;
             }
 
+<<<<<<< HEAD
             _this.updateImageDetails();
             _this.toggleEditPhoto();
         };
 
         _this.updateImageDetails = function () {
             var user = _this.state.user;
+=======
+            this.updateImageDetails();
+            this.toggleEditPhoto();
+        }
+
+        /**
+         * Update image details via API
+         */
+
+    }, {
+        key: 'updateImageDetails',
+        value: function updateImageDetails() {
+            var _this6 = this;
+
+            var user = this.state.user;
+>>>>>>> fcf3456... 144 - resolved
 
 
             if (!user || !user.isAdmin) {
                 return;
             }
 
+<<<<<<< HEAD
             var _this$state$imageDeta3 = _this.state.imageDetails,
                 title = _this$state$imageDeta3.title,
                 description = _this$state$imageDeta3.description;
@@ -62787,6 +64090,16 @@ var ImageModal = function (_Component) {
             var token = document.querySelector('meta[name="csrf-token"]').content;
 
             _this.toggleLoading();
+=======
+            var _state$imageDetails3 = this.state.imageDetails,
+                title = _state$imageDetails3.title,
+                description = _state$imageDetails3.description;
+            var imageId = this.props.imageId;
+
+            var token = document.querySelector('meta[name="csrf-token"]').content;
+
+            this.toggleLoading();
+>>>>>>> fcf3456... 144 - resolved
 
             fetch('/api/update_photo/' + imageId, {
                 method: 'POST',
@@ -62801,15 +64114,25 @@ var ImageModal = function (_Component) {
                     description: description
                 })
             }).finally(function () {
+<<<<<<< HEAD
                 _this.toggleLoading();
             });
         };
 
         _this.setDirection = function (e) {
+=======
+                _this6.toggleLoading();
+            });
+        }
+    }, {
+        key: 'setDirection',
+        value: function setDirection(e) {
+>>>>>>> fcf3456... 144 - resolved
             var leftArrowCode = 37;
             var rightArrowCode = 39;
 
             if (e.keyCode === leftArrowCode) {
+<<<<<<< HEAD
                 _this.navigate('left');
             } else if (e.keyCode === rightArrowCode) {
                 _this.navigate('right');
@@ -62824,6 +64147,29 @@ var ImageModal = function (_Component) {
                 nextImageId = _this$props2.nextImageId,
                 changeImage = _this$props2.changeImage,
                 closeModal = _this$props2.closeModal;
+=======
+                this.navigate('left');
+            } else if (e.keyCode === rightArrowCode) {
+                this.navigate('right');
+            } else {
+                return;
+            }
+        }
+
+        /**
+         * Navigate between images in album
+         * @param {string} direction 
+         */
+
+    }, {
+        key: 'navigate',
+        value: function navigate(direction) {
+            var _props2 = this.props,
+                previousImageId = _props2.previousImageId,
+                nextImageId = _props2.nextImageId,
+                changeImage = _props2.changeImage,
+                closeModal = _props2.closeModal;
+>>>>>>> fcf3456... 144 - resolved
 
 
             if (direction === 'left' && previousImageId) {
@@ -62833,6 +64179,7 @@ var ImageModal = function (_Component) {
                 closeModal();
                 changeImage(nextImageId);
             }
+<<<<<<< HEAD
         };
 
         _this.toggleZoom = function () {
@@ -62984,6 +64331,67 @@ var ImageModal = function (_Component) {
                 alertMsg = _state.alertMsg,
                 displayCommentsModal = _state.displayCommentsModal,
                 isLoading = _state.isLoading;
+=======
+        }
+
+        // toggle zoom on image click
+
+    }, {
+        key: 'toggleZoom',
+        value: function toggleZoom() {
+            var photoZoomed = this.state.photoZoomed;
+
+            this.setState({ photoZoomed: !photoZoomed });
+        }
+    }, {
+        key: 'hideAlert',
+        value: function hideAlert() {
+            this.setState({ displayAlert: false });
+        }
+    }, {
+        key: 'displayCommentsModal',
+        value: function displayCommentsModal() {
+            this.setState({ displayCommentsModal: true });
+        }
+    }, {
+        key: 'hideCommentsModal',
+        value: function hideCommentsModal() {
+            this.setState({ displayCommentsModal: false });
+        }
+    }, {
+        key: 'alertChange',
+        value: function alertChange(alertMsg) {
+            this.setState({ displayAlert: true, alertMsg: alertMsg });
+        }
+    }, {
+        key: 'toggleLoading',
+        value: function toggleLoading() {
+            var isLoading = this.state.isLoading;
+
+            this.setState({ isLoading: !isLoading });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this7 = this;
+
+            var _props3 = this.props,
+                closeModal = _props3.closeModal,
+                previousImageId = _props3.previousImageId,
+                nextImageId = _props3.nextImageId;
+            var _state3 = this.state,
+                user = _state3.user,
+                imageDetails = _state3.imageDetails,
+                hasUserLiked = _state3.hasUserLiked,
+                displaySettings = _state3.displaySettings,
+                displayModal = _state3.displayModal,
+                editPhoto = _state3.editPhoto,
+                photoZoomed = _state3.photoZoomed,
+                displayAlert = _state3.displayAlert,
+                alertMsg = _state3.alertMsg,
+                displayCommentsModal = _state3.displayCommentsModal,
+                isLoading = _state3.isLoading;
+>>>>>>> fcf3456... 144 - resolved
 
 
             var thumbsUpStyle = null,
@@ -63019,7 +64427,11 @@ var ImageModal = function (_Component) {
                     {
                         className: 'imageModal-wrapper',
                         onClick: function onClick(e) {
+<<<<<<< HEAD
                             _this4.stopEditPhoto(e);
+=======
+                            _this7.stopEditPhoto(e);
+>>>>>>> fcf3456... 144 - resolved
                         }
                     },
                     isLoading && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__global_components_loadingWidget__["a" /* default */], null),
@@ -63045,25 +64457,42 @@ var ImageModal = function (_Component) {
                                 'div',
                                 { className: 'image-input' },
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', {
+<<<<<<< HEAD
                                     name: 'title',
+=======
+>>>>>>> fcf3456... 144 - resolved
                                     type: 'text',
                                     placeholder: 'Title...',
                                     value: imageDetails.title ? imageDetails.title.toUpperCase() : '',
                                     onChange: function onChange(e) {
+<<<<<<< HEAD
                                         _this4.changeInput(e);
                                     },
                                     onKeyDown: function onKeyDown(e) {
                                         _this4.saveOnEnter(e);
+=======
+                                        _this7.changeInput(e);
+                                    },
+                                    onKeyDown: function onKeyDown(e) {
+                                        _this7.saveOnEnter(e);
+>>>>>>> fcf3456... 144 - resolved
                                     }
                                 }),
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('textarea', {
                                     placeholder: 'Description...',
                                     value: imageDetails.description ? imageDetails.description : '',
                                     onChange: function onChange(e) {
+<<<<<<< HEAD
                                         _this4.changeInput(e);
                                     },
                                     onKeyDown: function onKeyDown(e) {
                                         _this4.saveOnEnter(e);
+=======
+                                        _this7.changeInput(e);
+                                    },
+                                    onKeyDown: function onKeyDown(e) {
+                                        _this7.saveOnEnter(e);
+>>>>>>> fcf3456... 144 - resolved
                                     }
                                 })
                             ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -63089,7 +64518,11 @@ var ImageModal = function (_Component) {
                                 {
                                     className: 'arrow left-arrow',
                                     onClick: function onClick() {
+<<<<<<< HEAD
                                         return _this4.navigate('left');
+=======
+                                        return _this7.navigate('left');
+>>>>>>> fcf3456... 144 - resolved
                                     }
                                 },
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-chevron-left' })
@@ -63105,7 +64538,11 @@ var ImageModal = function (_Component) {
                                 {
                                     className: 'arrow right-arrow',
                                     onClick: function onClick() {
+<<<<<<< HEAD
                                         return _this4.navigate('right');
+=======
+                                        return _this7.navigate('right');
+>>>>>>> fcf3456... 144 - resolved
                                     }
                                 },
                                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('i', { className: 'fas fa-chevron-right' })
@@ -63266,6 +64703,7 @@ var Settings = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (Settings.__proto__ || Object.getPrototypeOf(Settings)).call(this));
 
+<<<<<<< HEAD
         _this.hideSettings = function () {
             _this.setState({ displaySettings: false });
         };
@@ -63273,6 +64711,36 @@ var Settings = function (_Component) {
         _this.setAlbumCover = function () {
             var id = _this.props.imageDetails.id;
             var token = _this.state.token;
+=======
+        _this.state = (_this$state = {
+            displaySettings: true,
+            editPhoto: false
+        }, _defineProperty(_this$state, 'displaySettings', true), _defineProperty(_this$state, 'token', document.querySelector('meta[name="csrf-token"]').content), _this$state);
+
+        _this.hideSettings = _this.hideSettings.bind(_this);
+        _this.setAlbumCover = _this.setAlbumCover.bind(_this);
+        _this.setHomepageCover = _this.setHomepageCover.bind(_this);
+        return _this;
+    }
+
+    _createClass(Settings, [{
+        key: 'hideSettings',
+        value: function hideSettings() {
+            this.setState({ displaySettings: false });
+        }
+
+        /**
+         * Set the album cover to the currently selected photo
+         */
+
+    }, {
+        key: 'setAlbumCover',
+        value: function setAlbumCover() {
+            var _this2 = this;
+
+            var id = this.props.imageDetails.id;
+            var token = this.state.token;
+>>>>>>> fcf3456... 144 - resolved
 
 
             fetch('/api/update_cover_photo/' + id, {
@@ -63285,6 +64753,7 @@ var Settings = function (_Component) {
                 }
             }).then(function () {
                 var alertMsg = "The album cover has been changed successfully.";
+<<<<<<< HEAD
                 _this.props.alertChange(alertMsg);
             }).catch(function () {
                 var alertMsg = "Sorry, something went wrong, please try again.";
@@ -63297,6 +64766,23 @@ var Settings = function (_Component) {
         _this.setHomepageCover = function () {
             var id = _this.props.imageDetails.id;
             var token = _this.state.token;
+=======
+                _this2.props.alertChange(alertMsg);
+            }).catch(function () {
+                var alertMsg = "Sorry, something went wrong, please try again.";
+                _this2.props.alertChange(alertMsg);
+            });
+
+            this.hideSettings();
+        }
+    }, {
+        key: 'setHomepageCover',
+        value: function setHomepageCover() {
+            var _this3 = this;
+
+            var id = this.props.imageDetails.id;
+            var token = this.state.token;
+>>>>>>> fcf3456... 144 - resolved
 
 
             fetch('/api/background_image/' + id, {
@@ -63309,6 +64795,7 @@ var Settings = function (_Component) {
                 }
             }).then(function () {
                 var alertMsg = "The homepage background has been changed successfully.";
+<<<<<<< HEAD
                 _this.props.alertChange(alertMsg);
             }).catch(function () {
                 var alertMsg = "Sorry, something went wrong, please try again.";
@@ -63329,6 +64816,15 @@ var Settings = function (_Component) {
 
 
     _createClass(Settings, [{
+=======
+                _this3.props.alertChange(alertMsg);
+            }).catch(function () {
+                var alertMsg = "Sorry, something went wrong, please try again.";
+                _this3.props.alertChange(alertMsg);
+            });
+        }
+    }, {
+>>>>>>> fcf3456... 144 - resolved
         key: 'render',
         value: function render() {
             var displaySettings = this.state.displaySettings;
@@ -63406,10 +64902,41 @@ var Comments = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (Comments.__proto__ || Object.getPrototypeOf(Comments)).call(this));
 
+<<<<<<< HEAD
         _this.onChangeMessage = function (e) {
             var _this$state = _this.state,
                 charactersRemaining = _this$state.charactersRemaining,
                 characterLimit = _this$state.characterLimit;
+=======
+        _this.state = {
+            commentMessage: '',
+            characterLimit: 250,
+            charactersRemaining: 250,
+            isLoading: false
+        };
+
+        _this.onChangeMessage = _this.onChangeMessage.bind(_this);
+        _this.postMessage = _this.postMessage.bind(_this);
+        _this.postMessageOnEnter = _this.postMessageOnEnter.bind(_this);
+        _this.renderComments = _this.renderComments.bind(_this);
+        _this.deleteComment = _this.deleteComment.bind(_this);
+        _this.toggleLoading = _this.toggleLoading.bind(_this);
+        return _this;
+    }
+
+    /**
+     * Update comments message and character counter on change
+     * @param {event} e 
+     */
+
+
+    _createClass(Comments, [{
+        key: 'onChangeMessage',
+        value: function onChangeMessage(e) {
+            var _state = this.state,
+                charactersRemaining = _state.charactersRemaining,
+                characterLimit = _state.characterLimit;
+>>>>>>> fcf3456... 144 - resolved
 
             var value = e.target.value;
             var charactersLeft = characterLimit - value.length;
@@ -63418,16 +64945,31 @@ var Comments = function (_Component) {
                 return;
             }
 
+<<<<<<< HEAD
             _this.setState({ commentMessage: value, charactersRemaining: charactersLeft });
         };
 
         _this.postMessageOnEnter = function (e) {
+=======
+            this.setState({ commentMessage: value, charactersRemaining: charactersLeft });
+        }
+
+        /**
+         * Post message when user presses the enter key
+         * @param {event} e 
+         */
+
+    }, {
+        key: 'postMessageOnEnter',
+        value: function postMessageOnEnter(e) {
+>>>>>>> fcf3456... 144 - resolved
             var enterKeyCode = 13;
 
             if (e.keyCode !== enterKeyCode) {
                 return;
             }
 
+<<<<<<< HEAD
             _this.postMessage();
         };
 
@@ -63435,6 +64977,18 @@ var Comments = function (_Component) {
             var _this$props = _this.props,
                 user = _this$props.user,
                 imageDetails = _this$props.imageDetails;
+=======
+            this.postMessage();
+        }
+    }, {
+        key: 'postMessage',
+        value: function postMessage() {
+            var _this2 = this;
+
+            var _props = this.props,
+                user = _props.user,
+                imageDetails = _props.imageDetails;
+>>>>>>> fcf3456... 144 - resolved
 
 
             if (!user) {
@@ -63442,7 +64996,11 @@ var Comments = function (_Component) {
             }
 
             var token = document.querySelector('meta[name="csrf-token"]').content;
+<<<<<<< HEAD
             var commentMessage = _this.state.commentMessage;
+=======
+            var commentMessage = this.state.commentMessage;
+>>>>>>> fcf3456... 144 - resolved
 
             // return if comment is empty string
 
@@ -63450,7 +65008,11 @@ var Comments = function (_Component) {
                 return;
             }
 
+<<<<<<< HEAD
             _this.toggleLoading();
+=======
+            this.toggleLoading();
+>>>>>>> fcf3456... 144 - resolved
 
             fetch('/api/post_comment/' + imageDetails.id, {
                 method: 'POST',
@@ -63465,6 +65027,7 @@ var Comments = function (_Component) {
                     'post': commentMessage
                 })
             }).then(function () {
+<<<<<<< HEAD
                 var characterLimit = _this.state.characterLimit;
 
                 _this.setState({ commentMessage: '', charactersRemaining: characterLimit });
@@ -63478,6 +65041,30 @@ var Comments = function (_Component) {
 
         _this.renderComments = function () {
             var imageDetails = _this.props.imageDetails;
+=======
+                var characterLimit = _this2.state.characterLimit;
+
+                _this2.setState({ commentMessage: '', charactersRemaining: characterLimit });
+
+                // Refresh details to display most up to date comments
+                _this2.props.refresh(imageDetails.id);
+            }).finally(function () {
+                _this2.toggleLoading();
+            });
+        }
+
+        /**
+         * loops through and styles each comment in appropriate jsx in order to display in render function
+         * @return JSX which is used to render each comment in render function
+         */
+
+    }, {
+        key: 'renderComments',
+        value: function renderComments() {
+            var _this3 = this;
+
+            var imageDetails = this.props.imageDetails;
+>>>>>>> fcf3456... 144 - resolved
 
 
             return imageDetails.comments.map(function (comment, index) {
@@ -63516,15 +65103,24 @@ var Comments = function (_Component) {
                             ),
                             comment.post_text
                         ),
+<<<<<<< HEAD
                         _this.props.user && _this.props.user.id === comment.user_id && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             { className: 'delete-comment' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-trash-alt', onClick: function onClick() {
                                     return _this.deleteComment(comment.id);
+=======
+                        _this3.props.user && _this3.props.user.id === comment.user_id && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'delete-comment' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-trash-alt', onClick: function onClick() {
+                                    return _this3.deleteComment(comment.id);
+>>>>>>> fcf3456... 144 - resolved
                                 } })
                         )
                     )
                 );
+<<<<<<< HEAD
             }, _this);
         };
 
@@ -63532,6 +65128,23 @@ var Comments = function (_Component) {
             var token = document.querySelector('meta[name="csrf-token"]').content;
 
             _this.toggleLoading();
+=======
+            }, this);
+        }
+
+        /**
+         * @param int postId 
+         */
+
+    }, {
+        key: 'deleteComment',
+        value: function deleteComment(postId) {
+            var _this4 = this;
+
+            var token = document.querySelector('meta[name="csrf-token"]').content;
+
+            this.toggleLoading();
+>>>>>>> fcf3456... 144 - resolved
 
             fetch('/api/delete_comment/' + postId, {
                 method: 'Delete',
@@ -63540,6 +65153,7 @@ var Comments = function (_Component) {
                     'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
                 }
             }).finally(function () {
+<<<<<<< HEAD
                 _this.toggleLoading();
             });
 
@@ -63598,6 +65212,34 @@ var Comments = function (_Component) {
             var _props = this.props,
                 user = _props.user,
                 close = _props.close;
+=======
+                _this4.toggleLoading();
+            });
+
+            // Refresh details to display most up to date comments
+            var id = this.props.imageDetails.id;
+
+            this.props.refresh(id);
+        }
+    }, {
+        key: 'toggleLoading',
+        value: function toggleLoading() {
+            var isLoading = this.state.isLoading;
+
+            this.setState({ isLoading: !isLoading });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _state2 = this.state,
+                commentMessage = _state2.commentMessage,
+                charactersRemaining = _state2.charactersRemaining,
+                characterLimit = _state2.characterLimit,
+                isLoading = _state2.isLoading;
+            var _props2 = this.props,
+                user = _props2.user,
+                close = _props2.close;
+>>>>>>> fcf3456... 144 - resolved
 
             var comments = this.renderComments();
 
@@ -63730,5 +65372,56 @@ function setHeightOfAlbumPage() {
 
 // removed by extract-text-webpack-plugin
 
+<<<<<<< HEAD
+=======
+/***/ }),
+/* 73 */,
+/* 74 */,
+/* 75 */,
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = displayBottomNavBarMobile;
+var windowWidth = window.innerWidth;
+var maxDeviceWidth = 760;
+
+function positionNavBarToBottom() {
+    var bottomNavBar = document.querySelector('.navigation-right');
+
+    // do not force nav to bottom if user viewing on a large device i.e. laptop/desktop
+    if (windowWidth >= maxDeviceWidth || !bottomNavBar) {
+        return;
+    }
+
+    var windowHeight = window.innerHeight;
+    var bottomBarHeight = bottomNavBar.offsetHeight;
+    bottomNavBar.style.top = windowHeight - bottomBarHeight + 'px';
+}
+
+function displayBottomNavBarMobile() {
+    positionNavBarToBottom();
+    window.addEventListener('scroll', positionNavBarToBottom);
+    window.addEventListener('resize', positionNavBarToBottom);
+}
+
+>>>>>>> fcf3456... 144 - resolved
 /***/ })
 /******/ ]);
