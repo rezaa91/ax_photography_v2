@@ -179,6 +179,24 @@
                 font-weight: 900;
             }
         }
+
+        .albums-menu {
+            position: absolute;
+            right: -200px;
+            background-color: $white;
+            color: $black;
+            width: 200px;
+            max-height: 250px;
+            overflow-y: auto;
+            top: 0;
+        }
+
+        .album-select {
+            &:hover {
+                background-color: $green;
+                color: $white;
+            }
+        }
     }
 }
 

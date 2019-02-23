@@ -6111,6 +6111,22 @@ form .selection .option {
   font-weight: 900;
 }
 
+.imageModal-wrapper .image-settings-wrapper .albums-menu {
+  position: absolute;
+  right: -200px;
+  background-color: #ededed;
+  color: #111111;
+  width: 200px;
+  max-height: 250px;
+  overflow-y: auto;
+  top: 0;
+}
+
+.imageModal-wrapper .image-settings-wrapper .album-select:hover {
+  background-color: #05704c;
+  color: #ededed;
+}
+
 @media only screen and (max-width: 700px) {
   .imageModal-wrapper {
     top: 0;

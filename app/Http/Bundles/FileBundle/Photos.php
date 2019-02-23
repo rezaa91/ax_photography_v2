@@ -110,7 +110,7 @@ class Photos extends File
      * @param int $photoId
      * @return boolean
      */
-    private function isAlbumCover(int $albumId, int $photoId)
+    protected function isAlbumCover(int $albumId, int $photoId)
     {
         $album = Albums::find($albumId);
         
