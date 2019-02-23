@@ -45,6 +45,11 @@ Route::get('albums/{id}', function(int $albumId) {
 });
 
 /**
+ * Move image to different album
+ */
+Route::post('album/{albumId}/image/{imageId}', 'Api\AlbumsController@moveImage')->middleware('auth:api');
+
+/**
  * API showing individual photos
  */
 Route::get('photos/{id}', function($id) {

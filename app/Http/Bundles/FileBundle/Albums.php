@@ -188,4 +188,30 @@ class Albums extends Photos
 
         AlbumsModel::find($albumId)->delete();
     }
+
+    /**
+     * Move the image to the album related to $albumId
+     *
+     * @param integer $albumId
+     * @param integer $imageId
+     */
+    public function moveImageToAlbum(int $albumId, int $imageId)
+    {
+        try {
+            $photo = PhotosModel::find($imageId);
+            $currentAlbumId = $photo->album_id;
+
+            if ($this->isAlbumCover($currentAlbumId, $imageId)) {
+                return ['response' => 'You cannot move this album as it is the album cover.'];
+            }
+
+            $photo->album_id = $albumId;
+            $photo->save();
+
+            return ['response' => 'The image has been moved successfully. Refresh the page to see your changes.'];
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
 }

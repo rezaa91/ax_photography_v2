@@ -59,4 +59,15 @@ class AlbumsController extends ApiController
 
         $this->moduleClass->deleteAlbum($albumId);
     }
+
+    /**
+     * {/api/album/{albumId}/image/{imageId}}
+     * 
+     * @param integer $albumId
+     * @param integer $imageId
+     */
+    public function moveImage(int $albumId, int $imageId)
+    {
+        return $this->moduleClass->moveImageToAlbum($albumId, $imageId);
+    }
 }
