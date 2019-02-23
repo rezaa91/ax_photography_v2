@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
 
 class Navigation extends Component {
     constructor() {
@@ -18,13 +18,14 @@ class Navigation extends Component {
 
     componentDidUpdate() {
         // Apply class to the navigation links to show which page the user is currently on
-        const mainNavLinks = [...document.querySelectorAll('.main-link')];
+        const mainNavLinks = [...document.querySelectorAll(".main-link")];
 
         mainNavLinks.map(link => {
             const url = window.location.href;
-            url.match(link) ? link.classList.add('active') : link.classList.remove('active');
-        })
-
+            url.match(link)
+                ? link.classList.add("active")
+                : link.classList.remove("active");
+        });
     }
 
     /**
@@ -32,33 +33,33 @@ class Navigation extends Component {
      */
     getUser = async () => {
         //find user in session through api
-        await fetch('/api/user')
-        .then(response => response.status === 200 && response.json())
-        .then(data => {
-            data = data.data;
-            
-            if (!data) {
-                return;
-            }
+        await fetch("/api/user")
+            .then(response => response.status === 200 && response.json())
+            .then(data => {
+                data = data.data;
 
-            this.setState({
-                isLoggedIn: true,
-                user: {
-                    id: data.id,
-                    username: data.username,
-                    name: data.name,
-                    email: data.email,
-                    created_at: data.created_at,
-                    isAdmin: data.isAdmin
+                if (!data) {
+                    return;
                 }
-            })            
-        })
-        .catch(() => {
-            this.setState({
-                isLoggedIn: false,
-                user: null
+
+                this.setState({
+                    isLoggedIn: true,
+                    user: {
+                        id: data.id,
+                        username: data.username,
+                        name: data.name,
+                        email: data.email,
+                        created_at: data.created_at,
+                        isAdmin: data.isAdmin
+                    }
+                });
             })
-        })
+            .catch(() => {
+                this.setState({
+                    isLoggedIn: false,
+                    user: null
+                });
+            });
     }
 
     /**
@@ -69,35 +70,51 @@ class Navigation extends Component {
         const {isLoggedIn, user, rotateArrowClass, isDropdownPresent} = this.state;
         
         if (!isLoggedIn) {
-            return(
-                <li><a href='/login'>Login</a></li>
+            return (
+                <li>
+                    <a href="/login">Login</a>
+                </li>
             );
         } else {
             const arrowClasses = `${rotateArrowClass} fas fa-arrow-circle-down rotate-arrow`;
-            const usernameClass = isDropdownPresent ? 'user-clicked' : '';
-            
+            const usernameClass = isDropdownPresent ? "user-clicked" : "";
+
             let dropdownMenu;
-            
+
             // display different dropdown menus dependent on whether user is an administrator or not
             if (isDropdownPresent) {
                 if (user.isAdmin) {
-                    dropdownMenu = <ul className='user-dropdown-menu'>
-                        <li><a href="/user">Dashboard</a></li>
-                        <li><a href="/upload">Upload</a></li>
-                        <li><a href="/logout">Logout</a></li>
-                    </ul>
+                    dropdownMenu = (
+                        <ul className="user-dropdown-menu">
+                            <li>
+                                <a href="/user">Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="/upload">Upload</a>
+                            </li>
+                            <li>
+                                <a href="/logout">Logout</a>
+                            </li>
+                        </ul>
+                    );
                 } else {
-                    dropdownMenu = <ul className='user-dropdown-menu'>
-                        <li><a href="/user">Dashboard</a></li>
-                        <li><a href="/logout">Logout</a></li>
-                    </ul>
+                    dropdownMenu = (
+                        <ul className="user-dropdown-menu">
+                            <li>
+                                <a href="/user">Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="/logout">Logout</a>
+                            </li>
+                        </ul>
+                    );
                 }
-            }                
+            }
 
-            return(
-                <li className = {usernameClass}>
-                    <i id="arrow" className={arrowClasses}></i>
-                    <a onClick = {this.toggleUserDropdownMenu}>{user.username}</a>
+            return (
+                <li className={usernameClass}>
+                    <i id="arrow" className={arrowClasses} />
+                    <a onClick={this.toggleUserDropdownMenu}>{user.username}</a>
                     {dropdownMenu}
                 </li>
             );
@@ -112,10 +129,13 @@ class Navigation extends Component {
 
         // prevent duplicates of dropdown menu being shown
         if (isDropdownPresent) {
-            this.setState({isDropdownPresent: false, rotateArrowClass: 'rotate-down'});
+            this.setState({
+                isDropdownPresent: false,
+                rotateArrowClass: "rotate-down"
+            });
         } else {
-            this.setState({rotateArrowClass: 'rotate-up'})
-            this.setState({isDropdownPresent: true});
+            this.setState({ rotateArrowClass: "rotate-up" });
+            this.setState({ isDropdownPresent: true });
         }
     }
 
@@ -129,15 +149,37 @@ class Navigation extends Component {
     }
 
     render() {
-        return(
-            <div className="navigation-wrapper" onMouseLeave={this.hideUserDropdownMenu}>
+        return (
+            <div
+                className="navigation-wrapper"
+                onMouseLeave={this.hideUserDropdownMenu}
+            >
                 <ul className="navigation navigation-left">
-                    <span className="nav-title"><a href='/'>AX52 PHOTOGRAPHY</a></span>
-                    <span className="mobile-menu" onClick={this.toggleMobileDropdown}><i className="fas fa-bars"></i></span>
+                    <span className="nav-title">
+                        <a href="/">AX52 PHOTOGRAPHY</a>
+                    </span>
+                    <span
+                        className="mobile-menu"
+                        onClick={this.toggleMobileDropdown}
+                    >
+                        <i className="fas fa-bars" />
+                    </span>
                     <div className="main-links">
-                        <li><a href='/albums' className = 'main-link'>Albums</a></li>
-                        <li><a href='/about' className = 'main-link'>About</a></li>
-                        <li><a href='/contact' className = 'main-link'>Contact</a></li>
+                        <li>
+                            <a href="/albums" className="main-link">
+                                Albums
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/about" className="main-link">
+                                About
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/contact" className="main-link">
+                                Contact
+                            </a>
+                        </li>
                     </div>
                 </ul>
 
@@ -149,6 +191,6 @@ class Navigation extends Component {
     }
 }
 
-if (document.getElementById('nav')) {
-    ReactDOM.render(<Navigation />, document.getElementById('nav'));
+if (document.getElementById("nav")) {
+    ReactDOM.render(<Navigation />, document.getElementById("nav"));
 }

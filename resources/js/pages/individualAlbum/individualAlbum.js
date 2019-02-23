@@ -300,31 +300,40 @@ class IndividualAlbum extends Component {
         this.setState({isLoading: !isLoading});
     }
 
-    render() {
-        const {user, albumTitle, enlargedImage, editAlbumTitle, deleteAlbum, displayAlert, alertMsg, isLoading} = this.state;
-        let albumTitleState;
+    renderAlbumTitleState = () => {
+        const {user, editAlbumTitle, albumTitle} = this.state;
 
         if (editAlbumTitle) {
-            albumTitleState = <div className="inline"> 
-            <input 
-                name="editAlbum" 
-                value={albumTitle} 
-                onChange={this.updateAlbumTitle}
-                onBlur={this.updateAlbum}
-                onKeyPress={this.updateAlbumOnEnter}
-            />
-            <span className='icon' onClick={this.saveAlbumTitle}><i className="fas fa-check"></i></span>
-            </div>
-        } else {
-            albumTitleState = <div className="inline">
-                <h1 className="inline" onDoubleClick={this.toggleAlbumEdit}>{albumTitle}</h1>
-                
-                {
-                    !!user && !!user.isAdmin &&
-                    <span className="icon" onClick={this.toggleAlbumEdit}><i className="fas fa-pencil-alt"></i></span>
-                }
+            return (
+                <div className="inline"> 
+                <input 
+                    name="editAlbum" 
+                    value={albumTitle} 
+                    onChange={this.updateAlbumTitle}
+                    onBlur={this.updateAlbum}
+                    onKeyPress={this.updateAlbumOnEnter}
+                />
+                <span className='icon' onClick={this.saveAlbumTitle}><i className="fas fa-check"></i></span>
                 </div>
+            )
+            
+        } else {
+            return (
+                <div className="inline">
+                    <h1 className="inline" onDoubleClick={this.toggleAlbumEdit}>{albumTitle}</h1>
+                    
+                    {
+                        !!user && !!user.isAdmin &&
+                        <span className="icon" onClick={this.toggleAlbumEdit}><i className="fas fa-pencil-alt"></i></span>
+                    }
+                </div>
+            )
         }
+
+    }
+
+    render() {
+        const {user, enlargedImage, deleteAlbum, displayAlert, alertMsg, isLoading} = this.state;
 
         return(
             <div className='individualAlbum'>
@@ -346,7 +355,7 @@ class IndividualAlbum extends Component {
                 }
 
                 <div className="album-information">
-                    {albumTitleState}
+                    {this.renderAlbumTitleState()}
 
                     {
                         !!user && !!user.isAdmin &&                    

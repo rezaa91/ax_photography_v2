@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from "react";
 
 class LoadingWidget extends Component {
     render() {
-        return(
+        return (
             <div className="loading-widget-wrapper">
-                <div className="loading-widget"></div>
+                <div className="loading-widget" />
             </div>
         );
     }
