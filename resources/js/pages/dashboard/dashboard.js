@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import Card from './components/card';
-import Modal from '../../global_components/modal';
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
+import Card from "./components/card";
+import Modal from "../../global_components/modal";
 
 class Dashboard extends Component {
     constructor() {
@@ -18,8 +18,8 @@ class Dashboard extends Component {
                 avatar_filepath: null
             },
             shouldDeleteAccount: false,
-            deleteAccountError: false,
-        }
+            deleteAccountError: false
+        };
 
         this.getUser = this.getUser.bind(this);
         this.displayWarning = this.displayWarning.bind(this);
@@ -28,85 +28,90 @@ class Dashboard extends Component {
     }
 
     async getUser() {
-        await fetch('/api/user')
-        .then(response => response.json())
-        .then(user => {
-            user = user.data;
-            this.setState({
-                user: {
-                    user_id: user.id,
-                    username: user.username,
-                    name: user.name,
-                    email: user.email,
-                    created_at: user.created_at,
-                    avatar_filepath: user.avatar_filepath
-                }
-            })
-        })
+        await fetch("/api/user")
+            .then(response => response.json())
+            .then(user => {
+                user = user.data;
+                this.setState({
+                    user: {
+                        user_id: user.id,
+                        username: user.username,
+                        name: user.name,
+                        email: user.email,
+                        created_at: user.created_at,
+                        avatar_filepath: user.avatar_filepath
+                    }
+                });
+            });
     }
 
     displayWarning() {
-        this.setState({shouldDeleteAccount: true});
+        this.setState({ shouldDeleteAccount: true });
     }
 
     resetWarning() {
-        this.setState({shouldDeleteAccount: false});
+        this.setState({ shouldDeleteAccount: false });
     }
 
     deleteAccount() {
-        const {user_id} = this.state.user;
-        this.setState({shouldDeleteAccount: false}); //hide modal
+        const { user_id } = this.state.user;
+        this.setState({ shouldDeleteAccount: false }); //hide modal
         const token = document.querySelector('meta[name="csrf-token"]').content;
 
         fetch(`/user/${user_id}`, {
-            method: 'delete',
+            method: "delete",
             headers: {
-                'Content-Type': 'text/plain',
-                'Access-Control-Allow-Origin': '*',
-                'X-CSRF-TOKEN': token,
-                'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
+                "Content-Type": "text/plain",
+                "Access-Control-Allow-Origin": "*",
+                "X-CSRF-TOKEN": token,
+                Authorization:
+                    "Bearer " +
+                    document.querySelector('meta[name="api_token"]').content
             },
-            redirect: 'follow'
+            redirect: "follow"
         })
-        .then(() => {
-            window.location.href = "/";
-        })
-        .catch(() => {
-            this.setState({deleteAccountError: true});
-        });
+            .then(() => {
+                window.location.href = "/";
+            })
+            .catch(() => {
+                this.setState({ deleteAccountError: true });
+            });
     }
 
     render() {
-        const {user, shouldDeleteAccount, deleteAccountError} = this.state;
+        const { user, shouldDeleteAccount, deleteAccountError } = this.state;
 
-        return(
-            <div className='dashboard-wrapper container'>
-                {shouldDeleteAccount &&
-                <Modal 
-                message="Are you sure you want to delete your account?" 
-                resetState={this.resetWarning} 
-                action={this.deleteAccount} />
-                }
-
-                <div className='row justify-content-center'>
-                {user.user_id &&
-                    <Card 
-                    user = {user} 
-                    displayWarning={this.displayWarning}
-                    refresh={this.getUser}
+        return (
+            <div className="dashboard-wrapper container">
+                {shouldDeleteAccount && (
+                    <Modal
+                        message="Are you sure you want to delete your account?"
+                        resetState={this.resetWarning}
+                        action={this.deleteAccount}
                     />
-                }
+                )}
 
-                {
-                    deleteAccountError &&
-                    <span>Oops, something went wrong and we could not delete your account. Please try again.</span>
-                }
+                <div className="row justify-content-center">
+                    {user.user_id && (
+                        <Card
+                            user={user}
+                            displayWarning={this.displayWarning}
+                            refresh={this.getUser}
+                        />
+                    )}
+
+                    {deleteAccountError && (
+                        <span>
+                            Oops, something went wrong and we could not delete
+                            your account. Please try again.
+                        </span>
+                    )}
                 </div>
             </div>
         );
     }
 }
 
-if (document.getElementById('dashboard')) {
-    ReactDOM.render(<Dashboard />, document.getElementById('dashboard'));
+if (document.getElementById("dashboard")) {
+    ReactDOM.render(<Dashboard />, document.getElementById("dashboard"));
 }

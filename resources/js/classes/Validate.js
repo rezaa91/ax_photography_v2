@@ -1,28 +1,36 @@
 const Validate = {
-    
-    months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    months: [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+    ],
 
     /**
      * @param {string} string
-     * 
+     *
      * @return validated string
      */
-    validateString: function(string) {
-
-    },
+    validateString: function(string) {},
 
     /**
      * @param {string} email
-     *  
+     *
      * @return validated email
      */
-    validateEmail: function(email) {
-
-    },
+    validateEmail: function(email) {},
 
     /**
      * @param {object} date
-     * 
+     *
      * @return validated date
      */
     validateDate: function(date) {
@@ -33,7 +41,6 @@ const Validate = {
 
         return `${day}-${month}-${year}`;
     }
-
-}
+};
 
 export default Validate;

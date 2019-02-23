@@ -10,17 +10,27 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-        "@fortawesome/fontawesome-free": "^5.5.0",
+        "@babel/preset-react": "^7.0.0",
+        "@fortawesome/fontawesome-free": "^5.7.2",
         "axios": "^0.18.0",
-        "babel-preset-react": "^6.23.0",
-        "bootstrap": "^4.0.0",
+        "babel-plugin-transform-class-properties": "^6.24.1",
+        "babel-preset-react": "^6.24.1",
+        "bootstrap": "^4.3.1",
         "cross-env": "^5.1",
+        "eslint": "^5.14.1",
+        "eslint-plugin-prettier": "^3.0.1",
+        "eslint-plugin-react": "^7.12.4",
         "jquery": "^3.2",
-        "laravel-mix": "^2.0",
+        "laravel-mix": "^4.0.7",
         "lodash": "^4.17.5",
-        "popper.js": "^1.12",
-        "react": "^16.2.0",
-        "react-dom": "^16.2.0"
+        "popper.js": "^1.14.7",
+        "prettier": "^1.16.4",
+        "react": "^16.8.3",
+        "react-dom": "^16.8.3",
+        "resolve-url-loader": "2.3.1",
+        "sass": "^1.17.2",
+        "sass-loader": "7.*",
+        "vue-template-compiler": "^2.6.7"
     },
     "dependencies": {
         "dateformat": "^3.0.3"

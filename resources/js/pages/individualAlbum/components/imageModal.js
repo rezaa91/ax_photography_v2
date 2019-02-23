@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import imageModalInit from '../modalSettings'; // modal specific javascript
-import Settings from './settings';
-import Modal from '../../../global_components/modal';
-import Alert from '../../../global_components/alert';
-import Comments from './commentsModal';
-import LoadingWidget from '../../../global_components/loadingWidget';
+import React, { Component } from "react";
+import imageModalInit from "../modalSettings"; // modal specific javascript
+import Settings from "./settings";
+import Modal from "../../../global_components/modal";
+import Alert from "../../../global_components/alert";
+import Comments from "./commentsModal";
+import LoadingWidget from "../../../global_components/loadingWidget";
 
 class ImageModal extends Component {
     constructor(props) {
         super(props);
 
-       this.getImageData(this.props.imageId);
+        this.getImageData(this.props.imageId);
 
         this.state = {
             user: this.props.user,
@@ -27,7 +27,7 @@ class ImageModal extends Component {
                 users_which_like: null,
                 displayModal: false,
                 displayAlert: false,
-                alertMsg: '',
+                alertMsg: "",
                 total_likes: 0,
                 total_comments: 0,
                 comments: null
@@ -38,7 +38,7 @@ class ImageModal extends Component {
             photoZoomed: false,
             displayCommentsModal: false,
             isLoading: false
-        }
+        };
 
         this.fadeOutHeader = this.fadeOutHeader.bind(this);
         this.fadeInHeader = this.fadeInHeader.bind(this);
@@ -67,7 +67,7 @@ class ImageModal extends Component {
         imageModalInit();
 
         // set up event listeners for photo traversing using arrow keys
-        document.addEventListener('keydown', this.setDirection);
+        document.addEventListener("keydown", this.setDirection);
 
         // fade out image header with title and description
         setTimeout(() => this.fadeOutHeader(), 1000);
@@ -75,17 +75,17 @@ class ImageModal extends Component {
 
     componentWillUnmount() {
         // remove event listeners
-        document.removeEventListener('keydown', this.setDirection);
+        document.removeEventListener("keydown", this.setDirection);
     }
 
     fadeOutHeader() {
-        const imageHeader = document.querySelector('.image-information');
+        const imageHeader = document.querySelector(".image-information");
         imageHeader.style.opacity = 0;
         imageHeader.style.transition = "opacity 2s";
     }
 
     fadeInHeader() {
-        const imageHeader = document.querySelector('.image-information');
+        const imageHeader = document.querySelector(".image-information");
         imageHeader.style.opacity = 1;
         imageHeader.style.transition = "opacity 0.2s";
     }
@@ -94,15 +94,15 @@ class ImageModal extends Component {
      * Check whether the user likes the photo
      */
     doesUserLikePhoto() {
-        const {users_which_like} = this.state.imageDetails;
-        const {user} = this.state;
+        const { users_which_like } = this.state.imageDetails;
+        const { user } = this.state;
 
         if (!users_which_like || !user) {
             return;
         }
 
         const doesUserLike = users_which_like.find(like => user.id === like);
-        this.setState({hasUserLiked: doesUserLike});
+        this.setState({ hasUserLiked: doesUserLike });
     }
 
     /**
@@ -110,22 +110,22 @@ class ImageModal extends Component {
      */
     async getImageData(imageId) {
         await fetch(`/api/photos/${imageId}`)
-        .then(response => response.status === 200 && response.json())
-        .then(data => {
-            const imageDetails = data.data;
-            this.setState({imageDetails});
+            .then(response => response.status === 200 && response.json())
+            .then(data => {
+                const imageDetails = data.data;
+                this.setState({ imageDetails });
 
-            // After collecting the data, check whether the current user has liked the photo
-            this.doesUserLikePhoto();
-        })
+                // After collecting the data, check whether the current user has liked the photo
+                this.doesUserLikePhoto();
+            });
     }
 
     /**
      * Store photo like in database
      */
     likePhoto() {
-        const {imageId} = this.props;
-        const {user} = this.state;
+        const { imageId } = this.props;
+        const { user } = this.state;
 
         // if user is not logged in, return
         if (!user) {
@@ -139,144 +139,152 @@ class ImageModal extends Component {
 
         // Post like/un-like to database
         fetch(`/api/reaction`, {
-            method: 'POST',
-            credentials: 'same-origin',
+            method: "POST",
+            credentials: "same-origin",
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': token,
-                'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": token,
+                Authorization:
+                    "Bearer " +
+                    document.querySelector('meta[name="api_token"]').content
             },
             body: JSON.stringify({
-                'user_id': user.id,
-                'photo_id': imageId
+                user_id: user.id,
+                photo_id: imageId
             })
-        })
-        .finally(() => {
+        }).finally(() => {
             this.toggleLoading();
-        })
+        });
 
         // get updated image data in order to immediately refresh the view and update the state
         this.getImageData(imageId);
     }
 
     toggleDisplaySettings() {
-        const {user, displaySettings} = this.state;
+        const { user, displaySettings } = this.state;
 
         if (!user || !user.isAdmin) {
             return;
         }
 
-        this.setState({displaySettings: !displaySettings});
+        this.setState({ displaySettings: !displaySettings });
     }
 
     /**
      * Display the modal confirming whether the user wishes to delete the photo
      */
     toggleDisplayModal() {
-        const {displayModal} = this.state;
-        this.setState({displayModal: !displayModal});
+        const { displayModal } = this.state;
+        this.setState({ displayModal: !displayModal });
     }
 
     /**
      * Delete the photo from the DB and storage
      */
     async actionDelete() {
-        const {user} = this.state;
+        const { user } = this.state;
 
         if (!user || !user.isAdmin) {
             return;
         }
 
-        const {album_cover_photo, homepage_background} = this.state.imageDetails;
-        const {imageId, closeModal, refreshAlbum} = this.props;
+        const {
+            album_cover_photo,
+            homepage_background
+        } = this.state.imageDetails;
+        const { imageId, closeModal, refreshAlbum } = this.props;
         const token = document.querySelector('meta[name="csrf-token"]').content;
         let alertMsg = null;
 
         if (album_cover_photo) {
-            alertMsg = 'You cannot delete this photo as it is the album cover';
-            this.setState({displayAlert: true, alertMsg});
+            alertMsg = "You cannot delete this photo as it is the album cover";
+            this.setState({ displayAlert: true, alertMsg });
             return;
         }
 
         if (homepage_background) {
-            alertMsg = 'You cannot delete this photo as it is the homepage background image';
-            this.setState({displayAlert: true, alertMsg});
+            alertMsg =
+                "You cannot delete this photo as it is the homepage background image";
+            this.setState({ displayAlert: true, alertMsg });
             return;
         }
 
         this.toggleLoading();
 
         await fetch(`/api/delete_photo/${imageId}`, {
-            method: 'DELETE',
-            redirect: 'follow',
+            method: "DELETE",
+            redirect: "follow",
             headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'token': token,
-                'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                token: token,
+                Authorization:
+                    "Bearer " +
+                    document.querySelector('meta[name="api_token"]').content
             }
         })
-        .then(() => {
-            // reset state
-            this.setState({displayAlert: false});
-            this.toggleDisplayModal();
-            closeModal();
-            refreshAlbum();
-        })
-        .catch(() => {
-            alertMsg = 'There was an error deleting the image. Please try again';
-            this.setState({displayAlert: true, alertMsg});
-            this.toggleLoading();
-        })
+            .then(() => {
+                // reset state
+                this.setState({ displayAlert: false });
+                this.toggleDisplayModal();
+                closeModal();
+                refreshAlbum();
+            })
+            .catch(() => {
+                alertMsg =
+                    "There was an error deleting the image. Please try again";
+                this.setState({ displayAlert: true, alertMsg });
+                this.toggleLoading();
+            });
     }
 
     toggleEditPhoto() {
-        const {user, editPhoto} = this.state;
+        const { user, editPhoto } = this.state;
 
         if (!user || !user.isAdmin) {
             return;
         }
 
-        this.setState({editPhoto: !editPhoto});
+        this.setState({ editPhoto: !editPhoto });
     }
 
     /**
      * Set editPhoto state value to false when user clicks outside of text input boxes
      * Save any changes
-     * @param {event} e 
+     * @param {event} e
      */
     stopEditPhoto(e) {
-        const {editPhoto} = this.state;
+        const { editPhoto } = this.state;
 
         if (!editPhoto) {
             return;
         }
 
-        if (e.target.nodeName === "INPUT" || e.target.nodeName === 'TEXTAREA') {
+        if (e.target.nodeName === "INPUT" || e.target.nodeName === "TEXTAREA") {
             return;
         }
 
-        editPhoto && this.setState({editPhoto: false});
+        editPhoto && this.setState({ editPhoto: false });
 
         // update image details in database via API call
         this.updateImageDetails();
     }
 
     changeInput(e) {
-        const {title, description} = this.state.imageDetails;
-        const {imageDetails} = this.state;
+        const { title, description } = this.state.imageDetails;
+        const { imageDetails } = this.state;
         let titleValue = title;
         let descriptionValue = description;
         const elementChanging = e.target.nodeName;
         const value = e.target.value;
 
         switch (elementChanging) {
-            case 'INPUT':
+            case "INPUT":
                 titleValue = value;
                 break;
 
-            case 'TEXTAREA':
+            case "TEXTAREA":
                 descriptionValue = value;
                 break;
         }
@@ -287,7 +295,7 @@ class ImageModal extends Component {
                 title: titleValue,
                 description: descriptionValue
             }
-        })
+        });
     }
 
     saveOnEnter(e) {
@@ -305,34 +313,35 @@ class ImageModal extends Component {
      * Update image details via API
      */
     updateImageDetails() {
-        const {user} = this.state;
+        const { user } = this.state;
 
         if (!user || !user.isAdmin) {
             return;
         }
 
-        const {title, description} = this.state.imageDetails;
-        const {imageId} = this.props;
+        const { title, description } = this.state.imageDetails;
+        const { imageId } = this.props;
         const token = document.querySelector('meta[name="csrf-token"]').content;
 
         this.toggleLoading();
 
         fetch(`/api/update_photo/${imageId}`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'token': token,
-                'Authorization': 'Bearer ' + document.querySelector('meta[name="api_token"]').content
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                token: token,
+                Authorization:
+                    "Bearer " +
+                    document.querySelector('meta[name="api_token"]').content
             },
             body: JSON.stringify({
                 title: title,
                 description: description
             })
-        })
-        .finally(() => {
+        }).finally(() => {
             this.toggleLoading();
-        })
+        });
     }
 
     setDirection(e) {
@@ -340,9 +349,9 @@ class ImageModal extends Component {
         const rightArrowCode = 39;
 
         if (e.keyCode === leftArrowCode) {
-            this.navigate('left');
+            this.navigate("left");
         } else if (e.keyCode === rightArrowCode) {
-            this.navigate('right');
+            this.navigate("right");
         } else {
             return;
         }
@@ -350,194 +359,234 @@ class ImageModal extends Component {
 
     /**
      * Navigate between images in album
-     * @param {string} direction 
+     * @param {string} direction
      */
     navigate(direction) {
-        const {previousImageId, nextImageId, changeImage, closeModal} = this.props;
+        const {
+            previousImageId,
+            nextImageId,
+            changeImage,
+            closeModal
+        } = this.props;
 
-        if (direction === 'left' && previousImageId) {
+        if (direction === "left" && previousImageId) {
             closeModal();
             changeImage(previousImageId);
-        } else if (direction === 'right' && nextImageId) {
-            closeModal();        
+        } else if (direction === "right" && nextImageId) {
+            closeModal();
             changeImage(nextImageId);
         }
     }
 
     // toggle zoom on image click
     toggleZoom() {
-        const {photoZoomed} = this.state;
-        this.setState({photoZoomed: !photoZoomed});
+        const { photoZoomed } = this.state;
+        this.setState({ photoZoomed: !photoZoomed });
     }
 
     hideAlert() {
-        this.setState({displayAlert: false});
+        this.setState({ displayAlert: false });
     }
 
     displayCommentsModal() {
-        this.setState({displayCommentsModal: true});
+        this.setState({ displayCommentsModal: true });
     }
 
     hideCommentsModal() {
-        this.setState({displayCommentsModal: false});
+        this.setState({ displayCommentsModal: false });
     }
 
     alertChange(alertMsg) {
-        this.setState({displayAlert: true, alertMsg});
+        this.setState({ displayAlert: true, alertMsg });
     }
 
     toggleLoading() {
-        const {isLoading} = this.state;
-        this.setState({isLoading: !isLoading});
+        const { isLoading } = this.state;
+        this.setState({ isLoading: !isLoading });
     }
-    
-    render() {
-        const {closeModal, previousImageId, nextImageId} = this.props;
-        const {user, imageDetails, hasUserLiked, displaySettings, 
-            displayModal, editPhoto, photoZoomed, displayAlert, alertMsg, displayCommentsModal, isLoading} = this.state;
 
-        let thumbsUpStyle = null, imageStyle = null;
+    render() {
+        const { closeModal, previousImageId, nextImageId } = this.props;
+        const {
+            user,
+            imageDetails,
+            hasUserLiked,
+            displaySettings,
+            displayModal,
+            editPhoto,
+            photoZoomed,
+            displayAlert,
+            alertMsg,
+            displayCommentsModal,
+            isLoading
+        } = this.state;
+
+        let thumbsUpStyle = null,
+            imageStyle = null;
         if (hasUserLiked) {
-            thumbsUpStyle = {color: 'green'};
+            thumbsUpStyle = { color: "green" };
         }
 
         if (photoZoomed) {
-            imageStyle = {transform: 'scale(1.5)', cursor:'zoom-out'};
+            imageStyle = { transform: "scale(1.5)", cursor: "zoom-out" };
         }
 
-        return(
+        return (
             <div>
-                {
-                    displayModal &&
-
-                    <Modal 
-                    message='Are you sure you want to delete this photo?' 
-                    action={this.actionDelete} 
-                    resetState={this.toggleDisplayModal}
+                {displayModal && (
+                    <Modal
+                        message="Are you sure you want to delete this photo?"
+                        action={this.actionDelete}
+                        resetState={this.toggleDisplayModal}
                     />
-                }
+                )}
 
-                {
-                    displayAlert &&
+                {displayAlert && (
+                    <Alert message={alertMsg} resetState={this.hideAlert} />
+                )}
 
-                    <Alert 
-                    message={alertMsg}
-                    resetState={this.hideAlert}
-                    />
-                }
-
-                {
-                    displayCommentsModal &&
-
+                {displayCommentsModal && (
                     <Comments
-                    close={this.hideCommentsModal}
-                    imageDetails={imageDetails}
-                    user={user}
-                    refresh={this.getImageData}
+                        close={this.hideCommentsModal}
+                        imageDetails={imageDetails}
+                        user={user}
+                        refresh={this.getImageData}
                     />
-                }
+                )}
 
-                <div 
-                className='imageModal-wrapper' 
-                onClick={(e) => {this.stopEditPhoto(e)}}
+                <div
+                    className="imageModal-wrapper"
+                    onClick={e => {
+                        this.stopEditPhoto(e);
+                    }}
                 >
+                    {isLoading && <LoadingWidget />}
 
-                {
-                    isLoading &&
-                    <LoadingWidget />
-                }
-
-                    <div className='imageModal-content'>        
-                        <div className='imageModal-header'>
-                            <a onClick = {closeModal}>&times;</a>
+                    <div className="imageModal-content">
+                        <div className="imageModal-header">
+                            <a onClick={closeModal}>&times;</a>
                         </div>
 
-                        <div className='image-information'
+                        <div
+                            className="image-information"
                             onMouseOver={this.fadeInHeader}
                             onMouseOut={this.fadeOutHeader}
                         >
-                            { editPhoto ?
-                                <div className='image-input'>
-                                    <input 
-                                    type="text"
-                                    placeholder="Title..."
-                                    value={imageDetails.title ? imageDetails.title.toUpperCase() : ''}
-                                    onChange={(e) => {this.changeInput(e)}}
-                                    onKeyDown={(e) => {this.saveOnEnter(e)}}
+                            {editPhoto ? (
+                                <div className="image-input">
+                                    <input
+                                        type="text"
+                                        placeholder="Title..."
+                                        value={
+                                            imageDetails.title
+                                                ? imageDetails.title.toUpperCase()
+                                                : ""
+                                        }
+                                        onChange={e => {
+                                            this.changeInput(e);
+                                        }}
+                                        onKeyDown={e => {
+                                            this.saveOnEnter(e);
+                                        }}
                                     />
-                                    <textarea 
-                                    placeholder="Description..." 
-                                    value={imageDetails.description ? imageDetails.description : ''}
-                                    onChange={(e) => {this.changeInput(e)}}
-                                    onKeyDown={(e) => {this.saveOnEnter(e)}}
-                                    >
-                                    </textarea>
+                                    <textarea
+                                        placeholder="Description..."
+                                        value={
+                                            imageDetails.description
+                                                ? imageDetails.description
+                                                : ""
+                                        }
+                                        onChange={e => {
+                                            this.changeInput(e);
+                                        }}
+                                        onKeyDown={e => {
+                                            this.saveOnEnter(e);
+                                        }}
+                                    />
                                 </div>
-
-                                :
-                                
+                            ) : (
                                 <div>
-                                    <h2 onDoubleClick={this.toggleEditPhoto}>{imageDetails.title && imageDetails.title.toUpperCase()}</h2>
-                                    <p onDoubleClick={this.toggleEditPhoto}>{imageDetails.description}</p>
+                                    <h2 onDoubleClick={this.toggleEditPhoto}>
+                                        {imageDetails.title &&
+                                            imageDetails.title.toUpperCase()}
+                                    </h2>
+                                    <p onDoubleClick={this.toggleEditPhoto}>
+                                        {imageDetails.description}
+                                    </p>
                                 </div>
-                            }
+                            )}
                         </div>
 
-                        <div className='image-wrapper'>
-                            {previousImageId && 
-                                <div 
-                                className="arrow left-arrow"
-                                onClick={() => this.navigate('left')}
+                        <div className="image-wrapper">
+                            {previousImageId && (
+                                <div
+                                    className="arrow left-arrow"
+                                    onClick={() => this.navigate("left")}
                                 >
-                                    <i className="fas fa-chevron-left"></i>
+                                    <i className="fas fa-chevron-left" />
                                 </div>
-                            }
+                            )}
 
-                            <img 
-                            className='imageModal-img' 
-                            src={imageDetails.filepath && `/storage/uploads/${imageDetails.filepath}`} 
-                            onClick={this.toggleZoom}
-                            style={imageStyle}
+                            <img
+                                className="imageModal-img"
+                                src={
+                                    imageDetails.filepath &&
+                                    `/storage/uploads/${imageDetails.filepath}`
+                                }
+                                onClick={this.toggleZoom}
+                                style={imageStyle}
                             />
-                            
-                            {nextImageId &&
-                                <div 
-                                className="arrow right-arrow"
-                                onClick={() => this.navigate('right')}
+
+                            {nextImageId && (
+                                <div
+                                    className="arrow right-arrow"
+                                    onClick={() => this.navigate("right")}
                                 >
-                                    <i className="fas fa-chevron-right"></i>
+                                    <i className="fas fa-chevron-right" />
                                 </div>
-                            }
+                            )}
                         </div>
 
-                        <div className='imageModal-footer'>
+                        <div className="imageModal-footer">
                             <span>
-                                {
-                                    !!user && user.isAdmin &&
-                                    <span onClick={this.toggleDisplaySettings}><i className = "fas fa-cog"></i></span>
-                                }
+                                {!!user && user.isAdmin && (
+                                    <span onClick={this.toggleDisplaySettings}>
+                                        <i className="fas fa-cog" />
+                                    </span>
+                                )}
 
-                                {
-                                    displaySettings &&
+                                {displaySettings && (
                                     <Settings
-                                    imageDetails={imageDetails} 
-                                    user_id={user.id} 
-                                    toggleDisplayModal={this.toggleDisplayModal} 
-                                    toggleEditPhoto={this.toggleEditPhoto}
-                                    alertChange={this.alertChange}
-                                    /> 
-                                }
+                                        imageDetails={imageDetails}
+                                        user_id={user.id}
+                                        toggleDisplayModal={
+                                            this.toggleDisplayModal
+                                        }
+                                        toggleEditPhoto={this.toggleEditPhoto}
+                                        alertChange={this.alertChange}
+                                    />
+                                )}
                             </span>
                             <span>
-                                <span className="like-counter">{imageDetails.total_comments}</span>
-                                <i className="fas fa-comment comments-icon" onClick={this.displayCommentsModal}></i>
+                                <span className="like-counter">
+                                    {imageDetails.total_comments}
+                                </span>
+                                <i
+                                    className="fas fa-comment comments-icon"
+                                    onClick={this.displayCommentsModal}
+                                />
 
-                                <span className='like-counter'>{imageDetails.total_likes}</span>
-                                <i className = "fas fa-thumbs-up" onClick={this.likePhoto} style={thumbsUpStyle}></i>
+                                <span className="like-counter">
+                                    {imageDetails.total_likes}
+                                </span>
+                                <i
+                                    className="fas fa-thumbs-up"
+                                    onClick={this.likePhoto}
+                                    style={thumbsUpStyle}
+                                />
                             </span>
                         </div>
                     </div>
-
                 </div>
             </div>
         );

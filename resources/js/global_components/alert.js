@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 /**
  * This class takes 2 props:
@@ -11,42 +11,43 @@ class Alert extends Component {
 
         this.state = {
             displayAlert: true
-        }
+        };
 
         this.closeAlert = this.closeAlert.bind(this);
     }
 
     closeAlert() {
-        const {resetState} = this.props;
-        this.setState({displayAlert: false});
+        const { resetState } = this.props;
+        this.setState({ displayAlert: false });
         resetState();
     }
-    
+
     render() {
-        const {displayAlert} = this.state;
-        const {message} = this.props;
+        const { displayAlert } = this.state;
+        const { message } = this.props;
 
-        return(
+        return (
             <div>
-                {displayAlert &&
-                
-                <div className="outer-modal-wrapper">
-                    <div className="middle-modal-wrapper">
+                {displayAlert && (
+                    <div className="outer-modal-wrapper">
+                        <div className="middle-modal-wrapper">
+                            <div className="modal-wrapper">
+                                <div className="modal-head">
+                                    <span
+                                        className="close-btn"
+                                        onClick={this.closeAlert}
+                                    >
+                                        &times;
+                                    </span>
+                                </div>
 
-                        <div className='modal-wrapper'>
-                            <div className='modal-head'>
-                                <span className='close-btn' onClick={this.closeAlert}>&times;</span>
-                            </div>
-
-                            <div className='modal-content'>
-                                <p>{message}</p>
+                                <div className="modal-content">
+                                    <p>{message}</p>
+                                </div>
                             </div>
                         </div>
-
                     </div>
-                </div>
-
-                }
+                )}
             </div>
         );
     }
