@@ -61,4 +61,21 @@ class PhotosController extends ApiController
 
         $this->moduleClass->deleteImage($photoId);
     }
+
+    /**
+     * Upload image directly to album
+     * Route = {/api/photo/{album_id}}
+     *
+     * @param integer $albumId
+     */
+    public function uploadImage(Request $request, int $albumId)
+    {
+        $fileInfo = [];
+
+        if ($request->file('file')) {
+            $fileInfo['file'] = $this->moduleClass->init($request->file('file'));
+        }
+
+        $this->moduleClass->storeImageInDatabase($fileInfo, $albumId);
+    }
 }   

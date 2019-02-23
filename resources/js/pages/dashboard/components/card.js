@@ -78,15 +78,15 @@ class Card extends Component {
             },
             body: data
         })
-            .then(() => {
-                this.setState({ uploadError: false });
-            })
-            .catch(() => {
-                this.setState({ uploadError: true });
-            })
-            .finally(() => {
-                this.toggleLoading(); // remove loading spinner
-            });
+        .then(() => {
+            this.setState({ uploadError: false });
+        })
+        .catch(() => {
+            this.setState({ uploadError: true });
+        })
+        .finally(() => {
+            this.toggleLoading(); // remove loading spinner
+        });
 
         // refresh state in order to get the new avatar
         this.props.refresh();

@@ -119,3 +119,8 @@ Route::delete('/delete_comment/{post_id}', 'Api\PostsController@deleteComment')-
  * Post email from contact form
  */
 Route::post('/email', 'Api\EmailController@sendEmail');
+
+/**
+ * Upload photo to album
+ */
+Route::post('/photo/{album_id}', 'Api\PhotosController@uploadImage')->middleware('auth:api');

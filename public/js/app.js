@@ -65543,6 +65543,61 @@ function (_Component) {
       }
     };
 
+    _this.openImageUploadWindow = function () {
+      var form = document.getElementById('uploadImageForm');
+      var file = form.elements.file;
+      file.click();
+    };
+
+    _this.uploadImage =
+    /*#__PURE__*/
+    function () {
+      var _ref4 = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(e) {
+        var albumId, fileData, token;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                albumId = _this.state.albumId; // reset previous upload error
+
+                _this.setState({
+                  uploadError: ''
+                });
+
+                fileData = new FormData();
+                fileData.append('file', e.target.files[0]);
+                token = document.querySelector('meta[name="csrf-token"]').content;
+                _context4.next = 7;
+                return fetch("/api/photo/".concat(albumId), {
+                  method: "post",
+                  headers: {
+                    "X-CSRF-TOKEN": token,
+                    Authorization: "Bearer ".concat(document.querySelector('meta[name="api_token"]').content)
+                  },
+                  body: fileData
+                }).then(function () {
+                  return _this.getAlbum();
+                }).catch(function () {
+                  return _this.setState({
+                    uploadError: 'There was an error uploading the image.'
+                  });
+                });
+
+              case 7:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }));
+
+      return function (_x2) {
+        return _ref4.apply(this, arguments);
+      };
+    }();
+
     _this.state = {
       user: null,
       albumId: null,
@@ -65556,7 +65611,8 @@ function (_Component) {
       deleteAlbum: false,
       displayAlert: false,
       alertMsg: null,
-      isLoading: false
+      isLoading: false,
+      uploadError: ''
     };
     return _this;
   }
@@ -65593,7 +65649,8 @@ function (_Component) {
           deleteAlbum = _this$state8.deleteAlbum,
           displayAlert = _this$state8.displayAlert,
           alertMsg = _this$state8.alertMsg,
-          isLoading = _this$state8.isLoading;
+          isLoading = _this$state8.isLoading,
+          uploadError = _this$state8.uploadError;
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "individualAlbum"
       }, deleteAlbum && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_global_components_modal__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -65605,12 +65662,29 @@ function (_Component) {
         resetState: this.closeAlertBox
       }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "album-information"
-      }, this.renderAlbumTitleState(), !!user && !!user.isAdmin && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+      }, this.renderAlbumTitleState(), !!user && !!user.isAdmin && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "icon delete",
         onClick: this.toggleDeleteAlbum
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
         className: "fas fa-trash-alt"
-      }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+        className: "icon",
+        title: "add image",
+        onClick: this.openImageUploadWindow
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+        className: "fas fa-plus"
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
+        id: "uploadImageForm",
+        style: {
+          display: "none"
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+        type: "file",
+        name: "file",
+        onChange: this.uploadImage
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+        type: "submit"
+      })), uploadError && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", null, uploadError)))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "images"
       }, isLoading && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_global_components_loadingWidget__WEBPACK_IMPORTED_MODULE_7__["default"], null), this.displayImages()), enlargedImage);
     }
