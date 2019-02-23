@@ -35,7 +35,7 @@ class Photos extends File
      * 
      * @return integer - photo id of newly inserted record
      */
-    public function storeImageInDatabase(Array $fileInfo, int $albumId)
+    public function storeImageInDatabase(Array $fileInfo = [], int $albumId)
     {
         $validate = Validator::make($fileInfo, [
             'title' => 'nullable',
@@ -47,8 +47,8 @@ class Photos extends File
         }
 
         $photo = new PhotosModel();
-        $photo->title = $fileInfo['title'];
-        $photo->description = $fileInfo['description'];
+        $photo->title = isset($fileInfo['title']) ? $fileInfo['title'] : null;
+        $photo->description = isset($fileInfo['description']) ? $fileInfo['description'] : null;
         $photo->album_id = $albumId;
         $photo->filepath = $this->getFilenameToStore();
         $photo->created_at = Now();

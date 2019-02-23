@@ -64,6 +64,8 @@ class File
      $this->filename = pathinfo($this->filenameWithExt, PATHINFO_FILENAME);
      $this->extension = $file->getClientOriginalExtension();
      $this->filenameToStore = $this->filename . '_' . time() . '.' . $this->extension;
+
+     return $this;
    }
 
    public function setFile($file)

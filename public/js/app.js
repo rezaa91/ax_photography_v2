@@ -63482,9 +63482,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -63505,85 +63505,46 @@ function (_Component) {
     _classCallCheck(this, Card);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Card).call(this, props));
-    _this.state = {
-      changeImageLink: false,
-      uploadError: false,
-      isLoading: false
-    };
-    _this.displayChangeImage = _this.displayChangeImage.bind(_assertThisInitialized(_this));
-    _this.hideChangeImage = _this.hideChangeImage.bind(_assertThisInitialized(_this));
-    _this.changeImage = _this.changeImage.bind(_assertThisInitialized(_this));
-    _this.submitForm = _this.submitForm.bind(_assertThisInitialized(_this));
-    _this.toggleLoading = _this.toggleLoading.bind(_assertThisInitialized(_this));
-    return _this;
-  }
-  /**
-   * Format the 'member since' date
-   * @param {Object} dateObj
-   */
 
-
-  _createClass(Card, [{
-    key: "formatDate",
-    value: function formatDate(dateObj) {
+    _this.formatDate = function (dateObj) {
       if (dateObj === null) {
         return;
       }
 
       var date = new Date(dateObj);
       return dateformat__WEBPACK_IMPORTED_MODULE_2___default()(date, "dS mmmm, yyyy");
-    }
-    /**
-     * Display the link 'change image' when image hovered over
-     */
+    };
 
-  }, {
-    key: "displayChangeImage",
-    value: function displayChangeImage() {
-      this.setState({
+    _this.displayChangeImage = function () {
+      _this.setState({
         changeImageLink: true
       });
-    }
-    /**
-     * Hide the 'change image' link on image mouseout
-     */
+    };
 
-  }, {
-    key: "hideChangeImage",
-    value: function hideChangeImage() {
-      this.setState({
+    _this.hideChangeImage = function () {
+      _this.setState({
         changeImageLink: false
       });
-    }
-    /**
-     * Open file dialog box
-     */
+    };
 
-  }, {
-    key: "changeImage",
-    value: function changeImage() {
+    _this.changeImage = function () {
       var form = document.forms[0];
       var fileUpload = form.elements.file;
       fileUpload.click();
-    }
-    /**
-     * Submit form if file selected for upload
-     */
+    };
 
-  }, {
-    key: "submitForm",
-    value: function () {
-      var _submitForm = _asyncToGenerator(
+    _this.submitForm =
+    /*#__PURE__*/
+    function () {
+      var _ref = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(e) {
-        var _this2 = this;
-
         var user, data, token;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                user = this.props.user; // if user not signed in, return
+                user = _this.props.user; // if user not signed in, return
 
                 if (user.user_id) {
                   _context.next = 3;
@@ -63594,7 +63555,8 @@ function (_Component) {
 
               case 3:
                 // display loading widget
-                this.toggleLoading();
+                _this.toggleLoading();
+
                 data = new FormData();
                 data.append("file", e.target.files[0]);
                 token = document.querySelector('meta[name="csrf-token"]').content;
@@ -63607,45 +63569,57 @@ function (_Component) {
                   },
                   body: data
                 }).then(function () {
-                  _this2.setState({
+                  _this.setState({
                     uploadError: false
                   });
                 }).catch(function () {
-                  _this2.setState({
+                  _this.setState({
                     uploadError: true
                   });
                 }).finally(function () {
-                  _this2.toggleLoading(); // remove loading spinner
+                  _this.toggleLoading(); // remove loading spinner
 
                 });
 
               case 9:
                 // refresh state in order to get the new avatar
-                this.props.refresh();
+                _this.props.refresh();
 
               case 10:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this);
+        }, _callee);
       }));
 
-      function submitForm(_x) {
-        return _submitForm.apply(this, arguments);
-      }
+      return function (_x) {
+        return _ref.apply(this, arguments);
+      };
+    }();
 
-      return submitForm;
-    }()
-  }, {
-    key: "toggleLoading",
-    value: function toggleLoading() {
-      var isLoading = this.state.isLoading;
-      this.setState({
+    _this.toggleLoading = function () {
+      var isLoading = _this.state.isLoading;
+
+      _this.setState({
         isLoading: !isLoading
       });
-    }
-  }, {
+    };
+
+    _this.state = {
+      changeImageLink: false,
+      uploadError: false,
+      isLoading: false
+    };
+    return _this;
+  }
+  /**
+   * Format the 'member since' date
+   * @param {Object} dateObj
+   */
+
+
+  _createClass(Card, [{
     key: "render",
     value: function render() {
       var _React$createElement;
@@ -65761,6 +65735,61 @@ function (_Component) {
       }
     };
 
+    _this.openImageUploadWindow = function () {
+      var form = document.getElementById('uploadImageForm');
+      var file = form.elements.file;
+      file.click();
+    };
+
+    _this.uploadImage =
+    /*#__PURE__*/
+    function () {
+      var _ref4 = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(e) {
+        var albumId, fileData, token;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                albumId = _this.state.albumId; // reset previous upload error
+
+                _this.setState({
+                  uploadError: ''
+                });
+
+                fileData = new FormData();
+                fileData.append('file', e.target.files[0]);
+                token = document.querySelector('meta[name="csrf-token"]').content;
+                _context4.next = 7;
+                return fetch("/api/photo/".concat(albumId), {
+                  method: "post",
+                  headers: {
+                    "X-CSRF-TOKEN": token,
+                    Authorization: "Bearer ".concat(document.querySelector('meta[name="api_token"]').content)
+                  },
+                  body: fileData
+                }).then(function () {
+                  return _this.getAlbum();
+                }).catch(function () {
+                  return _this.setState({
+                    uploadError: 'There was an error uploading the image.'
+                  });
+                });
+
+              case 7:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }));
+
+      return function (_x2) {
+        return _ref4.apply(this, arguments);
+      };
+    }();
+
     _this.state = {
       user: null,
       albumId: null,
@@ -65774,7 +65803,8 @@ function (_Component) {
       deleteAlbum: false,
       displayAlert: false,
       alertMsg: null,
-      isLoading: false
+      isLoading: false,
+      uploadError: ''
     };
     return _this;
   }
@@ -65811,7 +65841,8 @@ function (_Component) {
           deleteAlbum = _this$state8.deleteAlbum,
           displayAlert = _this$state8.displayAlert,
           alertMsg = _this$state8.alertMsg,
-          isLoading = _this$state8.isLoading;
+          isLoading = _this$state8.isLoading,
+          uploadError = _this$state8.uploadError;
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "individualAlbum"
       }, deleteAlbum && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_global_components_modal__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -65823,12 +65854,29 @@ function (_Component) {
         resetState: this.closeAlertBox
       }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "album-information"
-      }, this.renderAlbumTitleState(), !!user && !!user.isAdmin && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+      }, this.renderAlbumTitleState(), !!user && !!user.isAdmin && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "icon delete",
         onClick: this.toggleDeleteAlbum
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
         className: "fas fa-trash-alt"
-      }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+        className: "icon",
+        title: "add image",
+        onClick: this.openImageUploadWindow
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+        className: "fas fa-plus"
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
+        id: "uploadImageForm",
+        style: {
+          display: "none"
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+        type: "file",
+        name: "file",
+        onChange: this.uploadImage
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+        type: "submit"
+      })), uploadError && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", null, uploadError)))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "images"
       }, isLoading && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_global_components_loadingWidget__WEBPACK_IMPORTED_MODULE_7__["default"], null), this.displayImages()), enlargedImage);
     }

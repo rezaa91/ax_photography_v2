@@ -23,7 +23,8 @@ class IndividualAlbum extends Component {
             deleteAlbum: false,
             displayAlert: false,
             alertMsg: null,
-            isLoading: false
+            isLoading: false,
+            uploadError: ''
         }
     }
 
@@ -329,11 +330,39 @@ class IndividualAlbum extends Component {
                 </div>
             )
         }
+    }
 
+    openImageUploadWindow = () => {
+        const form = document.getElementById('uploadImageForm');
+        const file = form.elements.file;
+        file.click();
+    }
+
+    uploadImage = async(e) => {
+        const {albumId} = this.state;
+
+        // reset previous upload error
+        this.setState({uploadError: ''});
+
+        const fileData = new FormData();
+        fileData.append('file', e.target.files[0]);
+
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+
+        await fetch(`/api/photo/${albumId}`, {
+            method: "post",
+            headers: {
+                    "X-CSRF-TOKEN": token,
+                    Authorization: `Bearer ${document.querySelector('meta[name="api_token"]').content}`
+            },
+            body: fileData
+        })
+        .then(() => this.getAlbum())
+        .catch(() => this.setState({uploadError: 'There was an error uploading the image.'}));
     }
 
     render() {
-        const {user, enlargedImage, deleteAlbum, displayAlert, alertMsg, isLoading} = this.state;
+        const {user, enlargedImage, deleteAlbum, displayAlert, alertMsg, isLoading, uploadError} = this.state;
 
         return(
             <div className='individualAlbum'>
@@ -359,7 +388,17 @@ class IndividualAlbum extends Component {
 
                     {
                         !!user && !!user.isAdmin &&                    
-                        <span className="icon delete" onClick={this.toggleDeleteAlbum}><i className="fas fa-trash-alt"></i></span>
+                        <span>
+                            <span className="icon delete" onClick={this.toggleDeleteAlbum}><i className="fas fa-trash-alt"></i></span>
+                            <span className="icon" title="add image" onClick={this.openImageUploadWindow}><i className="fas fa-plus"></i>
+                                {/* Hide the below form - it is used to upload file from clicking the 'plus button' */}
+                                <form id="uploadImageForm" style={{display: "none"}}>
+                                    <input type="file" name="file" onChange={this.uploadImage} />
+                                    <input type="submit" />
+                                </form>
+                                {uploadError && <span>{uploadError}</span>}
+                            </span>
+                        </span>
                     }
                 </div>
                 <div className="images">
