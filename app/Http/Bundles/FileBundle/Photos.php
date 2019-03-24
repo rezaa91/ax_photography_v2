@@ -2,12 +2,12 @@
 
 namespace App\Http\Bundles\FileBundle;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Photos as PhotosModel;
 use App\Albums;
 use App\Posts;
 use App\Http\Bundles\FileBundle\File;
-use App\Http\Controllers\Photos\HomepageBackgroundController;
 use App\Http\Bundles\FileBundle\HomepageBackground;
 use Validator;
 
@@ -43,21 +43,36 @@ class Photos extends File
         ]);
 
         if ($validate->fails()) {
+            Log::warning('Image validation failed whilst uploading to album: ' .$albumId);
+
             return false;
         }
 
-        $photo = new PhotosModel();
-        $photo->title = isset($fileInfo['title']) ? $fileInfo['title'] : null;
-        $photo->description = isset($fileInfo['description']) ? $fileInfo['description'] : null;
-        $photo->album_id = $albumId;
-        $photo->filepath = $this->getFilenameToStore();
-        $photo->created_at = Now();
-        $photo->user_id = auth()->user()->id;
+        try {
+
+            $photo = new PhotosModel();
+            $photo->title = isset($fileInfo['title']) ? $fileInfo['title'] : null;
+            $photo->description = isset($fileInfo['description']) ? $fileInfo['description'] : null;
+            $photo->album_id = $albumId;
+            $photo->filepath = $this->getFilenameToStore();
+            $photo->created_at = Now();
+            $photo->user_id = auth()->user()->id;
         
-        // Upload file to storage once inserted in to database
-        if ($photo->save()) {
+            // Upload file to storage once inserted in to database
+            if (!$photo->save()) {
+                $errorMsg = 'Could not store image: ' . $photo->id . ' to database';
+                Log::warning($errorMsg);
+
+                throw new DatabaseException($errorMsg);
+            }
+
             $this->uploadFile();
+            Log::info('image ' . $photo->id . ' stored to database. album: ' . $photo->album_id);
+        
             return $photo->id;
+            
+        } catch (DatabaseException $e) {
+            return $e->getMessage();
         }
     }
 
@@ -86,18 +101,24 @@ class Photos extends File
         $photo = PhotosModel::find($photoId);
         $albumId = $photo->album_id;
 
-        // Do not allow user to delete photo if it is currently the homepage
+        // Do not allow user to delete photo if it is currently the homepage background
         if ($this->isHomepageBackground($photoId)) {
+            Log::warning('Attempting to delete image: ' . $photoId . ' which is the current homepage background');
+
             return;
         }
 
         // Do not allow user to delete photo if it is the album cover, unless deleting the full album
         if ($this->isAlbumCover($albumId, $photoId) && !$deletingAlbum) {
+            Log::warning('Attempting to delete image: ' . $photoId . ' which is currently album: ' . $albumId . ' cover image');
+
             return;
         }
         
         // If deleted successfully from DB, delete file
         if ($photo->delete()) {
+            Log::info('Image: ' . $photoId . ' deleted');
+
             $this->deleteFile($photo->filepath);
             $this->removeImageLikes($photoId);
             $this->removePhotoComments($photoId);

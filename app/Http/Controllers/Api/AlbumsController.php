@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Bundles\FileBundle\Albums;
+use Illuminate\Support\Facades\Log;
 
 class AlbumsController extends ApiController
 {
@@ -42,6 +43,8 @@ class AlbumsController extends ApiController
         if (!auth()->user()->isAdmin) {
             return;
         }
+        
+        Log::info('Updating album title for album: ' . $albumId);
 
         $albumData = $request->json()->all();
         $this->moduleClass->updateAlbumTitle($albumId, $albumData['album_name']);
@@ -57,6 +60,8 @@ class AlbumsController extends ApiController
             return;
         }
 
+        Log::info('Deleting album: ' . $albumId);
+
         $this->moduleClass->deleteAlbum($albumId);
     }
 
@@ -68,6 +73,8 @@ class AlbumsController extends ApiController
      */
     public function moveImage(int $albumId, int $imageId)
     {
+        Log::info('Attempting to move image: ' . $imageId . ' to album: ' .$albumId);
+
         return $this->moduleClass->moveImageToAlbum($albumId, $imageId);
     }
 }
