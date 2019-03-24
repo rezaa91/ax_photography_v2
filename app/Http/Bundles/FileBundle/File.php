@@ -2,6 +2,8 @@
 
 namespace App\Http\Bundles\FileBundle;
 
+use App\Exceptions\FileUploadException;
+
 class File
 {
      /**
@@ -115,8 +117,15 @@ class File
     */
    public function deleteFile(string $filepath)
    {
-        if (file_exists("storage/$this->directoryToStore/$filepath")) {
-            unlink("storage/$this->directoryToStore/$filepath");
+        try{
+          if (!file_exists("storage/$this->directoryToStore/$filepath")) {
+               throw new FileUploadException('File does not exist in storage directory');
+          }
+
+          unlink("storage/$this->directoryToStore/$filepath");
+
+        } catch (FileUploadException $e) {
+          return $e->getMessage();
         }
    }
 
