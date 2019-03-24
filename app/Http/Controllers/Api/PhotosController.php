@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Http\Bundles\FileBundle\Photos;
 
@@ -59,6 +60,8 @@ class PhotosController extends ApiController
             return;
         }
 
+        Log::info('Attempting to delete image: ' . $photoId);
+
         $this->moduleClass->deleteImage($photoId);
     }
 
@@ -75,6 +78,8 @@ class PhotosController extends ApiController
         if ($request->file('file')) {
             $fileInfo['file'] = $this->moduleClass->init($request->file('file'));
         }
+
+        Log::info('Attempting to upload image to album: ' . $albumId);
 
         $this->moduleClass->storeImageInDatabase($fileInfo, $albumId);
     }
