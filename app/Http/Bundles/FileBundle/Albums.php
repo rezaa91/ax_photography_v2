@@ -137,6 +137,7 @@ class Albums extends Photos
         $album = AlbumsModel::find($albumId);
         $album->album_name = $albumName;
         $album->save();
+        
         return true;
     }
 
