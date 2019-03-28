@@ -31,7 +31,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('pages.profile.dashboard');
+        return $this->displayPage('pages.profile.dashboard');
     }
 
     /**
@@ -49,7 +49,7 @@ class UserController extends Controller
             return redirect('/')->with('failure', 'Unauthorised access');
         }
 
-        return view('pages.profile.edit')->with('user', $user);
+        return $this->displayPage('pages.profile.edit', ['user' => $user]);
     }
 
     /**

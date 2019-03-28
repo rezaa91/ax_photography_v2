@@ -5,17 +5,17 @@
 <div class="edit-profile-wrapper">
     <div class="edit-profile-form">
 
-        {!! Form::open(['action' => ['Web\UserController@update', $user->id], 'method' => 'POST']) !!}
+        {!! Form::open(['action' => ['Web\UserController@update', $pageSpecific['user']->id], 'method' => 'POST']) !!}
         @csrf
 
             <div class="form-section">
                 {{ Form::label('username') }}
-                {{ Form::text('username', $user->username) }}
+                {{ Form::text('username', $pageSpecific['user']->username) }}
             </div>
 
             <div class="form-section">
                 {{ Form::label('email') }}
-                {{ Form::text('email', $user->email) }}
+                {{ Form::text('email', $pageSpecific['user']->email) }}
             </div>
 
             <div class="form-section">

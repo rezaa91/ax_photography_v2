@@ -62613,12 +62613,12 @@ var Navigation =
 function (_Component) {
   _inherits(Navigation, _Component);
 
-  function Navigation() {
+  function Navigation(props) {
     var _this;
 
     _classCallCheck(this, Navigation);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Navigation).call(this)); //check if user is in session
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Navigation).call(this, props)); //check if user is in session
 
     _this.getUser =
     /*#__PURE__*/
@@ -62687,7 +62687,7 @@ function (_Component) {
               className: "user-dropdown-menu"
             }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
               href: "/user"
-            }, "Dashboard")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
+            }, "Dashboard ", _this.displayUnacknowledgedNotifications())), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
               href: "/upload"
             }, "Upload")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
               href: "/logout"
@@ -62710,7 +62710,7 @@ function (_Component) {
           className: arrowClasses
         }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
           onClick: _this.toggleUserDropdownMenu
-        }, user.username), dropdownMenu);
+        }, user.username), _this.displayUnacknowledgedNotifications(), dropdownMenu);
       }
     };
 
@@ -62745,9 +62745,22 @@ function (_Component) {
       mobileDropdown.style.display === 'block' ? mobileDropdown.style.display = 'none' : mobileDropdown.style.display = 'block';
     };
 
+    _this.displayUnacknowledgedNotifications = function () {
+      var notificationCount = _this.props.notificationCount; // if 0 notifications - do not display
+
+      if (!notificationCount) {
+        return;
+      }
+
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+        className: "notification-count"
+      }, notificationCount);
+    };
+
     _this.getUser();
 
     _this.state = {
+      notificationCount: props.notificationCount,
       isLoggedIn: false,
       user: null,
       isDropdownPresent: false,
@@ -62809,7 +62822,10 @@ function (_Component) {
 }(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
 
 if (document.getElementById("nav")) {
-  react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Navigation, null), document.getElementById("nav"));
+  var notificationCount = document.getElementById('nav').getAttribute('data-notificationCount') ? parseInt(document.getElementById('nav').getAttribute('data-notificationCount')) : 0;
+  react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Navigation, {
+    notificationCount: notificationCount
+  }), document.getElementById("nav"));
 }
 
 /***/ }),

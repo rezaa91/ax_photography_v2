@@ -6520,6 +6520,18 @@ form .selection .option {
   transition: transform 0.5s, -webkit-transform 0.5s;
 }
 
+.navigation-wrapper .notification-count {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  color: #ededed;
+  border: 1px solid #111111;
+  background-color: #9e0401;
+  text-align: center;
+  margin-left: 10px;
+}
+
 @media only screen and (max-width: 700px) {
   .navigation-wrapper {
     height: auto;

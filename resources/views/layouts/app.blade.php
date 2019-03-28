@@ -24,7 +24,7 @@
 </head>
 <body>
     <!-- React Component -->
-    <nav id="nav"></nav>
+    <nav data-notificationCount={{ !empty($notificationCount) ? $notificationCount : 0 }} id="nav"></nav>
 
     <!-- error messages -->
     @include('messages.messages')

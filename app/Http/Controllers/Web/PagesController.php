@@ -12,7 +12,7 @@ class PagesController extends Controller
      */
     public function homepage()
     {
-        return view('pages.homepage');
+        return $this->displayPage('pages.homepage');
     }
 
     /**
@@ -20,7 +20,7 @@ class PagesController extends Controller
      */
     public function about()
     {
-        return view('pages.about');
+        return $this->displayPage('pages.about');
     }
 
     /**
@@ -28,6 +28,6 @@ class PagesController extends Controller
      */
     public function contact()
     {
-        return view('pages.contact');
+        return $this->displayPage('pages.contact');
     }
 }
