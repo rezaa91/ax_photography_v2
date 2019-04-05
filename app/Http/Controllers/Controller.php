@@ -37,7 +37,7 @@ class Controller extends BaseController
     public function displayPage(string $template, array $pageSpecificVariables = [])
     {
         // pass administrator related data to view if user is admin
-        if (auth()->user()->isAdmin) {
+        if (auth()->user() && auth()->user()->isAdmin) {
             $this->notificationCount = NotificationsModel::where('ack', 0)->count();
         }
 
