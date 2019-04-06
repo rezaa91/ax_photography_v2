@@ -62138,6 +62138,87 @@ if (token) {
 
 /***/ }),
 
+/***/ "./resources/js/classes/User.js":
+/*!**************************************!*\
+  !*** ./resources/js/classes/User.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return getUser; });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function getUser() {
+  return _getUser.apply(this, arguments);
+}
+
+function _getUser() {
+  _getUser = _asyncToGenerator(
+  /*#__PURE__*/
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+    var _getUser2, user;
+
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.prev = 0;
+            _context.next = 3;
+            return fetch('/api/user');
+
+          case 3:
+            _getUser2 = _context.sent;
+            _context.next = 6;
+            return _getUser2.json();
+
+          case 6:
+            user = _context.sent;
+            user = user.data;
+
+            if (user) {
+              _context.next = 10;
+              break;
+            }
+
+            throw new Error('Unable to get current user');
+
+          case 10:
+            return _context.abrupt("return", {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              username: user.username,
+              created_at: user.created_at,
+              updated_at: user.updated_at,
+              avatar_filepath: user.avatar_filepath,
+              isAdmin: user.isAdmin
+            });
+
+          case 13:
+            _context.prev = 13;
+            _context.t0 = _context["catch"](0);
+            return _context.abrupt("return", _context.t0);
+
+          case 16:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[0, 13]]);
+  }));
+  return _getUser.apply(this, arguments);
+}
+
+/***/ }),
+
 /***/ "./resources/js/classes/Validate.js":
 /*!******************************************!*\
   !*** ./resources/js/classes/Validate.js ***!
@@ -62170,6 +62251,10 @@ var Validate = {
    * @return validated date
    */
   validateDate: function validateDate(date) {
+    if (!date || !(date instanceof Date)) {
+      return null;
+    }
+
     var newDate = new Date(date);
     var year = newDate.getFullYear();
     var month = this.months[newDate.getMonth()];
@@ -63528,10 +63613,73 @@ function (_Component) {
       });
     };
 
+    _this.goToNotifiedImage = function (photo) {
+      var id = photo.id,
+          album_id = photo.album_id;
+
+      if (!id || !album_id) {
+        return;
+      }
+
+      window.location.href = "/albums/".concat(album_id, "?photo=").concat(id);
+    };
+
+    _this.postNotificationString = function (notification) {
+      var user = _this.props.user;
+      var username = user.user_id === notification.notification.user_id ? 'You' : notification.user;
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        onClick: function onClick() {
+          return _this.goToNotifiedImage(notification.photo);
+        },
+        className: "notification-msg",
+        key: notification.id
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+        className: "notification-img"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
+        src: "/storage/uploads/".concat(notification.photo && notification.photo.filepath)
+      })), username, " commented on your photo: \xA0", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", null, notification.notification.post_text));
+    };
+
+    _this.likeNotificationString = function (notification) {
+      var user = _this.props.user;
+      var username = user.user_id === notification.notification.user_id ? 'You' : notification.user;
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        onClick: function onClick() {
+          return _this.goToNotifiedImage(notification.photo);
+        },
+        className: "notification-msg",
+        key: notification.id
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+        className: "notification-img"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
+        src: "/storage/uploads/".concat(notification.photo && notification.photo.filepath)
+      })), username, " liked your photo");
+    };
+
+    _this.displayNotifications = function () {
+      var notifications = _this.state.notifications;
+
+      if (!notifications) {
+        return;
+      }
+
+      var notificationString = notifications.map(function (notification) {
+        switch (notification.type) {
+          case 'post':
+            return _this.postNotificationString(notification);
+
+          case 'like':
+            return _this.likeNotificationString(notification);
+        }
+      });
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, notificationString);
+    };
+
     _this.state = {
       changeImageLink: false,
       uploadError: false,
-      isLoading: false
+      isLoading: false,
+      notifications: props.notifications
     };
     return _this;
   }
@@ -63628,7 +63776,7 @@ function (_Component) {
         className: "right-side"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "title"
-      }, "Notifications"))));
+      }, "Notifications"), this.displayNotifications())));
     }
   }]);
 
@@ -63656,6 +63804,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _components_card__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/card */ "./resources/js/pages/dashboard/components/card.js");
 /* harmony import */ var _global_components_modal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../global_components/modal */ "./resources/js/global_components/modal.js");
+/* harmony import */ var _data_notificationData__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./data/notificationData */ "./resources/js/pages/dashboard/data/notificationData.js");
 
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -63685,17 +63834,18 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 var Dashboard =
 /*#__PURE__*/
 function (_Component) {
   _inherits(Dashboard, _Component);
 
-  function Dashboard() {
+  function Dashboard(props) {
     var _this;
 
     _classCallCheck(this, Dashboard);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Dashboard).call(this));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Dashboard).call(this, props));
     _this.getUser =
     /*#__PURE__*/
     _asyncToGenerator(
@@ -63805,7 +63955,8 @@ function (_Component) {
       }, user.user_id && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_card__WEBPACK_IMPORTED_MODULE_3__["default"], {
         user: user,
         displayWarning: this.displayWarning,
-        refresh: this.getUser
+        refresh: this.getUser,
+        notifications: this.props.notifications
       }), deleteAccountError && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", null, "Oops, something went wrong and we could not delete your account. Please try again.")));
     }
   }]);
@@ -63814,7 +63965,31 @@ function (_Component) {
 }(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
 
 if (document.getElementById("dashboard")) {
-  react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Dashboard, null), document.getElementById("dashboard"));
+  react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Dashboard, {
+    notifications: Object(_data_notificationData__WEBPACK_IMPORTED_MODULE_5__["parseNotifications"])()
+  }), document.getElementById("dashboard"));
+}
+
+/***/ }),
+
+/***/ "./resources/js/pages/dashboard/data/notificationData.js":
+/*!***************************************************************!*\
+  !*** ./resources/js/pages/dashboard/data/notificationData.js ***!
+  \***************************************************************/
+/*! exports provided: parseNotifications */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "parseNotifications", function() { return parseNotifications; });
+function parseNotifications() {
+  var notificationJSON = document.querySelector('#dashboard').getAttribute('data-notifications');
+
+  if (!notificationJSON) {
+    return;
+  }
+
+  return JSON.parse(notificationJSON);
 }
 
 /***/ }),
@@ -64082,7 +64257,7 @@ function (_Component) {
           Authorization: "Bearer " + document.querySelector('meta[name="api_token"]').content
         },
         body: JSON.stringify({
-          user_id: user.id,
+          user_id: user.id || user.user_id,
           post: commentMessage
         })
       }).then(function () {
@@ -64391,7 +64566,7 @@ function (_Component) {
           Authorization: "Bearer " + document.querySelector('meta[name="api_token"]').content
         },
         body: JSON.stringify({
-          user_id: user.id,
+          user_id: user.id || user.user_id,
           photo_id: imageId
         })
       }).finally(function () {
@@ -64860,7 +65035,7 @@ function (_Component) {
         className: "fas fa-cog"
       })), displaySettings && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_settings__WEBPACK_IMPORTED_MODULE_3__["default"], {
         imageDetails: imageDetails,
-        user_id: user.id,
+        user_id: user.id || user.user_id,
         toggleDisplayModal: this.toggleDisplayModal,
         toggleEditPhoto: this.toggleEditPhoto,
         alertChange: this.alertChange
@@ -65207,6 +65382,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _global_components_alert__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../global_components/alert */ "./resources/js/global_components/alert.js");
 /* harmony import */ var _individualAbumSettings__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./individualAbumSettings */ "./resources/js/pages/individualAlbum/individualAbumSettings.js");
 /* harmony import */ var _global_components_loadingWidget__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../global_components/loadingWidget */ "./resources/js/global_components/loadingWidget.js");
+/* harmony import */ var _utilities_openImageIfImageInURL__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./utilities/openImageIfImageInURL */ "./resources/js/pages/individualAlbum/utilities/openImageIfImageInURL.js");
 
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -65239,6 +65415,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 var IndividualAlbum =
 /*#__PURE__*/
 function (_Component) {
@@ -65262,11 +65439,12 @@ function (_Component) {
             case 0:
               url = window.location.href; //display loading spinner
 
-              _this.toggleLoading(); // find the id from the url by getting the last digit in the url (note that the url must finish with this digit)
+              _this.toggleLoading(); // find the album id from the url by getting the last digit in the url (note that the url must finish with this digit)
 
 
-              id = url.match(/\d+$/)[0];
-              _context.next = 5;
+              id = url.match(/albums\/(\d+)/gi);
+              id = id[0].match(/\d+/)[0];
+              _context.next = 6;
               return fetch("/api/albums/".concat(id)).then(function (response) {
                 return response.status === 200 && response.json();
               }).then(function (data) {
@@ -65285,7 +65463,7 @@ function (_Component) {
                 _this.toggleLoading();
               });
 
-            case 5:
+            case 6:
             case "end":
               return _context.stop();
           }
@@ -65779,6 +65957,8 @@ function (_Component) {
 }(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
 
 if (document.getElementById('individualAlbum')) {
+  // display image modal if user has followed through from notifications link
+  Object(_utilities_openImageIfImageInURL__WEBPACK_IMPORTED_MODULE_8__["openImageModalIfImageInURL"])();
   react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(IndividualAlbum, null), document.getElementById('individualAlbum'));
 }
 
@@ -65866,6 +66046,130 @@ function setImageHeight() {
       modalHeaderHeight = _getModalHeightProper2.modalHeaderHeight;
 
   modalImage.style.maxHeight = modalHeight - modalHeaderHeight + "px";
+}
+
+/***/ }),
+
+/***/ "./resources/js/pages/individualAlbum/utilities/openImageIfImageInURL.js":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/pages/individualAlbum/utilities/openImageIfImageInURL.js ***!
+  \*******************************************************************************/
+/*! exports provided: openImageModalIfImageInURL */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "openImageModalIfImageInURL", function() { return openImageModalIfImageInURL; });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_imageModal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/imageModal */ "./resources/js/pages/individualAlbum/components/imageModal.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _classes_User__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../classes/User */ "./resources/js/classes/User.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+
+/**
+ * If the URL has the 'photo' GET parameter, this must mean the page was accessed by clicking
+ * on a notification from the dashboard page
+ */
+
+function checkImageInURL() {
+  var imageInRegEx = new RegExp('photo=');
+  return imageInRegEx.test(window.location.href);
+}
+/**
+ * @return {int|string} imageId
+ */
+
+
+function getImageId() {
+  var url = window.location.href;
+  var splitURL = url.split(/photo=/gi);
+
+  if (!splitURL || splitURL.length < 2) {
+    return;
+  } // where splitURL[0] is the first part of the url
+  // splitURL[1] e.g. "562"
+
+
+  return splitURL[1].match(/\d+/)[0];
+}
+/**
+ * Get album id from URL
+ * @return {int|string} albumId
+ */
+
+
+function getAlbumId() {
+  var url = window.location.href;
+  var id = url.match(/albums\/(\d+)/gi);
+  return id[0].match(/\d+/)[0];
+}
+
+function closeImageModal(e) {
+  var imageModal = document.getElementById('imageModal');
+
+  if (imageModal.length === 0) {
+    return;
+  }
+
+  history.pushState({}, 'albums', getAlbumId());
+  imageModal.remove();
+} // if the user has come to the album page through following a notification
+// and therefore having an image id in the url, then continue with this code
+// otherwise, terminate this code to display the album only until an image is clicked on
+
+
+function openImageModalIfImageInURL() {
+  return _openImageModalIfImageInURL.apply(this, arguments);
+}
+
+function _openImageModalIfImageInURL() {
+  _openImageModalIfImageInURL = _asyncToGenerator(
+  /*#__PURE__*/
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+    var user;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            if (checkImageInURL()) {
+              _context.next = 2;
+              break;
+            }
+
+            return _context.abrupt("return");
+
+          case 2:
+            _context.next = 4;
+            return Object(_classes_User__WEBPACK_IMPORTED_MODULE_4__["default"])();
+
+          case 4:
+            user = _context.sent;
+            react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(_components_imageModal__WEBPACK_IMPORTED_MODULE_1__["default"], {
+              closeModal: closeImageModal,
+              imageId: getImageId(),
+              user: user
+            }), document.getElementById('imageModal'));
+
+          case 6:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _openImageModalIfImageInURL.apply(this, arguments);
 }
 
 /***/ }),
@@ -66066,8 +66370,8 @@ function displayBottomNavBarMobile() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/rezaa91/Desktop/ax_photography_v2/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/rezaa91/Desktop/ax_photography_v2/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/rezaa91/Desktop/photo_v2/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/rezaa91/Desktop/photo_v2/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

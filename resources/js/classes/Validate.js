@@ -34,6 +34,10 @@ const Validate = {
      * @return validated date
      */
     validateDate: function(date) {
+        if (!date || !(date instanceof Date)) {
+            return null;
+        }
+
         const newDate = new Date(date);
         const year = newDate.getFullYear();
         const month = this.months[newDate.getMonth()];

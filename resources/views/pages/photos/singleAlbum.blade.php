@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- React Component -->
+<!-- React Components -->
 <div id="individualAlbum"></div>
+<div id="imageModal"></div>
 @endsection

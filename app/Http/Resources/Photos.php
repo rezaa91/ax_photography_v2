@@ -44,6 +44,7 @@ class Photos extends JsonResource
         return DB::table('posts')
             ->leftJoin('users', 'posts.user_id', '=', 'users.id')
             ->select('posts.id', 'posts.photo_id', 'posts.post_text', 'posts.created_at', 'users.id AS user_id', 'users.username', 'users.avatar_filepath')
+            ->orderBy('posts.created_at', 'desc')
             ->get();
     }
 }

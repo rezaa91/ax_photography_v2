@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import Card from "./components/card";
 import Modal from "../../global_components/modal";
+import {parseNotifications} from './data/notificationData';
 
 class Dashboard extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.getUser();
 
         this.state = {
@@ -92,6 +93,7 @@ class Dashboard extends Component {
                             user={user}
                             displayWarning={this.displayWarning}
                             refresh={this.getUser}
+                            notifications={this.props.notifications}
                         />
                     )}
 
@@ -108,5 +110,5 @@ class Dashboard extends Component {
 }
 
 if (document.getElementById("dashboard")) {
-    ReactDOM.render(<Dashboard />, document.getElementById("dashboard"));
+    ReactDOM.render(<Dashboard notifications={parseNotifications()} />, document.getElementById("dashboard"));
 }

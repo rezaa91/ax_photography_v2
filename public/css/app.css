@@ -5788,6 +5788,8 @@ form .selection .option {
 .card-wrapper .card-body .right-side {
   flex: 2;
   padding: 0 10px;
+  max-height: 600px;
+  overflow-y: scroll;
 }
 
 .card-wrapper .card-body .right-side .title {
@@ -5803,6 +5805,23 @@ form .selection .option {
   display: inline-block;
   font-weight: 900;
   width: 25%;
+}
+
+.card-wrapper .notification-msg {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.card-wrapper .notification-msg:hover {
+  background-color: #999999;
+}
+
+.card-wrapper .notification-msg img {
+  margin-right: 5px;
+  width: 75px;
+  height: 75px;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 
 .outer-modal-wrapper {

@@ -3,6 +3,7 @@
 namespace App\Http\Bundles\FileBundle;
 
 use App\Exceptions\FileUploadException;
+use App\Http\Bundles\NotificationsBundle\Notifications;
 
 class File
 {
@@ -45,12 +46,21 @@ class File
     protected $directoryToStore = null;
 
     /**
+     * Notifications
+     *
+     * @var Notifications
+     */
+    protected $notifications = null;
+
+    /**
      * Set file data to relevent properties
      *
+     * @param Notifications $notifications 
      * @param $file
      */
-   public function __construct($file = null)
+   public function __construct(Notifications $notifications, $file = null)
    {
+     $this->notifications = $notifications;
 
      if (!isset($file)) {
             return;

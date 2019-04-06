@@ -5,6 +5,7 @@ import Modal from '../../global_components/modal';
 import Alert from '../../global_components/alert';
 import individualAlbumInit from './individualAbumSettings';
 import LoadingWidget from '../../global_components/loadingWidget';
+import {openImageModalIfImageInURL} from './utilities/openImageIfImageInURL';
 
 class IndividualAlbum extends Component {
     constructor() {
@@ -53,8 +54,9 @@ class IndividualAlbum extends Component {
         //display loading spinner
         this.toggleLoading();
 
-        // find the id from the url by getting the last digit in the url (note that the url must finish with this digit)
-        const id = url.match(/\d+$/)[0];
+        // find the album id from the url by getting the last digit in the url (note that the url must finish with this digit)
+        let id = url.match(/albums\/(\d+)/gi);
+        id = id[0].match(/\d+/)[0];
 
         await fetch(`/api/albums/${id}`)
         .then(response => response.status === 200 && response.json())
@@ -416,5 +418,8 @@ class IndividualAlbum extends Component {
 }
 
 if (document.getElementById('individualAlbum')) {
+    // display image modal if user has followed through from notifications link
+    openImageModalIfImageInURL();
+
     ReactDOM.render(<IndividualAlbum />, document.getElementById('individualAlbum'));
 }

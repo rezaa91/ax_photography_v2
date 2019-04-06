@@ -4,20 +4,22 @@ namespace App\Http\Bundles\UserBundle;
 
 use App\User as UserModel;
 use App\Http\Bundles\FileBundle\Photos as PhotosClass;
-
+use App\Http\Bundles\NotificationsBundle\Notifications;
 
 class User
 {
     private $avatar_dir = 'avatars';
     private $fileClass;
+    private $notifications;
 
     /**
      * @param PhotosClass $fileClass
      */
-    public function __construct(PhotosClass $fileClass)
+    public function __construct(PhotosClass $fileClass, Notifications $notifications)
     {
         $this->fileClass = $fileClass;
         $this->fileClass->setDirectoryToStore($this->avatar_dir);
+        $this->notifications = $notifications;
     }
 
     /**
@@ -57,5 +59,14 @@ class User
         if (file_exists("storage/avatars/$user->avatar_filepath")) {
             unlink("storage/avatars/$user->avatar_filepath");
         }
+    }
+
+    public function getNotifications(bool $acknowledgeNotifications = false)
+    {
+        if ($acknowledgeNotifications) {
+            $this->notifications->acknowledgeNotifications();
+        }
+
+        return $this->notifications->getNotifications();
     }
 }

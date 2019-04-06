@@ -11,13 +11,13 @@ class Notifications {
 
     /**
      * The notication type id of a post
-     * @var
+     * @var int
      */
     const POST = 1;
 
     /**
      * The notification type id of a like
-     * @var
+     * @var int
      */
     const LIKE = 2;
 
@@ -28,10 +28,11 @@ class Notifications {
      */
     public function acknowledgeNotifications() 
     {
-        $unacknowledgedNotifications = NotificationsModel::where('ack', false);
+        $unacknowledgedNotifications = NotificationsModel::where('ack', 0)->get();
 
         forEach($unacknowledgedNotifications as $notification) {
             $notification->ack = true;
+            $notification->save();
         }
 
         return true;
@@ -68,11 +69,25 @@ class Notifications {
     }
 
     /**
-     * Display all notifications
+     * Get all notifications
      */
-    public function displayNotifications()
+    public function getNotifications()
     {
-        return NotificationsModel::all();
+        $notifications = NotificationsModel::orderBy('created_at', 'desc')->paginate(15);
+
+        $data = [];
+
+        foreach($notifications as $notification) {
+            $data[] = [
+                'id' => $notification->id,
+                'type' => $notification->notificationType->name, // e.g. like or post
+                'user' => $notification->user && $notification->user->username,
+                'notification' => $notification->getNotifications($notification),
+                'photo' => $notification->getNotifications($notification)->photo,
+            ];
+        }
+
+        return $data;
     }
 
     /**

@@ -31,7 +31,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        return $this->displayPage('pages.profile.dashboard');
+        $notifications = null;
+
+        if (auth()->user() && auth()->user()->isAdmin) {
+            $notifications = json_encode($this->moduleClass->getNotifications(true));
+        }
+
+        return $this->displayPage('pages.profile.dashboard')->with('notifications', $notifications);
     }
 
     /**
