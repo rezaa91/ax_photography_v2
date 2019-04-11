@@ -55,7 +55,7 @@ class Comments extends Component {
         }
 
         const token = document.querySelector('meta[name="csrf-token"]').content;
-        const { commentMessage } = this.state;
+        const {commentMessage} = this.state;
 
         // return if comment is empty string
         if (!commentMessage) {
@@ -75,7 +75,7 @@ class Comments extends Component {
                     document.querySelector('meta[name="api_token"]').content
             },
             body: JSON.stringify({
-                user_id: user.id,
+                user_id: user.id || user.user_id,
                 post: commentMessage
             })
         })
@@ -112,13 +112,9 @@ class Comments extends Component {
                         <div className="user-info">
                             <div className="avatar">
                                 <img
-                                    src={`/storage/${
-                                        comment.avatar_filepath
-                                            ? `avatars/${
-                                                  comment.avatar_filepath
-                                              }`
-                                            : "defaults/avatar.png"
-                                    }`}
+                                    src={`/storage/${comment.avatar_filepath ? 
+                                        `avatars/${comment.avatar_filepath}` : 
+                                        "defaults/avatar.png"}`}
                                 />
                             </div>
                             <span className="username">

@@ -3,13 +3,14 @@
 namespace App\Http\Bundles\FileBundle;
 
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
 use App\Photos as PhotosModel;
 use App\Albums;
 use App\Posts;
 use App\Http\Bundles\FileBundle\File;
 use App\Http\Bundles\FileBundle\HomepageBackground;
 use Validator;
+use App\Http\Bundles\NotificationsBundle\Notifications;
+use App\PhotosUsersLikes;
 
 class Photos extends File 
 {
@@ -19,17 +20,24 @@ class Photos extends File
     protected $directoryToStore = 'uploads';
 
     /**
-     * @param string $uploadsDir
+     * @inheritDoc
      */
-    public function __construct($file = null)
+    protected $notifications = null;
+
+    /**
+     * @param Notifications $notifications
+     * @param $file // TODO. get data type
+     */
+    public function __construct(Notifications $notifications, $file = null)
     {
+        $this->notifications = $notifications;
+
         if ($file) {
             parent::__construct($file);
         }
     }
 
     /**
-     * Store image in database
      * @param Array $fileInfo
      * @param int $albumId
      * 
@@ -49,7 +57,6 @@ class Photos extends File
         }
 
         try {
-
             $photo = new PhotosModel();
             $photo->title = isset($fileInfo['title']) ? $fileInfo['title'] : null;
             $photo->description = isset($fileInfo['description']) ? $fileInfo['description'] : null;
@@ -77,7 +84,6 @@ class Photos extends File
     }
 
     /**
-     * Change image details
      * @param integer $photo_id
      * @param Array $imageDetails
      * 
@@ -92,7 +98,6 @@ class Photos extends File
     }
 
     /**
-     * Delete image from DB
      * @param int $photoId
      * @param bool $deletingAlbum - if set to true, the photo will be deleted regardless of whether it is the album cover
      */
@@ -127,8 +132,8 @@ class Photos extends File
 
     /**
      * Check if photo found through $photoId is the current album cover image
-     *
      * @param int $photoId
+     * 
      * @return boolean
      */
     protected function isAlbumCover(int $albumId, int $photoId)
@@ -144,15 +149,17 @@ class Photos extends File
 
     /**
      * Check if photo found through $photoId is the current homepage background image
-     *
      * @param int $photoId
+     * 
      * @return boolean
      */
     protected function isHomepageBackground(int $photoId)
     {
         $currentBackgroundImage = new HomepageBackground();
         
-        if ($currentBackgroundImage->getBackgroundImage()->photo_id !== $photoId) {
+        if (!$currentBackgroundImage->getBackgroundImage() ||
+            !$currentBackgroundImage->getBackgroundImage()->photo_id ||
+            $currentBackgroundImage->getBackgroundImage()->photo_id !== $photoId) {
             return false;
         }
 
@@ -161,21 +168,31 @@ class Photos extends File
 
     /**
      * Remove all the user likes from the image associated to the imageId passed in as arg
-     *
+     * Also, remove notifications associated to image likes
      * @param integer $photoId
      */
     public function removeImageLikes(int $photoId)
     {
-        DB::table('photos_users_likes')->where('photo_id', $photoId)->delete();
+        $imageLikes = PhotosUsersLikes::where('photo_id', $photoId)->get();
+
+        foreach($imageLikes as $like) {
+            $this->notifications->removeNotification($like->user_id, $like->id, Notifications::LIKE);
+            $like->delete();
+        }
     }
 
     /**
      * Delete all photo comments related to $photoId
+     * Also, remove notifications associated to post
      * @param int $photoId
      */
     private function removePhotoComments(int $photoId)
     {
-        $posts = Posts::where('photo_id', $photoId);
-        $posts->delete();
+        $posts = Posts::where('photo_id', $photoId)->get();
+
+        foreach ($posts as $post) {
+            $this->notifications->removeNotification($post->user_id, $post->id, Notifications::POST);
+            $post->delete();
+        }
     }
 }   

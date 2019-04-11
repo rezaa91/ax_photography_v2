@@ -29,11 +29,15 @@ const Validate = {
     validateEmail: function(email) {},
 
     /**
-     * @param {object} date
+     * @param {object|string} date
      *
      * @return validated date
      */
     validateDate: function(date) {
+        if (!date || (typeof date !== 'string' && !(date instanceof Date))) {
+            return null;
+        }
+
         const newDate = new Date(date);
         const year = newDate.getFullYear();
         const month = this.months[newDate.getMonth()];

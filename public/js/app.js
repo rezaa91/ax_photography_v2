@@ -86,10 +86,10 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./node_modules/@babel/runtime/node_modules/regenerator-runtime/runtime-module.js":
-/*!****************************************************************************************!*\
-  !*** ./node_modules/@babel/runtime/node_modules/regenerator-runtime/runtime-module.js ***!
-  \****************************************************************************************/
+/***/ "./node_modules/@babel/runtime/node_modules/regenerator-runtime/runtime.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/node_modules/regenerator-runtime/runtime.js ***!
+  \*********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -100,55 +100,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-// This method of obtaining a reference to the global object needs to be
-// kept identical to the way it is obtained in runtime.js
-var g = (function() {
-  return this || (typeof self === "object" && self);
-})() || Function("return this")();
-
-// Use `getOwnPropertyNames` because not all browsers support calling
-// `hasOwnProperty` on the global `self` object in a worker. See #183.
-var hadRuntime = g.regeneratorRuntime &&
-  Object.getOwnPropertyNames(g).indexOf("regeneratorRuntime") >= 0;
-
-// Save the old regeneratorRuntime in case it needs to be restored later.
-var oldRuntime = hadRuntime && g.regeneratorRuntime;
-
-// Force reevalutation of runtime.js.
-g.regeneratorRuntime = undefined;
-
-module.exports = __webpack_require__(/*! ./runtime */ "./node_modules/@babel/runtime/node_modules/regenerator-runtime/runtime.js");
-
-if (hadRuntime) {
-  // Restore the original runtime.
-  g.regeneratorRuntime = oldRuntime;
-} else {
-  // Remove the global property added by runtime.js.
-  try {
-    delete g.regeneratorRuntime;
-  } catch(e) {
-    g.regeneratorRuntime = undefined;
-  }
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/node_modules/regenerator-runtime/runtime.js":
-/*!*********************************************************************************!*\
-  !*** ./node_modules/@babel/runtime/node_modules/regenerator-runtime/runtime.js ***!
-  \*********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-!(function(global) {
+var runtime = (function (exports) {
   "use strict";
 
   var Op = Object.prototype;
@@ -158,23 +110,6 @@ if (hadRuntime) {
   var iteratorSymbol = $Symbol.iterator || "@@iterator";
   var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
   var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-
-  var inModule = typeof module === "object";
-  var runtime = global.regeneratorRuntime;
-  if (runtime) {
-    if (inModule) {
-      // If regeneratorRuntime is defined globally and we're in a module,
-      // make the exports object identical to regeneratorRuntime.
-      module.exports = runtime;
-    }
-    // Don't bother evaluating the rest of this file if the runtime was
-    // already defined globally.
-    return;
-  }
-
-  // Define the runtime globally (as expected by generated code) as either
-  // module.exports (if we're in a module) or a new, empty object.
-  runtime = global.regeneratorRuntime = inModule ? module.exports : {};
 
   function wrap(innerFn, outerFn, self, tryLocsList) {
     // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
@@ -188,7 +123,7 @@ if (hadRuntime) {
 
     return generator;
   }
-  runtime.wrap = wrap;
+  exports.wrap = wrap;
 
   // Try/catch helper to minimize deoptimizations. Returns a completion
   // record like context.tryEntries[i].completion. This interface could
@@ -259,7 +194,7 @@ if (hadRuntime) {
     });
   }
 
-  runtime.isGeneratorFunction = function(genFun) {
+  exports.isGeneratorFunction = function(genFun) {
     var ctor = typeof genFun === "function" && genFun.constructor;
     return ctor
       ? ctor === GeneratorFunction ||
@@ -269,7 +204,7 @@ if (hadRuntime) {
       : false;
   };
 
-  runtime.mark = function(genFun) {
+  exports.mark = function(genFun) {
     if (Object.setPrototypeOf) {
       Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
     } else {
@@ -286,7 +221,7 @@ if (hadRuntime) {
   // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
   // `hasOwn.call(value, "__await")` to determine if the yielded value is
   // meant to be awaited.
-  runtime.awrap = function(arg) {
+  exports.awrap = function(arg) {
     return { __await: arg };
   };
 
@@ -361,17 +296,17 @@ if (hadRuntime) {
   AsyncIterator.prototype[asyncIteratorSymbol] = function () {
     return this;
   };
-  runtime.AsyncIterator = AsyncIterator;
+  exports.AsyncIterator = AsyncIterator;
 
   // Note that simple async functions are implemented on top of
   // AsyncIterator objects; they just return a Promise for the value of
   // the final result produced by the iterator.
-  runtime.async = function(innerFn, outerFn, self, tryLocsList) {
+  exports.async = function(innerFn, outerFn, self, tryLocsList) {
     var iter = new AsyncIterator(
       wrap(innerFn, outerFn, self, tryLocsList)
     );
 
-    return runtime.isGeneratorFunction(outerFn)
+    return exports.isGeneratorFunction(outerFn)
       ? iter // If outerFn is a generator, return the full iterator.
       : iter.next().then(function(result) {
           return result.done ? result.value : iter.next();
@@ -468,7 +403,8 @@ if (hadRuntime) {
       context.delegate = null;
 
       if (context.method === "throw") {
-        if (delegate.iterator.return) {
+        // Note: ["return"] must be used for ES3 parsing compatibility.
+        if (delegate.iterator["return"]) {
           // If the delegate iterator has a return method, give it a
           // chance to clean up.
           context.method = "return";
@@ -588,7 +524,7 @@ if (hadRuntime) {
     this.reset(true);
   }
 
-  runtime.keys = function(object) {
+  exports.keys = function(object) {
     var keys = [];
     for (var key in object) {
       keys.push(key);
@@ -649,7 +585,7 @@ if (hadRuntime) {
     // Return an iterator with no values.
     return { next: doneResult };
   }
-  runtime.values = values;
+  exports.values = values;
 
   function doneResult() {
     return { value: undefined, done: true };
@@ -854,14 +790,35 @@ if (hadRuntime) {
       return ContinueSentinel;
     }
   };
-})(
-  // In sloppy mode, unbound `this` refers to the global object, fallback to
-  // Function constructor if we're in global strict mode. That is sadly a form
-  // of indirect eval which violates Content Security Policy.
-  (function() {
-    return this || (typeof self === "object" && self);
-  })() || Function("return this")()
-);
+
+  // Regardless of whether this script is executing as a CommonJS module
+  // or not, return the runtime object so that we can declare the variable
+  // regeneratorRuntime in the outer scope, which allows this module to be
+  // injected easily by `bin/regenerator --include-runtime script.js`.
+  return exports;
+
+}(
+  // If this script is executing as a CommonJS module, use module.exports
+  // as the regeneratorRuntime namespace. Otherwise create a new empty
+  // object. Either way, the resulting object will be used to initialize
+  // the regeneratorRuntime variable at the top of this file.
+   true ? module.exports : undefined
+));
+
+try {
+  regeneratorRuntime = runtime;
+} catch (accidentalStrictMode) {
+  // This module should not be running in strict mode, so the above
+  // assignment should always work unless something is misconfigured. Just
+  // in case runtime.js accidentally runs in strict mode, we can escape
+  // strict mode using a global Function call. This could conceivably fail
+  // if a Content Security Policy forbids using Function, but in that case
+  // the proper solution is to fix the accidental strict mode problem. If
+  // you've misconfigured your bundler to force strict mode and applied a
+  // CSP to forbid Function, and you're not willing to fix either of those
+  // problems, please detail your unique predicament in a GitHub issue.
+  Function("r", "regeneratorRuntime = r")(runtime);
+}
 
 
 /***/ }),
@@ -873,7 +830,7 @@ if (hadRuntime) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/@babel/runtime/node_modules/regenerator-runtime/runtime-module.js");
+module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/@babel/runtime/node_modules/regenerator-runtime/runtime.js");
 
 
 /***/ }),
@@ -62181,6 +62138,87 @@ if (token) {
 
 /***/ }),
 
+/***/ "./resources/js/classes/User.js":
+/*!**************************************!*\
+  !*** ./resources/js/classes/User.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return getUser; });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function getUser() {
+  return _getUser.apply(this, arguments);
+}
+
+function _getUser() {
+  _getUser = _asyncToGenerator(
+  /*#__PURE__*/
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+    var _getUser2, user;
+
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.prev = 0;
+            _context.next = 3;
+            return fetch('/api/user');
+
+          case 3:
+            _getUser2 = _context.sent;
+            _context.next = 6;
+            return _getUser2.json();
+
+          case 6:
+            user = _context.sent;
+            user = user.data;
+
+            if (user) {
+              _context.next = 10;
+              break;
+            }
+
+            throw new Error('Unable to get current user');
+
+          case 10:
+            return _context.abrupt("return", {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              username: user.username,
+              created_at: user.created_at,
+              updated_at: user.updated_at,
+              avatar_filepath: user.avatar_filepath,
+              isAdmin: user.isAdmin
+            });
+
+          case 13:
+            _context.prev = 13;
+            _context.t0 = _context["catch"](0);
+            return _context.abrupt("return", _context.t0);
+
+          case 16:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[0, 13]]);
+  }));
+  return _getUser.apply(this, arguments);
+}
+
+/***/ }),
+
 /***/ "./resources/js/classes/Validate.js":
 /*!******************************************!*\
   !*** ./resources/js/classes/Validate.js ***!
@@ -62213,6 +62251,10 @@ var Validate = {
    * @return validated date
    */
   validateDate: function validateDate(date) {
+    if (!date || !(date instanceof Date)) {
+      return null;
+    }
+
     var newDate = new Date(date);
     var year = newDate.getFullYear();
     var month = this.months[newDate.getMonth()];
@@ -62613,12 +62655,12 @@ var Navigation =
 function (_Component) {
   _inherits(Navigation, _Component);
 
-  function Navigation() {
+  function Navigation(props) {
     var _this;
 
     _classCallCheck(this, Navigation);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Navigation).call(this)); //check if user is in session
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Navigation).call(this, props)); //check if user is in session
 
     _this.getUser =
     /*#__PURE__*/
@@ -62687,7 +62729,7 @@ function (_Component) {
               className: "user-dropdown-menu"
             }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
               href: "/user"
-            }, "Dashboard")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
+            }, "Dashboard ", _this.displayUnacknowledgedNotifications())), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
               href: "/upload"
             }, "Upload")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
               href: "/logout"
@@ -62710,7 +62752,7 @@ function (_Component) {
           className: arrowClasses
         }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
           onClick: _this.toggleUserDropdownMenu
-        }, user.username), dropdownMenu);
+        }, user.username), _this.displayUnacknowledgedNotifications(), dropdownMenu);
       }
     };
 
@@ -62745,9 +62787,22 @@ function (_Component) {
       mobileDropdown.style.display === 'block' ? mobileDropdown.style.display = 'none' : mobileDropdown.style.display = 'block';
     };
 
+    _this.displayUnacknowledgedNotifications = function () {
+      var notificationCount = _this.props.notificationCount; // if 0 notifications - do not display
+
+      if (!notificationCount) {
+        return;
+      }
+
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+        className: "notification-count"
+      }, notificationCount);
+    };
+
     _this.getUser();
 
     _this.state = {
+      notificationCount: props.notificationCount,
       isLoggedIn: false,
       user: null,
       isDropdownPresent: false,
@@ -62809,7 +62864,10 @@ function (_Component) {
 }(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
 
 if (document.getElementById("nav")) {
-  react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Navigation, null), document.getElementById("nav"));
+  var notificationCount = document.getElementById('nav').getAttribute('data-notificationCount') ? parseInt(document.getElementById('nav').getAttribute('data-notificationCount')) : 0;
+  react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Navigation, {
+    notificationCount: notificationCount
+  }), document.getElementById("nav"));
 }
 
 /***/ }),
@@ -63555,10 +63613,73 @@ function (_Component) {
       });
     };
 
+    _this.goToNotifiedImage = function (photo) {
+      var id = photo.id,
+          album_id = photo.album_id;
+
+      if (!id || !album_id) {
+        return;
+      }
+
+      window.location.href = "/albums/".concat(album_id, "?photo=").concat(id);
+    };
+
+    _this.postNotificationString = function (notification) {
+      var user = _this.props.user;
+      var username = user.user_id === notification.notification.user_id ? 'You' : notification.user;
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        onClick: function onClick() {
+          return _this.goToNotifiedImage(notification.photo);
+        },
+        className: "notification-msg",
+        key: notification.id
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+        className: "notification-img"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
+        src: "/storage/uploads/".concat(notification.photo && notification.photo.filepath)
+      })), username, " commented on your photo: \xA0", react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", null, notification.notification.post_text));
+    };
+
+    _this.likeNotificationString = function (notification) {
+      var user = _this.props.user;
+      var username = user.user_id === notification.notification.user_id ? 'You' : notification.user;
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        onClick: function onClick() {
+          return _this.goToNotifiedImage(notification.photo);
+        },
+        className: "notification-msg",
+        key: notification.id
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+        className: "notification-img"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
+        src: "/storage/uploads/".concat(notification.photo && notification.photo.filepath)
+      })), username, " liked your photo");
+    };
+
+    _this.displayNotifications = function () {
+      var notifications = _this.state.notifications;
+
+      if (!notifications) {
+        return;
+      }
+
+      var notificationString = notifications.map(function (notification) {
+        switch (notification.type) {
+          case 'post':
+            return _this.postNotificationString(notification);
+
+          case 'like':
+            return _this.likeNotificationString(notification);
+        }
+      });
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, notificationString);
+    };
+
     _this.state = {
       changeImageLink: false,
       uploadError: false,
-      isLoading: false
+      isLoading: false,
+      notifications: props.notifications
     };
     return _this;
   }
@@ -63655,7 +63776,7 @@ function (_Component) {
         className: "right-side"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "title"
-      }, "Notifications"))));
+      }, "Notifications"), this.displayNotifications())));
     }
   }]);
 
@@ -63683,6 +63804,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _components_card__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/card */ "./resources/js/pages/dashboard/components/card.js");
 /* harmony import */ var _global_components_modal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../global_components/modal */ "./resources/js/global_components/modal.js");
+/* harmony import */ var _data_notificationData__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./data/notificationData */ "./resources/js/pages/dashboard/data/notificationData.js");
 
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -63712,17 +63834,18 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 var Dashboard =
 /*#__PURE__*/
 function (_Component) {
   _inherits(Dashboard, _Component);
 
-  function Dashboard() {
+  function Dashboard(props) {
     var _this;
 
     _classCallCheck(this, Dashboard);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Dashboard).call(this));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Dashboard).call(this, props));
     _this.getUser =
     /*#__PURE__*/
     _asyncToGenerator(
@@ -63832,7 +63955,8 @@ function (_Component) {
       }, user.user_id && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_card__WEBPACK_IMPORTED_MODULE_3__["default"], {
         user: user,
         displayWarning: this.displayWarning,
-        refresh: this.getUser
+        refresh: this.getUser,
+        notifications: this.props.notifications
       }), deleteAccountError && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", null, "Oops, something went wrong and we could not delete your account. Please try again.")));
     }
   }]);
@@ -63841,7 +63965,31 @@ function (_Component) {
 }(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
 
 if (document.getElementById("dashboard")) {
-  react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Dashboard, null), document.getElementById("dashboard"));
+  react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Dashboard, {
+    notifications: Object(_data_notificationData__WEBPACK_IMPORTED_MODULE_5__["parseNotifications"])()
+  }), document.getElementById("dashboard"));
+}
+
+/***/ }),
+
+/***/ "./resources/js/pages/dashboard/data/notificationData.js":
+/*!***************************************************************!*\
+  !*** ./resources/js/pages/dashboard/data/notificationData.js ***!
+  \***************************************************************/
+/*! exports provided: parseNotifications */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "parseNotifications", function() { return parseNotifications; });
+function parseNotifications() {
+  var notificationJSON = document.querySelector('#dashboard').getAttribute('data-notifications');
+
+  if (!notificationJSON) {
+    return;
+  }
+
+  return JSON.parse(notificationJSON);
 }
 
 /***/ }),
@@ -64109,7 +64257,7 @@ function (_Component) {
           Authorization: "Bearer " + document.querySelector('meta[name="api_token"]').content
         },
         body: JSON.stringify({
-          user_id: user.id,
+          user_id: user.id || user.user_id,
           post: commentMessage
         })
       }).then(function () {
@@ -64418,7 +64566,7 @@ function (_Component) {
           Authorization: "Bearer " + document.querySelector('meta[name="api_token"]').content
         },
         body: JSON.stringify({
-          user_id: user.id,
+          user_id: user.id || user.user_id,
           photo_id: imageId
         })
       }).finally(function () {
@@ -64887,7 +65035,7 @@ function (_Component) {
         className: "fas fa-cog"
       })), displaySettings && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_settings__WEBPACK_IMPORTED_MODULE_3__["default"], {
         imageDetails: imageDetails,
-        user_id: user.id,
+        user_id: user.id || user.user_id,
         toggleDisplayModal: this.toggleDisplayModal,
         toggleEditPhoto: this.toggleEditPhoto,
         alertChange: this.alertChange
@@ -65234,6 +65382,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _global_components_alert__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../global_components/alert */ "./resources/js/global_components/alert.js");
 /* harmony import */ var _individualAbumSettings__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./individualAbumSettings */ "./resources/js/pages/individualAlbum/individualAbumSettings.js");
 /* harmony import */ var _global_components_loadingWidget__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../global_components/loadingWidget */ "./resources/js/global_components/loadingWidget.js");
+/* harmony import */ var _utilities_openImageIfImageInURL__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./utilities/openImageIfImageInURL */ "./resources/js/pages/individualAlbum/utilities/openImageIfImageInURL.js");
 
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -65266,6 +65415,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 var IndividualAlbum =
 /*#__PURE__*/
 function (_Component) {
@@ -65289,11 +65439,12 @@ function (_Component) {
             case 0:
               url = window.location.href; //display loading spinner
 
-              _this.toggleLoading(); // find the id from the url by getting the last digit in the url (note that the url must finish with this digit)
+              _this.toggleLoading(); // find the album id from the url by getting the last digit in the url (note that the url must finish with this digit)
 
 
-              id = url.match(/\d+$/)[0];
-              _context.next = 5;
+              id = url.match(/albums\/(\d+)/gi);
+              id = id[0].match(/\d+/)[0];
+              _context.next = 6;
               return fetch("/api/albums/".concat(id)).then(function (response) {
                 return response.status === 200 && response.json();
               }).then(function (data) {
@@ -65312,7 +65463,7 @@ function (_Component) {
                 _this.toggleLoading();
               });
 
-            case 5:
+            case 6:
             case "end":
               return _context.stop();
           }
@@ -65806,6 +65957,8 @@ function (_Component) {
 }(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
 
 if (document.getElementById('individualAlbum')) {
+  // display image modal if user has followed through from notifications link
+  Object(_utilities_openImageIfImageInURL__WEBPACK_IMPORTED_MODULE_8__["openImageModalIfImageInURL"])();
   react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(IndividualAlbum, null), document.getElementById('individualAlbum'));
 }
 
@@ -65893,6 +66046,130 @@ function setImageHeight() {
       modalHeaderHeight = _getModalHeightProper2.modalHeaderHeight;
 
   modalImage.style.maxHeight = modalHeight - modalHeaderHeight + "px";
+}
+
+/***/ }),
+
+/***/ "./resources/js/pages/individualAlbum/utilities/openImageIfImageInURL.js":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/pages/individualAlbum/utilities/openImageIfImageInURL.js ***!
+  \*******************************************************************************/
+/*! exports provided: openImageModalIfImageInURL */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "openImageModalIfImageInURL", function() { return openImageModalIfImageInURL; });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_imageModal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/imageModal */ "./resources/js/pages/individualAlbum/components/imageModal.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _classes_User__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../classes/User */ "./resources/js/classes/User.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+
+/**
+ * If the URL has the 'photo' GET parameter, this must mean the page was accessed by clicking
+ * on a notification from the dashboard page
+ */
+
+function checkImageInURL() {
+  var imageInRegEx = new RegExp('photo=');
+  return imageInRegEx.test(window.location.href);
+}
+/**
+ * @return {int|string} imageId
+ */
+
+
+function getImageId() {
+  var url = window.location.href;
+  var splitURL = url.split(/photo=/gi);
+
+  if (!splitURL || splitURL.length < 2) {
+    return;
+  } // where splitURL[0] is the first part of the url
+  // splitURL[1] e.g. "562"
+
+
+  return splitURL[1].match(/\d+/)[0];
+}
+/**
+ * Get album id from URL
+ * @return {int|string} albumId
+ */
+
+
+function getAlbumId() {
+  var url = window.location.href;
+  var id = url.match(/albums\/(\d+)/gi);
+  return id[0].match(/\d+/)[0];
+}
+
+function closeImageModal(e) {
+  var imageModal = document.getElementById('imageModal');
+
+  if (imageModal.length === 0) {
+    return;
+  }
+
+  history.pushState({}, 'albums', getAlbumId());
+  imageModal.remove();
+} // if the user has come to the album page through following a notification
+// and therefore having an image id in the url, then continue with this code
+// otherwise, terminate this code to display the album only until an image is clicked on
+
+
+function openImageModalIfImageInURL() {
+  return _openImageModalIfImageInURL.apply(this, arguments);
+}
+
+function _openImageModalIfImageInURL() {
+  _openImageModalIfImageInURL = _asyncToGenerator(
+  /*#__PURE__*/
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+    var user;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            if (checkImageInURL()) {
+              _context.next = 2;
+              break;
+            }
+
+            return _context.abrupt("return");
+
+          case 2:
+            _context.next = 4;
+            return Object(_classes_User__WEBPACK_IMPORTED_MODULE_4__["default"])();
+
+          case 4:
+            user = _context.sent;
+            react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render(react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(_components_imageModal__WEBPACK_IMPORTED_MODULE_1__["default"], {
+              closeModal: closeImageModal,
+              imageId: getImageId(),
+              user: user
+            }), document.getElementById('imageModal'));
+
+          case 6:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _openImageModalIfImageInURL.apply(this, arguments);
 }
 
 /***/ }),

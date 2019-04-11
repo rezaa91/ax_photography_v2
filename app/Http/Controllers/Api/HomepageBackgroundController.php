@@ -29,12 +29,16 @@ class HomepageBackgroundController extends ApiController
     {
         Log::info('Attempting to update homepage background to image: ' .$photoId);
 
-        if (!auth()->user()->isAdmin) {
-            Log::warning('Unable to change background image to ' . $photoId . ' as user not authenticated');
-            
-            return;
+        try {
+            if (!auth()->user()->isAdmin) {
+                Log::warning('Unable to change background image to ' . $photoId . ' as user not authenticated');
+                
+                return;
+            }
+    
+            $this->moduleClass->changeBackgroundImage($photoId);
+        } catch (Execption $e) {
+            return $e->getMessage();
         }
-
-        $this->moduleClass->changeBackgroundImage($photoId);
     }
 }

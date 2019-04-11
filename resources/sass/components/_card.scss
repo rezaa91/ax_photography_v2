@@ -50,6 +50,8 @@
         .right-side {
             flex: 2;
             padding: 0 10px;
+            max-height: 600px;
+            overflow-y: scroll;
 
             .title {
                 display: inline-block;
@@ -65,6 +67,22 @@
             display: inline-block;
             font-weight: 900;
             width: 25%;
+        }
+    }
+
+    .notification-msg {
+        padding: 10px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $grey;
+        }
+        
+        img {
+            margin-right: 5px;
+            width: 75px;
+            height: 75px;
+            object-fit: contain;
         }
     }
 }

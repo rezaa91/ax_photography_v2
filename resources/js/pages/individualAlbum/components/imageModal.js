@@ -129,7 +129,7 @@ class ImageModal extends Component {
                     document.querySelector('meta[name="api_token"]').content
             },
             body: JSON.stringify({
-                user_id: user.id,
+                user_id: user.id || user.user_id,
                 photo_id: imageId
             })
         }).finally(() => {
@@ -515,7 +515,7 @@ class ImageModal extends Component {
                                 {displaySettings && (
                                     <Settings
                                         imageDetails={imageDetails}
-                                        user_id={user.id}
+                                        user_id={user.id || user.user_id}
                                         toggleDisplayModal={this.toggleDisplayModal}
                                         toggleEditPhoto={this.toggleEditPhoto}
                                         alertChange={this.alertChange}

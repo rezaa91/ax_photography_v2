@@ -30,7 +30,7 @@ class AlbumsController extends Controller
      */
     public function index()
     {
-        return view('pages.photos.albums');
+        return $this->displayPage('pages.photos.albums');
     }
     
     /**
@@ -41,7 +41,7 @@ class AlbumsController extends Controller
     public function create(Request $request)
     {
         $albums = AlbumsModel::all();
-        return view('pages.photos.upload')->with('albums', $albums);
+        return $this->displayPage('pages.photos.upload', ['albums' => $albums]);
     }
     
     /**
@@ -69,6 +69,7 @@ class AlbumsController extends Controller
 
         try {
             $response = $this->moduleClass->storeImage($fileInfo);
+
             return redirect('/upload')->with('success', 'Image uploaded');
         } catch (Exception $e) {
             return redirect('/upload')->with('failure', $e->getMessage());
@@ -87,6 +88,6 @@ class AlbumsController extends Controller
             return redirect('/albums');
         }
         
-        return view('pages.photos.singleAlbum');
+        return $this->displayPage('pages.photos.singleAlbum');
     }
 }

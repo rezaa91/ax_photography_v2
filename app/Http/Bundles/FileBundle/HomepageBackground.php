@@ -4,6 +4,8 @@ namespace App\Http\Bundles\FileBundle;
 
 use App\HomepageBackground as Image;
 use App\Http\Bundles\FileBundle\Photos;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class HomepageBackground extends Photos
 {
@@ -35,6 +37,10 @@ class HomepageBackground extends Photos
     public function changeBackgroundImage(int $photoId)
     {
         if (Image::count() !== 1) {
+            $errorMessage = 'homepage background image table should have one record stored at all times.';
+            Log::warning($errorMessage);
+            throw new Exception($errorMessage);
+
             return;
         }
         

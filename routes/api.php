@@ -61,13 +61,12 @@ Route::get('photos/{id}', function($id) {
  */
 Route::get('/background_image', function() {
     $photo = HomepageBackground::find(1); // only one row
-    $photoId = $photo->photo_id;
 
-    if (!Photos::find($photoId)) {
+    if (!isset($photo->photo_id) || !Photos::find($photo->photo_id)) {
         return;
     }
 
-    return new PhotosResource(Photos::find($photoId));
+    return new PhotosResource(Photos::find($photo->photo_id));
 });
 
 /**

@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 
 class Navigation extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         //check if user is in session
         this.getUser();
 
         this.state = {
+            notificationCount: props.notificationCount,
             isLoggedIn: false,
             user: null,
             isDropdownPresent: false,
@@ -87,7 +88,7 @@ class Navigation extends Component {
                     dropdownMenu = (
                         <ul className="user-dropdown-menu">
                             <li>
-                                <a href="/user">Dashboard</a>
+                                <a href="/user">Dashboard {this.displayUnacknowledgedNotifications()}</a>
                             </li>
                             <li>
                                 <a href="/upload">Upload</a>
@@ -115,6 +116,7 @@ class Navigation extends Component {
                 <li className={usernameClass}>
                     <i id="arrow" className={arrowClasses} />
                     <a onClick={this.toggleUserDropdownMenu}>{user.username}</a>
+                    {this.displayUnacknowledgedNotifications()}
                     {dropdownMenu}
                 </li>
             );
@@ -146,6 +148,17 @@ class Navigation extends Component {
     toggleMobileDropdown = () => {
         const mobileDropdown = document.querySelector('.main-links');
         mobileDropdown.style.display === 'block' ? mobileDropdown.style.display = 'none' : mobileDropdown.style.display = 'block';
+    }
+
+    displayUnacknowledgedNotifications = () => {
+        const {notificationCount} = this.props;
+
+        // if 0 notifications - do not display
+        if (!notificationCount) {
+            return;
+        }
+
+        return <span className="notification-count">{notificationCount}</span>
     }
 
     render() {
@@ -192,5 +205,10 @@ class Navigation extends Component {
 }
 
 if (document.getElementById("nav")) {
-    ReactDOM.render(<Navigation />, document.getElementById("nav"));
+    const notificationCount = document.getElementById('nav').getAttribute('data-notificationCount') ?
+        parseInt(document.getElementById('nav').getAttribute('data-notificationCount')) :
+        0;
+    
+
+    ReactDOM.render(<Navigation notificationCount={notificationCount} />, document.getElementById("nav"));
 }

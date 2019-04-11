@@ -65,16 +65,14 @@ class Settings extends Component {
                     document.querySelector('meta[name="api_token"]').content
             }
         })
-            .then(() => {
-                const alertMsg =
-                    "The homepage background has been changed successfully.";
-                this.props.alertChange(alertMsg);
-            })
-            .catch(() => {
-                const alertMsg =
-                    "Sorry, something went wrong, please try again.";
-                this.props.alertChange(alertMsg);
-            });
+        .then(() => {
+            const alertMsg = "The homepage background has been changed successfully.";
+            this.props.alertChange(alertMsg);
+        })
+        .catch(() => {
+            const alertMsg = "Sorry, something went wrong, please try again.";
+            this.props.alertChange(alertMsg);
+        });
     }
 
     displayAllAlbumsMenu = () => {

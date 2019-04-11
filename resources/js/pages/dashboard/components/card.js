@@ -9,7 +9,8 @@ class Card extends Component {
         this.state = {
             changeImageLink: false,
             uploadError: false,
-            isLoading: false
+            isLoading: false,
+            notifications: props.notifications
         }
     }
 
@@ -95,6 +96,80 @@ class Card extends Component {
     toggleLoading = () => {
         const {isLoading} = this.state;
         this.setState({isLoading: !isLoading});
+    }
+
+    /**
+     * Navigate to the album page where the image with the notification is displayed
+     * Put the image id in the url to be referenced on page
+     * @param object photo information from the notification
+     */
+    goToNotifiedImage = photo => {
+        const {id, album_id} = photo;
+
+        if (!id || !album_id) {
+            return;
+        }
+
+        window.location.href = `/albums/${album_id}?photo=${id}`;
+    }
+
+    /**
+     * Return the JSX with the content you wish to display the notification to
+     * @param {object} notification - notification details such as user, id, photo that the notification relates to etc...
+     * 
+     * @return {object} JSX displaying the outputted notification string
+     */
+    postNotificationString = notification => {
+        const {user} = this.props;
+        
+        const username = user.user_id === notification.notification.user_id ? 'You' : notification.user;
+
+        return (
+            <div onClick={() => this.goToNotifiedImage(notification.photo)} className="notification-msg" key={notification.id}>
+                <span className="notification-img"><img src={`/storage/uploads/${notification.photo && notification.photo.filepath}`} /></span>
+                {username} commented on your photo: &nbsp;
+                <i>{notification.notification.post_text}</i>
+            </div>
+        );
+    }
+
+    /**
+     * Same as postNotificationString but in reference to photo likes notifications
+     */
+    likeNotificationString = notification => {
+        const {user} = this.props;
+        
+        const username = user.user_id === notification.notification.user_id ? 'You' : notification.user;
+
+        return (
+            <div onClick={() => this.goToNotifiedImage(notification.photo)} className="notification-msg" key={notification.id}>
+                <span className="notification-img"><img src={`/storage/uploads/${notification.photo && notification.photo.filepath}`} /></span>
+                {username} liked your photo
+            </div>
+        );
+    }
+
+    /**
+     * @return {object} JSX output which relates to the notification
+     */
+    displayNotifications = () => {
+        const {notifications} = this.state;
+
+        if (!notifications) {
+            return;
+        }
+
+        const notificationString = notifications.map(notification => {
+            switch (notification.type) {
+                case 'post':
+                    return this.postNotificationString(notification);
+
+                case 'like':
+                    return this.likeNotificationString(notification);
+            }
+        })
+
+        return <div>{notificationString}</div>
     }
 
     render() {
@@ -198,6 +273,7 @@ class Card extends Component {
 
                     <div className="right-side">
                         <span className="title">Notifications</span>
+                        {this.displayNotifications()}
                     </div>
                 </div>
             </div>

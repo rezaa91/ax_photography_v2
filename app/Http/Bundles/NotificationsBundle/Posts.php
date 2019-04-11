@@ -6,7 +6,7 @@ use App\Posts as PostsModel;
 use Illuminate\Support\Facades\Log;
 use App\Exceptions\DatabaseException;
 
-class Posts
+class Posts extends Notifications
 {
     /**
      * Post photo comment
@@ -29,6 +29,8 @@ class Posts
 
                 throw new DatabaseException($errorMsg);
             }
+
+            $this->addNotification($post->user_id, $post->id, self::POST);
 
             Log::info('Comment from user: ' . $postData['user_id'] . ': "' . $postData['post'] . '" saved to image: ' . $photoId);
 
@@ -53,6 +55,8 @@ class Posts
 
                 throw new DatabaseException($errorMsg);
             }
+
+            $this->removeNotification($post->user_id, $post->id, self::POST);
 
             Log::info('Deleted post: ' . $postId);
 
