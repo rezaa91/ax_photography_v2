@@ -14,6 +14,7 @@ class User
 
     /**
      * @param PhotosClass $fileClass
+     * @param Notifications $notifications
      */
     public function __construct(PhotosClass $fileClass, Notifications $notifications)
     {
@@ -61,6 +62,12 @@ class User
         }
     }
 
+    /**
+     * Acknowledge all notifications and get all notifications
+     * @param boolean $acknowledgeNotifications
+     * 
+     * @return array list of notifications with related data such as notification type, user...
+     */
     public function getNotifications(bool $acknowledgeNotifications = false)
     {
         if ($acknowledgeNotifications) {

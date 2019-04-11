@@ -12,7 +12,6 @@ use Validator;
 use App\Http\Bundles\NotificationsBundle\Notifications;
 use App\PhotosUsersLikes;
 
-
 class Photos extends File 
 {
     /**
@@ -27,7 +26,7 @@ class Photos extends File
 
     /**
      * @param Notifications $notifications
-     * @param string $uploadsDir
+     * @param $file // TODO. get data type
      */
     public function __construct(Notifications $notifications, $file = null)
     {

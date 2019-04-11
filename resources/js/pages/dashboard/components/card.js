@@ -113,6 +113,12 @@ class Card extends Component {
         window.location.href = `/albums/${album_id}?photo=${id}`;
     }
 
+    /**
+     * Return the JSX with the content you wish to display the notification to
+     * @param {object} notification - notification details such as user, id, photo that the notification relates to etc...
+     * 
+     * @return {object} JSX displaying the outputted notification string
+     */
     postNotificationString = notification => {
         const {user} = this.props;
         
@@ -127,6 +133,9 @@ class Card extends Component {
         );
     }
 
+    /**
+     * Same as postNotificationString but in reference to photo likes notifications
+     */
     likeNotificationString = notification => {
         const {user} = this.props;
         
@@ -140,6 +149,9 @@ class Card extends Component {
         );
     }
 
+    /**
+     * @return {object} JSX output which relates to the notification
+     */
     displayNotifications = () => {
         const {notifications} = this.state;
 

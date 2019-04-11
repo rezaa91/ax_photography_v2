@@ -29,12 +29,12 @@ const Validate = {
     validateEmail: function(email) {},
 
     /**
-     * @param {object} date
+     * @param {object|string} date
      *
      * @return validated date
      */
     validateDate: function(date) {
-        if (!date || !(date instanceof Date)) {
+        if (!date || (typeof date !== 'string' && !(date instanceof Date))) {
             return null;
         }
 
