@@ -9,6 +9,7 @@ use App\Albums as AlbumsModel;
 use Carbon\Carbon;
 use App\Http\Bundles\FileBundle\Albums;
 use Exception;
+use App\Http\Bundles\SettingsBundle\Settings;
 
 class AlbumsController extends Controller
 {
@@ -17,10 +18,14 @@ class AlbumsController extends Controller
     
     /**
      * @param Albums $moduleClass
+     * @param Settings $settings
+     * 
+     * @return void
      */
-    public function __construct(Albums $moduleClass)
+    public function __construct(Albums $moduleClass, Settings $settings)
     {
         $this->moduleClass = $moduleClass;
+        parent::__construct($settings);
     }
 
     /**
@@ -38,7 +43,7 @@ class AlbumsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
         $albums = AlbumsModel::all();
         return $this->displayPage('pages.photos.upload', ['albums' => $albums]);

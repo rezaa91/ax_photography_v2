@@ -8,24 +8,28 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use App\Notifications as NotificationsModel;
+use App\Http\Bundles\SettingsBundle\Settings;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     /**
-     * Application settings
-     *
-     * @var array
-     */
-    private $settings = [];
-
-    /**
      * Number of unacked notifications
      *
      * @var integer
      */
-    private $notificationCount = null;
+    private $notificationCount;
+
+    /**
+     * @var Settings
+     */
+    private $settings;
+
+    public function __construct(Settings $settings)
+    {
+        $this->settings = $settings;
+    }
 
     /**
      * Display page
@@ -42,7 +46,7 @@ class Controller extends BaseController
         }
 
         return view($template)->with([
-            'settings' => $this->settings,
+            'settings' => $this->settings->getAllSettings(),
             'notificationCount' => $this->notificationCount,
             'pageSpecific' => $pageSpecificVariables,
         ]);

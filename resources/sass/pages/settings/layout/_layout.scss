@@ -1,0 +1,62 @@
+#settings {
+    width: 80%;
+    margin: auto;
+
+    .title {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .submit-wrapper {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .setting-option {
+        display: flex;
+
+        .setting-title {
+            flex: 1;
+            font-weight: 700;
+            font-size: $font-sub-header;
+        }
+
+        .setting-inputs {
+            display: flex;
+            justify-content: space-between;
+            flex: 3;
+        }
+    }
+
+    .success, .error {
+        text-align: center;
+        font-style: italic;
+    }
+
+    .success {
+        color: $green;
+    }
+
+    .error {
+        color: $red;
+    }
+}
+
+@media only screen and (max-width: $medium) {
+    #settings {
+        width: 95%;
+
+        .title {
+            font-size: $font-sub-header;
+        }
+
+        .setting-option {
+            font-size: $font-small;
+
+            .setting-title {
+                font-size: $font-regular;
+                font-weight: 500;
+            }
+        }
+    }
+}

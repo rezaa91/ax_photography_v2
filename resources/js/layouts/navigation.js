@@ -94,6 +94,9 @@ class Navigation extends Component {
                                 <a href="/upload">Upload</a>
                             </li>
                             <li>
+                                <a href="/settings">Settings</a>
+                            </li>
+                            <li>
                                 <a href="/logout">Logout</a>
                             </li>
                         </ul>
