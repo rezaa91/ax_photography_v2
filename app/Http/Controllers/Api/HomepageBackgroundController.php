@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Bundles\FileBundle\HomepageBackground;
@@ -26,10 +27,18 @@ class HomepageBackgroundController extends ApiController
      */
     public function postUpdateBackgroundImage(int $photoId)
     {
-        if (!auth()->user()->isAdmin) {
-            return;
-        }
+        Log::info('Attempting to update homepage background to image: ' .$photoId);
 
-        $this->moduleClass->changeBackgroundImage($photoId);
+        try {
+            if (!auth()->user()->isAdmin) {
+                Log::warning('Unable to change background image to ' . $photoId . ' as user not authenticated');
+                
+                return;
+            }
+    
+            $this->moduleClass->changeBackgroundImage($photoId);
+        } catch (Execption $e) {
+            return $e->getMessage();
+        }
     }
 }

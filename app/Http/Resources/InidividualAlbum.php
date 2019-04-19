@@ -26,6 +26,8 @@ class InidividualAlbum extends JsonResource
 
     private function backgroundImageId()
     {
-        return HomepageBackground::find(1)->photo_id;
+        $homepageBackground = HomepageBackground::find(1);
+
+        return $homepageBackground ? $homepageBackground->photo_id : null;
     }
 }

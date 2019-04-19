@@ -16,12 +16,18 @@
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon-camera.ico" >
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
+    <!-- application settings -->
+    <div id="allSettings" data-settings={{ !empty($settings) ? json_encode($settings) : null }}></div>
+    
     <!-- React Component -->
-    <nav id="nav"></nav>
+    <nav data-notificationCount={{ !empty($notificationCount) ? $notificationCount : 0 }} id="nav"></nav>
 
     <!-- error messages -->
     @include('messages.messages')

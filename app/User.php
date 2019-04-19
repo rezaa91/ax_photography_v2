@@ -35,4 +35,14 @@ class User extends Authenticatable
             $user->api_token = \Hash::make(\Carbon\Carbon::now()->toRfc2822String());
         });
     }
+
+    public function notifications()
+    {
+        return $this->hasMany('App\Notifications');
+    }
+
+    public function posts()
+    {
+        return $this->hasMany('App\Posts', 'user_id');
+    }
 }

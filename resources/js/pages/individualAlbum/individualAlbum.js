@@ -5,6 +5,7 @@ import Modal from '../../global_components/modal';
 import Alert from '../../global_components/alert';
 import individualAlbumInit from './individualAbumSettings';
 import LoadingWidget from '../../global_components/loadingWidget';
+import {openImageModalIfImageInURL} from './utilities/openImageIfImageInURL';
 
 class IndividualAlbum extends Component {
     constructor() {
@@ -23,7 +24,8 @@ class IndividualAlbum extends Component {
             deleteAlbum: false,
             displayAlert: false,
             alertMsg: null,
-            isLoading: false
+            isLoading: false,
+            uploadError: ''
         }
     }
 
@@ -52,8 +54,9 @@ class IndividualAlbum extends Component {
         //display loading spinner
         this.toggleLoading();
 
-        // find the id from the url by getting the last digit in the url (note that the url must finish with this digit)
-        const id = url.match(/\d+$/)[0];
+        // find the album id from the url by getting the last digit in the url (note that the url must finish with this digit)
+        let id = url.match(/albums\/(\d+)/gi);
+        id = id[0].match(/\d+/)[0];
 
         await fetch(`/api/albums/${id}`)
         .then(response => response.status === 200 && response.json())
@@ -300,31 +303,68 @@ class IndividualAlbum extends Component {
         this.setState({isLoading: !isLoading});
     }
 
-    render() {
-        const {user, albumTitle, enlargedImage, editAlbumTitle, deleteAlbum, displayAlert, alertMsg, isLoading} = this.state;
-        let albumTitleState;
+    renderAlbumTitleState = () => {
+        const {user, editAlbumTitle, albumTitle} = this.state;
 
         if (editAlbumTitle) {
-            albumTitleState = <div className="inline"> 
-            <input 
-                name="editAlbum" 
-                value={albumTitle} 
-                onChange={this.updateAlbumTitle}
-                onBlur={this.updateAlbum}
-                onKeyPress={this.updateAlbumOnEnter}
-            />
-            <span className='icon' onClick={this.saveAlbumTitle}><i className="fas fa-check"></i></span>
-            </div>
-        } else {
-            albumTitleState = <div className="inline">
-                <h1 className="inline" onDoubleClick={this.toggleAlbumEdit}>{albumTitle}</h1>
-                
-                {
-                    !!user && !!user.isAdmin &&
-                    <span className="icon" onClick={this.toggleAlbumEdit}><i className="fas fa-pencil-alt"></i></span>
-                }
+            return (
+                <div className="inline"> 
+                <input 
+                    name="editAlbum" 
+                    value={albumTitle} 
+                    onChange={this.updateAlbumTitle}
+                    onBlur={this.updateAlbum}
+                    onKeyPress={this.updateAlbumOnEnter}
+                />
+                <span className='icon' onClick={this.saveAlbumTitle}><i className="fas fa-check"></i></span>
                 </div>
+            )
+            
+        } else {
+            return (
+                <div className="inline">
+                    <h1 className="inline" onDoubleClick={this.toggleAlbumEdit}>{albumTitle}</h1>
+                    
+                    {
+                        !!user && !!user.isAdmin &&
+                        <span className="icon" onClick={this.toggleAlbumEdit}><i className="fas fa-pencil-alt"></i></span>
+                    }
+                </div>
+            )
         }
+    }
+
+    openImageUploadWindow = () => {
+        const form = document.getElementById('uploadImageForm');
+        const file = form.elements.file;
+        file.click();
+    }
+
+    uploadImage = async(e) => {
+        const {albumId} = this.state;
+
+        // reset previous upload error
+        this.setState({uploadError: ''});
+
+        const fileData = new FormData();
+        fileData.append('file', e.target.files[0]);
+
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+
+        await fetch(`/api/photo/${albumId}`, {
+            method: "post",
+            headers: {
+                    "X-CSRF-TOKEN": token,
+                    Authorization: `Bearer ${document.querySelector('meta[name="api_token"]').content}`
+            },
+            body: fileData
+        })
+        .then(() => this.getAlbum())
+        .catch(() => this.setState({uploadError: 'There was an error uploading the image.'}));
+    }
+
+    render() {
+        const {user, enlargedImage, deleteAlbum, displayAlert, alertMsg, isLoading, uploadError} = this.state;
 
         return(
             <div className='individualAlbum'>
@@ -346,11 +386,21 @@ class IndividualAlbum extends Component {
                 }
 
                 <div className="album-information">
-                    {albumTitleState}
+                    {this.renderAlbumTitleState()}
 
                     {
                         !!user && !!user.isAdmin &&                    
-                        <span className="icon delete" onClick={this.toggleDeleteAlbum}><i className="fas fa-trash-alt"></i></span>
+                        <span>
+                            <span className="icon delete" onClick={this.toggleDeleteAlbum}><i className="fas fa-trash-alt"></i></span>
+                            <span className="icon" title="add image" onClick={this.openImageUploadWindow}><i className="fas fa-plus"></i>
+                                {/* Hide the below form - it is used to upload file from clicking the 'plus button' */}
+                                <form id="uploadImageForm" style={{display: "none"}}>
+                                    <input type="file" name="file" onChange={this.uploadImage} />
+                                    <input type="submit" />
+                                </form>
+                                {uploadError && <span>{uploadError}</span>}
+                            </span>
+                        </span>
                     }
                 </div>
                 <div className="images">
@@ -368,5 +418,8 @@ class IndividualAlbum extends Component {
 }
 
 if (document.getElementById('individualAlbum')) {
+    // display image modal if user has followed through from notifications link
+    openImageModalIfImageInURL();
+
     ReactDOM.render(<IndividualAlbum />, document.getElementById('individualAlbum'));
 }

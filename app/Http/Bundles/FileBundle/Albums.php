@@ -2,12 +2,13 @@
 
 namespace App\Http\Bundles\FileBundle;
 
-use Validator;
 use Exception;
+use App\Exceptions\DatabaseException;
 use App\Photos as PhotosModel;
 use App\Albums as AlbumsModel;
 use Carbon\Carbon;
 use App\Http\Bundles\FileBundle\Photos;
+use Illuminate\Support\Facades\Log;
 
 class Albums extends Photos
 {
@@ -64,6 +65,8 @@ class Albums extends Photos
 
         // If no album type selected, return and inform user
         if (!$fileInfo['create_album'] && $fileInfo['album'] === 'default') {
+            Log::warning('No album selected to store image');
+
             throw new Exception('Please select an album to store your image in.');
         }
 
@@ -87,6 +90,8 @@ class Albums extends Photos
             $this->setDefaultAlbumCoverPhoto($photoId);
         }
 
+        Log::info('Image: ' . $photoId . ' stored in album: ' . $this->getAlbum()['id']);
+
         return true;
     }
 
@@ -103,17 +108,32 @@ class Albums extends Photos
             $currentAlbumName = $album->album_name;
 
             if ($currentAlbumName === $albumName) {
+                Log::warning('Cannot create album ' . $albumName . ' as an album with this name already exists');
+
                 return false;
             }
         }
 
-        $album = new AlbumsModel();
-        $album->album_name = $albumName;
-        $album->save();
+        try {
+            $album = new AlbumsModel();
+            $album->album_name = $albumName;
 
-        $this->setAlbumId($album->album_id);
+            if (!$album->save()) {
+                $errorMsg = 'Unable to save new album ' .$albumName. ' to database';
+                Log::warning($errorMsg);
 
-        return true;
+                throw new DatabaseException($errorMsg);
+            }
+
+            $this->setAlbumId($album->album_id);
+
+            return true;
+
+        } catch (DatabaseException $e) {
+            return $e->getMessage();
+        }
+
+        Log::info('New album ' .$album->album_id . ' created');
     }
 
     /**
@@ -123,9 +143,22 @@ class Albums extends Photos
      */
     private function setDefaultAlbumCoverPhoto($photoId)
     {
-        $album = AlbumsModel::find($this->getAlbum()['id']);
-        $album->cover_photo_id = $photoId;
-        $album->save();
+        try {
+            $album = AlbumsModel::find($this->getAlbum()['id']);
+            $album->cover_photo_id = $photoId;
+
+            if (!$album->save()) {
+                $errorMsg = 'Unable to set album: ' . $album->album_id . ' default cover photo to image: ' . $photoId;
+                Log::warning($errorMsg);
+
+                throw new DatabaseException($errorMsg);
+            }
+
+        } catch (DatabaseException $e) {
+            return $e->getMessage();
+        }
+
+        Log::info('Album ' . $album->album_id . ' . default cover photo set to image: ' . $photoId);
     }
 
     /**
@@ -134,10 +167,24 @@ class Albums extends Photos
      */
     public function updateAlbumTitle(int $albumId, string $albumName)
     {
-        $album = AlbumsModel::find($albumId);
-        $album->album_name = $albumName;
-        $album->save();
-        return true;
+        try {
+            $album = AlbumsModel::find($albumId);
+            $album->album_name = $albumName;
+            
+            if (!$album->save()) {
+                $errorMsg = 'Unable to update album: ' . $albumId . ' title.';
+
+                Log::warning($errorMsg);
+                throw new DatabaseException($errorMsg);
+            }
+            
+            Log::info('Album ' . $albumId . ' title updated to ' .$albumName);
+
+            return true;
+            
+        } catch (DatabaseException $e) {
+            return $e->getMessage();
+        }
     }
 
     /**
@@ -162,10 +209,22 @@ class Albums extends Photos
      */
     public function updateCoverImage(int $photoId)
     {
-        $albumId = PhotosModel::select('album_id')->where('id', $photoId)->first();
-        $album = AlbumsModel::find($albumId->album_id);
-        $album->cover_photo_id = $photoId;
-        $album->save();
+        try {
+            $albumId = PhotosModel::select('album_id')->where('id', $photoId)->first();
+            $album = AlbumsModel::find($albumId->album_id);
+            $album->cover_photo_id = $photoId;
+            
+            if (!$album->save()) {
+                $errorMsg = 'Unable to update album: ' . $albumId . ' cover image to image: ' . $photoId;
+                Log::error($errorMsg);
+                throw new DatabaseException($errorMsg);
+            }
+
+            Log::info('album: ' . $albumId . ' cover image updated with image: ' . $photoId);
+
+        } catch(DatabaseException $e) {
+            return $e->getMessage();
+        }
     }
 
     /**
@@ -178,6 +237,8 @@ class Albums extends Photos
         // Do not allow admin to delete album if one of the photos is the homepage background
         foreach ($photosInAlbum as $photo) {
             if ($this->isHomepageBackground($photo->id)) {
+                Log::warning('Attempting to delete album: ' . $albumId . ' with image: ' .$photo->id . ' homepage background');
+
                 return;
             }
         }
@@ -187,5 +248,33 @@ class Albums extends Photos
         }
 
         AlbumsModel::find($albumId)->delete();
+
+        Log::info('Album: ' .$albumId .' deleted');
+    }
+
+    /**
+     * Move the image to the album related to $albumId
+     *
+     * @param integer $albumId
+     * @param integer $imageId
+     */
+    public function moveImageToAlbum(int $albumId, int $imageId)
+    {
+        try {
+            $photo = PhotosModel::find($imageId);
+            $currentAlbumId = $photo->album_id;
+
+            if ($this->isAlbumCover($currentAlbumId, $imageId)) {
+                return ['response' => 'You cannot move this album as it is the album cover.'];
+            }
+
+            $photo->album_id = $albumId;
+            $photo->save();
+
+            return ['response' => 'The image has been moved successfully. Refresh the page to see your changes.'];
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
     }
 }

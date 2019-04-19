@@ -45,6 +45,11 @@ Route::get('albums/{id}', function(int $albumId) {
 });
 
 /**
+ * Move image to different album
+ */
+Route::post('album/{albumId}/image/{imageId}', 'Api\AlbumsController@moveImage')->middleware('auth:api');
+
+/**
  * API showing individual photos
  */
 Route::get('photos/{id}', function($id) {
@@ -56,13 +61,12 @@ Route::get('photos/{id}', function($id) {
  */
 Route::get('/background_image', function() {
     $photo = HomepageBackground::find(1); // only one row
-    $photoId = $photo->photo_id;
 
-    if (!Photos::find($photoId)) {
+    if (!isset($photo->photo_id) || !Photos::find($photo->photo_id)) {
         return;
     }
 
-    return new PhotosResource(Photos::find($photoId));
+    return new PhotosResource(Photos::find($photo->photo_id));
 });
 
 /**
@@ -119,3 +123,13 @@ Route::delete('/delete_comment/{post_id}', 'Api\PostsController@deleteComment')-
  * Post email from contact form
  */
 Route::post('/email', 'Api\EmailController@sendEmail');
+
+/**
+ * Upload photo to album
+ */
+Route::post('/photo/{album_id}', 'Api\PhotosController@uploadImage')->middleware('auth:api');
+
+/**
+ * Update settings
+ */
+Route::post('/updatesettings', 'Api\SettingsController@updateSettings')->middleware('auth:api');

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Http\Bundles\UserBundle\User as UserClass;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Bundles\SettingsBundle\Settings;
 
 class UserController extends Controller
 {
@@ -18,10 +19,11 @@ class UserController extends Controller
      * 
      * @return void
      */
-    public function __construct(UserClass $moduleClass)
+    public function __construct(UserClass $moduleClass, Settings $settings)
     {
         $this->moduleClass = $moduleClass;
         $this->middleware('auth');
+        parent::__construct($settings);
     }
 
     /**
@@ -31,7 +33,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('pages.profile.dashboard');
+        $notifications = null;
+
+        if (auth()->user() && auth()->user()->isAdmin) {
+            $notifications = json_encode($this->moduleClass->getNotifications(true));
+        }
+
+        return $this->displayPage('pages.profile.dashboard')->with('notifications', $notifications);
     }
 
     /**
@@ -49,7 +57,7 @@ class UserController extends Controller
             return redirect('/')->with('failure', 'Unauthorised access');
         }
 
-        return view('pages.profile.edit')->with('user', $user);
+        return $this->displayPage('pages.profile.edit', ['user' => $user]);
     }
 
     /**

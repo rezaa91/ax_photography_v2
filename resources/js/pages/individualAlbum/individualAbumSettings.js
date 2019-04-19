@@ -10,10 +10,10 @@ export default function individualAlbumInit() {
  */
 function getDOMElements() {
     return {
-        navBar: document.querySelector('nav'),
-        albumInformation: document.querySelector('.album-information'),
-        albumImagesWrapper: document.querySelector('.images')
-    }
+        navBar: document.querySelector("nav"),
+        albumInformation: document.querySelector(".album-information"),
+        albumImagesWrapper: document.querySelector(".images")
+    };
 }
 
 function getWindowHeight() {
@@ -21,13 +21,14 @@ function getWindowHeight() {
 }
 
 function setHeightOfAlbumPage() {
-    const {navBar, albumInformation, albumImagesWrapper} = getDOMElements();
+    const { navBar, albumInformation, albumImagesWrapper } = getDOMElements();
 
     const windowHeight = getWindowHeight();
     const navBarHeight = navBar.clientHeight;
     const albumInformationHeight = albumInformation.clientHeight;
     const offsetBottom = 40;
-    const imagesWrapperHeight = windowHeight - navBarHeight - albumInformationHeight - offsetBottom;
+    const imagesWrapperHeight =
+        windowHeight - navBarHeight - albumInformationHeight - offsetBottom;
 
     albumImagesWrapper.style.height = `${imagesWrapperHeight}px`;
 }

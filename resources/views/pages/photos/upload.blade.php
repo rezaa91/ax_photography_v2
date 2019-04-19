@@ -30,10 +30,10 @@
     </div>
 
     <div class="form-section" id="select_album">
-        @if ($albums)
+        @if (!empty($pageSpecific['albums']))
             <select name='album'>
                 <option value="default">Choose an album below...</option>
-                @foreach($albums as $album)
+                @foreach($pageSpecific['albums'] as $album)
                     <option value="{{ $album->album_id }}">{{ $album->album_name }}</option>
                 @endforeach
             </select>

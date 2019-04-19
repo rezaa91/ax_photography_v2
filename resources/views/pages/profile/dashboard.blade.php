@@ -2,5 +2,5 @@
 
 @section('content')
 <!-- React Component -->
-<div id="dashboard"></div>
+<div data-notifications="{{!empty($notifications) ? $notifications : null}}" id="dashboard"></div>
 @endsection

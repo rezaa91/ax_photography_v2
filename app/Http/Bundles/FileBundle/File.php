@@ -2,6 +2,9 @@
 
 namespace App\Http\Bundles\FileBundle;
 
+use App\Exceptions\FileUploadException;
+use App\Http\Bundles\NotificationsBundle\Notifications;
+
 class File
 {
      /**
@@ -43,12 +46,21 @@ class File
     protected $directoryToStore = null;
 
     /**
+     * Notifications
+     *
+     * @var Notifications
+     */
+    protected $notifications = null;
+
+    /**
      * Set file data to relevent properties
      *
+     * @param Notifications $notifications 
      * @param $file
      */
-   public function __construct($file = null)
+   public function __construct(Notifications $notifications, $file = null)
    {
+     $this->notifications = $notifications;
 
      if (!isset($file)) {
             return;
@@ -64,6 +76,8 @@ class File
      $this->filename = pathinfo($this->filenameWithExt, PATHINFO_FILENAME);
      $this->extension = $file->getClientOriginalExtension();
      $this->filenameToStore = $this->filename . '_' . time() . '.' . $this->extension;
+
+     return $this;
    }
 
    public function setFile($file)
@@ -113,8 +127,15 @@ class File
     */
    public function deleteFile(string $filepath)
    {
-        if (file_exists("storage/$this->directoryToStore/$filepath")) {
-            unlink("storage/$this->directoryToStore/$filepath");
+        try{
+          if (!file_exists("storage/$this->directoryToStore/$filepath")) {
+               throw new FileUploadException('File does not exist in storage directory');
+          }
+
+          unlink("storage/$this->directoryToStore/$filepath");
+
+        } catch (FileUploadException $e) {
+          return $e->getMessage();
         }
    }
 
