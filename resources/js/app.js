@@ -1,4 +1,5 @@
 import displayBottomNavBarMobile from "./utilities/displayBottmNavBarMobile";
+import {applyTheme} from './layouts/theme';
 
 /** Require dependencies and helpers */
 require("./bootstrap");
@@ -18,3 +19,6 @@ require("./pages/contact/contact");
 require("./pages/dashboard/dashboard");
 require("./pages/uploads/uploads");
 require("./pages/individualAlbum/individualAlbum");
+require("./pages/settings/settings");
+
+applyTheme();

@@ -23,6 +23,9 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
+    <!-- application settings -->
+    <div id="allSettings" data-settings={{ !empty($settings) ? json_encode($settings) : null }}></div>
+    
     <!-- React Component -->
     <nav data-notificationCount={{ !empty($notificationCount) ? $notificationCount : 0 }} id="nav"></nav>
 

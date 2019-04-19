@@ -128,3 +128,8 @@ Route::post('/email', 'Api\EmailController@sendEmail');
  * Upload photo to album
  */
 Route::post('/photo/{album_id}', 'Api\PhotosController@uploadImage')->middleware('auth:api');
+
+/**
+ * Update settings
+ */
+Route::post('/updatesettings', 'Api\SettingsController@updateSettings')->middleware('auth:api');

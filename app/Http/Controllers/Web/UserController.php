@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Http\Bundles\UserBundle\User as UserClass;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Bundles\SettingsBundle\Settings;
 
 class UserController extends Controller
 {
@@ -18,10 +19,11 @@ class UserController extends Controller
      * 
      * @return void
      */
-    public function __construct(UserClass $moduleClass)
+    public function __construct(UserClass $moduleClass, Settings $settings)
     {
         $this->moduleClass = $moduleClass;
         $this->middleware('auth');
+        parent::__construct($settings);
     }
 
     /**
