@@ -62894,7 +62894,13 @@ function (_Component) {
     }
 
     return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Btn)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.onClick = function () {
-      _this.props.onClick();
+      var onClick = _this.props.onClick;
+
+      if (!onClick) {
+        return;
+      }
+
+      onClick();
     }, _temp));
   }
 

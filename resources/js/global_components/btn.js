@@ -8,7 +8,13 @@ import React, { Component } from "react";
  */
 class Btn extends Component {
     onClick = () => {
-        this.props.onClick();    
+        const {onClick} = this.props;
+
+        if (!onClick) {
+            return;
+        }
+
+        onClick();    
     }
 
     render() {
