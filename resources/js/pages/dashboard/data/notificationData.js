@@ -1,5 +1,11 @@
 export function parseNotifications() {
-    const notificationJSON = document.querySelector('#dashboard').getAttribute('data-notifications');
+    const notificationContainer = document.querySelector('#dashboard');
+
+    if (!notificationContainer) {
+        return;
+    }
+
+    const notificationJSON = notificationContainer.getAttribute('data-notifications');
 
     if (!notificationJSON) {
         return;

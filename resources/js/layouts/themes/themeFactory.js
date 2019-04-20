@@ -1,5 +1,5 @@
 import allSettings from '../../pages/settings/data/settingsData';
-import themes from './themesList';
+import {defaultTheme, lightTheme, darkTheme} from './themesList';
 
 /**
  * get the theme value selected by the user from the settings and return the appropriate theme
@@ -10,10 +10,14 @@ export default function getSelectedTheme() {
 
     switch(theme) {
         case 0:
-            return themes().defaultTheme;
+            return defaultTheme;
         case 1:
-            return themes().lightTheme;
+            return lightTheme;
         case 2:
-           return themes().darkTheme;
+           return darkTheme;
+        default:
+            return defaultTheme;
     }
 }
+
+// IMPORTANT - if the above function is changed, ensure to change the unit tests as this function is completely mocked

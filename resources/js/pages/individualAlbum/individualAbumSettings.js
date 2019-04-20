@@ -27,8 +27,7 @@ function setHeightOfAlbumPage() {
     const navBarHeight = navBar.clientHeight;
     const albumInformationHeight = albumInformation.clientHeight;
     const offsetBottom = 40;
-    const imagesWrapperHeight =
-        windowHeight - navBarHeight - albumInformationHeight - offsetBottom;
+    const imagesWrapperHeight = windowHeight - navBarHeight - albumInformationHeight - offsetBottom;
 
     albumImagesWrapper.style.height = `${imagesWrapperHeight}px`;
 }

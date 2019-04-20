@@ -18,12 +18,3 @@ test('Invalid data types results in null when validateDate() is called', () => {
     expect(Validate.validateDate({Date: 'random', num: 123.111})).toBeNull();
     expect(Validate.validateDate(null)).toBeNull();
 })
-
-test('invalid string format should result in null', () => {
-    // TODO. complete test
-})
-
-test('Expect a date format to return with valid format', () => {
-    const date = new Date('14 Jan 91');
-    // TODO. complete test
-})

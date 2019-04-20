@@ -1,10 +1,10 @@
 import {darkGrey, white, green, black, darkGreen, lightGreen} from '../../constants/colors';
 
-const defaultTheme = {
+export const defaultTheme = {
     // left blank as default theme is the default css
 }
 
-const darkTheme = {
+export const darkTheme = {
     navigation: {
         selector: '.navigation-wrapper',
         styles: {
@@ -62,7 +62,7 @@ const darkTheme = {
     }
 }
 
-const lightTheme = {
+export const lightTheme = {
     navigation: {
         selector: '.navigation-wrapper',
         styles: {
@@ -114,13 +114,5 @@ const lightTheme = {
             color: darkGreen,
             borderColor: lightGreen
         }
-    }
-}
-
-export default function themes() {
-    return {
-        defaultTheme,
-        darkTheme,
-        lightTheme
     }
 }
