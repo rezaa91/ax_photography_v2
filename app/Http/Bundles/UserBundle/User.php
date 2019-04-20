@@ -5,6 +5,7 @@ namespace App\Http\Bundles\UserBundle;
 use App\User as UserModel;
 use App\Http\Bundles\FileBundle\Photos as PhotosClass;
 use App\Http\Bundles\NotificationsBundle\Notifications;
+use Illuminate\Http\UploadedFile;
 
 class User
 {
@@ -27,9 +28,9 @@ class User
      * Store the filepath in the database
      * 
      * @param UserModel $userId
-     * @param $file
+     * @param UploadedFile $file
      */
-    public function storeAvatarFilepath(UserModel $user, $file)
+    public function storeAvatarFilepath(UserModel $user, UploadedFile $file)
     {
         $this->removeCurrentImage($user);
         

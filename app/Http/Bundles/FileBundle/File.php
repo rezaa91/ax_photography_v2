@@ -4,6 +4,7 @@ namespace App\Http\Bundles\FileBundle;
 
 use App\Exceptions\FileUploadException;
 use App\Http\Bundles\NotificationsBundle\Notifications;
+use Illuminate\Http\UploadedFile;
 
 class File
 {
@@ -60,27 +61,30 @@ class File
      */
    public function __construct(Notifications $notifications, $file = null)
    {
-     $this->notifications = $notifications;
+        $this->notifications = $notifications;
 
-     if (!isset($file)) {
+        if (!isset($file)) {
             return;
-     }
+        }
 
-     $this->init($file);
+        $this->init($file);
    }
 
    public function init($file)
    {
-     $this->file = $file;
-     $this->filenameWithExt = $file->getClientOriginalName();
-     $this->filename = pathinfo($this->filenameWithExt, PATHINFO_FILENAME);
-     $this->extension = $file->getClientOriginalExtension();
-     $this->filenameToStore = $this->filename . '_' . time() . '.' . $this->extension;
+        $this->file = $file;
+        $this->filenameWithExt = $file->getClientOriginalName();
+        $this->filename = pathinfo($this->filenameWithExt, PATHINFO_FILENAME);
+        $this->extension = $file->getClientOriginalExtension();
+        $this->filenameToStore = $this->filename . '_' . time() . '.' . $this->extension;
 
-     return $this;
+        return $this;
    }
 
-   public function setFile($file)
+   /**
+    * @param UploadedFile $file
+    */
+   public function setFile(UploadedFile $file)
    {
         $this->file = $file;
    }
@@ -92,22 +96,36 @@ class File
 
    /**
     * @param string $dir
+    * 
+    * @return void
+    * @throws \InvalidArgumentException
     */
-   public function setDirectoryToStore(string $dir)
+   public function setDirectoryToStore($dir)
    {
+        if (!is_string($dir)) {
+            throw new \InvalidArgumentException('Directory must be a string');
+        }
+
         $this->directoryToStore = $dir;
    }
 
    public function getDirectoryToStore()
    {
-        return $this->directoryToStore;
+       return $this->directoryToStore;
    }
 
    /**
     * @param string $filename
+    * 
+    * @return void
+    * @throws \InvalidArgumentException
     */
-   public function setFilenameToStore(string $filename)
+   public function setFilenameToStore($filename)
    {
+        if (!is_string($filename)) {
+            throw new \InvalidArgumentException('Filename must be a string');
+        }
+
         $this->filenameToStore = $filename;
    }
 
@@ -124,18 +142,20 @@ class File
    /**
     * Delete file from storage folder
     * @param string $filepath
+    *
+    * @throws FileUploadException
     */
    public function deleteFile(string $filepath)
    {
         try{
-          if (!file_exists("storage/$this->directoryToStore/$filepath")) {
-               throw new FileUploadException('File does not exist in storage directory');
-          }
+            if (!file_exists("storage/$this->directoryToStore/$filepath")) {
+                throw new FileUploadException('File does not exist in storage directory');
+            }
 
-          unlink("storage/$this->directoryToStore/$filepath");
+            unlink("storage/$this->directoryToStore/$filepath");
 
         } catch (FileUploadException $e) {
-          return $e->getMessage();
+            return $e->getMessage();
         }
    }
 
