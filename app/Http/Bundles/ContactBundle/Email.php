@@ -7,7 +7,12 @@ use Illuminate\Support\Facades\Mail;
 
 class Email
 {
-    public function sendEmail($formData)
+    /**
+     * @param array $formData - name, email, body
+     * 
+     * @return void 
+     */
+    public function sendEmail(array $formData)
     {
         Mail::to('info@axphotography.co.uk')
             ->send(new ContactForm($formData));
