@@ -55,12 +55,14 @@ class User
     {
         // Return if user has no avatar set
         if (!isset($user->avatar_filepath)) {
-            return;
+            return false;
         }
 
         if (file_exists("storage/avatars/$user->avatar_filepath")) {
             unlink("storage/avatars/$user->avatar_filepath");
         }
+
+        return true;
     }
 
     /**

@@ -50,7 +50,6 @@ class FileTest extends TestCase
         $this->mockUploadedFile->shouldReceive([
             'getClientOriginalName' => 'testing.jpg',
             'getClientOriginalExtension' => 'jpg',
-
         ]);
     } 
 

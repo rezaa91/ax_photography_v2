@@ -29,9 +29,9 @@ class NotificationsTest extends TestCase
         parent::setup();
     }
 
-    public function testAcknowledgingNotificationReturnBool()
+    public function testAcknowledgingNotificationReturnTrue()
     {
-        $this->assertIsBool($this->notifications->acknowledgeNotifications());
+        $this->assertTrue($this->notifications->acknowledgeNotifications());
     }
 
 }

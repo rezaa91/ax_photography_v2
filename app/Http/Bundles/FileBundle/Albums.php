@@ -3,12 +3,15 @@
 namespace App\Http\Bundles\FileBundle;
 
 use Exception;
+use App\Exceptions\AlbumException;
 use App\Exceptions\DatabaseException;
+use App\Exceptions\FileUploadException;
 use App\Photos as PhotosModel;
 use App\Albums as AlbumsModel;
 use Carbon\Carbon;
 use App\Http\Bundles\FileBundle\Photos;
 use Illuminate\Support\Facades\Log;
+ 
 
 class Albums extends Photos
 {
@@ -25,7 +28,7 @@ class Albums extends Photos
     public function __construct($file = null)
     {
         if ($file) {
-            Parent::__construct($file);
+            parent::__construct($file);
         }
     }
 
@@ -57,23 +60,29 @@ class Albums extends Photos
 
     /**
      * @param Array $fileInfo
+     * 
+     * @throws AlbumException
      * @return bool
      */
     public function storeImage(Array $fileInfo)
     {
+        if (!isset($fileInfo['file'])) {
+            throw new FileUploadException('No file or incorrect array format supplied to function');
+        }
+
         $this->init($fileInfo['file']);
 
         // If no album type selected, return and inform user
-        if (!$fileInfo['create_album'] && $fileInfo['album'] === 'default') {
+        if (!isset($fileInfo['create_album']) && $fileInfo['album'] === 'default') {
             Log::warning('No album selected to store image');
 
-            throw new Exception('Please select an album to store your image in.');
+            throw new AlbumException('Please select an album to store your image in.');
         }
 
         // If new album created, store in database
         if ($fileInfo['create_album']) {
             if (!$this->createAlbum($fileInfo['create_album'])) {
-                throw new Exception("The album could not be created as the album name already exists.");
+                throw new AlbumException("The album could not be created as the album name already exists.");
             }
         }
 
@@ -107,7 +116,7 @@ class Albums extends Photos
         foreach ($this->getAllAlbums() as $album) {
             $currentAlbumName = $album->album_name;
 
-            if ($currentAlbumName === $albumName) {
+            if (strtolower($currentAlbumName) === strtolower($albumName)) {
                 Log::warning('Cannot create album ' . $albumName . ' as an album with this name already exists');
 
                 return false;
