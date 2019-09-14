@@ -39,7 +39,7 @@ class Homepage extends Component {
             <div className="homepage-wrapper" style={style}>
                 <div>
                     <div className="homepage-header">
-                        <h1>AX52 PHOTOGRAPHY</h1>
+                        <h1>Hello Benjamin</h1>
                         <h3>- THE BEST OF THE BEST -</h3>
                         <MainBtn text="View Gallery" />
                     </div>
